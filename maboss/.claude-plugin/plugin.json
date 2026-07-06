@@ -1,0 +1,8 @@
+{
+  "name": "maboss",
+  "description": "Academic toolkit for MaBoSS (Markovian Boolean Stochastic Simulator) and the CoLoMoTo ecosystem: authoring and validating .bnd/.cfg Boolean models, driving the pyMaBoSS Python API (simulation, mutations, probability trajectories, the temporal-logic / CCT assertion evaluator of Oscar Dufossez, MaBoSS server, Jupyter widgets), and navigating the ecosystem (WebMaBoSS by Vincent Noel, model repositories BioModels/CellCollective, PhysiBoSS, positioning vs INDRA). Ground truth captured from the official refcard and repository trees (July 2026). Used by the Guyeux group (FEMTO-ST, University Marie et Louis Pasteur) for cancer signalling modelling and the mabossDemo literature-coherency project.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  }
+}

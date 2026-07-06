@@ -1,4 +1,4 @@
-# Claude Plugins — Groupe Guyeux (FEMTO-ST)
+# Claude Plugins : groupe Guyeux (FEMTO-ST)
 
 Collection de plugins [Claude Code](https://docs.claude.com/en/docs/claude-code) développés par Christophe Guyeux (Institut FEMTO-ST, CNRS UMR 6174, Université Marie et Louis Pasteur, Besançon) pour la recherche scientifique académique : phylogénomique évolutive bactérienne, génétique des populations humaines, rédaction scientifique, et outillage transverse (bioinformatique, statistiques, visualisation, revue de littérature).
 
@@ -14,8 +14,28 @@ Collection de plugins [Claude Code](https://docs.claude.com/en/docs/claude-code)
 | `multimedia` | Sous-titrage de films muets, audio/vidéo, synthèse vocale, métadonnées de films. |
 | `ops` | Projets PrédictOps, OptimOps, DoctrinOps. |
 | `web` | Développement et test d'applications web. |
+| `maboss` | MaBoSS / CoLoMoTo : modèles booléens `.bnd`/`.cfg` (grammaire refcard), API pyMaBoSS et évaluateur CCT (Oscar Dufossez), carte de l'écosystème (WebMaBoSS de Vincent Noël, dépôts de modèles, positionnement vs INDRA). Modélisation de la signalisation cancer, projet mabossDemo. |
 
 Le répertoire `mes_skills/` regroupe des skills personnels supplémentaires (itol, rasigade) non empaquetés en plugin.
+
+## Cartographie des skills
+
+La collection s'organise comme la chaîne de production d'un article de phylogénomique évolutive du complexe *Mycobacterium tuberculosis* (MTBC), du choix du problème au dépôt final. Vue d'ensemble par étape :
+
+| Étape d'un projet M. tuberculosis | Plugins mobilisés |
+|-----------------------------------|-------------------|
+| 1. Cadrage et revue de littérature | `ia`, `redac`, `bio_population_genetics` |
+| 2. Acquisition des génomes et isolats publiés | `bio_pathogens`, `bio_population_genetics` |
+| 3. Variants, résistance, assignation de lignée | `bio_pathogens` |
+| 4. Phylogénie et datation moléculaire | `bio_population_genetics`, `bio_pathogens` |
+| 5. Phylogéographie et contexte hôte | `bio_population_genetics` |
+| 6. Modélisation, statistiques, machine learning | `ia`, `bio_population_genetics` |
+| 7. Visualisation (figures, arbres, cartes) | `bio_population_genetics`, `redac` |
+| 8. Rédaction du manuscrit | `redac`, `bio_redac` |
+| 9. Vérification et réponse aux relecteurs | `redac` |
+| 10. Valorisation et dépôt (DOI, Overleaf, financements) | `redac` |
+
+Le catalogue complet, skill par skill (raison d'être et compétences, sous l'angle M. tuberculosis), est dans **[`docs/`](docs/README.md)** : une page par plugin, plus un index alphabétique des 161 skills. Le plugin `maboss` relève d'un autre projet (modélisation booléenne, mabossDemo) et y est documenté à part.
 
 ## Installation
 
@@ -39,4 +59,4 @@ L'ensemble de cet outillage est destiné à un usage de recherche scientifique a
 
 ## Auteur
 
-Christophe Guyeux — Institut FEMTO-ST (CNRS UMR 6174), Université Marie et Louis Pasteur.
+Christophe Guyeux, Institut FEMTO-ST (CNRS UMR 6174), Université Marie et Louis Pasteur.

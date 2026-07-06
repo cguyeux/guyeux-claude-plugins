@@ -48,6 +48,11 @@
       "name": "web",
       "source": "./web",
       "description": "Développement et test d'applications web."
+    },
+    {
+      "name": "maboss",
+      "source": "./maboss",
+      "description": "MaBoSS / CoLoMoTo toolkit: .bnd/.cfg Boolean-model authoring (official refcard grammar), the pyMaBoSS API and Oscar Dufossez's CCT temporal-logic evaluator, and the ecosystem map (WebMaBoSS by Vincent Noel, model repositories, positioning vs INDRA). For cancer signalling modelling and the mabossDemo literature-coherency project."
     }
   ]
 }
