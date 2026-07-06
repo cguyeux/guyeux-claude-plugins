@@ -282,6 +282,8 @@ def main():
         f"entre plugins (symlinks) sont documentés une seule fois, sur la page de "
         f"leur plugin d'origine.",
         "",
+        "[Retour au README du dépôt](../README.md)",
+        "",
         "> Pages générées par `docs/build_docs.py` à partir du frontmatter des "
         "`SKILL.md`. Régénérer après tout ajout de skill.",
         "",

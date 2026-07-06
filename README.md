@@ -2,19 +2,21 @@
 
 Collection de plugins [Claude Code](https://docs.claude.com/en/docs/claude-code) développés par Christophe Guyeux (Institut FEMTO-ST, CNRS UMR 6174, Université Marie et Louis Pasteur, Besançon) pour la recherche scientifique académique : phylogénomique évolutive bactérienne, génétique des populations humaines, rédaction scientifique, et outillage transverse (bioinformatique, statistiques, visualisation, revue de littérature).
 
+Documentation complète, skill par skill (raison d'être et compétences, sous l'angle M. tuberculosis) : **[dossier `docs/`](docs/README.md)**. Chaque plugin ci-dessous est aussi lié directement à sa page.
+
 ## Plugins
 
 | Plugin | Rôle |
 |--------|------|
-| `bio_pathogens` | Génomique computationnelle des pathogènes bactériens (MTBC, *M. leprae*, *Y. pestis*, *H. pylori*), lignages, allèles de résistance, bases de données spécialisées, à des fins de publications évaluées par des pairs. |
-| `bio_population_genetics` | Génétique des populations humaines anciennes et modernes, archéologie, paléoclimat, corpus de migrations, plus les outils génériques de phylogénétique, statistiques et fouille de littérature. |
-| `bio_redac` | Phase hybride analyse + rédaction (agrège les skills des autres plugins). |
-| `redac` | Rédaction pure : LaTeX, slides, manuscrits, vérification de références et de figures. |
-| `ia` | Intelligence artificielle, machine learning, data science. |
-| `multimedia` | Sous-titrage de films muets, audio/vidéo, synthèse vocale, métadonnées de films. |
-| `ops` | Projets PrédictOps, OptimOps, DoctrinOps. |
-| `web` | Développement et test d'applications web. |
-| `maboss` | MaBoSS / CoLoMoTo : modèles booléens `.bnd`/`.cfg` (grammaire refcard), API pyMaBoSS et évaluateur CCT (Oscar Dufossez), carte de l'écosystème (WebMaBoSS de Vincent Noël, dépôts de modèles, positionnement vs INDRA). Modélisation de la signalisation cancer, projet mabossDemo. |
+| [bio_pathogens](docs/bio_pathogens.md) | Génomique computationnelle des pathogènes bactériens (MTBC, *M. leprae*, *Y. pestis*, *H. pylori*), lignages, allèles de résistance, bases de données spécialisées, à des fins de publications évaluées par des pairs. |
+| [bio_population_genetics](docs/bio_population_genetics.md) | Génétique des populations humaines anciennes et modernes, archéologie, paléoclimat, corpus de migrations, plus les outils génériques de phylogénétique, statistiques et fouille de littérature. |
+| [bio_redac](docs/bio_redac.md) | Phase hybride analyse + rédaction (agrège les skills des autres plugins). |
+| [redac](docs/redac.md) | Rédaction pure : LaTeX, slides, manuscrits, vérification de références et de figures. |
+| [ia](docs/ia.md) | Intelligence artificielle, machine learning, data science. |
+| [multimedia](docs/multimedia.md) | Sous-titrage de films muets, audio/vidéo, synthèse vocale, métadonnées de films. |
+| [ops](docs/ops.md) | Projets PrédictOps, OptimOps, DoctrinOps. |
+| [web](docs/web.md) | Développement et test d'applications web. |
+| [maboss](docs/maboss.md) | MaBoSS / CoLoMoTo : modèles booléens `.bnd`/`.cfg` (grammaire refcard), API pyMaBoSS et évaluateur CCT (Oscar Dufossez), carte de l'écosystème (WebMaBoSS de Vincent Noël, dépôts de modèles, positionnement vs INDRA). Modélisation de la signalisation cancer, projet mabossDemo. |
 
 Le répertoire `mes_skills/` regroupe des skills personnels supplémentaires (itol, rasigade) non empaquetés en plugin.
 
@@ -35,7 +37,7 @@ La collection s'organise comme la chaîne de production d'un article de phylogé
 | 9. Vérification et réponse aux relecteurs | `redac` |
 | 10. Valorisation et dépôt (DOI, Overleaf, financements) | `redac` |
 
-Le catalogue complet, skill par skill (raison d'être et compétences, sous l'angle M. tuberculosis), est dans **[`docs/`](docs/README.md)** : une page par plugin, plus un index alphabétique des 161 skills. Le plugin `maboss` relève d'un autre projet (modélisation booléenne, mabossDemo) et y est documenté à part.
+Le catalogue complet, skill par skill (raison d'être et compétences, sous l'angle M. tuberculosis), est dans le [dossier `docs/`](docs/README.md) : une page par plugin, plus un index alphabétique des 161 skills. Le plugin `maboss` relève d'un autre projet (modélisation booléenne, mabossDemo) et y est documenté à part.
 
 ## Installation
 

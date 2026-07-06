@@ -2,6 +2,8 @@
 
 Cette collection outille le programme de recherche du groupe Guyeux (FEMTO-ST) en phylogénomique évolutive du complexe *Mycobacterium tuberculosis* (MTBC), de l'accès aux génomes publiés jusqu'au manuscrit. Elle réunit **161 skills canoniques** sur **8 plugins**. Chaque skill est décrit par sa raison d'être et ses compétences ; les skills partagés entre plugins (symlinks) sont documentés une seule fois, sur la page de leur plugin d'origine.
 
+[Retour au README du dépôt](../README.md)
+
 > Pages générées par `docs/build_docs.py` à partir du frontmatter des `SKILL.md`. Régénérer après tout ajout de skill.
 
 ## Pipeline de recherche M. tuberculosis
