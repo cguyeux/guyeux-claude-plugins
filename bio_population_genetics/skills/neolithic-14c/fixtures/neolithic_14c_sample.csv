@@ -1,0 +1,14 @@
+# FIXTURE NERD subset OFFLINE TESTS ONLY
+DateID,LabID,CRA,Error,Material,Species,SiteID,SiteName,Country,Longitude,Latitude,LocQual,Source
+D1,OxA-1,6500,40,bone,Bos taurus,S1,Catalhoyuk,Turkey,32.83,37.67,A,Ref1
+D2,OxA-2,5800,35,charcoal,,S2,Franchthi,Greece,23.13,37.42,A,Ref1
+D3,OxA-3,7200,50,bone,Ovis,S3,Jericho,Jordan,35.44,31.87,B,Ref2
+D4,OxA-4,6000,45,seed,Triticum,S4,Sesklo,Greece,22.75,39.55,A,Ref2
+D5,OxA-5,5200,30,bone,Sus,S5,LBK,Germany,8.5,50.9,A,Ref3
+D6,OxA-6,4600,30,charcoal,,S6,Iberia1,Spain,-3.7,40.4,B,Ref3
+D7,OxA-7,6800,55,bone,Capra,S7,Knossos,Greece,25.16,35.3,A,Ref4
+D8,OxA-8,5500,40,bone,Bos,S8,Danube1,Hungary,19.0,47.5,A,Ref4
+D9,OxA-9,7000,60,wood,,S9,Anatolia2,Turkey,30.0,39.0,A,Ref5
+D10,OxA-10,4200,25,seed,Hordeum,S10,France1,France,2.3,48.8,A,Ref5
+D11,OxA-11,6300,45,bone,Ovis,S11,Italy1,Italy,12.5,41.9,A,Ref6
+D12,OxA-12,3900,25,charcoal,,S12,Britain1,UK,-1.5,52.5,B,Ref6

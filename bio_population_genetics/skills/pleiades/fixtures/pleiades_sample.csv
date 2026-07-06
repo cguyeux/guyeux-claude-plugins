@@ -1,0 +1,14 @@
+# FIXTURE Pleiades subset OFFLINE TESTS ONLY
+id,title,reprLat,reprLong,featureTypes,timePeriods,minDate,maxDate,geoContext,locationPrecision
+1,Roma,41.9,12.5,settlement,RL,-753,500,Italy,precise
+2,Alexandria,31.2,29.9,settlement,HRL,-331,640,Egypt,precise
+3,Athenae,37.98,23.73,settlement,ACHRL,-800,600,Greece,precise
+4,Carthago,36.85,10.32,settlement,RL,-146,700,Tunisia,precise
+5,Lugdunum,45.76,4.83,settlement,RL,-43,500,France,precise
+6,Massilia,43.3,5.37,settlement,ACHRL,-600,500,France,precise
+7,Pompeii,40.75,14.49,settlement,R,-600,79,Italy,precise
+8,Byzantium,41.0,28.98,settlement,ACHRLM,-657,1453,Turkey,precise
+9,Gadir,36.53,-6.29,settlement,ACHRL,-1100,500,Spain,precise
+10,Londinium,51.5,-0.1,settlement,RL,43,410,UK,precise
+11,Memphis,29.85,31.25,settlement,ACH,-3100,-300,Egypt,precise
+12,Antiochia,36.2,36.16,settlement,HRL,-300,600,Turkey,precise

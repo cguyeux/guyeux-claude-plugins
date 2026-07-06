@@ -1,0 +1,8 @@
+{
+"name": "redac",
+"description": "Un plugin pour la rédaction d'articles et de projets",
+"version": "1.0.0",
+"author": {
+"name": "Christophe Guyeux"
+}
+}

@@ -1,0 +1,14 @@
+# FIXTURE D-PLACE subset OFFLINE TESTS ONLY
+id,pref_name_for_society,glottocode,Lat,Long,Family,Dataset
+Aa1,Nama,nama1265,-26.0,17.0,Khoe-Kwadi,EA
+Aa2,Yoruba,yoru1245,7.4,3.9,Niger-Congo,EA
+Aa3,Hausa,haus1257,11.0,8.5,Afro-Asiatic,EA
+Aa4,Mandinka,mand1435,13.0,-15.0,Niger-Congo,EA
+Ab5,Zulu,zulu1248,-29.0,30.0,Niger-Congo,Binford
+Ab6,Maasai,masa1300,-2.0,36.0,Nilotic,EA
+Ab7,Amhara,amha1245,9.0,38.7,Afro-Asiatic,SCCS
+Ac8,Kikuyu,kiku1240,-0.5,37.0,Niger-Congo,EA
+Ac9,Igbo,nucl1417,6.0,7.0,Niger-Congo,Binford
+Ad10,Tuareg,tama1365,20.0,5.0,Afro-Asiatic,EA
+Ad11,Fulani,fula1264,14.0,-4.0,Niger-Congo,SCCS
+Ad12,Shona,shon1251,-19.0,30.0,Niger-Congo,EA

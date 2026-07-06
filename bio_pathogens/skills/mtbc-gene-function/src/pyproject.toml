@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mtbc-gene-function"
+version = "0.1.0"
+description = "H37Rv gene → functional annotation via ESM Atlas SAE features"
+requires-python = ">=3.10"
+dependencies = [
+    "esm-atlas-cli",
+]
+
+[project.scripts]
+mtbc-gene-function = "mtbc_gene_function.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["mtbc_gene_function*"]

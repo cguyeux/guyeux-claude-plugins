@@ -1,0 +1,14 @@
+# FIXTURE AmtDB subset OFFLINE TESTS ONLY
+id,country,continent,latitude,longitude,culture,epoch,site,mt_hg,year_from,year_to,bp,reference_name
+A1,Germany,Europe,50.9,8.5,LBK,Neolithic,DE1,H1,-5400,-4900,6900,Haak2015
+A2,Hungary,Europe,47.5,19.0,LBK,Neolithic,HU1,N1a,-5300,-4800,6800,Gamba2014
+A3,Spain,Europe,40.4,-3.7,Bell Beaker,Chalcolithic,ES1,H3,-2500,-2000,4200,Olalde2018
+A4,Russia,Europe,53.2,50.1,Yamnaya,Bronze,RU1,U5a,-3300,-2700,5000,Haak2015
+A5,Italy,Europe,41.9,12.5,Roman,Iron,IT1,H5,-100,200,1900,Antonio2019
+A6,Greece,Europe,37.4,23.1,Minoan,Bronze,GR1,H,-1700,-1400,3500,Lazaridis2017
+A7,France,Europe,48.8,2.3,LBK,Neolithic,FR1,K1a,-5000,-4500,6700,Brunel2020
+A8,Sweden,Europe,58.3,13.5,TRB,Neolithic,SE1,H1,-3300,-2900,5100,Skoglund2014
+A9,Turkey,Asia,37.7,32.8,Neolithic,Neolithic,TR1,H2,-6500,-6000,8000,Kilinc2016
+A10,England,Europe,51.5,-1.5,Beaker,Bronze,EN1,H4,-2200,-1800,4000,Olalde2018
+A11,Ukraine,Europe,50.4,30.5,Trypillia,Chalcolithic,UA1,T2,-3700,-3300,5500,Mathieson2018
+A12,Portugal,Europe,38.7,-9.1,Cardial,Neolithic,PT1,H1,-5300,-4800,6800,Martiniano2017

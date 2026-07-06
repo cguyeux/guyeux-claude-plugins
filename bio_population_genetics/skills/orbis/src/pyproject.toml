@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "orbis-client"
+version = "0.1.0"
+description = "Resilient stdlib-only client for ORBIS (Roman-world transport network) with a Dijkstra distance-matrix layer"
+requires-python = ">=3.10"
+# stdlib-only (urllib/csv/zipfile/xml/heapq/math): nothing to install.
+dependencies = []
+
+[project.scripts]
+orbis = "orbis_client.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["orbis_client*"]

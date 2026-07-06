@@ -1,0 +1,11 @@
+# FIXTURE - tiny illustrative ORBIS-like network for OFFLINE TESTS ONLY.
+id,label,lon,lat,type
+roma,Roma,12.4964,41.9028,city
+ostia,Ostia,12.29,41.73,coastal_city
+neapolis,Neapolis,14.27,40.85,coastal_city
+mediolanum,Mediolanum,9.19,45.46,city
+ravenna,Ravenna,12.20,44.42,coastal_city
+brundisium,Brundisium,17.94,40.63,coastal_city
+carthago,Carthago,10.32,36.85,coastal_city
+alexandria,Alexandria,29.92,31.20,coastal_city
+pelusium,Pelusium,32.54,31.06,coastal_city

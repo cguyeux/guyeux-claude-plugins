@@ -1,0 +1,134 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "Name": "Silk Road",
+    "type": "trade",
+    "Description": "Xi'an to Antioch trans-steppe corridor"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      108.9,
+      34.3
+     ],
+     [
+      94.7,
+      40.1
+     ],
+     [
+      75.99,
+      39.47
+     ],
+     [
+      66.97,
+      39.65
+     ],
+     [
+      36.16,
+      36.2
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "Name": "Spice Route",
+    "type": "trade",
+    "Description": "Malabar to Alexandria maritime spice trade"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      75.78,
+      11.25
+     ],
+     [
+      45.03,
+      12.78
+     ],
+     [
+      29.92,
+      31.2
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "Name": "Amber Road",
+    "type": "trade",
+    "Description": "Adriatic to Baltic amber corridor"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.37,
+      45.77
+     ],
+     [
+      16.9,
+      48.1
+     ],
+     [
+      18.65,
+      54.35
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "Name": "Incense Route",
+    "type": "caravan",
+    "Description": "South Arabian incense caravans"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      47.0,
+      15.4
+     ],
+     [
+      35.44,
+      30.33
+     ],
+     [
+      34.47,
+      31.5
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "Name": "Atlas transhumance",
+    "type": "transhumance",
+    "Description": "Seasonal pastoralist movement, Morocco"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -5.0,
+      32.0
+     ],
+     [
+      -4.0,
+      33.0
+     ]
+    ]
+   }
+  }
+ ]
+}

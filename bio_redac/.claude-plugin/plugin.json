@@ -1,0 +1,8 @@
+{
+"name": "bio_redac",
+"description": "Un plugin pour l'analyse bioinformatique et la rédaction d'articles sur M.tuberculosis",
+"version": "1.0.0",
+"author": {
+"name": "Christophe Guyeux"
+}
+}

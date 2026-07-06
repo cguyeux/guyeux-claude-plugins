@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aadr-client"
+version = "0.1.0"
+description = "Resilient stdlib-only client for the Allen Ancient DNA Resource (.anno index)"
+requires-python = ">=3.10"
+# stdlib-only (urllib/csv): nothing to install. Runs on the system Python as-is.
+dependencies = []
+
+[project.scripts]
+aadr = "aadr_client.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["aadr_client*"]

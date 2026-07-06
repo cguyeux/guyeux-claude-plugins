@@ -1,0 +1,8 @@
+{
+"name": "web",
+"description": "Un plugin pour le développement web",
+"version": "1.0.0",
+"author": {
+"name": "Christophe Guyeux"
+}
+}

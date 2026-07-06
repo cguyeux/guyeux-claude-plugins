@@ -1,0 +1,20 @@
+# FIXTURE - illustrative SlaveVoyages subset for OFFLINE TESTS ONLY; values approximate.
+VOYAGEID,YEARAM,REGEM1,MAJBUYPT,REGDIS1,MAJSELPT,SLAXIMP,SLAMIMP,NATINIMP
+1,1701,Gold Coast,Anomabu,Brazil,Bahia,350,300,Britain
+2,1750,Gold Coast,Cape Coast Castle,Brazil,Rio de Janeiro,420,360,Portugal
+3,1780,Gold Coast,Anomabu,Caribbean,Kingston,300,260,Britain
+4,1660,Senegambia,Goree,Caribbean,Barbados,250,210,France
+5,1720,Bight of Benin,Ouidah,Brazil,Bahia,400,340,Portugal
+6,1810,West Central Africa,Luanda,Brazil,Rio de Janeiro,500,430,Portugal
+7,1840,West Central Africa,Cabinda,Cuba,Havana,450,400,Spain
+8,1690,Bight of Biafra,Bonny,Caribbean,Jamaica,330,280,Britain
+9,1770,Gold Coast,Elmina,Spanish Americas,Cartagena,360,300,Netherlands
+10,1550,Senegambia,Cacheu,Spanish Americas,Veracruz,200,160,Portugal
+11,1730,Bight of Benin,Lagos,Caribbean,Saint-Domingue,410,350,France
+12,1800,Southeast Africa,Mozambique Island,Brazil,Rio de Janeiro,480,400,Portugal
+13,1760,Gold Coast,Anomabu,Rio de la Plata,Buenos Aires,290,240,Britain
+14,1714,Gold Coast,Cape Coast Castle,Brazil,Pernambuco,370,320,Portugal
+15,1820,West Central Africa,Benguela,Brazil,Bahia,520,450,Portugal
+16,1648,West Central Africa,Luanda,Brazil,Bahia,300,250,Portugal
+17,1785,Bight of Biafra,Calabar,Caribbean,Kingston,340,290,Britain
+18,1755,Gold Coast,Anomabu,Brazil,Bahia,390,330,Britain

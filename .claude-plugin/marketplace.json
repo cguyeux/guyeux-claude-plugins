@@ -1,0 +1,53 @@
+{
+  "name": "guyeux-claude-plugins",
+  "owner": {
+    "name": "Christophe Guyeux",
+    "email": "guyeux@gmail.com"
+  },
+  "metadata": {
+    "description": "Collection de plugins Claude Code du groupe Guyeux (FEMTO-ST, Université Marie et Louis Pasteur) : phylogénomique évolutive bactérienne, génétique des populations humaines, rédaction scientifique et outillage transverse.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "bio_pathogens",
+      "source": "./bio_pathogens",
+      "description": "Academic research toolkit for computational genomic studies of bacterial pathogens (MTBC phylogenomics, comparative genomics, published-research surveillance literature)."
+    },
+    {
+      "name": "bio_population_genetics",
+      "source": "./bio_population_genetics",
+      "description": "Academic research toolkit for ancient and modern human population genetics, archaeology, paleoclimate, migration corpora, plus general phylogenetics, statistics and literature-mining tools."
+    },
+    {
+      "name": "bio_redac",
+      "source": "./bio_redac",
+      "description": "Phase hybride analyse bioinformatique et rédaction d'articles (agrège les skills des autres plugins via symlinks)."
+    },
+    {
+      "name": "redac",
+      "source": "./redac",
+      "description": "Rédaction pure : LaTeX, slides, manuscrits, vérification de références et de figures."
+    },
+    {
+      "name": "ia",
+      "source": "./ia",
+      "description": "Outils d'intelligence artificielle, machine learning et data science."
+    },
+    {
+      "name": "multimedia",
+      "source": "./multimedia",
+      "description": "Outils multimédia : sous-titrage de films muets, audio/vidéo, synthèse vocale, métadonnées de films."
+    },
+    {
+      "name": "ops",
+      "source": "./ops",
+      "description": "Outils pour les projets PrédictOps, OptimOps, DoctrinOps."
+    },
+    {
+      "name": "web",
+      "source": "./web",
+      "description": "Développement et test d'applications web."
+    }
+  ]
+}

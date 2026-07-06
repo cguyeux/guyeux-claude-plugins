@@ -1,0 +1,3 @@
+gene	locus_tag	strand	gene_start_h37rv	gene_end_h37rv	codon	codon_start_plus	codon_end_plus	h37rv_plus_strand	h37rv_mrna_codon	h37rv_aa	notes
+gyrA	Rv0006	+	7302	9818	95	7584	7586	AGC	AGC	S	Codon 95 on the + strand directly. H37Rv = AGC = Ser95. Position was verified from GFF3 (Rv0006 CDS 7302-9818 + strand, codon 95 = 7302 + 3*(95-1) = 7584).
+katG	Rv1908c	-	2153889	2156111	463	2154723	2154725	CCG	CGG	R	Gene on - strand. + strand [2154723..2154725] = CCG; reverse-complement = CGG = Arg463 in H37Rv. Position was verified by sanity-check: katG codon 315 computed with the same method yields AGC → Ser315, consistent with the canonical S315T INH-resistance mutation.

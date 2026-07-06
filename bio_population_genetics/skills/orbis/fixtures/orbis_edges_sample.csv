@@ -1,0 +1,13 @@
+# FIXTURE - tiny illustrative ORBIS-like edges (undirected) for OFFLINE TESTS ONLY.
+source,target,distance_km,cost_denarii_per_kg,duration_days,type
+roma,ostia,25,0.5,1,road
+roma,mediolanum,600,8,12,road
+roma,ravenna,370,5,8,road
+roma,neapolis,230,3,6,road
+ostia,carthago,600,2,4,open_sea
+ostia,alexandria,2000,6,12,open_sea
+neapolis,brundisium,400,5,9,road
+brundisium,alexandria,1500,5,9,open_sea
+carthago,alexandria,1800,6,11,coastal_sea
+alexandria,pelusium,180,1,2,coastal_sea
+ravenna,mediolanum,300,4,6,road

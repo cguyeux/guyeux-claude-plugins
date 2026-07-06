@@ -1,0 +1,14 @@
+# FIXTURE p3k14c subset OFFLINE TESTS ONLY
+LabID,Age,Error,Continent,Material,Taxa,SiteName,Longitude,Latitude,Country,Source
+P1,1200,30,SAmerica,bone,Lama,Peru1,-71.3,-17.6,Peru,p3k
+P2,900,25,SAmerica,charcoal,,Peru2,-77.0,-12.0,Peru,p3k
+P3,1500,40,SAmerica,bone,Pinniped,Chile1,-70.4,-23.6,Chile,p3k
+P4,600,20,SAmerica,shell,,Brazil1,-38.5,-12.9,Brazil,p3k
+P5,3000,50,Europe,bone,Bos,Eur1,2.3,48.8,France,p3k
+P6,2000,40,NAmerica,charcoal,,NA1,-105.0,40.0,USA,p3k
+P7,800,25,SAmerica,bone,Lama,Arg1,-65.0,-32.0,Argentina,p3k
+P8,1100,30,Asia,bone,,Asia1,77.0,28.0,India,p3k
+P9,5000,60,Africa,charcoal,,Afr1,31.0,30.0,Egypt,p3k
+P10,1300,35,SAmerica,bone,Lama,Bol1,-66.0,-19.0,Bolivia,p3k
+P11,400,20,Oceania,shell,,Oce1,150.0,-30.0,Australia,p3k
+P12,1000,30,SAmerica,bone,Pinniped,Peru3,-72.0,-16.0,Peru,p3k

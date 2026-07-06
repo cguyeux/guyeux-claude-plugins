@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paleoclimate-client"
+version = "0.1.0"
+description = "Point-sampler for paleo bioclim rasters by time slice (rasterio)"
+requires-python = ">=3.10"
+# Raster I/O needs rasterio. Install in a dedicated venv (Python 3.11):
+#   /home/christophe/venvs/geo311  (pip install rasterio)
+dependencies = ["rasterio>=1.3"]
+
+[project.scripts]
+paleoclimate = "paleoclimate_client.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["paleoclimate_client*"]

@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Environnements
+.venv/
+venv/
+env/
+
+# OS / éditeurs
+.DS_Store
+*.swp
+*~
+
+# Config locale Claude Code (overrides personnels, non partagés)
+.claude/settings.local.json
+**/.claude/settings.local.json
+
+# Sorties de calcul transitoires (ne pas versionner les gros artefacts)
+*.log
+*.ckp
+*.ckp.gz
+*.raxml.*
+*.state
