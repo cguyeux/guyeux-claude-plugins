@@ -16,9 +16,9 @@ Sommaire : [phylo-history](#phylo-history)
 
 ### phylo-history
 
-Rédige un paragraphe pour un manuscrit scientifique décrivant le placement phylogénétique d'une souche MTBC à travers les arbres dans lesquels elle a figuré. Exploite investigate_phylo/history/ et les fichiers Newick archivés pour produire une narration sourcée sur les voisins, la sister clade, la stabilité de l'assignation et le voisinage inter-reconstructions
+Rédige un paragraphe de manuscrit décrivant le placement phylogénétique d'une souche MTBC à travers les arbres où elle a figuré. Exploite investigate_phylo/history/ et les fichiers Newick archivés pour produire une narration sourcée sur les voisins, la sister clade, la stabilité de l'assignation et le voisinage inter-reconstructions.
 
-Compétences : writing the Results section of a lineage paper and needing a justified sentence about a strain's placement ; documenting why a strain was retained, reclassified or excluded ; preparing supplementary material describing the phylogenetic position of outlier strains ; responding to a reviewer asking for evidence about a specific strain's lineage
+Compétences : rédiger la section Résultats d'un article de lignée et justifier le placement d'une souche ; documenter pourquoi une souche a été retenue, reclassée ou exclue ; préparer un supplément décrivant la position phylogénétique de souches aberrantes ; répondre à un relecteur demandant des preuves sur la lignée d'une souche précise
 
 ## Skills partagés (via symlink)
 

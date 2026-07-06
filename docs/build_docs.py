@@ -208,6 +208,17 @@ def collect():
                     home = plugin
             if name not in canonical or not is_symlink:
                 canonical[name] = {"name": name, "raison": raison, "quand": quand, "home": home}
+
+    # Superpose les versions françaises (docs/skills_fr.json) sur le frontmatter.
+    fr_path = DOCS / "skills_fr.json"
+    if fr_path.exists():
+        fr = json.loads(fr_path.read_text(encoding="utf-8"))
+        for name, tr in fr.items():
+            if name.startswith("_") or name not in canonical or not isinstance(tr, dict):
+                continue
+            if tr.get("raison"):
+                canonical[name]["raison"] = clean(tr["raison"])
+            canonical[name]["quand"] = clean(tr.get("quand", ""))
     return plugin_desc, canonical, appears
 
 

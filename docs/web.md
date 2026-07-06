@@ -16,11 +16,13 @@ Sommaire : [frontend-design](#frontend-design) ; [webapp-testing](#webapp-testin
 
 ### frontend-design
 
-Create distinctive, production-grade frontend interfaces with high design quality
+Crée des interfaces frontend distinctives et de qualité production, avec une exigence esthétique élevée.
 
-Compétences : when the user asks to build web components, pages, or applications ; Generates creative, polished code that avoids generic AI aesthetics
+Compétences : l'utilisateur demande de construire des composants, pages ou applications web ; générer un code soigné et créatif qui évite l'esthétique générique des IA
 
 ### webapp-testing
 
-Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.
+Boîte à outils pour interagir avec et tester des applications web locales avec Playwright. Permet de vérifier une fonctionnalité frontend, déboguer un comportement d'interface, capturer des captures d'écran de navigateur et consulter les logs.
+
+Compétences : tester une application web locale ; vérifier une fonctionnalité frontend ; déboguer une interface ; capturer des captures d'écran ou lire les logs du navigateur
 

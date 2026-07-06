@@ -16,95 +16,123 @@ Sommaire : [causal-inference](#causal-inference) ; [data-visualization](#data-vi
 
 ### causal-inference
 
-Causal inference and counterfactual reasoning for machine learning. Use to estimate Average / Conditional / Individual Treatment Effects (ATE/CATE/ITE), test causal hypotheses behind a predictive model, identify confounders via DAGs, and validate findings with refutation tests and sensitivity analyses
+Inférence causale et raisonnement contrefactuel pour le machine learning. Sert à estimer les effets de traitement moyens/conditionnels/individuels (ATE/CATE/ITE), tester les hypothèses causales derrière un modèle prédictif, identifier les facteurs de confusion via des DAG, et valider par tests de réfutation et analyses de sensibilité.
 
-Compétences : when the user mentions DoWhy, EconML, CausalML, causal-learn, do-calculus, backdoor/frontdoor/instrumental variables, propensity score matching, double machine learning (DML), causal forests, counterfactual, treatment effect heterogeneity, sensitivity analysis (E-value, Rosenbaum bounds), causal discovery (PC, FCI, GES, LiNGAM, NOTEARS), or wants to move from "X is correlated with Y" to "X causes Y" in an ML context
+Compétences : l'utilisateur mentionne DoWhy, EconML, CausalML, le do-calcul, les variables instrumentales, l'appariement par score de propension, le double machine learning, les forêts causales, l'hétérogénéité des effets, la découverte causale (PC, FCI, GES, LiNGAM, NOTEARS), ou veut passer de « X est corrélé à Y » à « X cause Y 
 
 ### data-visualization
 
-Create effective data visualizations with Python (matplotlib, seaborn, plotly)
+Crée des visualisations de données efficaces avec Python (matplotlib, seaborn, plotly).
 
-Compétences : building charts, choosing the right chart type for a dataset, creating publication-quality figures, or applying design principles like accessibility and color theory
+Compétences : construire des graphiques ; choisir le bon type de graphique pour un jeu de données ; produire des figures de qualité publication ; appliquer des principes de design (accessibilité, théorie des couleurs)
 
 ### geopandas
 
-Open source project to make working with geospatial data in python easier. Extends the datatypes used by pandas to allow spatial operations on geometric types. Built on top of Shapely, Fiona, and Pyproj. Use for reading and writing spatial formats (Shapefile, GeoJSON, GeoPackage, KML), performing spatial joins, coordinate system transformations (reprojecting), geometric analysis (buffers, centroids, convex hulls), thematic mapping (Choropleth maps), calculating spatial relationships (contains, overlaps, touches, within), working with OpenStreetMap data or satellite-derived vector data.
+Projet open source facilitant le travail sur données géospatiales en Python. Étend les types de pandas pour autoriser des opérations spatiales sur des géométries, en s'appuyant sur Shapely, Fiona et Pyproj. Sert à lire/écrire des formats spatiaux (Shapefile, GeoJSON, GeoPackage, KML), aux jointures spatiales, aux reprojections, à l'analyse géométrique et à la cartographie thématique.
+
+Compétences : manipuler des données vectorielles géographiques en Python ; jointures spatiales, reprojections, cartes choroplèthes ; travailler avec des données OpenStreetMap ou dérivées de satellite
 
 ### matplotlib
 
-The foundational library for creating static, animated, and interactive visualizations in Python. Highly customizable and the industry standard for publication-quality figures. Use for 2D plotting, scientific data visualization, heatmaps, contours, vector fields, multi-panel figures, LaTeX-formatted plots, custom visualization tools, and plotting from NumPy arrays or Pandas DataFrames.
+Bibliothèque fondamentale pour les visualisations statiques, animées et interactives en Python. Hautement personnalisable, standard de l'industrie pour les figures de qualité publication. Sert au tracé 2D, à la visualisation scientifique, aux cartes de chaleur, contours, champs de vecteurs, figures multi-panneaux, tracés au format LaTeX et depuis des tableaux NumPy ou DataFrames pandas.
+
+Compétences : produire des figures scientifiques précises et personnalisées ; tracer depuis NumPy/pandas ; construire des figures multi-panneaux de qualité publication
 
 ### matplotlib-pro
 
-Professional sub-skill for Matplotlib focused on high-performance animations, complex multi-figure layouts (GridSpec), interactive widgets, and publication-ready typography (LaTeX/PGF).
+Sous-skill professionnel de Matplotlib axé sur les animations performantes, les mises en page multi-figures complexes (GridSpec), les widgets interactifs et la typographie prête à publier (LaTeX/PGF).
+
+Compétences : réaliser des animations performantes ; composer des mises en page multi-figures complexes ; soigner la typographie d'une figure publiée
 
 ### ml-model-explainer
 
-Explain ML model predictions using SHAP values, feature importance, and decision paths with visualizations.
+Explique les prédictions d'un modèle de ML via les valeurs SHAP, l'importance des features et les chemins de décision, avec visualisations.
+
+Compétences : interpréter les prédictions d'un modèle ; identifier les features déterminantes ; visualiser des chemins de décision
 
 ### networkx
 
-Python package for the creation, manipulation, and study of the structure, dynamics, and functions of complex networks. Supports various graph types (Directed, Undirected, Multigraphs) and features a vast library of standard graph algorithms. Use for network analysis, graph theory, social network analysis, biological networks, infrastructure networks, path finding, centrality measures, community detection, graph algorithms, shortest paths, PageRank, connectivity analysis, and routing optimization.
+Paquet Python pour la création, la manipulation et l'étude de la structure, de la dynamique et des fonctions des réseaux complexes. Gère divers types de graphes (orientés, non orientés, multigraphes) et offre une vaste bibliothèque d'algorithmes standard.
+
+Compétences : analyse de réseaux et théorie des graphes ; réseaux sociaux ou biologiques ; recherche de chemins, mesures de centralité, détection de communautés, plus courts chemins, PageRank, analyse de connectivité
 
 ### numpy
 
-Comprehensive guide for NumPy - the fundamental package for scientific computing in Python. Use for array operations, linear algebra, random number generation, Fourier transforms, mathematical functions, and high-performance numerical computing. Foundation for SciPy, pandas, scikit-learn, and all scientific Python.
+Guide complet de NumPy, paquet fondamental du calcul scientifique en Python. Sert aux opérations sur tableaux, à l'algèbre linéaire, à la génération de nombres aléatoires, aux transformées de Fourier, aux fonctions mathématiques et au calcul numérique performant. Fondation de SciPy, pandas et scikit-learn.
+
+Compétences : manipuler des tableaux numériques ; algèbre linéaire, aléatoire, transformées de Fourier ; calcul numérique performant
 
 ### numpy-low-level
 
-Advanced sub-skill for NumPy focused on internal memory management, stride manipulation, structured arrays, and interfacing with C/Cython. Covers zero-copy operations and SIMD vectorization principles.
+Sous-skill avancé de NumPy axé sur la gestion mémoire interne, la manipulation des strides, les tableaux structurés et l'interfaçage avec C/Cython. Couvre les opérations zéro-copie et les principes de vectorisation SIMD.
+
+Compétences : optimiser la mémoire ou la vitesse d'un code NumPy ; opérations zéro-copie ; interfaçage C/Cython ; tableaux structurés
 
 ### pandas-performance
 
-Advanced sub-skill for pandas focused on memory optimization, execution speed, and handling large-scale datasets (10M+ rows). Covers low-level dtypes, efficient indexing, and vectorization of complex logic.
+Sous-skill avancé de pandas axé sur l'optimisation mémoire, la vitesse d'exécution et le traitement de jeux à grande échelle (10 M+ lignes). Couvre les dtypes bas niveau, l'indexation efficace et la vectorisation de logiques complexes.
+
+Compétences : optimiser la mémoire ou la vitesse d'un traitement pandas ; gérer de très gros DataFrames ; vectoriser une logique complexe
 
 ### scientific-problem-selection
 
-This skill should be used when scientists need help with research problem selection, project ideation, troubleshooting stuck projects, or strategic scientific decisions
+À utiliser quand des scientifiques ont besoin d'aide pour choisir un problème de recherche, imaginer un projet, débloquer un projet enlisé ou prendre des décisions scientifiques stratégiques.
 
-Compétences : when users ask to pitch a new research idea, work through a project problem, evaluate project risks, plan research strategy, navigate decision trees, or get help choosing what scientific problem to work on ; Typical requests include "I have an idea for a project", "I'm stuck on my research", "help me evaluate this project", "what should I work on", or "I need strategic advice about my research
+Compétences : pitcher une nouvelle idée ; travailler un problème de projet ; évaluer les risques d'un projet ; planifier une stratégie de recherche ; choisir sur quel problème travailler (« j'ai une idée de projet », « je suis bloqué », « aide-moi à évaluer ce projet », « sur quoi travailler »)
 
 ### scikit-learn
 
-The industry standard library for machine learning in Python. Provides simple and efficient tools for predictive data analysis, covering classification, regression, clustering, dimensionality reduction, model selection, and preprocessing.
+Bibliothèque standard de l'industrie pour le machine learning en Python. Offre des outils simples et efficaces d'analyse prédictive : classification, régression, clustering, réduction de dimension, sélection de modèle et prétraitement.
+
+Compétences : entraîner un modèle de classification ou de régression ; clustering ou réduction de dimension ; sélection de modèle et prétraitement de features
 
 ### scipy
 
-Comprehensive guide for SciPy - the fundamental library for scientific and technical computing in Python. Use for integration, optimization, interpolation, linear algebra, signal processing, statistics, ODEs, Fourier transforms, and advanced scientific algorithms. Built on NumPy and essential for research and engineering.
+Guide complet de SciPy, bibliothèque fondamentale du calcul scientifique et technique en Python. Sert à l'intégration, l'optimisation, l'interpolation, l'algèbre linéaire, le traitement du signal, les statistiques, les EDO, les transformées de Fourier et les algorithmes scientifiques avancés. Bâtie sur NumPy.
+
+Compétences : optimisation, interpolation, intégration ; traitement du signal ; statistiques ; algorithmes scientifiques avancés
 
 ### senior-data-scientist
 
-World-class data science skill for statistical modeling, experimentation, causal inference, and advanced analytics. Expertise in Python (NumPy, Pandas, Scikit-learn), R, SQL, statistical methods, A/B testing, time series, and business intelligence. Includes experiment design, feature engineering, model evaluation, and stakeholder communication
+Skill de data science de haut niveau pour la modélisation statistique, l'expérimentation, l'inférence causale et l'analytique avancée. Expertise Python (NumPy, Pandas, Scikit-learn), R, SQL, méthodes statistiques, tests A/B, séries temporelles, avec conception d'expériences, feature engineering, évaluation de modèles et communication aux parties prenantes.
 
-Compétences : designing experiments, building predictive models, performing causal analysis, or driving data-driven decisions
+Compétences : concevoir des expériences ; construire des modèles prédictifs ; réaliser une analyse causale ; piloter des décisions fondées sur les données
 
 ### shapely
 
-Manipulation and analysis of planar geometric objects. Based on the widely deployed GEOS library. Provides data structures for points, curves, and surfaces, and standardized algorithms for geometric operations. Use for 2D geometry operations, spatial relationships, set-theoretic operations (intersection, union, difference), point-in-polygon queries, geometric calculations (area, distance, centroid), buffering, simplifying geometries, linear referencing, and cleaning invalid geometries. Essential for GIS operations, spatial analysis, and geometric computations.
+Manipulation et analyse d'objets géométriques planaires, basée sur la bibliothèque GEOS. Fournit points, courbes et surfaces, et des algorithmes standardisés d'opérations géométriques. Sert aux opérations de géométrie 2D, relations spatiales, opérations ensemblistes (intersection, union, différence), tests point-dans-polygone, calculs géométriques (aire, distance, centroïde), buffering et nettoyage de géométries invalides.
+
+Compétences : opérations de géométrie 2D et relations spatiales ; intersection/union/différence ; point-dans-polygone ; calculs d'aire/distance/centroïde ; buffering et nettoyage de géométries pour SIG
 
 ### sklearn-advanced
 
-Professional sub-skill for scikit-learn focused on robust pipeline architecture, custom estimator development, advanced feature engineering, and rigorous model validation. Covers Target Encoding, Nested Cross-Validation, and Production Deployment.
+Sous-skill professionnel de scikit-learn axé sur l'architecture robuste de pipelines, le développement d'estimateurs personnalisés, le feature engineering avancé et la validation rigoureuse de modèles. Couvre le Target Encoding, la validation croisée imbriquée et le déploiement en production.
+
+Compétences : construire des pipelines robustes ; développer un estimateur personnalisé ; feature engineering avancé ; validation croisée imbriquée et déploiement
 
 ### sklearn-explainability
 
-Advanced sub-skill for scikit-learn focused on model interpretability, feature importance, and diagnostic tools. Covers global and local explanations using built-in inspection tools and SHAP/LIME integrations.
+Sous-skill avancé de scikit-learn axé sur l'interprétabilité des modèles, l'importance des features et les outils de diagnostic. Couvre les explications globales et locales via les outils d'inspection intégrés et les intégrations SHAP/LIME.
+
+Compétences : interpréter un modèle scikit-learn ; explications globales et locales ; importance des features ; intégrer SHAP ou LIME
 
 ### statistical-analysis
 
-Apply statistical methods including descriptive stats, trend analysis, outlier detection, and hypothesis testing
+Applique des méthodes statistiques : statistiques descriptives, analyse de tendance, détection d'aberrants et tests d'hypothèses.
 
-Compétences : analyzing distributions, testing for significance, detecting anomalies, computing correlations, or interpreting statistical results
+Compétences : analyser des distributions ; tester la significativité ; détecter des anomalies ; calculer des corrélations ; interpréter des résultats statistiques
 
 ### statsmodels
 
-Advanced statistical modeling and hypothesis testing. Complementary to SciPy's stats module, it provides classes and functions for the estimation of many different statistical models, as well as for conducting statistical tests and statistical data exploration. Use for linear regression, GLM, time series analysis, ANOVA, survival analysis, causal inference, and statistical hypothesis testing. Load when working with OLS, WLS, logistic regression, Poisson regression, ARIMA, SARIMAX, statistical diagnostics, p-values, confidence intervals, or R-style statistical analysis.
+Modélisation statistique avancée et tests d'hypothèses. Complémentaire du module stats de SciPy, il fournit des classes et fonctions pour estimer de nombreux modèles statistiques et conduire tests et exploration. Sert à la régression linéaire, aux GLM, aux séries temporelles, à l'ANOVA, à l'analyse de survie, à l'inférence causale et aux tests d'hypothèses.
+
+Compétences : OLS/WLS, régression logistique ou de Poisson ; ARIMA/SARIMAX ; diagnostics statistiques, p-values, intervalles de confiance ; analyse statistique à la R
 
 ### xgboost-iterative-optimizer
 
-Iterative XGBoost model optimization using a scientific ML researcher workflow. Diagnose prediction errors through VISUAL INSPECTION of predicted-vs-actual curves (primary), reinforced by SHAP, residual analysis, and metrics. Improve models through feature engineering, hyperparameter tuning, objective function selection, and ensemble strategies
+Optimisation itérative de modèles XGBoost selon un workflow de chercheur en ML scientifique. Diagnostique les erreurs de prédiction par inspection visuelle des courbes prédit-vs-observé (primaire), renforcée par SHAP, analyse des résidus et métriques. Améliore les modèles par feature engineering, réglage d'hyperparamètres, choix de fonction objectif et stratégies d'ensemble.
 
-Compétences : XGBoost predictions are poor, MAE/RMSE needs reduction, residuals show patterns, model under/overfits, or "predictions are too flat/biased
+Compétences : prédictions XGBoost médiocres ; MAE/RMSE à réduire ; résidus montrant des motifs ; sous/sur-apprentissage ;  prédictions trop plates/biaisées 
 
 ## Skills partagés (via symlink)
 

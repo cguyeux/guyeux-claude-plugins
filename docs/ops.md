@@ -16,23 +16,25 @@ Sommaire : [create-viz](#create-viz) ; [deploy-predictops](#deploy-predictops) ;
 
 ### create-viz
 
-Create publication-quality visualizations with Python
+Crée des visualisations de qualité publication avec Python.
 
-Compétences : turning query results or a DataFrame into a chart, selecting the right chart type for a trend or comparison, generating a plot for a report or presentation, or needing an interactive chart with hover and zoom
+Compétences : transformer un résultat de requête ou un DataFrame en graphique ; choisir le bon type de graphique pour une tendance ou une comparaison ; produire une figure pour un rapport ou une présentation ; obtenir un graphique interactif avec survol et zoom
 
 ### deploy-predictops
 
-Déploiement complet de PredictOps sur les 4 départements en production. Enchaîne : tests locaux → commit → push → git pull sur chaque serveur → restart des services fast → vérification des logs.
+Déploiement complet de PredictOps sur les 4 départements en production. Enchaîne : tests locaux, commit, push, git pull sur chaque serveur, redémarrage des services fast, vérification des logs.
+
+Compétences : déployer une nouvelle version de PredictOps en production ; propager un correctif sur l'ensemble des serveurs départementaux
 
 ### documentation
 
-Write and maintain technical documentation
+Rédige et maintient de la documentation technique.
 
-Compétences : with "write docs for", "document this", "create a README", "write a runbook", "onboarding guide", or when the user needs help with any form of technical writing, API docs, architecture docs, or operational runbooks
+Compétences :  écris la doc de », « documente ceci », « crée un README », « écris un runbook », un guide d'accueil, ou toute forme d'écriture technique (docs d'API, d'architecture, runbooks opérationnels)
 
 ### incident-response
 
-Run an incident response workflow, triage, communicate, and write postmortem
+Déroule un workflow de réponse à incident : triage, communication et rédaction du post-mortem.
 
-Compétences : with "we have an incident", "production is down", an alert that needs severity assessment, a status update mid-incident, or when writing a blameless postmortem after resolution
+Compétences :  on a un incident », « la production est tombée », une alerte à évaluer en sévérité, une mise à jour en cours d'incident, ou la rédaction d'un post-mortem sans reproche après résolution
 

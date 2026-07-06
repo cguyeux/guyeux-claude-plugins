@@ -16,15 +16,19 @@ Sommaire : [imdb](#imdb) ; [silent-film-subs](#silent-film-subs) ; [text-to-spee
 
 ### imdb
 
-This skill should be used when the user asks to "recuperer les notes IMDb", "chercher la note d'un film", "enrichir une liste de films avec IMDb", "classer des films par note IMDb", "trouver les informations d'un film", "identifier un film par titre et annee", or mentions IMDb, OMDb, TMDb, movie ratings, film metadata, votes, genres, runtime, director, cast, poster, or IMDb ids.
+À utiliser pour récupérer des notes IMDb, chercher la note d'un film, enrichir une liste de films, classer des films par note, ou trouver les informations d'un film (identification par titre et année). Couvre IMDb, OMDb, TMDb : notes, votes, genres, durée, réalisateur, distribution, affiche.
+
+Compétences : récupérer ou classer des notes de films ; enrichir une liste de films avec des métadonnées ; identifier un film par titre et année
 
 ### silent-film-subs
 
-Génère un sous-titrage français pour un film muet (.mkv/.mp4) en détectant automatiquement les intertitres (panneaux de texte clair sur fond sombre), en océrisant le texte source (russe par défaut, configurable) avec Tesseract, puis en confiant à Claude le nettoyage de l'OCR et la traduction française. Inclut le muxage final dans le conteneur. À
+Génère un sous-titrage français pour un film muet (.mkv/.mp4) en détectant automatiquement les intertitres (panneaux de texte clair sur fond sombre), en océrisant le texte source (russe par défaut, configurable) avec Tesseract, puis en confiant à Claude le nettoyage de l'OCR et la traduction française. Inclut le muxage final dans le conteneur.
 
-Compétences : l'utilisateur demande à compléter, créer ou réparer des sous-titres pour un film muet, à océriser des intertitres, à traduire des panneaux russes/anglais/allemands d'un film d'archive, ou quand un .srt existant est jugé incomplet par rapport aux panneaux affichés à l'écran
+Compétences : compléter, créer ou réparer les sous-titres d'un film muet ; océriser des intertitres ; traduire des panneaux russes/anglais/allemands d'un film d'archive ; quand un .srt existant est jugé incomplet par rapport aux panneaux à l'écran
 
 ### text-to-speech
 
-_(pas de description)_
+Synthèse vocale : convertit un texte en fichier audio parlé, avec choix de voix et de langue.
+
+Compétences : produire une piste audio à partir d'un texte ; générer une narration ou un support audio
 
