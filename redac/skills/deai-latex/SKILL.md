@@ -57,7 +57,21 @@ Si aucun argument, chercher `main.tex` dans le repertoire courant.
 
 ## Phase 1 -- Diagnostic
 
-Avant de modifier quoi que ce soit, produire un diagnostic quantitatif :
+Avant de modifier quoi que ce soit, produire un diagnostic quantitatif.
+
+**Deux des mesures ne se font PAS a la main** (elles ont chacune un piege qui rend
+un chiffre faux mais credible, cf. R13.1 et R12) : la longueur de l'abstract et la
+detection de cuisine locale. Les obtenir via le script du skill :
+
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/deai-latex/scripts/latex_metrics.py main.tex --pdf main.pdf
+```
+
+Il rend la longueur de l'abstract (comptee sur le texte REELLEMENT rendu) avec sa
+plage de conformite, et les occurrences de cuisine locale visibles dans le PDF.
+Passer `--pdf` suppose le manuscrit compile ; sans PDF, le scan R12 est saute et il
+faut le signaler comme non fait (ne PAS le remplacer par un grep sur le source :
+voir R12, "Test final").
 
 ```
 Diagnostic deai-latex :
@@ -383,12 +397,23 @@ non parce qu'une information essentielle vient de mes scripts, il
 faut soit publier le script (Zenodo + citation), soit decrire
 l'algorithme en prose.
 
-**Test final post-R12** : compiler le manuscrit en PDF et lancer
+**Test final post-R12** : compiler le manuscrit en PDF, puis
 
 ```bash
-pdftotext main.pdf - | grep -E "<noms_de_chemins_locaux_connus>"
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/deai-latex/scripts/latex_metrics.py main.tex --pdf main.pdf
 ```
 
+Le script fait le grep sur le **PDF rendu** (seul test qui fasse foi) avec des motifs
+calibres pour ne PAS sur-detecter : une regex naive « un slash quelque part » ramasse
+`GAS6/AXL`, `epithelial/mesenchymal`, `E/M`, `0.5/0.5`, `miR-205/ZEB1` et les DOI que
+`pdftotext` coupe en fin de ligne. **Un test qui hurle a tort est un test qu'on apprend
+a ignorer : il est pire qu'absent.** Le script exige donc un indice fort de chemin
+(segment snake_case suivi d'un slash, extension de fichier locale, chemin multi-segments,
+chemin systeme) et filtre URL/DOI sur leur voisinage. Calibrage verifie : 0 faux positif
+sur un manuscrit propre, detection de `experiments/met_rtk_split/` sur le meme manuscrit
+avant nettoyage.
+
+Variante manuelle (si le script est indisponible) : `pdftotext main.pdf - | grep -E ...`
 avec une liste de chemins/repertoires/fichiers locaux connus (extraite via
 `grep -roE "[a-z_/-]+/[a-z_/-]+" $PROJECT/`). **Aucune occurrence visible
 dans le PDF rendu** = R12 acceptable. Cette verification au niveau du PDF
@@ -418,8 +443,26 @@ et la premiere filtree par les editeurs et les bases de donnees.
 
 **R13.1 -- Longueur**
 
-Compter les mots du contenu (ignorer les commandes LaTeX, garder uniquement
-le texte rendu).
+**Ne pas compter a la main, ni improviser une regex.** Utiliser :
+
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/deai-latex/scripts/latex_metrics.py main.tex
+```
+
+Piege documente (vecu le 2026-07-11, un abstract declare conforme a tort). La
+consigne intuitive « ignorer les commandes LaTeX » se traduit naivement par une
+regex qui supprime la commande **avec son argument**. Or `\emph{X}`, `\textit{X}`,
+`\node{X}`, `\ce{X}` **rendent** leur argument : le supprimer **sous-estime** la
+longueur. Le reflexe de controle (compter sur le PDF via `pdftotext`) **sur-estime**
+des que le manuscrit charge `lineno`, car les numeros de ligne deviennent des mots.
+Resultat observe sur un meme abstract : **315 mots** (sous-estime), **354** (sur-estime),
+**324** en verite. Deux mesures fausses en sens opposes, la bonne valeur entre les
+deux, et aucun moyen de s'en apercevoir sans un troisieme compteur. D'ou le script,
+qui garde l'argument des commandes de mise en forme, supprime les commandes
+structurelles avec leur argument, et compte une formule inline comme partie du mot
+qu'elle touche (`$\Delta$Np63$\alpha$` rend « DNp63a », UN mot, pas trois).
+
+Plages de conformite (le script les rend directement) :
 
 | Plage | Statut | Action |
 |-------|--------|--------|
