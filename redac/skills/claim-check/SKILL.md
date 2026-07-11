@@ -126,6 +126,35 @@ avec la meme valeur partout, et les decompositions doivent additionner.
 Voir [references/NUMBER_CONSISTENCY.md](references/NUMBER_CONSISTENCY.md) pour
 le detail des regex, des classes de chiffres et des recettes d'audit.
 
+### 0. Outil : recroisement mecanique tex <-> donnees sources (OBLIGATOIRE si des chiffres viennent de calculs)
+
+```bash
+# Mode DECLARATIF (fiable, a privilegier) : on declare quel chiffre vient de quel chemin
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/claim-check/scripts/numeric_crosscheck.py \
+    main.tex --data results/*.json --assert-file claims_numeric.json
+# -> exit 0 si tout concorde, 1 sinon. Le fichier claims_numeric.json est un ARTEFACT
+#    du projet : il se rejoue a chaque modification du manuscrit.
+
+# Mode SCAN (aide a la DECOUVERTE, PAS une alerte) : quels chiffres du .tex ne se
+# retrouvent pas tels quels dans les donnees ?
+python3 .../numeric_crosscheck.py main.tex --data results/*.json --min 0.01
+```
+
+**Pourquoi cet outil.** La relecture ne rattrape PAS un chiffre attribue au mauvais modele :
+elle lit une phrase plausible et passe. Le mode d'erreur dangereux n'est pas le chiffre
+invente (voyant) mais le chiffre VRAI rapporte sous la MAUVAISE condition. Cas fondateur
+(mabossDemo, 2026-07-11) : un manuscrit issu d'un framework multi-variantes donnait « 0,20 »
+comme valeur de controle ; le 0,20 existait, mais pour une AUTRE variante (le controle valait
+0,341). **Deux reviews humaines successives ne l'avaient pas vu.** Seul le recroisement
+mecanique l'a trouve.
+
+**Limite du mode SCAN, a connaitre avant de s'y fier.** Il compare des NOMBRES, pas du SENS :
+il rapprochera « 0,15 % » (borne d'une regle de trois) de « 0,163 » (une probabilite de
+simulation) parce qu'ils sont numeriquement voisins. Ses sorties PROCHE/ABSENT/MULTIPLE sont
+des PISTES a inspecter, jamais des verdicts. **Ne pas le traiter comme une alerte** : un test
+qui crie a tort est un test qu'on apprend a ignorer, donc pire qu'absent. Le mode qui FAIT FOI
+est le mode declaratif, ou c'est l'agent qui porte l'attribution et le script qui la verifie.
+
 ### 1. Extraction de tous les nombres
 
 ```bash
@@ -148,6 +177,7 @@ Comptes attendus : ~1000-3000 nombres dans un manuscrit Results+Discussion typiq
 | **Conventions de formatage** | `1\,556` vs `1~556` vs `1556` | Une seule convention par document (sauf tableaux compactes) |
 | **Comptes par branche** | 23 stem + 71 L6L9 + 117 L6 + 217 L9 + 431 L10 | Chiffres identiques entre Results, Tableau, Figure, Discussion |
 | **Sommes implicites** | 50 L6 + 21 L9 + 2 L10 + 10 CladeA + 10 Animal_1 + 5 L5 + 1 H37Rv = 99 | Doit egaler le total annonce |
+| **Partitions / funnels** | 311 = 18 widespread + 67 convergent + 87 near-clonal + 139 Dollo | Categories MECE (mutuellement exclusives + exhaustives) ET somme == total ; ne PAS y additionner un flag orthogonal ni un verdict intermediaire |
 
 ### 3. Recettes ripgrep typiques
 
@@ -191,6 +221,31 @@ assert 3 + 28 + 12 + 6 == 49, "Decomposition signature incoherente"
 # Sommes tip-dating
 assert 50 + 21 + 2 + 10 + 10 + 5 + 1 == 99, "Sommes tip-dating incoherente"
 ```
+
+### 5bis. Verification des partitions disjointes (MECE) -- le piege du faux funnel
+
+Une somme fausse n'est pas toujours une typo. Quand un ensemble de comptes est
+presente comme une **partition** (un entonnoir/funnel qui decompose un tout), la
+cause la plus insidieuse est que les categories **se chevauchent**. Une partition
+doit etre **MECE** : mutuellement exclusive ET collectivement exhaustive. Deux
+pieges recurrents (documentes sur `gene_decay_census`, funnel 311) qui font qu'une
+« partition » ne somme pas au total :
+
+1. **Un flag ORTHOGONAL melange a la partition.** Un attribut transversal (ex.
+   `mobile_repeat`, marque par nom/Pfam, recoupe plusieurs categories) n'est PAS
+   une part du tout : l'additionner double-compte. Le garder hors de la somme
+   (« N/total portent le flag »).
+2. **Un verdict GROSSIER intermediaire melange a la determination FINALE.** Un
+   classement d'etape (verdict heuristique) et la determination finale (test
+   strict) se chevauchent : des items du verdict intermediaire sont promus ou
+   recales par le test final. Ne jamais sommer les deux.
+
+Regle : **partitionner sur la determination FINALE seulement.** Verifier
+explicitement que (a) chaque item tombe dans exactement une categorie, (b) aucune
+categorie n'est un flag transversal, (c) la somme egale le total. Si une « somme »
+d'article ne tombe pas juste, tester CETTE hypothese (categories non disjointes)
+AVANT de conclure a une typo. Detail et exemple : voir
+[references/NUMBER_CONSISTENCY.md](references/NUMBER_CONSISTENCY.md) §2.7.
 
 ### 6. Generation des claims de type `internal_consistency`
 
@@ -265,8 +320,56 @@ Pour chaque claim a verifier, determiner la **strategie de verification** :
 | Affirmation gene/mutation (katG S315T, rpoB S450L...) | Requete TBannotator (`tool_query_postgres`) ou NCBI/UniProt via WebSearch |
 | Claim methodologique ("X surpasse Y", "X est le gold standard") | Verifier dans le papier original cite (WebSearch + WebFetch de l'abstract) |
 | Claim de litterature ("il a ete montre que...", "selon [ref]...") | WebSearch du papier cite, lire l'abstract, verifier la correspondance |
+| Claim attribue a une reference (TOUTE `\citep`/`\citet`) | **Resoudre la CLE vers le VRAI papier** (lire l'entree .bib : titre, revue, annee, DOI/PMID), puis verifier que ce papier soutient bien l'enonce. Voir le garde-fou « cles quasi-dupliquees » ci-dessous |
 | Donnee chiffree ("42% des souches...", "n=342") | Requete BDD si les donnees sont accessibles, sinon verification dans la source citee |
 | Claim de selection sur un codon (invariance / conservation / dN-dS d'un residu catalytique ou de site actif) | **Re-requeter `mv_spdi_mutations` aux 3 positions du codon ET re-traduire chaque variant** (syn vs NS) avant de faire confiance a un label ; voir le garde-fou ci-dessous |
+
+### Garde-fou -- CLES QUASI-DUPLIQUEES : le claim attribue au MAUVAIS papier
+
+Une `references.bib` construite par FUSION (plusieurs revues, plusieurs agents, plusieurs
+sessions) contient presque toujours des **entrees quasi-dupliquees** : le meme papier sous
+deux cles, et surtout **deux papiers differents du meme auteur/annee** sous des cles toutes
+deux plausibles. Citer « la cle qui a l'air bonne » attribue alors silencieusement un claim
+au mauvais papier -- et **rien ne le signale** : bibtex resout la cle, LaTeX compile sans
+warning, la relecture lit un nom d'auteur correct.
+
+Vecu (mabossDemo, /claim-check 2026-07-11) : le manuscrit attribuait « le controle
+combinatoire de l'EMT a ete etabli par des cribles booleens d'interventions » a
+`steinway_2014_hcc` -> qui resout vers Steinway **2014**, *Cancer Research* (« Network
+modeling of TGFbeta signaling in hepatocellular carcinoma », PMID 25189528). Le papier qui
+etablit reellement ce resultat est Steinway **2015**, *npj Syst Biol Appl* (« **Combinatorial
+interventions** inhibit TGFbeta-driven EMT », PMID 28725463). La `.bib` contenait **quatre**
+entrees Steinway = 2 papiers, chacun duplique. L'erreur portait sur l'ANTECEDENT PIVOT du
+positionnement de l'article, et apparaissait deux fois.
+
+**Procedure (obligatoire des que le manuscrit cite plus d'une dizaine de references) :**
+
+1. **Detecter les entrees a risque** : grouper les entrees de `references.bib` par
+   (premier auteur, annee). Tout groupe de taille > 1 est un piege potentiel.
+   ```bash
+   grep -oE "^@[a-z]+\{[^,]+" references.bib | sed 's/^@[a-z]*{//' | \
+     sed -E 's/[_-]?[0-9]{4}.*//' | sort | uniq -d   # familles d'auteurs dupliquees
+   ```
+2. **Pour chaque cle REELLEMENT citee dans le .tex**, resoudre la cle vers son entree .bib
+   et **lire titre + revue + annee + DOI/PMID**. Ne jamais se fier au nom de la cle : une cle
+   nommee `steinway_2014_hcc` ne dit rien de fiable sur le contenu.
+3. **Confronter le titre du papier a l'ENONCE du claim.** Si l'enonce parle d'interventions
+   combinatoires et que le titre parle de modelisation de reseau, c'est une misattribution.
+4. **Verifier via PubMed/DOI** (esummary) que le PMID/DOI de l'entree correspond bien au
+   papier attendu.
+5. Signaler les doublons a `/bib-check` pour dedoublonnage : ils sont la CAUSE RACINE et
+   resteront un piege tant qu'ils existent.
+
+### Garde-fou -- LIMITES OPERATIONNELLES de l'outil vs TAILLE des donnees (reproductibilite)
+
+Un numero de version ne suffit pas a rendre une methode reproductible : verifier que l'outil,
+dans sa configuration PAR DEFAUT, **accepte les donnees de l'article**. Vecu (mabossDemo) : le
+manuscrit annoncait « MaBoSS 2.6.6 », mais le binaire par defaut est limite a **64 noeuds** et
+les modeles etendus en comptent 65-66 ; ils tournaient en realite sur `MaBoSS_128n`, choisi
+automatiquement par le wrapper. Les resultats etaient valides, mais **un lecteur reproduisant
+avec le binaire par defaut aurait echoue sans comprendre pourquoi**. Reflexe : pour tout outil
+cite, chercher ses bornes (nombre max d'entites, taille max, precision) et verifier qu'elles
+couvrent les donnees ; si un binaire/mode alternatif a ete utilise, le DIRE dans les Methodes.
 
 ### Garde-fou -- claims de selection per-codon (re-traduire avant de croire)
 

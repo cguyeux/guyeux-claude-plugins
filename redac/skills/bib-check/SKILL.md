@@ -67,6 +67,35 @@ Deja verifiees : Y
 A verifier : Z
 ```
 
+### Cas degrade : PDF seul (aucun .tex/.bib disponible)
+
+Frequent en review externe : on recoit un PDF (soumission, epreuve, article publie) sans les
+sources LaTeX. Le skill reste utile en mode degrade -- ne PAS abandonner :
+
+1. **Extraire la liste des references** du PDF (`pdftotext -layout article.pdf out.txt`, la
+   bibliographie est en fin de fichier). Extraire aussi le corps pour la Phase 4 (contexte des
+   citations), en numerotant les `[n]` / cles.
+2. **Impossible** en mode degrade : `verify_bib.py` (Phase 1, pas de .bib), le champ `verified`
+   (rien ou l'ecrire), la correction in-place. Le DIRE explicitement dans l'entete du rapport.
+3. **Prioriser la verification en ligne** (Phase 3) au lieu de balayer les 60+ references une a
+   une : d'abord (a) les references NOUVELLES ou recentes, (b) les auto-citations, (c) toute
+   entree que la review a deja signalee douteuse, (d) les noms de modeles/outils recents
+   (anti-hallucination : verifier qu'ils existent ET l'identifiant/version exact). Annoncer
+   franchement que les references classiques restantes ne sont pas re-verifiees une a une, et
+   qu'un bib-check exhaustif exige le .bib source.
+4. **Consigner les erreurs dans un fichier externe durable** (le `.txt`/`.md` de travail de la
+   review, ou `review/`), puisqu'on ne peut pas annoter le .bib. Horodater.
+5. **Verifier sur le rendu, pas sur l'extraction** : une "faute" (espace autour de `=`, ligature,
+   accent casse, cesure) peut etre un artefact `pdftotext`. Confirmer les coquilles douteuses en
+   lisant la PAGE PDF (Read multimodal) avant de les affirmer.
+
+Pieges de contenu (valent aussi en mode normal, mis en lumiere par le mode PDF-seul) :
+- **Bon titre/DOI mais auteurs+pages faux = melange BibTeX** : diffuser TOUJOURS auteurs ET pages
+  meme quand le titre matche (un 1er auteur correct ne valide pas les suivants).
+- **L'erreur peut etre dans CrossRef lui-meme** (nom propre mal orthographie a la source) : ne pas
+  conclure "verifie OK" sur la seule concordance .bib<->CrossRef quand un nom connu est visiblement
+  faux ; corriger + recommander un erratum editeur.
+
 ---
 
 ## Phase 1 -- Verifications structurelles

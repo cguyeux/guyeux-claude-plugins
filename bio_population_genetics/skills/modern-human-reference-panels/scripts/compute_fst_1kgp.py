@@ -10,6 +10,15 @@ host×pathogen (Mantel partiel host-Fst × pathogen-distance | géo).
 
 Aucune donnée fabriquée. Source = ftp.1000genomes.ebi.ac.uk (phase 3).
 
+⚠ COHÉRENCE DE PANEL — RÈGLE ABSOLUE : ces Fst utilisent l'ascertainment 1kGP phase 3. Ne JAMAIS
+les concaténer dans une même matrice avec des Fst issus d'un AUTRE panel (HGDP, SGDP, AADR, AGVP) :
+ascertainment SNP différent → valeurs NON comparables → résultat FAUX. Un panel = une matrice.
+Pour couvrir des populations absentes du 1kGP (Sénégal-Mandenka, Bantous-agriculteurs d'Afrique
+centrale…), passer par AADR 1240K (1kGP+HGDP+SGDP harmonisés) ou un autre panel cohérent UNIQUE,
+jamais un merge. ⚠ Certaines populations n'existent dans AUCUN panel public (ex. Bantous-AGRICULTEURS
+d'Afrique centrale : HGDP/SGDP n'y ont que des Pygmées, population différente) → le test peut être
+structurellement non-powerable sur données libres, pas juste « plus d'effort » (cf. verrou P8.13/L5L6).
+
 Prérequis (tous en apt/conda) : bcftools, vcftools, tabix, curl. Python stdlib seulement.
 
 Exemples
@@ -124,6 +133,8 @@ def main():
                     row.append(f"{fst.get(key, ''):.6f}" if key in fst else "")
             w.writerow(row)
     print(f"[ok] matrice Fst → {args.out}  (régions: {len(regions)}, paires: {len(fst)})", file=sys.stderr)
+    print("[⚠ PANEL] Fst d'ascertainment 1kGP phase 3 UNIQUEMENT — ne JAMAIS fusionner cette matrice "
+          "avec des Fst d'un autre panel (HGDP/SGDP/AADR/AGVP). Un panel = une matrice.", file=sys.stderr)
     for (a, b), v in sorted(fst.items(), key=lambda x: x[1]):
         print(f"  {lab(a):16s} {lab(b):16s} Fst={v:.6f}")
 

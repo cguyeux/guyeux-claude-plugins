@@ -983,6 +983,82 @@ def plot_choropleth(
     _save_figure(fig, output, style)
 
 
+def plot_choropleth_categorical(
+    df: pd.DataFrame, value_col: str, output: str, *,
+    region: str = "world",
+    projection: str = "auto",
+    cmap: str = "Set2",
+    cat_colors: dict | None = None,
+    title: str | None = None,
+    subtitle: str | None = None,
+    legend_title: str | None = None,
+    legend_loc: str = "lower left",
+    show_labels: bool = False,
+    style: MapStyle | None = None,
+    resolution: str = "auto",
+    note: str | None = None,
+    figsize: tuple | None = None,
+    decorations: Decorations | None = None,
+) -> None:
+    """Choroplèthe CATÉGORIEL : chaque pays coloré par la valeur (chaîne) de value_col
+    (ex. famille linguistique), légende catégorielle. cat_colors={cat: hex} pour fixer les couleurs."""
+    style = style or MapStyle()
+    proj = resolve_projection(projection, region)
+    fig, ax = setup_figure(style, figsize)
+    _apply_pre_decorations(ax, region, proj, resolution, decorations)
+    draw_base_layers(ax, region, proj, style, resolution=resolution)
+
+    countries_unproj = load_world(REGION_DEFAULT_RES.get(region, "110m"))
+    merged_unproj = merge_data(countries_unproj, df)
+    merged = merged_unproj[merged_unproj.geometry.notna()].to_crs(proj)
+    merged = crop_to_extent_proj(merged, region, proj)
+    has_data = merged[merged[value_col].notna()]
+    if has_data.empty:
+        _log("Warning: no data matched to countries.")
+    else:
+        cats = sorted(has_data[value_col].dropna().astype(str).unique())
+        base = plt.get_cmap(cmap)
+        colmap = {}
+        for i, c in enumerate(cats):
+            if cat_colors and c in cat_colors:
+                colmap[c] = cat_colors[c]
+            else:
+                colmap[c] = base(i / max(1, len(cats) - 1))
+        for c in cats:
+            sub = has_data[has_data[value_col].astype(str) == c]
+            if not sub.empty:
+                sub.plot(ax=ax, facecolor=colmap[c], edgecolor="white",
+                         linewidth=0.4, zorder=6)
+        if show_labels:
+            for _, row in has_data.iterrows():
+                cen = row.geometry.centroid
+                ax.annotate(
+                    row["name"], xy=(cen.x, cen.y),
+                    fontsize=style.note_size, ha="center", va="center",
+                    color="black", zorder=8,
+                    path_effects=[withStroke(linewidth=2, foreground="white")],
+                )
+        handles = [mpatches.Patch(facecolor=colmap[c], edgecolor="#666666", label=c)
+                   for c in cats]
+        # legend directe avec retrait du bord (borderaxespad) : robuste au rendu full-bleed
+        leg = ax.legend(
+            handles=handles, title=legend_title or value_col, loc=legend_loc,
+            fontsize=style.label_size, frameon=True, framealpha=0.95,
+            edgecolor="#888888", facecolor="white", borderpad=0.6,
+            labelspacing=0.5, borderaxespad=1.2,
+        )
+        leg.set_zorder(12)
+        leg.get_frame().set_linewidth(0.5)
+
+    draw_graticule(ax, region, proj)
+    if region != "world":
+        draw_scale_bar(ax, region, proj, style)
+        draw_north_arrow(ax, region, proj, style)
+    draw_title_block(fig, title, subtitle, style)
+    draw_credits(fig, style, note=note)
+    _save_figure(fig, output, style)
+
+
 def crop_to_extent_proj(gdf: gpd.GeoDataFrame, region: str, projection_crs: str) -> gpd.GeoDataFrame:
     """Filter gdf (already in projection_crs) to projected extent of region."""
     extent_ll = parse_extent(region)
@@ -1068,6 +1144,7 @@ def plot_pie_map(
     note: str | None = None,
     figsize: tuple | None = None,
     legend_title: str = "Lineage",
+    legend_loc: str = "lower left",
 ) -> None:
     style = style or MapStyle()
     proj = resolve_projection(projection, region)
@@ -1161,7 +1238,7 @@ def plot_pie_map(
                       loc="center left", fontsize=style.label_size - 1,
                       bbox_to_anchor=(1.02, 0.5))
     else:
-        styled_legend(ax, color_handles, title=legend_title, loc="lower left",
+        styled_legend(ax, color_handles, title=legend_title, loc=legend_loc,
                       fontsize=style.label_size)
 
     draw_graticule(ax, region, proj)
@@ -2305,6 +2382,15 @@ Examples:
     p.add_argument("--figsize")
     p.add_argument("--log-scale", action="store_true")
     p.add_argument("--show-labels", action="store_true")
+    p.add_argument("--legend-loc", default="lower left",
+                   choices=["lower left", "lower right", "upper left", "upper right", "center left"],
+                   help="Position de la légende de couleurs (choropleth catégoriel / pie / bubble). "
+                        "Défaut 'lower left' ; mettre 'lower right' ou 'upper right' pour éviter le "
+                        "chevauchement avec la barre d'échelle (toujours en bas à gauche).")
+    p.add_argument("--categorical", action="store_true",
+                   help="Choroplèthe CATÉGORIEL : colore chaque pays par la valeur (chaîne) de la "
+                        "colonne -v (ex. famille linguistique) avec une légende catégorielle. "
+                        "Le --palette JSON peut mapper catégorie->couleur.")
     p.add_argument("--label-threshold", type=float)
     p.add_argument("--min-value", type=float, dest="vmin")
     p.add_argument("--max-value", type=float, dest="vmax")
@@ -2501,6 +2587,7 @@ Examples:
             resolution=args.resolution, min_total=args.min_total,
             pie_scale=args.pie_scale, note=args.note, figsize=figsize,
             legend_title=args.legend_title or "Lineage",
+            legend_loc=args.legend_loc,
         )
         return 0
 
@@ -2512,6 +2599,20 @@ Examples:
             legend_title=args.legend_title,
             style=style, resolution=args.resolution,
             note=args.note, figsize=figsize,
+        )
+        return 0
+
+    # choropleth catégoriel (ex. famille linguistique)
+    if args.categorical:
+        plot_choropleth_categorical(
+            df, args.value_column, args.output,
+            region=args.region, projection=args.projection, cmap=cmap,
+            cat_colors=palette,
+            title=args.title, subtitle=args.subtitle,
+            legend_title=args.legend_title, legend_loc=args.legend_loc,
+            show_labels=args.show_labels,
+            style=style, resolution=args.resolution,
+            note=args.note, figsize=figsize, decorations=decorations,
         )
         return 0
 

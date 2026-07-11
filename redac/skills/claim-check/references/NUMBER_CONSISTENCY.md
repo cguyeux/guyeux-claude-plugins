@@ -113,6 +113,30 @@ Exemples a tester :
 - `7.0 \times 10^{-4}` (Bonferroni THD)
 - `[2010\text{:}2022]` (calibration TreeTime)
 
+### 2.7 Partitions et funnels -- categories MECE
+
+Cas particulier des sous-decompositions (§2.2), mais avec un piege distinct : une
+somme qui ne tombe pas juste n'est PAS forcement une typo -- ce peut etre une
+**partition mal construite** (categories qui se chevauchent). Une partition doit
+etre **MECE** : mutuellement exclusive et collectivement exhaustive.
+
+Exemple observe (`gene_decay_census`, funnel de tri des 311 candidats) :
+- Ecrit : `311 = 43 mobile + 31 widespread + 112 convergent + 139 Dollo` -> **325 != 311**.
+- Chaque chiffre etait exact isolement (Phase 4). L'erreur etait de DESIGN de la partition :
+  - `mobile` (43) est un **flag orthogonal** (transposase / PE-PPE / phage par nom+Pfam) qui
+    recoupe widespread/convergent/clonal -- pas une part du tout.
+  - `widespread` / `convergent` (verdicts d'etape grossiers) **chevauchent** le set Dollo final
+    (58 des 139 Dollo etaient verdict-convergent/widespread avant le test strict).
+- Partition disjointe correcte, sur la determination FINALE (`dollo_stratum`) :
+  `18 widespread + 67 convergent + 87 near-clonal + 139 Dollo = 311`, + note orthogonale
+  « 43/311 portent le flag mobile/repeat, 0 dans les 139 ».
+
+Test : pour tout ensemble de comptes presente comme couvrant un tout,
+1. verifier que la somme == total ;
+2. si non, AVANT de chercher une typo, verifier que les categories sont disjointes
+   (aucun flag transversal additionne, aucun verdict intermediaire mele au final) ;
+3. reconstruire la partition sur la determination finale, mettre les flags orthogonaux hors somme.
+
 ## 3. Regex utiles
 
 ### 3.1 Extraction de tous les nombres
@@ -211,6 +235,7 @@ Liste typique pour un manuscrit MTBC :
 | 5 | EN `0.89`, FR `0.89` (devrait etre `0{,}89`) | Traduction litterale sans conversion | sed `\.` -> `{,}` cible |
 | 6 | Abstract `~500-year` vs body `508-year` | Arrondi rhetorique vs valeur exacte | OK si explicit, sinon harmoniser |
 | 7 | Caption figure et texte different | Caption ecrite separement, pas mise a jour | Re-lecture systematique |
+| 8 | `43+31+112+139=325` annonce `=311` | Fausse partition : flag orthogonal + verdict intermediaire meles au final (non-MECE) | Repartitionner sur la determination finale, flag orthogonal hors somme (cf. §2.7) |
 
 ## 7. Que faire d'une divergence detectee ?
 

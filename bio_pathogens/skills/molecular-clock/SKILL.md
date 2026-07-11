@@ -142,7 +142,7 @@ python3 scripts/molecular_clock.py root-to-tip tree.nwk dates.csv \
 | > 0.3 | Signal temporel fort (rare pour MTBC) | Root-to-tip suffisant, BEAST confirmera |
 | 0.1-0.3 | Signal modéré | BEAST recommandé avec horloge relaxée |
 | 0.01-0.1 | Signal faible (typique MTBC) | BEAST obligatoire, priors informatifs |
-| < 0.01 | Pas de signal détectable | Multi-contraintes ou taux publié comme prior |
+| < 0.01 | Pas de signal détectable | **Tip-dating MORT** → passer à la Phase 2c (ancres internes + datation bracketée). Ne PAS lancer BEAST. |
 
 ### Test de randomisation des dates (DRT) — garde-fou AVANT BEAST
 
@@ -165,6 +165,71 @@ les seuls points aDNA — dater reste hasardeux. Validé sur un jeu Pinnipedii+L
 (36 taxa) : R²=0.078, DRT p=0.038 → signal *présent mais fragile*, cohérent avec
 une lignée de niche récente et peu diverse. Sur une grande lignée diverse
 (Bovis, L2…) on attend R² et marge DRT nettement plus francs.
+
+## Phase 2c — Que faire quand le DRT dit NON : la taxonomie des ANCRES CALENDAIRES INTERNES
+
+C'est le cas le plus **fréquent** sur MTBC (fenêtre de sampling ~25 ans, taux ~0,3 SNP/an) et le skill ne doit pas
+s'arrêter là. Quand `temporal_signal=false`, il reste deux voies, et **une seule loi** pour choisir entre elles.
+
+### La datation bracketée (méthode par défaut, importée du projet L1)
+
+`âge = profondeur SNP masquée / taux`, calculée sur un **ÉVENTAIL de taux externes** (0,10 / 0,26 / 0,40 / 0,50 /
+1,10 SNP/génome/an). On rapporte un **INTERVALLE, jamais un point**. Trois règles :
+- **LE TAUX DOMINE** : l'intervalle est plus sensible au taux choisi qu'à la profondeur mesurée. Les taux calibrés
+  sur clades profonds **surestiment** l'âge des nœuds récents (TDRP, cf. Phase 0) ; un taux natif de lignée
+  (rapide) pousse les dates vers le moderne. Toujours donner les deux bouts.
+- **CROWN ≠ INTRODUCTION** : le crown date la diversification LOCALE. Une introduction ancienne persistant en une
+  seule lignée donne un crown récent. Ne jamais lire un crown comme une date d'arrivée.
+- **Masquer avant de compter** : homoplasie / résistance / répétitions (`traces_mask`) sinon la profondeur est
+  gonflée d'un facteur 1,3-2.
+
+### ★ THÉORÈME D'ASYMÉTRIE DES ANCRES — à appliquer AVANT de chercher une ancre
+
+> Un événement qui **OUVRE** un corridor (migration, colonisation, mise en contact) borne l'âge d'un foyer de
+> destination **PAR LE HAUT** (on ne transmet pas avant d'être arrivé) → **borne INFÉRIEURE sur le taux** → borne
+> SUPÉRIEURE sur l'âge de tous les nœuds.
+>
+> Seuls un événement qui **FERME** (barrière/isolement durable) ou une **OBSERVATION DATÉE** (spécimen ancien
+> authentifié) bornent l'âge **PAR LE BAS** → **borne SUPÉRIEURE sur le taux**.
+
+**Conséquence pratique** : dans le monde moderne, les corridors ne se referment jamais (traite → colonisation →
+aviation). Les ancres « ouverture » sont donc **abondantes**, les ancres « fermeture » **quasi inexistantes**. On
+sait presque toujours dire « ce clade n'est pas PLUS VIEUX que X », presque jamais « il n'est pas PLUS JEUNE que X ».
+
+**Réflexe** : avant d'investir dans une ancre, demander **ouvre-t-elle ou ferme-t-elle ?** Si elle ouvre, elle ne
+tranchera jamais un « ancien vs récent » par le côté récent. Une question du type « médiéval ou colonial ? » peut
+être **structurellement indécidable** — ce n'est alors pas un défaut d'effort mais un **défaut de données**, et
+cela se rapporte comme tel, assorti d'un appel à données (aDNA de la région ; ou séquençage des **collections
+historiques de culture**, qui étendent la fenêtre d'échantillonnage de ~25 à ~60 ans — c'est exactement ce dont le
+signal temporel a besoin).
+
+### Ancre « OUVERTURE » qui MARCHE : le foyer de corridor migratoire
+
+Un corridor migratoire moderne daté (ex. Afrique de l'Ouest → Italie, 1980-1990) borne un **foyer de transmission
+qui s'est diversifié À DESTINATION** : `MRCA ≥ date d'ouverture` → `profondeur ≤ taux × durée` → **taux ≥ profondeur
+/ durée**. Validé sur L6 (foyer italien, 7 souches, prof. 6,3 SNP → **taux ≥ 0,17-0,24**).
+
+**DEUX CONTRÔLES OBLIGATOIRES**, sans lesquels l'ancre est fausse :
+1. **Aucune souche du pays SOURCE dans le rayon SNP du cluster** — sinon le « foyer » n'est qu'un clone déjà
+   diversifié en Afrique, importé plusieurs fois, et son MRCA est **pré-migration** (a tué l'ancre Allemagne :
+   souche africaine à **0 SNP**).
+2. **Multi-BioProject** — un cluster mono-BioProject est indistinguable d'un artefact de batch (a tué l'ancre
+   Royaume-Uni : 17 souches, un seul PRJEB).
+
+### ⛔ Ancres qui NE MARCHENT PAS (testées et fermées — ne pas les re-tenter)
+
+| Ancre | Pourquoi elle échoue |
+|-------|----------------------|
+| **Mutation de résistance fixée dans un clade** | `tMRCA ≥ date d'introduction du médicament` — mais falsifiée par le test « diversité vs date du médicament » : le clade est bien plus divers que ne l'autorise la date. Attention aussi aux faux positifs : **gyrA 7584 (S95T) est un marqueur PHYLOGÉNÉTIQUE**, pas une résistance aux fluoroquinolones (codons 90/94). |
+| **Traite atlantique / diaspora ancienne** | Le signal de diaspora observé est de la **migration MODERNE**, pas de la traite (aucune préservation type Gullah, absence des groupes attendus). |
+| **Régression sur PAIRES SÉRIELLES (close-pairs)** | ⚠ **LE PIÈGE LE PLUS SÉDUISANT.** Théorie correcte (`E[d] = taux × (Δt + 2·t_coal)` → en restreignant aux paires proches, la pente de d sur Δt estime le taux ; test LOCAL, donc censé survivre à la mort du root-to-tip). **MAIS `d` et `Δt` sont corrélés par la STRUCTURE D'ÉCHANTILLONNAGE** (les prélèvements anciens viennent d'études/pays/sous-clades différents des récents) → la pente mesure le confond. **DIAGNOSTIC OBLIGATOIRE : lancer AUSSI la régression NON restreinte.** Si la pente y devient biologiquement absurde (mesuré : **3,69 SNP/génome/an**, p=1e-43, contre 0,1-0,5 attendu), le confond est prouvé et les seuils intermédiaires « significatifs » sont des artefacts. Une pente qui **dérive avec le seuil de proximité** est le signe du confond ; seul le régime le plus serré (d≤20, t_coal≈0) est interprétable — et s'il n'y a pas de signal là (mesuré : p=0,19), il n'y en a nulle part. |
+| **Spoligotype ancien (Dollo)** | Deux blocages : (a) un spoligotype aDNA dégradé **mime toujours** *africanum*/*bovis* (cf. l'encadré CAUTION plus bas) ; (b) TBannotator ne donne **PAS** de spoligotype — `report.json` expose `known_coverage/DR0..DR48` mais le locus DR est à profondeur médiane **~2x** quand le génome est à 100-190x (le mapping jette les reads du DR, répétitif → filtre mapq). Vérifiable en 30 s : deux Beijing (spoligotype quasi invariant) y donnent des motifs **opposés**. Il faudrait SpoTyping/SpolPred sur les **FASTQ bruts**. |
+
+### Borne triviale, à mentionner pour mémoire
+
+`crown(clade) ≥ (aujourd'hui − date du plus vieux tip du clade)`, sans aucun taux. Sur des corpus MTBC modernes,
+cela plafonne à 20-60 ans : **sans effet** pour trancher une question historique. Le vérifier quand même coûte une
+ligne de code et évite de croire qu'on a une borne.
 
 ## Phase 2b : IQ-TREE/LSD2 (tip-dating rapide — RECOMMANDÉ en premier)
 
@@ -231,7 +296,29 @@ Ce résultat sert de **référence interne** pour valider les futures datations.
 | Molnár 2015 | 8ᵉ CE Hungary | Spoligotypage | Placement |
 | Losch 2015 Guadeloupe | 18ᵉ-19ᵉ CE | Spoligotypage esclaves africains | Placement |
 | Nelson 2020 | Pre-contact Andes | Spoligotypage | Placement |
-| Gad 2021 Egyptian mummies | Antiquité | Spoligotypage | **Combler lacune africaine** |
+| ~~Zink 2003 / Gad 2021 momies égyptiennes~~ | ~~Antiquité~~ | ~~Spoligotypage~~ | ⛔ **NE PAS UTILISER** — artefact, voir l'encadré ci-dessous |
+
+> [!CAUTION]
+> **Un spoligotype ancien DÉGRADÉ mime TOUJOURS une lignée à délétions (*africanum* / *bovis*). Ne jamais
+> utiliser un spoligotype aDNA comme contrainte de calibration sans vérifier le protocole d'hybridation.**
+>
+> Mécanisme (établi 2026-07-11, projet `L5L6-codivergence_ethnies_ouest_afrique`, piste P3.5f) : sur ADN
+> dégradé/faible copie, l'hybridation des spacers **échoue** et produit des **absences FAUSSES**. Or les motifs
+> *M. africanum* et *M. bovis* **se DÉFINISSENT par des absences de spacers**. Un artefact qui fabrique des
+> absences dérive donc **mécaniquement** tout motif ancien vers une signature *africanum*/*bovis*-like.
+>
+> Cas d'école : **Zink et al. 2003** (*J Clin Microbiol* 41:359-67) annonce une « *M. africanum*-type specific
+> spoligotyping signature » dans des momies de Thèbes-Ouest du Moyen Empire (2050-1650 av. J.-C.) et en tire que
+> *M. tuberculosis* dériverait d'un précurseur proche de *M. africanum*. **Réfuté par van Soolingen lui-même**
+> (l'inventeur du spoligotypage) : Parwati, van Crevel, van Soolingen & van der Zanden, *J Clin Microbiol*
+> 2003;41(11):5350-1, « Application of spoligotyping to noncultured *M. tuberculosis* bacteria requires an
+> optimized approach » — Zink a appliqué le protocole **non optimisé** de Kamerbeek, d'où « **no hybridization
+> with spacers 2, 14, and 39** ». Le protocole optimisé (van der Zanden 2002 : MgCl₂ 3,0 mM au lieu de 0,7 mM,
+> Tris-HCl 15 mM au lieu de 5 mM, 20-50 pmol d'amorce) restaure le motif complet.
+>
+> **Conséquence : il n'existe AUCUN spécimen ancien authentifié de *M. africanum*.** La « lacune africaine » du
+> corpus aDNA MTBC (23 génomes, 100 % Europe + Amérique du Sud) est **entière** — les momies égyptiennes ne la
+> comblent pas. Toute lignée africaine (L5, L6, L7-L10) est donc **non calibrable en interne par aDNA** en l'état.
 
 ### Specimen qualitatif — Bison antiquus (upper bound MTBC > 17 870 BP)
 

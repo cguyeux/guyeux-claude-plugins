@@ -244,6 +244,8 @@ python3 scripts/geo_map.py composite.json -t layered \
 | `--palette` | MTBC | JSON ou `colorblind` pour palette CB-safe |
 | `--log-scale` | off | Échelle log pour valeurs |
 | `--show-labels` | off | Afficher noms de pays |
+| `--legend-loc` | `lower left` | Position de la légende de couleurs (`lower left/right`, `upper left/right`, `center left`). La barre d'échelle est TOUJOURS en bas à gauche → pour un choroplèthe catégoriel / pie / bubble, mettre `lower right` ou `upper right` pour éviter le chevauchement légende↔échelle. |
+| `--categorical` | off | Choroplèthe CATÉGORIEL : colore chaque pays par la valeur (chaîne) de la colonne `-v` (ex. famille linguistique, écotype) avec une légende catégorielle. `--palette` (JSON `{catégorie: hex}`) fixe les couleurs, sinon `--cmap` qualitatif (`Set2`, `tab10`). |
 | `--label-threshold` | médiane | Seuil pour les labels |
 | `--min-value` / `--max-value` | auto | Bornes échelle |
 | `--center` | none | Centre d'un choroplèthe DIVERGENT : auto-symétrise vmin/vmax autour de cette valeur (ex. `--center 0` avec `--cmap RdBu_r` pour des données log-ratio / enrichissement, neutre=blanc). Ignoré si `--min/--max-value` posés. |

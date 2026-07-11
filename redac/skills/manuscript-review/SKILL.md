@@ -58,6 +58,56 @@ Pour un fichier LaTeX :
 4. Lire aussi les fichiers inclus (`\input{}`, `\include{}`)
 5. Identifier les figures referencees et verifier qu'elles existent
 
+### Phase 1bis — RECROISEMENT MECANIQUE des chiffres avec les donnees sources (OBLIGATOIRE)
+
+**Ne jamais se fier a la relecture pour verifier un chiffre.** La relecture ne rattrape
+PAS une valeur attribuee au mauvais modele/echantillon/condition : elle lit une phrase
+plausible et passe. Seul le recroisement mecanique l'attrape. Cette phase est donc
+obligatoire des que le manuscrit rapporte des nombres issus de calculs.
+
+1. **Localiser les donnees sources** : fichiers de resultats (`.json`, `.csv`, logs de
+   run, tableaux) produits par les scripts d'analyse. Les demander a l'utilisateur si
+   leur emplacement n'est pas evident.
+2. **Extraire tous les nombres du manuscrit** (abstract, texte, legendes, tables) avec
+   leur contexte : a quelle condition, quel modele, quel echantillon chacun est attribue.
+3. **Verifier chaque nombre contre la source**, et surtout **verifier l'ATTRIBUTION** :
+   le chiffre existe-t-il bien dans les donnees, et provient-il bien de la condition
+   annoncee dans la phrase ? Signaler en priorite les valeurs qui **existent dans les
+   donnees mais sous une autre condition** (c'est le mode d'erreur le plus dangereux :
+   le chiffre est « vrai », mais il ne dit pas ce que la phrase lui fait dire).
+4. **Verifier l'HOMOGENEITE des bras de comparaison** : quand plusieurs valeurs sont
+   comparees (dans une phrase, une figure, un tableau), proviennent-elles de conditions
+   qui ne different QUE par le facteur dont on tire la conclusion ? Tout facteur
+   supplementaire qui varie en meme temps est un facteur de confusion → BLOQUANT.
+5. **Verifier la coherence interne** : abstract vs resultats vs discussion vs legendes
+   vs tables. Un meme resultat doit porter le meme chiffre partout.
+6. **RECALCULER les nombres DERIVES, ne pas se contenter de les retrouver.** Un nombre
+   du manuscrit qui n'existe PAS tel quel dans les donnees (une difference, une somme,
+   un pourcentage, un « ajoute N elements », un « sur N cas ») est **derive** : il ne
+   peut pas etre valide par simple recherche dans les sources. Il doit etre **recalcule
+   depuis les donnees brutes**. Les points 1-5 sont aveugles a cette classe d'erreur,
+   parce que le nombre n'a aucune source a laquelle le confronter.
+   **PIEGE CANONIQUE : une difference de CARDINAUX n'est pas un nombre d'ELEMENTS
+   NOUVEAUX.** $|A| - |B| \neq |A \setminus B|$ des que la correspondance entre $A$ et
+   $B$ n'est pas injective. Vecu (mabossDemo) : un modele etendu passait de 25 a 49
+   etats stables, et le manuscrit en concluait « adds 24 states ». Le calcul de la
+   difference ENSEMBLISTE reelle donnait **12** nouveaux etats seulement, les 12 autres
+   etant des **dedoublements** d'etats existants (meme configuration, deux variantes
+   d'une boucle bistable). Le decompte etait faux, et sa correction (49 = 25 + 12 + 12)
+   s'est revelee bien plus informative que l'affirmation initiale.
+   **REFLEXE : pour tout « ajoute / gagne / perd N elements », exiger le calcul de la
+   difference ensembliste (ou de l'appariement explicite), jamais la soustraction des
+   totaux.** Verifier de meme les pourcentages (recalculer numerateur et denominateur)
+   et les « N sur M » (verifier M).
+
+**Risque specifique aux etudes multi-variantes / multi-modeles / multi-jeux de donnees**
+(frameworks de variantes, ablations, grilles d'hyperparametres, cohortes multiples) :
+le recit veut une serie homogene, les donnees viennent de variantes heterogenes, et la
+substitution d'un chiffre par celui d'une variante voisine est **invisible a la
+relecture**. C'est le premier endroit ou chercher.
+
+Consigner les ecarts trouves : ils alimentent les preoccupations MAJEURES de la review.
+
 ### Phase 2 — Grille d'evaluation (11 dimensions)
 
 Evaluer le manuscrit sur chaque dimension. Pour chaque probleme identifie,
@@ -252,7 +302,10 @@ N. [...]
 - **Epidemiologie** : verifier biais d'echantillonnage, correction, generalisation
 - **Phylogenetique** : verifier modeles d'evolution, support branches, sensibilite parametres
 - **Resistance medicamenteuse** : verifier genotypique vs phenotypique, catalogues de reference
+- **NLP / evaluation de LLM / ML** : verifier variance run-a-run et significativite (sorties LLM stochastiques → un run unique ne suffit pas), IC de Wilson/bootstrap sur petits jeux de test, macro-F1 vs accuracy sur classes desequilibrees (le « best model » se renverse selon la metrique), reproductibilite du prompt (texte integral, temperature, version/date d'API, exclusion des sorties invalides), asymetrie par classe masquee par la macro-moyenne, comparaison equitable supervise fine-tune vs LLM zero/few-shot (dispositif souvent apples-to-oranges), recall=1.0 exact = comportement degenere. **Grille detaillee : `~/.claude/knowledge/manuscript-review-llm-eval.md` (a lire avant de reviewer un papier qui mesure/compare un systeme LLM).**
 - **Statistique** : verifier assumptions, puissance, corrections multiples
+
+> Note : la dimension **D5** liste des statistiques de genetique des populations (pi, FST, Tajima's D, AMOVA...) — pertinentes UNIQUEMENT pour les papiers de genomique evolutive. Pour un papier hors de ce domaine (NLP, ML, ingenierie logicielle...), ignorer ces items et appliquer les criteres du domaine ci-dessus a la place.
 
 ### Sauvegarde automatique de la review
 

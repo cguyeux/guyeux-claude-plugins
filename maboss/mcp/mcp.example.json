@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "maboss": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "maboss-mcp:v1"]
+    }
+  }
+}

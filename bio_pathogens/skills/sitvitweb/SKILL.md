@@ -1,13 +1,21 @@
 ---
 name: sitvitweb
 description: >-
-  Query the SITVIT2 spoligotype database (Institut Pasteur de Guadeloupe) for
+  Query the SITVIT spoligotype database (Institut Pasteur de Guadeloupe) for
   MTBC spoligotype assignments, SIT lookups, clade names (Beijing, LAM, Haarlem,
-  T1...), and geographic distributions. Browser-only (no REST API).
+  T1...), and geographic distributions (country, city, patient origin, year,
+  strain holder). The online server (port 8081) is OFTEN DOWN: a full LOCAL COPY
+  of 62 996 isolates ships at ~/Documents/codes/MTBC/TB-tools/data/SIT.xls — use
+  it first. Also carries the recipe to compute IN SILICO spoligotypes from the mp
+  pipeline (136k strains, ESP* spacer entries), and the warning that SITVIT's
+  Clade column is spoligotype-derived: filter it by HAMMING DISTANCE to genome-confirmed
+  consensus profiles (~12% of AFRI labels are wrong), never by exact octal match.
 
   Use when: converting spoligotype octal to SIT number, identifying clade for
-  a strain, finding geographic distribution of a SIT, or cross-referencing
-  spol43/spol98 fields from TBannotator metadata.
+  a strain, finding the geographic/subnational distribution of a SIT, tracing
+  patient origin vs isolation country, or computing in-silico spoligotypes for
+  WGS strains. (NB: TBannotator has NO spoligotype in its database — no spol43,
+  no spol98, no DR entries. Compute them from mp.)
 argument-hint: "<SIT number, octal code, or clade name>"
 user-invocable: true
 ---
@@ -20,10 +28,127 @@ SITVIT2 is the international spoligotyping database maintained by the Institut P
 
 **Base URL**: `http://www.pasteur-guadeloupe.fr:8081/SITVIT2/`
 
+> [!CAUTION]
+> **LE SERVEUR EST SOUVENT INJOIGNABLE — commencer par la COPIE LOCALE, pas par le site.**
+> Vérifié 2026-07-11 : le domaine résout et le port 80 répond, mais le **port 8081 (la base) time-out
+> au niveau TCP** (il tourne sur une Freebox). N'y perdez pas 20 minutes.
+>
+> **✅ COPIE LOCALE COMPLÈTE — `~/Documents/codes/MTBC/TB-tools/data/SIT.xls`**
+> **62 996 isolats**, format `.xls` OLE (⚠ nécessite `xlrd` : `python3 -m venv /tmp/v && /tmp/v/bin/pip install
+> xlrd pandas`, car PEP 668 bloque `pip install` en global sur Arch).
+> Colonnes : `IsoNumber, Nb Strains, Spoligotype Binary, Spoligotype Octal, 12/15/24-loci MIRU, VNTR, SIT,
+> 12/15/24-MIT, VIT, Clade, Latitude, Longitude, Origin Country, Isolation Country, Year, Drug Resistance,
+> Sex, Age, HIV, Investigator, **City of Isolation**, Remarks`.
+> ⚠ **`Origin Country` ≠ `Isolation Country`** : le premier est le pays d'ORIGINE du patient (migrant ou non),
+> le second le lieu du diagnostic. C'est LA colonne qui distingue un cas autochtone d'une importation.
+> ⚠ **Piège pandas** : la colonne octal est lue en **int64** → les zéros de tête sautent
+> (`060000777777671` → `60000777777671`) et toute jointure renvoie 0 ligne. Toujours
+> `dtype=str` + `.str.zfill(15)` **des deux côtés**.
+>
+> Autres fichiers utiles au même endroit : `sit_to_lineage.pkl`, `lineage_to_sit.pkl`, `sit_to_sra.pkl`,
+> et `~/Documents/codes/MTBC/Spolgraph/SITVIT23882_PHELAN_SNPBASEDLIN_SORTED.xlsx` (23 882 souches
+> séquencées : octal ↔ SIT ↔ lignée SNP).
+
 > [!IMPORTANT]
-> SITVIT2 has **no REST API**. All queries require browser-based interaction
+> Si le site répond : SITVIT2 has **no REST API**. All queries require browser-based interaction
 > (AJAX forms). Use the `browser_subagent` tool to automate queries.
 > The server can be slow — always set generous timeouts.
+
+---
+
+## ⚠⚠ RÈGLE D'OR — VÉRIFIER LE `Clade` DE SITVIT, MAIS AVEC LE BON CRITÈRE
+
+Le `Clade` de SITVIT est déduit **du spoligotype seul**. Or les familles définies par des **absences de
+spacers** (AFRI, BOV) sont des **attracteurs de convergence** : une souche LAM/T/H qui perd les bons spacers
+y tombe. Le seul marqueur licite de *M. africanum* est **RD9** (LSP), jamais le spoligotype.
+
+**Taux d'erreur réel, mesuré 2026-07-11 (projet L5L6, 709 isolats `AFRI`)** : **~12 % de faux** (6 % au profil
+L4 caractérisé + 7 % trop éloignés), 6 % ambigus, et **82 % confirmés**. Le label est donc **globalement bon,
+mais il faut le filtrer**.
+
+> [!WARNING]
+> **NE PAS filtrer par correspondance EXACTE de l'octal** (erreur commise puis corrigée : elle donnait un faux
+> taux d'erreur de 32 %). Les appels de spoligotype in silico ont **~10 % de dropout par spacer**, donc un vrai
+> profil Maf peut légitimement ne pas figurer dans le jeu d'octals observés. **Filtrer par DISTANCE.**
+
+### ✅ La bonne méthode — critère STRUCTURAL, pas lexical
+
+1. Établir la lignée par **SNP/SPDI** (`bdd/actuelle/`), jamais par une étiquette texte.
+2. Calculer les **profils CONSENSUS** de sous-lignée (spoligo in silico + vote majoritaire — voir plus bas).
+3. Classer chaque isolat SITVIT par **distance de Hamming** (sur les 43 bits) au consensus le plus proche :
+   - **d ≤ 3 → CONFIRMÉ.** Spécificité mesurée : seuls **0,02 %** des 62 287 isolats **non-AFRI** de SITVIT
+     sont à d≤3 (leur médiane est d = 10). Critère très discriminant.
+   - d 4-6 → ambigu. d ≥ 7 → exclu.
+4. **VERROU STRUCTURAL, décisif** : ***M. africanum* CONSERVE les spacers 33-36**, que **L4 a perdus**.
+   Un isolat dont les spacers **33-36 sont TOUS absents est un profil L4** — exclure sans discussion,
+   **quelle que soit** son étiquette SITVIT.
+
+**Faux positif documenté, qui aurait fait un beau résultat faux** : SIT 1476 (`736177607700171`), étiqueté
+`AFRI_2`, compte **7 isolats à Lima tous d'origine péruvienne** (1999-2005, trois investigateurs indépendants)
++ 2 à Buenos Aires. Cela ressemble à un **foyer sud-américain autochtone de *M. africanum***. Ce n'en est pas
+un : **Hamming = 10** du profil Maf le plus proche, et **spacers 33-36 = `0000`** (signature L4). Ses MIRU
+sont « Orphan ». Réfuté structurellement.
+
+Validation de la méthode : consensus in silico **L6.1.1/L6.1.2 = `770777777777671` = SIT 181**
+(= le SIT rapporté par Rabahi et al. 2020 pour la souche brésilienne) ; **L5.2.2.2 = `774077607777071` =
+SIT 331**. Les profils in silico tombent exactement sur les SIT de SITVIT.
+
+---
+
+## Spoligotype IN SILICO depuis le pipeline `mp` (136 822 souches)
+
+> [!WARNING]
+> **NE PAS utiliser `known_coverage/DR*` du `report.json` : c'est du BRUIT.** Le locus DR y est à profondeur
+> médiane ~2x quand le génome est à 100-190x (les reads du DR, répétitif, sont jetés par le filtre mapq).
+> Preuve en 30 s : huit souches Beijing à >100x donnent **huit motifs DR différents**, alors que le
+> spoligotype Beijing est invariant.
+
+> [!TIP]
+> **Le caller est écrit, calibré et testé : `scripts/spoligo_insilico.py`** (livré avec ce skill).
+> Ne pas le réécrire. Il doit tourner **sur mp** (c'est là que sont les résultats du pipeline) :
+> ```
+> scp <skill>/scripts/spoligo_insilico.py mp:/tmp/
+> ssh mp 'python3 /tmp/spoligo_insilico.py --calibrate /tmp/beijing.txt'   # ⚠ CQ obligatoire
+> ssh mp 'python3 /tmp/spoligo_insilico.py /tmp/sras.txt > /tmp/spolo.csv' # appels individuels
+> ssh mp 'python3 /tmp/spoligo_insilico.py --consensus /tmp/groupes.tsv'   # profils par sous-lignée
+> ```
+> `--calibrate` doit rendre **30-40 %** d'octals Beijing exacts (validé : 13/40 = 32 %). Si c'est **0 %**,
+> le mapping spacer→ESP est faux et **rien n'est exploitable**.
+
+**La bonne source** : `mp:/data/current/run/results/<SRA>/known_coverage_stats.tsv`, colonnes
+`#rname startpos endpos numreads covbases coverage meandepth meanbaseq meanmapq`.
+Y chercher les **493 entrées `ESP*`** (*espaceurs*), numérotées 1-68 avec variants alléliques
+(`ESP21_1`, `ESP21_2`…).
+
+⚠ **Les 43 spacers standards ne sont PAS `ESP1..ESP43`** — ils sont un **sous-ensemble dispersé** des 68.
+Correspondance établie par appariement de **séquences** avec
+`~/Documents/codes/MTBC/TB-tools/data/fastas/spoligo_old.fasta` (les 43) et `spoligo_new.fasta` (les 98) :
+
+```python
+SPACER_TO_ESP = {1:2, 2:3, 3:4, 4:12, 5:13, 6:14, 7:15, 8:18, 9:19, 10:20, 11:21, 12:22,
+                 13:23, 14:24, 15:25, 16:26, 17:27, 18:28, 19:29, 20:30, 21:31, 22:32,
+                 23:33, 24:34, 25:35, 26:36, 27:37, 28:38, 29:39, 30:40, 31:41, 32:42,
+                 33:43, 34:44, 35:46, 36:47, 37:51, 38:52, 39:53, 40:62, 41:63, 42:64, 43:65}
+```
+
+**Règle d'appel** : spacer présent ssi **un quelconque** de ses variants (`ESPn`, `ESPn_1`, …) a **≥1 read**
+(prendre le `max` des `numreads` sur les variants). Puis binaire 43 bits → octal (14 triplets + 1 bit).
+
+**Calibration obligatoire sur Beijing** (octal canonique `000000000003771`) : sensibilité par spacer ≈ **90 %**,
+donc l'octal exact ne sort que dans **~40 %** des cas (0,90⁹ — Beijing n'a que 9 spacers présents).
+⇒ **Le dropout est un biais de FAUSSE ABSENCE : il s'annule par VOTE MAJORITAIRE.** L'appel est fiable
+**en consensus de sous-lignée**, PAS souche par souche. Ne jamais tirer de conclusion d'un octal individuel.
+
+**Profils consensus *M. africanum* obtenus (1 351 appels fiables, 2026-07-11)** :
+
+| sous-lignée | octal consensus | SIT |
+|---|---|---|
+| L5.2.2.2 | `774077607777071` | **331** |
+| L6.1.1 / L6.1.2 | `770777777777671` | **181** |
+| L6.2 | `670777707777671` | — |
+
+Signatures : **L5 perd les spacers 8-12 et 21-24** ; **L6 perd 7-9** ; **les deux CONSERVENT 33-36**, que L4 a
+perdus (marqueur classique de *M. africanum*).
 
 ## Core Concepts
 
@@ -129,8 +254,19 @@ SIT → Clade mapping examples:
 ```
 
 ### Cross-reference with TBannotator
-The TBannotator MCP `mv_strain_metadata` view contains `spol43` and `spol98` fields.
-Use SITVIT2 to convert these patterns to SIT numbers and named clades.
+
+> [!CAUTION]
+> **FAUX (corrigé 2026-07-11) : la vue `mv_strain_metadata` ne contient AUCUN champ `spol43`/`spol98`.**
+> Vérifié sur `information_schema` : il n'existe **aucune** colonne contenant `spol`/`spacer`/`sit` dans la
+> base PostgreSQL de TBannotator, et le catalogue `tb_report_rd_catalog` ne contient **aucune** entrée `DR*`.
+> **Il n'y a pas de spoligotype en base** — il faut le calculer depuis `mp` (section ci-dessus).
+
+Ce qui EXISTE en base et qui est utile :
+- **`tb_ncbi_biosample.genotype`** — le champ `genotype` déposé par les soumetteurs NCBI. Sur **247 753**
+  BioSamples, seuls **7 582** le renseignent et **80** portent un octal 15 chiffres — et ils viennent **tous
+  du même dépôt** (l'État de Hawaï : Manila 25, Beijing 23…). **Inutilisable pour un criblage global.**
+- ⚠ **Piège de sous-chaîne** : `WHERE genotype ILIKE '%AFRI%'` ramène 142 lignes dont **~140 faux positifs** —
+  `East-African-Indian` (EAI) **contient** « AFRI ». Toujours ancrer le motif ou filtrer sur l'octal.
 
 ## Automation Tips
 
