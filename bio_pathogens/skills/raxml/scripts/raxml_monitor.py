@@ -25,7 +25,7 @@ except ImportError:
     )
     sys.exit(1)
 
-DEFAULT_BASE_URL = "https://darthos.freeboxos.fr/mcp"
+DEFAULT_BASE_URL = "https://tblearn.tbannotator.ideev.universite-paris-saclay.fr/mcp"
 DEFAULT_POLL_INTERVAL = 30  # seconds
 DEFAULT_TIMEOUT = 86400  # 24 hours
 

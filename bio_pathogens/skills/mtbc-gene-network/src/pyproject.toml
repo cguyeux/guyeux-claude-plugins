@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Local-first MTBC gene interaction network (annotation_mtbc/phase2h_string) graph operations"
 requires-python = ">=3.10"
 # networkx for the graph layer (present on the system Python). The guilt-by-association
-# command optionally uses mtbc-gene-function, and the API fallback uses string-db, both
+# command optionally uses mtbc-gene (mtbc_gene_function), and the API fallback uses string-db, both
 # lazily (wire them on PYTHONPATH via run_network.sh for the full feature set).
 dependencies = ["networkx"]
 

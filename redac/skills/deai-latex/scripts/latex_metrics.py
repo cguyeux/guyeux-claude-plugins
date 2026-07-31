@@ -56,8 +56,10 @@ DROP_CMDS = (
 # Motifs de cuisine locale (R12), cherches dans le TEXTE RENDU du PDF.
 #
 # Le piege ici est la SUR-DETECTION. Une regex "un slash quelque part" ramasse
-# GAS6/AXL, epithelial/mesenchymal, E/M, 0.5/0.5, miR-205/ZEB1, un DOI... Un test
-# qui hurle a tort est un test qu'on apprend a ignorer : il est PIRE qu'absent.
+# GAS6/AXL, epithelial/mesenchymal, E/M, 0.5/0.5, miR-205/ZEB1, 6/8/10/1 (partition
+# de phenotypes), un DOI... Un test qui hurle a tort est un test qu'on apprend a
+# ignorer : il est PIRE qu'absent. Deux lignes de defense : les INDICES FORTS de
+# chemin ci-dessous, et le rejet de tout match SANS lettre (voir scan_pdf_for_local_paths).
 # On exige donc un INDICE FORT de chemin de fichier, pas un simple slash :
 #   - un segment snake_case suivi d'un slash        (met_rtk_split/, data_raw/)
 #   - une extension de fichier locale connue        (phase3.py, report.json)
@@ -143,6 +145,14 @@ def scan_pdf_for_local_paths(pdf: Path) -> list[dict] | None:
         for pat, kind in LOCAL_PATTERNS:
             for m in re.finditer(pat, line):
                 tok = m.group(0)
+                # Un chemin / script / repertoire interne contient TOUJOURS au moins
+                # une lettre. Une sequence purement numerique separee par des slashes
+                # (6/8/10/1 = partition de phenotypes E/M/pEM/Naive, 0.5/0.5, 2020/21)
+                # est un ratio, une date ou un decompte, jamais un chemin. Sans ce
+                # garde-fou, "chemin multi-segments" ramasse ces nombres -- exactement
+                # le faux positif que R12 existe pour eviter (vecu mabossDemo 2026-07-21).
+                if not re.search(r"[A-Za-z]", tok):
+                    continue
                 # Tester l'allow-list sur le VOISINAGE, pas sur le token seul :
                 # pdftotext casse les DOI en fin de ligne ("doi: 10." puis
                 # "1093/bioinformatics/btad374"), et le fragment orphelin ressemble

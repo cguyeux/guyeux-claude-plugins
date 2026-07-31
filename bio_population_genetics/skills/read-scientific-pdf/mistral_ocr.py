@@ -124,6 +124,247 @@ def to_markdown(resp):
 _MARKDOWN_PUR = re.compile(r"^[#*_~`>|\-+=\[\]().:]+$")
 
 
+# --------------------------------------------------------------------------
+# GARDE-FOU D'EFFONDREMENT (ecritures anciennes)
+#
+# Pourquoi : un OCR valide sur une ecriture NE SE GENERALISE PAS a une ecriture
+# plus ancienne, et quand il echoue il ne produit PAS du charabia -- il produit
+# du FAUX VRAISEMBLABLE. Mesure sur le fonds d'Ancien Regime des AN (13/07/2026) :
+#   1617 : « Louis par la grace de Dieu ... de Navarre »
+#       -> « Conia par la grace de Jean ... de Manasse »
+#   1789 : « naturalite / Vercruysse / Tournay / 1789 »
+#       -> « patinoles  / Parcoutre  / Lormay  / 1785 »
+#   1702 : un placet bordelais -> « ayant ete banee [en CYRILLIQUE] comme Avangers »
+# « Conia par la grace de Jean Roy de France » A L'AIR d'etre du francais de 1617.
+# Un --batch naif sur 287 images produirait 287 pages de faux credible : PIRE que
+# rien, car cela ressemble a un livrable.
+#
+# D'ou ces deux signaux, et surtout : en --batch on SONDE UNE PIECE AVANT de lancer
+# le lot. La sonde coute 1 page et sauve le corpus entier.
+# --------------------------------------------------------------------------
+
+# Alphabets etrangers a un texte latin. Si le moteur sort du cyrillique dans un
+# placet bordelais, il est tres au-dela de sa zone de competence : signal binaire.
+_HORS_ALPHABET = re.compile(
+    r"[Ѐ-ӿͰ-Ͽ؀-ۿ֐-׿一-鿿぀-ヿ]"
+)
+
+
+_DICOS = ("/usr/share/hunspell/fr_FR.dic", "/usr/share/myspell/fr_FR.dic")
+_MOT = re.compile(r"[A-Za-zÀ-ÿ']{3,}")
+_LEX = None
+
+
+def lexique():
+    """Formes du dictionnaire francais (hunspell), chargees une fois. () si absent."""
+    global _LEX
+    if _LEX is None:
+        _LEX = set()
+        for d in _DICOS:
+            try:
+                lignes = open(d, encoding="iso-8859-1", errors="ignore").read().splitlines()
+            except OSError:
+                continue
+            # format .dic : « mot/FLAGS », 1re ligne = nombre d'entrees
+            _LEX = {l.split("/")[0].strip().lower() for l in lignes[1:] if l.strip()}
+            break
+    return _LEX
+
+
+# MOTS-OUTILS : stables depuis le moyen francais. Leur DENSITE dit « c'est du francais »
+# INDEPENDAMMENT de l'orthographe lexicale. Indispensable, car la francite par dictionnaire
+# MODERNE est un FAUX AMI sur le texte ancien (voir francite()).
+_OUTILS = set("""de du des et ou la le les un une en dans sur pour par avec auec a au aux
+que qui quoi dont ne pas plus est sont ont nous vous ils elle elles il leur leurs ce ces
+cette cet son sa ses notre nostre votre vostre comme si tout tous toutes toute ainsi bien
+tres apres avant sans sous entre lesquels lesquelz""".split())
+
+
+def mots_outils(texte):
+    """Densite de mots-outils. Un texte francais REEL titre 30-45 %, quelle que soit l'epoque.
+
+    POURQUOI CE SECOND SIGNAL EXISTE (decouvert le 14/07/2026, a mes depens) :
+    la francite par dictionnaire MODERNE **bloquerait une transcription CORRECTE de francais
+    ancien**. Mesure sur un parchemin de 1617, lu JUSTE par lecture multimodale :
+
+        « Nous auons receu l'humble supplication … noz chers et bien amez … natifz de la
+          ville d'Euora … residans en nostre ville de La Rochelle … priuilleges, franchises,
+          libertez, droictz … regnicolles »
+
+    Aucun de ces mots n'est au dictionnaire moderne. Resultat : francite **34 %** — sous le
+    seuil d'effondrement (50 %) — alors que la lecture est BONNE. Le charabia de l'OCR sur la
+    MEME page titrait 28 % : les deux signaux sont **indistinguables**.
+
+    La densite de mots-outils, elle, separe nettement :
+        Mistral (charabia)      24.6 %
+        lecture juste (1617)    39.9 %   <- dans la fourchette d'un texte francais reel
+
+    ⇒ **Ne jamais juger un texte ancien avec un dictionnaire moderne SEUL.**
+    Reserve : un texte TELEGRAPHIQUE (rapport en tirets, formulaire) titre naturellement bas
+    (mesure : 22 % sur un rapport de 1914 pourtant bien lu). Ce signal vaut pour la PROSE.
+    """
+    # PIEGE : _MOT exige 3 caracteres MINIMUM (bon pour la francite, qui ignore le bruit).
+    # Ici c'est l'inverse : les mots-outils les plus frequents font DEUX lettres — « de »,
+    # « et », « la », « le », « en », « il ». Les exclure divise le signal par cinq et casse
+    # le test. Il faut donc son PROPRE tokeniseur, sans plancher de longueur.
+    ms = [w.lower() for w in re.findall(r"[A-Za-zÀ-ÿ']+", texte)]
+    if len(ms) < 40:
+        return 0.0, len(ms)
+    return sum(1 for w in ms if w in _OUTILS) / len(ms), len(ms)
+
+
+def francite(texte):
+    """Part des mots reconnus par le dictionnaire francais. (0, 0) si indecidable.
+
+    ATTENTION — FAUX AMI SUR LE TEXTE ANCIEN : ce signal suppose une orthographe MODERNE.
+    Sur du francais du XVIIe correctement transcrit, il s'effondre (34 % mesure) sans qu'il
+    y ait la moindre erreur. **Toujours le croiser avec mots_outils().** Voir effondrement().
+
+    C'EST LE SIGNAL JUSTE, et il a fallu se tromper pour le trouver. Le score de
+    confiance de l'OCR mesure la NETTETE DU TRACE, pas la justesse de la lecture :
+    sur une chancellerie calligraphiee, le moteur voit des traits nets, se declare
+    donc SUR (mediane 0.72 sur le parchemin de 1617) et assemble pourtant des mots
+    faux. La confiance ne detecte PAS le faux vraisemblable. Le dictionnaire, si.
+
+    Calibre (13/07/2026) sur 82 dossiers modernes deja transcrits :
+        mediane 61.5 %, p05 54.6 %, min 32.5 %.
+    Ce minimum est le dossier BAGNALL -- « anglais ne en 1762, naturalise en 1815 »,
+    le plus ANCIEN du corpus dit moderne. Le signal a donc designe tout seul la
+    seule ecriture ancienne cachee dans le lot : validation externe, non cherchee.
+    En regard, l'Ancien Regime : 28.4 % (1617), 41.7 % (1789), 52.6 % (1702).
+    """
+    lex = lexique()
+    if not lex:
+        return 0.0, 0
+    ms = [w.lower() for w in _MOT.findall(texte)]
+    if len(ms) < 30:                     # trop court pour conclure
+        return 0.0, len(ms)
+    return sum(1 for w in ms if w in lex) / len(ms), len(ms)
+
+
+def effondrement(resp, seuil_fr=0.50, seuil_fr_filet=0.58, seuil_mediane=0.65):
+    """Detecte que l'OCR est HORS DE SA ZONE DE COMPETENCE (ecriture ancienne).
+
+    Ne dit PAS « il y a des erreurs » (il y en a toujours) mais « le resultat n'est
+    pas exploitable, meme comme brouillon ».
+
+    TROIS signaux, de fiabilite tres inegale -- et l'ordre compte :
+
+      (1) FRANCITE (juge principal). Voir francite() : le seul qui voie le FAUX
+          VRAISEMBLABLE, parce qu'il juge le RESULTAT et non l'hesitation du moteur.
+      (2) ALPHABET ETRANGER (binaire, tres specifique). Si le moteur sort du
+          cyrillique dans un placet bordelais, il est tres au-dela de sa competence.
+      (3) CONFIANCE (appoint SEULEMENT). Piege documente : elle reste haute sur le
+          faux quand le tracé est net. Ne jamais s'en servir seule.
+
+    Retourne un dict de diagnostic ; ne leve jamais d'exception.
+    """
+    mots, douteux, confs, exotiques = 0, 0, [], []
+    for p in resp.get("pages", []):
+        for w in ((p.get("confidence_scores") or {}).get("word_confidence_scores") or []):
+            txt = w["text"].strip()
+            if not txt or _MARKDOWN_PUR.match(txt):
+                continue
+            mots += 1
+            confs.append(w["confidence"])
+            if w["confidence"] < 0.50:
+                douteux += 1
+            if _HORS_ALPHABET.search(txt):
+                exotiques.append((p["index"] + 1, txt))
+
+    txt_complet = to_markdown(resp)
+    fr, n_mots = francite(txt_complet)
+    ou, _ = mots_outils(txt_complet)
+    d = {"mots": mots, "exotiques": exotiques, "francite": fr, "outils": ou,
+         "n_mots": n_mots, "motifs": []}
+
+    confs.sort()
+    d["part_douteux"] = douteux / mots if mots else 0.0
+    d["mediane"] = confs[len(confs) // 2] if confs else 0.0
+
+    if n_mots < 30:
+        # Page vide, illustration, ou scan sans texte : rien a juger.
+        d["verdict"] = "indetermine"
+        return d
+
+    # LE GARDE-FOU CONTRE LE GARDE-FOU : une francite basse ne condamne QUE si la densite de
+    # mots-outils est basse AUSSI. Sinon on est devant du FRANCAIS ANCIEN BIEN LU (orthographe
+    # d'epoque absente du dictionnaire moderne), et bloquer serait une FAUSSE ALERTE.
+    # Mesure (1617) : lecture juste -> francite 34 % MAIS outils 40 % => ON LAISSE PASSER.
+    #                 charabia OCR  -> francite 28 % ET  outils 25 % => ON BLOQUE.
+    ancien_bien_lu = ou >= 0.30
+
+    if fr and fr < seuil_fr and not ancien_bien_lu:
+        d["motifs"].append(
+            f"FRANCITE EFFONDREE : {fr:.0%} des mots reconnus par le dictionnaire "
+            f"francais (seuil {seuil_fr:.0%} ; corpus moderne : mediane 61 %, p05 55 %), "
+            f"ET seulement {ou:.0%} de mots-outils (un francais reel titre 30-45 %). "
+            f"Le texte produit N'EST PAS du francais."
+        )
+    elif fr and fr < seuil_fr and ancien_bien_lu:
+        # NOTE, PAS UN MOTIF : les motifs declenchent le blocage. Ici on veut precisement
+        # NE PAS bloquer — c'est tout l'objet du correctif.
+        d.setdefault("notes", []).append(
+            f"francite basse ({fr:.0%}) MAIS densite de mots-outils normale ({ou:.0%}) "
+            f"=> probablement du FRANCAIS ANCIEN CORRECTEMENT LU (orthographe d'epoque : "
+            f"« auons », « royaulme », « priuilleges »…). Le dictionnaire moderne ne peut "
+            f"pas en juger. Non bloquant."
+        )
+    if exotiques:
+        apercu = ", ".join(f"« {t} » (p.{pg})" for pg, t in exotiques[:3])
+        d["motifs"].append(
+            f"ALPHABET ETRANGER : {len(exotiques)} mot(s) hors alphabet latin dans "
+            f"un texte latin -- {apercu}"
+        )
+    if fr and fr < seuil_fr_filet and d["mediane"] < seuil_mediane:
+        d["motifs"].append(
+            f"FILET : francite basse ({fr:.0%}) ET confiance mediane basse "
+            f"({d['mediane']:.2f}) -- deux signaux independants concordent"
+        )
+
+    d["verdict"] = "effondrement" if d["motifs"] else "exploitable"
+    return d
+
+
+_ALERTE = """
+================================================================================
+  ARRET : L'OCR EST HORS DE SA ZONE DE COMPETENCE SUR CE DOCUMENT
+================================================================================
+{motifs}
+  Mesures : {mots} mots, {part:.0%} sous 0.50, mediane {med:.2f}
+
+  CE QUE CELA SIGNIFIE. Cet OCR n'echoue pas en produisant du charabia : il
+  produit du FAUX VRAISEMBLABLE. Sur une ecriture ancienne, « Louis par la grace
+  de Dieu ... de Navarre » devient « Conia par la grace de Jean ... de Manasse »,
+  qui A L'AIR d'etre du vieux francais. Transcrire un lot entier ainsi produit un
+  corpus de faux credible -- PIRE que pas de transcription du tout, car cela
+  ressemble a un livrable et sera cite.
+
+  CE QU'IL FAUT FAIRE A LA PLACE.
+  1. TRANSCRIRE EN MULTIMODAL (outil `Read` sur l'image). Sur les ecritures
+     anciennes le rapport de force s'INVERSE : le multimodal bat nettement l'OCR.
+  2. L'OCR garde une valeur d'INDEX GROSSIER : les noms propres et les toponymes
+     passent souvent (« Leonor Rodriguez », « Evora », « la Rochelle ») meme quand
+     le corps du texte est perdu. Utile pour REPERER une piece, jamais pour la CITER.
+
+  Pour passer outre en connaissance de cause : --force
+================================================================================
+"""
+
+
+def crier(d, fichier=""):
+    """Affiche l'alerte d'effondrement sur stderr. Retourne True si effondrement."""
+    if d.get("verdict") != "effondrement":
+        return False
+    print(_ALERTE.format(
+        motifs="\n".join(f"  - {m}" for m in d["motifs"]),
+        mots=d["mots"], part=d.get("part_douteux", 0), med=d.get("mediane", 0),
+    ), file=sys.stderr)
+    if fichier:
+        print(f"  (sonde : {fichier})\n", file=sys.stderr)
+    return True
+
+
 def audit(resp, fort=0.50, faible=0.80):
     """Marque les mots peu surs et liste les candidats a arbitrage multimodal.
 
@@ -247,6 +488,8 @@ def main():
                     help="scores de confiance par mot (a croiser avec le controle semantique)")
     ap.add_argument("--audit", action="store_true",
                     help="marque les mots peu surs et liste les pages a arbitrer en multimodal")
+    ap.add_argument("--force", action="store_true",
+                    help="passer outre le garde-fou d'effondrement (ecritures anciennes)")
     a = ap.parse_args()
 
     if a.batch:
@@ -256,6 +499,23 @@ def main():
                  {".pdf", ".png", ".jpg", ".jpeg"}]
         if not paths:
             sys.exit(f"Aucun document exploitable dans {a.target}")
+
+        # SONDE PREVENTIVE. Ocerisier tout le lot PUIS constater que c'est faux ne
+        # sauve rien : le mal est fait, et 287 pages de faux vraisemblable sont
+        # deja sur le disque. On sonde donc UNE piece avant d'engager le lot.
+        # Coute 1 page, sauve le corpus.
+        if not a.force:
+            print(f"[garde-fou] sonde sur 1 piece avant d'engager {len(paths)} documents...",
+                  file=sys.stderr)
+            try:
+                sonde = ocr(paths[len(paths) // 2], pages=[0], confidence=True)
+                if crier(effondrement(sonde), paths[len(paths) // 2]):
+                    sys.exit("Lot NON lance. Transcrire en multimodal, ou --force.")
+            except SystemExit:
+                raise
+            except Exception as e:  # la sonde ne doit jamais bloquer sur un incident reseau
+                print(f"[garde-fou] sonde impossible ({e}) : on continue.", file=sys.stderr)
+
         return batch(paths, a.out or "ocr_out")
 
     pages = None
@@ -263,7 +523,16 @@ def main():
         lo, _, hi = a.pages.partition("-")
         pages = list(range(int(lo) - 1, int(hi or lo)))  # API en index 0-based
 
-    resp = ocr(a.target, pages=pages, confidence=a.confidence or a.audit)
+    # Toujours demander les confiances : elles ne coutent rien et alimentent le
+    # garde-fou, meme quand l'utilisateur n'a demande ni --confidence ni --audit.
+    resp = ocr(a.target, pages=pages, confidence=True)
+    diag = effondrement(resp)
+    if diag.get("verdict") == "effondrement":
+        crier(diag, a.target)
+        if not a.force:
+            sys.exit("Transcription NON ecrite. Transcrire en multimodal, ou --force.")
+        print("[--force] transcription ecrite malgre l'effondrement.", file=sys.stderr)
+
     if a.json:
         out = json.dumps(resp, ensure_ascii=False, indent=2)
     elif a.audit:

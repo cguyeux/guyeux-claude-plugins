@@ -4,9 +4,9 @@
 The companion `mk_test_and_ascertainment.py` runs a single POOLED MK test
 (genome-wide, Tier 1-2 fixed vs Tier 4 polymorphic). This script computes the SAME
 test gene by gene and writes a tidy per-gene table -- the exact format that
-`mtbc-pathway-explain --from-selection` consumes and significance-gates, so the chain
+`mtbc-gene` pathway mode (`--from-selection`) consumes and significance-gates, so the chain
 
-    annotate_spdis  ->  mk_per_gene  ->  mtbc-pathway-explain --from-selection  ->  Atlas
+    annotate_spdis  ->  mk_per_gene  ->  mtbc-gene pathway --from-selection  ->  Atlas
 
 runs on a lineage without any manual step.
 
@@ -26,12 +26,12 @@ substitutions). Pool the counts to gain power at the scale the Atlas actually na
 `--groups FILE` by an external gene->group map (a pathway catalogue YAML or a 2-column
 gene<TAB>group TSV; a gene pools into every group it belongs to). Grouped output replaces
 locus_tag/gene with `group` and `n_genes`. Significant catalogue pathways can then be
-narrated with `mtbc-pathway-explain <PATHWAY_ID>`.
+narrated with `mtbc-gene` pathway mode (`run_pathway.sh <PATHWAY_ID>`).
 
     python scripts/mk_per_gene.py data/mk_input_annotated.csv --out mk_per_gene.tsv
     python scripts/mk_per_gene.py table.csv --fixed-tiers 1,2 --poly-tiers 3,4 --min-count 3
     # pooled to pathway scale (one row per pathway, powered):
-    python scripts/mk_per_gene.py table.csv --groups .../mtbc_pathway_explain/data/pathways.yaml
+    python scripts/mk_per_gene.py table.csv --groups .../mtbc-gene/src/mtbc_pathway_explain/data/pathways.yaml
     python scripts/mk_per_gene.py table.csv --group-col Functional_Category
 """
 from __future__ import annotations
@@ -76,7 +76,7 @@ def _load_groups(path) -> dict[str, set]:
     """gene/locus token (lowercased) -> set(group names), for `--groups`.
 
     Accepts either a pathway catalogue YAML (``pathway: {genes: [...]}`` -- e.g.
-    mtbc-pathway-explain's `data/pathways.yaml`; a gene may belong to several
+    mtbc-gene's `src/mtbc_pathway_explain/data/pathways.yaml`; a gene may belong to several
     pathways) or a 2-column gene->group TSV/CSV. A variant joins a group if its
     locus_tag OR its gene name matches one of the group's member tokens.
     """

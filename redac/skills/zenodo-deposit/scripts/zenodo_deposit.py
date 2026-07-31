@@ -20,6 +20,7 @@ Exemples :
   python zenodo_deposit.py --sandbox create --src paper/eval --metadata meta.json
 """
 import argparse
+import hashlib
 import json
 import os
 import sys
@@ -97,6 +98,15 @@ def zip_dir(src: Path) -> Path:
     return out
 
 
+def md5_of(path: Path) -> str:
+    """MD5 en streaming (Zenodo checksumme les fichiers en MD5)."""
+    h = hashlib.md5()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
 def build_metadata(args) -> dict:
     if args.metadata:
         return json.loads(Path(args.metadata).read_text())
@@ -133,10 +143,24 @@ def _finalize(z: Z, args, dep_id, bucket):
     zippath = Path(args.zip) if args.zip else zip_dir(Path(args.src))
     if not zippath.exists():
         sys.exit(f"Archive absente : {zippath}")
-    print(f"  Upload {zippath.name} ({zippath.stat().st_size/1e6:.1f} Mo) (remplace si même nom) ...")
-    st, _ = z.req(f"{bucket}/{zippath.name}", "PUT", zippath.read_bytes(), ctype="application/octet-stream")
+    local_size = zippath.stat().st_size
+    local_md5 = md5_of(zippath)
+    print(f"  Upload {zippath.name} ({local_size/1e6:.1f} Mo, md5 {local_md5}) (remplace si même nom) ...")
+    st, up = z.req(f"{bucket}/{zippath.name}", "PUT", zippath.read_bytes(), ctype="application/octet-stream")
     if st not in (200, 201):
         sys.exit(f"Échec upload (HTTP {st}).")
+    # Vérification d'intégrité : Zenodo renvoie la taille et le checksum MD5 du fichier reçu.
+    # Un upload tronqué/corrompu (ex. timeout partiel) doit ÉCHOUER ici, pas passer pour un succès.
+    remote_size = up.get("size")
+    remote_md5 = (up.get("checksum") or "").split(":")[-1]
+    if remote_size is not None and remote_size != local_size:
+        sys.exit(f"Intégrité KO : taille distante {remote_size} != locale {local_size}. Ré-uploader.")
+    if remote_md5 and remote_md5 != local_md5:
+        sys.exit(f"Intégrité KO : md5 distant {remote_md5} != local {local_md5}. Ré-uploader.")
+    if remote_md5 or remote_size is not None:
+        print(f"  Intégrité OK (taille {remote_size} + md5 {remote_md5 or '(non renvoyé)'} confirmés côté Zenodo).")
+    else:
+        print("  (Zenodo n'a pas renvoyé taille/checksum ; vérifier via 'status' avant de publier.)")
     print(f"  Métadonnées ...")
     st, body = z.req(f"{z.base}/api/deposit/depositions/{dep_id}", "PUT",
                      json.dumps(build_metadata(args)).encode())
@@ -167,8 +191,42 @@ def cmd_update(z: Z, args):
     if st != 200:
         sys.exit(f"Brouillon introuvable (HTTP {st}) : {dep}")
     if dep.get("submitted"):
-        sys.exit("Ce dépôt est déjà publié : impossible de le modifier (créer une nouvelle version).")
+        sys.exit("Ce dépôt est déjà publié : impossible de le modifier "
+                 "(utiliser 'new-version' pour déposer une v2).")
     _finalize(z, args, args.id, dep["links"]["bucket"])
+
+
+def cmd_newversion(z: Z, args):
+    """Dépose une NOUVELLE VERSION d'un record déjà PUBLIÉ (v2, v3...).
+
+    Zenodo n'autorise pas la modification d'un record publié ; il faut créer une
+    version liée sous le même DOI concept. Flux : POST actions/newversion -> brouillon
+    hérité -> retirer les fichiers hérités (sauf --keep-files) -> _finalize (upload +
+    métadonnées + DOI de version réservé). S'arrête au brouillon (publication = 'publish').
+    """
+    print(f"[nouvelle version] à partir du record publié {args.id} sur {z.base} ...")
+    st, rec = z.req(f"{z.base}/api/deposit/depositions/{args.id}")
+    if st != 200:
+        sys.exit(f"Record introuvable (HTTP {st}) : {rec}")
+    if not rec.get("submitted"):
+        sys.exit("Ce record n'est pas publié : utiliser 'update' (brouillon) ou 'create' (nouveau record).")
+    st, body = z.req(f"{z.base}/api/deposit/depositions/{args.id}/actions/newversion", "POST", b"")
+    if st not in (200, 201, 202):
+        sys.exit(f"Échec newversion (HTTP {st}) : {body}")
+    draft_url = body.get("links", {}).get("latest_draft", "")
+    draft_id = draft_url.rstrip("/").split("/")[-1]
+    if not draft_id:
+        sys.exit(f"Brouillon de nouvelle version introuvable dans la réponse : {body}")
+    st, draft = z.req(f"{z.base}/api/deposit/depositions/{draft_id}")
+    if st != 200:
+        sys.exit(f"Brouillon {draft_id} illisible (HTTP {st}) : {draft}")
+    print(f"      brouillon id={draft_id}")
+    if not args.keep_files:
+        for f in draft.get("files", []):
+            st, _ = z.req(f"{z.base}/api/deposit/depositions/{draft_id}/files/{f.get('id')}", "DELETE")
+            print(f"      fichier hérité {'retiré' if st in (200, 201, 204) else f'NON retiré (HTTP {st})'} :"
+                  f" {f.get('filename')}")
+    _finalize(z, args, draft_id, draft["links"]["bucket"])
 
 
 def cmd_status(z: Z, dep_id):
@@ -179,7 +237,9 @@ def cmd_status(z: Z, dep_id):
     print(json.dumps({"id": dep_id, "title": m.get("title"), "state": dep.get("state"),
                       "submitted": dep.get("submitted"),
                       "reserved_doi": m.get("prereserve_doi", {}).get("doi"),
-                      "doi": dep.get("doi"), "files": [f["filename"] for f in dep.get("files", [])]},
+                      "doi": dep.get("doi"),
+                      "files": [{"filename": f.get("filename"), "filesize": f.get("filesize"),
+                                 "checksum": f.get("checksum")} for f in dep.get("files", [])]},
                      indent=2, ensure_ascii=False))
 
 
@@ -214,6 +274,11 @@ def main():
 
     add_deposit_args(sub.add_parser("create"))
     u = sub.add_parser("update"); u.add_argument("id"); add_deposit_args(u)
+    nv = sub.add_parser("new-version", help="déposer une v2/v3 d'un record déjà PUBLIÉ")
+    nv.add_argument("id", help="id (ou DOI numérique) du record publié à versionner")
+    nv.add_argument("--keep-files", action="store_true",
+                    help="conserver les fichiers hérités de la version précédente (par défaut ils sont retirés)")
+    add_deposit_args(nv)
     s = sub.add_parser("status"); s.add_argument("id")
     p = sub.add_parser("publish"); p.add_argument("id")
     args = ap.parse_args()
@@ -226,6 +291,8 @@ def main():
         cmd_create(z, args)
     elif args.cmd == "update":
         cmd_update(z, args)
+    elif args.cmd == "new-version":
+        cmd_newversion(z, args)
     elif args.cmd == "status":
         cmd_status(z, args.id)
     elif args.cmd == "publish":

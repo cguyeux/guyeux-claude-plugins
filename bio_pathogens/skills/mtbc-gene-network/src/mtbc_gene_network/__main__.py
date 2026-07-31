@@ -1,10 +1,10 @@
 """Shell CLI for the mtbc-gene-network skill (local interactome graph operations).
 
-    python3 -m mtbc_gene_network neighbors katG --min-score 700 --top 10
+    python3 -m mtbc_gene_network --min-score 700 neighbors katG --top 10
     python3 -m mtbc_gene_network path katG rpoB
     python3 -m mtbc_gene_network subnetwork katG,ahpC,furA
     python3 -m mtbc_gene_network hubs --top 15 [--metric betweenness]
-    python3 -m mtbc_gene_network communities --top 10 --min-score 700
+    python3 -m mtbc_gene_network --min-score 700 communities --top 10
     python3 -m mtbc_gene_network guilt Rv2239c          # guilt-by-association for a dark gene
     python3 -m mtbc_gene_network info
 

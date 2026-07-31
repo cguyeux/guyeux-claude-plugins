@@ -1,0 +1,68 @@
+{
+  "voices": [
+    {
+      "name": "Colas Breugnon (litteratureaudio)",
+      "id": "db116f95-5013-480d-99d3-e100c72cbe24",
+      "slug": "fr_colas_breugnon",
+      "gender": "female",
+      "languages": [
+        "fr_fr"
+      ],
+      "description": "litteratureaudio.com — Colas Breugnon (R. Rolland), chap. 2; style : aigu, très expressif; pour : récit vif et chaleureux, conte, chronique enjouée, jeunesse, roman de terroir",
+      "created_at": "2026-07-21 12:26:46.426796+00:00",
+      "source_audio": "/run/media/christophe/Classique/Livres audio - Urgent/Rolland, Romain - Colas Breugnon/Romain_Rolland_-_Colas_Breugnon_Chap02.mp3",
+      "sample_start": 120.0,
+      "sample_dur": 30.0,
+      "style": "aigu, très expressif",
+      "suited_for": "récit vif et chaleureux, conte, chronique enjouée, jeunesse, roman de terroir"
+    },
+    {
+      "name": "Le retour du Roi (Tolkien)",
+      "id": "6c8c442b-2dfd-4462-aacd-b27ce1818d7b",
+      "slug": "fr_retour_du_roi",
+      "gender": "male",
+      "languages": [
+        "fr_fr"
+      ],
+      "style": "grave, très expressif",
+      "suited_for": "récit épique, fantasy, aventure, roman à souffle, textes dramatiques",
+      "description": "Le Seigneur des Anneaux, Le retour du Roi, plage 004; style : grave, très expressif; pour : récit épique, fantasy, aventure, roman à souffle, textes dramatiques",
+      "created_at": "2026-07-21 12:42:10.296881+00:00",
+      "source_audio": "/run/media/christophe/Classique/Livres audio - Urgent/Tolkien, J.R.R. - Le Seigneur des anneaux/3. Le retour du Roi/Le retour du Roi - 004.mp3",
+      "sample_start": 90.0,
+      "sample_dur": 30.0
+    },
+    {
+      "name": "Guy Moign (Fortune de France)",
+      "id": "6ee52b2a-4cbd-4e76-9c45-e6803e98724d",
+      "slug": "fr_guy_moign",
+      "gender": "male",
+      "languages": [
+        "fr_fr"
+      ],
+      "style": "médium-grave, très expressif",
+      "suited_for": "roman historique, récit d'aventure, cape et d'épée, narration vivante",
+      "description": "Robert Merle, Fortune de France III — Paris ma bonne ville; style : médium-grave, très expressif; pour : roman historique, récit d'aventure, cape et d'épée, narration vivante",
+      "created_at": "2026-07-21 13:07:14.546100+00:00",
+      "source_audio": "/run/media/christophe/Classique/Livres audio - Urgent/Merle, Robert - Fortune de France/3. Paris ma bonne ville/cd1/03 Chapitre 1 - 03.mp3",
+      "sample_start": 90.0,
+      "sample_dur": 30.0
+    },
+    {
+      "name": "Marie Stuart (Zweig)",
+      "id": "e3141227-9857-400a-b813-4e61aa243184",
+      "slug": "fr_marie_stuart",
+      "gender": "male",
+      "languages": [
+        "fr_fr"
+      ],
+      "style": "très grave (voix de basse), posé",
+      "suited_for": "biographie, récit historique, essai, documentaire, narration grave et solennelle",
+      "description": "Stefan Zweig — Marie Stuart (ep. 7), narrateur non crédité; style : très grave (voix de basse), posé; pour : biographie, récit historique, essai, documentaire, narration grave et solennelle",
+      "created_at": "2026-07-21 13:07:52.753761+00:00",
+      "source_audio": "/run/media/christophe/Classique/Livres audio - Urgent/Zweig, Stefan - Marie Stuart/MarieStuart_ep7 - 001.m4a",
+      "sample_start": 180.0,
+      "sample_dur": 35.0
+    }
+  ]
+}

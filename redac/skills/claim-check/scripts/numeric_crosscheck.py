@@ -125,6 +125,8 @@ def main() -> int:
     ap.add_argument("--assert-file", metavar="JSON",
                     help="verification DECLARATIVE : {\"claims\": [{\"label\":..., \"tex\": 0.48, "
                          "\"path\": \"fichier.json:chemin.vers.valeur\"}]}. C'est le mode fiable.")
+    ap.add_argument("--lines", metavar="A-B",
+                    help="restreindre la COUVERTURE a cette plage de lignes du .tex (une section)")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
 
@@ -137,6 +139,13 @@ def main() -> int:
         # plusieurs conditions et ou seule l'ATTRIBUTION est en jeu.
         lut = dict(data)
         claims = json.loads(Path(a.assert_file).read_text(encoding="utf-8"))["claims"]
+        # Le fichier de claims dit « le manuscrit affirme X, qui vient de la source Y ».
+        # Il faut donc verifier LES DEUX cotes. Ne verifier que X contre Y laisse le fichier
+        # DERIVER du .tex : on corrige un chiffre dans le manuscrit, on oublie la declaration,
+        # et l'outil reste au vert en comparant une valeur que le manuscrit ne contient plus.
+        # Vecu le 2026-07-11 : une fourchette changee dans le .tex, « tous concordent » quand meme.
+        tex_vals = {round(v, 4) for _, v, _ in
+                    tex_numbers(Path(a.tex).read_text(encoding="utf-8"))}
         bad = 0
         for c in claims:
             src = lut.get(c["path"])
@@ -144,12 +153,44 @@ def main() -> int:
                 print(f"  INTROUVABLE {c['label']:<34} chemin absent : {c['path']}")
                 bad += 1
                 continue
-            ok_ = abs(src - float(c["tex"])) <= a.tol
-            bad += 0 if ok_ else 1
-            print(f"  {'OK   ' if ok_ else 'ECART'} {c['label']:<34} "
-                  f"source={src:<8} manuscrit={c['tex']}")
+            ok_src = abs(src - float(c["tex"])) <= a.tol
+            in_tex = round(float(c["tex"]), 4) in tex_vals
+            bad += 0 if (ok_src and in_tex) else 1
+            if not in_tex:
+                flag = "ORPHELIN"   # la declaration ne correspond a AUCUN nombre du manuscrit
+            elif not ok_src:
+                flag = "ECART"
+            else:
+                flag = "OK   "
+            print(f"  {flag} {c['label']:<34} source={src:<8} declare={c['tex']}"
+                  + ("  <- ABSENT du manuscrit : declaration perimee ?" if not in_tex else ""))
         print(f"\n{'TOUS LES CHIFFRES CONCORDENT' if not bad else f'{bad} ECART(S) A CORRIGER'}")
-        return 0 if not bad else 1
+
+        # --- COUVERTURE : le piege du mode declaratif ---------------------------------
+        # Un fichier de claims ne verifie QUE ce qu'on lui declare. Un chiffre OUBLIE dans
+        # les declarations passe donc au vert sans avoir ete verifie — et c'est exactement
+        # la ou se cachent les defauts (vecu 2026-07-11 : l'outil rendait « 23/23 OK »
+        # alors qu'une plage 0,47-0,58 du manuscrit, non declaree, melangeait des
+        # conditions). « Tout vert » ne vaut RIEN sans la couverture.
+        declared = {round(float(c["tex"]), 4) for c in claims}
+        lo, hi = (0, 10**9)
+        if a.lines:
+            lo, hi = (int(x) for x in a.lines.split("-"))
+        body = [(l, v, c) for l, v, c in tex_numbers(Path(a.tex).read_text(encoding="utf-8"))
+                if lo <= l <= hi and v >= a.min]
+        uncovered = [(l, v, c) for l, v, c in body if round(v, 4) not in declared]
+        scope = f"lignes {lo}-{hi}" if a.lines else "tout le corps"
+        print(f"\nCOUVERTURE ({scope}) : {len(body) - len(uncovered)}/{len(body)} nombres declares")
+        if uncovered:
+            print(f"  {len(uncovered)} nombre(s) NON declare(s) — donc NON verifies. C'est la que")
+            print("  se cachent les defauts. Declarer, ou justifier (litterature, n, chiffre rond) :")
+            seen = set()
+            for l, v, c in uncovered:
+                if v in seen:
+                    continue
+                seen.add(v)
+                print(f"    l.{l:<5} {v:<8} « {c[:72]} »")
+        return 0 if not bad and not uncovered else 1
 
     if not data:
         print("Aucune donnee chargee : rien a recroiser.", file=sys.stderr)
