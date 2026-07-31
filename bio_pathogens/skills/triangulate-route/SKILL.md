@@ -64,52 +64,81 @@ python plot_triangulation.py cv_triangulation.tsv --output cv_triangulation.png
 
 ## Workflow détaillé (4 étapes)
 
-### Étape 1 — Inventaire MTBC du pays cible
+### Étape 1 : Inventaire MTBC du pays cible
 
-Requête TBannotator :
+Requête TBannotator (vérifiée contre le schéma courant, 2026-07-31) :
 
 ```sql
-SELECT sc.lineage_level_1, sc.lineage_code, COUNT(DISTINCT sc.strain_id) as n
+SELECT sc.lineage_level_1, sc.lineage_code, COUNT(DISTINCT sc.strain_id) AS n
 FROM mv_strain_classification sc
 JOIN mv_strain_metadata sm ON sc.strain_id = sm.strain_id
-WHERE sm.geo_loc_name ILIKE '<PAYS>%'
+WHERE sm.geo_country = '<PAYS>'
   AND sm.species_group = 'M. tuberculosis'
   AND sc.system_name = 'Coll'
 GROUP BY sc.lineage_level_1, sc.lineage_code
 ORDER BY n DESC;
 ```
 
-Filtrer les sous-lignées avec n ≥ 5 pour analyse robuste.
+**Géographie : deux colonnes, deux usages.** `mv_strain_metadata` porte
+`geo_loc_name` (chaîne NCBI brute, par exemple `Mexico: Jalisco`), `geo_country`
+(pays normalisé) et `geo_region` (subdivision). Filtrer sur `geo_country = '<PAYS>'`
+plutôt que sur `geo_loc_name ILIKE '<PAYS>%'` : la normalisation gère les libellés
+non préfixés par le pays et les variantes orthographiques, que le `ILIKE` rate
+silencieusement.
 
-### Étape 2 — Voisinages mondiaux par sous-lignée (Shitikov23)
+Contrepartie à connaître : `geo_country` n'est renseigné que pour environ 174 000
+souches sur 255 000 (168 pays distincts). Un filtre sur `geo_country` écarte donc
+en silence un tiers de la base. Pour un inventaire exhaustif, récupérer aussi ce
+qui reste :
+
+```sql
+-- ce que le filtre normalise a laissé de côté
+SELECT geo_loc_name, COUNT(*) FROM mv_strain_metadata
+WHERE geo_country IS NULL AND geo_loc_name ILIKE '%<PAYS>%'
+GROUP BY geo_loc_name ORDER BY 2 DESC;
+```
+
+Filtrer les sous-lignées avec n ≥ 5 pour analyse robuste. Avant toute lecture
+historique, rapporter n au total séquencé du pays : un pays à 40 génomes déposés
+ne porte aucune signature exploitable, et l'absence d'une sous-lignée y est une
+absence d'échantillonnage.
+
+### Étape 2 : Voisinages mondiaux par sous-lignée (Shitikov23)
 
 Pour chaque sous-lignée présente avec n ≥ 5 dans le pays cible :
 
 ```sql
-WITH target_strains AS (
-  SELECT sc.strain_id, sc.lineage_code as target_lineage
-  FROM mv_strain_classification sc
-  JOIN mv_strain_metadata sm ON sc.strain_id = sm.strain_id
-  WHERE sm.geo_loc_name ILIKE '<PAYS>%' AND sm.species_group = 'M. tuberculosis'
-    AND sc.system_name = 'Shitikov23' AND sc.lineage_code = '<SOUS-LIGNEE>'
-)
-SELECT sm.geo_loc_name, COUNT(DISTINCT sc.strain_id) as n
-FROM target_strains ts
-JOIN mv_strain_classification sc ON sc.lineage_code = ts.target_lineage AND sc.system_name = 'Shitikov23'
+SELECT sm.geo_country, COUNT(DISTINCT sc.strain_id) AS n
+FROM mv_strain_classification sc
 JOIN mv_strain_metadata sm ON sc.strain_id = sm.strain_id
-WHERE sm.species_group = 'M. tuberculosis'
-  AND sm.geo_loc_name NOT ILIKE '<PAYS>%'
-  AND sm.geo_loc_name NOT IN ('USA', 'United Kingdom', 'Australia', 'Canada', 'Sweden', 'Germany', ...)
-GROUP BY sm.geo_loc_name
+WHERE sc.system_name = 'Shitikov23'
+  AND sc.lineage_code = '<SOUS-LIGNEE>'
+  AND sm.species_group = 'M. tuberculosis'
+  AND sm.geo_country IS DISTINCT FROM '<PAYS>'
+  AND sm.geo_country NOT IN ('USA', 'United Kingdom', 'Australia', 'Canada',
+                             'Sweden', 'Germany', 'Netherlands', 'France',
+                             'Norway', 'Denmark', 'Switzerland', 'Belgium')
+GROUP BY sm.geo_country
 ORDER BY n DESC
 LIMIT 15;
 ```
+
+La sous-lignée cible est déjà connue de l'étape 1, donc la CTE `target_strains`
+de la version précédente était un aller-retour inutile : elle ne servait qu'à
+retrouver un `lineage_code` déjà fixé par le paramètre. La requête directe
+ci-dessus renvoie le même résultat en un seul balayage.
+
+Attention à `NOT IN` avec des NULL : `geo_country NOT IN (...)` est faux dès que
+`geo_country` est NULL, donc les souches sans pays normalisé sont exclues, ce qui
+est le comportement voulu ici. En revanche `geo_country != '<PAYS>'` aurait le
+même effet par accident ; d'où le `IS DISTINCT FROM`, qui exprime l'intention
+explicitement.
 
 **Filtre crucial** : exclure les pays de l'immigration moderne (USA, UK, AU, CA, etc.)
 pour réduire le biais d'échantillonnage diaspora. Ces pays accumulent les souches de
 tous les pays sources, donc apparaîtraient toujours en tête.
 
-### Étape 3 — Mapping voisinages → bassins historiques
+### Étape 3 : Mapping voisinages → bassins historiques
 
 Construire un tableau de catégorisation par patterns :
 
@@ -123,7 +152,7 @@ Construire un tableau de catégorisation par patterns :
 | Géorgie + Chine + Russie + Asie Centrale | Beijing globalisé post-1900 |
 | Iran + Pakistan + Inde + Asie Centrale | Routes silk road (L3 CAS, L2 Beijing) |
 
-### Étape 4 — Validation historique via skills
+### Étape 4 : Validation historique via skills
 
 Pour chaque bassin candidat identifié :
 
@@ -136,7 +165,7 @@ Pour chaque bassin candidat identifié :
 | Austronésien | `lit-review` + Crowther 2016 PNAS | Migration Bornéo + route côtière |
 | Silk Road | `bio_redac:owtrad` Silk Road dataset | Routes Asie Centrale |
 
-### Étape 5 — Produire table + figure de triangulation
+### Étape 5 : Produire table + figure de triangulation
 
 Suivre le format Madagascar Z30 :
 

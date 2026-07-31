@@ -3,7 +3,7 @@ name: p3k14c
 description: >-
   Query the p3k14c global archaeological radiocarbon database (Bird et al. 2022,
   180,070 ¹⁴C dates) to anchor MTBC lineage emergence in archaeological
-  chronologies — especially animal domestication hotspots (cattle → M. bovis,
+  chronologies, especially animal domestication hotspots (cattle → M. bovis,
   caprines → M. caprae) and Neolithic sedentarization.
 
   Use when: dating the emergence of a zoonotic MTBC lineage, building a
@@ -12,7 +12,7 @@ description: >-
   near modern TB strain sampling locations.
 ---
 
-# p3k14c — Global Archaeological Radiocarbon Database for MTBC Contextualization
+# p3k14c : Global Archaeological Radiocarbon Database for MTBC Contextualization
 
 ## Client (resilient, tool-first)
 
@@ -47,8 +47,8 @@ from publications not previously indexed, under a unified schema.
 - **Licenses**: data CC0 (attribution requested) · code MIT · text CC BY 4.0
 
 **Why it matters for MTBC**: two of the biggest drivers of MTBC evolution are
-(i) **animal domestication** — the ancestral host-jumps giving rise to *M. bovis*,
-*M. caprae*, and related animal ecotypes — and (ii) **sedentarization and
+(i) **animal domestication**, the ancestral host-jumps giving rise to *M. bovis*,
+*M. caprae*, and related animal ecotypes, and (ii) **sedentarization and
 population density thresholds** required for human-adapted TB to persist.
 p3k14c provides the archaeological chronological scaffold to anchor both
 phenomena.
@@ -60,7 +60,7 @@ phenomena.
 
 ## Data Access
 
-### Option A — R package (recommended)
+### Option A : R package (recommended)
 
 ```r
 # Install
@@ -75,7 +75,7 @@ str(p3k14c_data)
 
 GitHub repo: `https://github.com/people3k/p3k14c`
 
-### Option B — Raw CSV
+### Option B : Raw CSV
 
 The raw, un-scrubbed dataset is archived on **tDAR**:
 
@@ -101,7 +101,7 @@ print(df.shape, df.columns.tolist())
 | `Error` | ✓ | One-sigma standard error on `Age` |
 | `Continent` | ✓ | Africa / Asia / Europe / NAmerica / SAmerica / Oceania |
 | `Material` |   | Sample material (charcoal, bone, shell, wood, seed…) |
-| `Taxa` |   | Taxon when applicable — **non-normalized**, copied from source |
+| `Taxa` |   | Taxon when applicable, **non-normalized**, copied from source |
 | `δ13C` |   | Isotopic fractionation correction |
 | `Method` |   | Conventional / AMS / other |
 | `Period` |   | Cultural period label (free text) |
@@ -113,7 +113,7 @@ print(df.shape, df.columns.tolist())
 | `Reference` |   | Bibliographic citation |
 
 > [!WARNING]
-> The `Taxa` field is **not taxonomically standardized** — it is copied verbatim
+> The `Taxa` field is **not taxonomically standardized**, it is copied verbatim
 > from the source dataset. Domesticate queries require fuzzy/regex matching
 > (see snippets below).
 
@@ -127,17 +127,17 @@ likely to look up:
 | *M. bovis* | Cattle (*Bos taurus*, *B. indicus*) | Near East + Indus domestication | ~10,500–8,000 BP |
 | *M. caprae* | Goats, sheep | Zagros / Fertile Crescent caprine domestication | ~11,000–9,000 BP |
 | *M. pinnipedii* | Pinnipeds (primary) + pre-Columbian humans (secondary) | Late Pleistocene / Holocene coastal sites; Pacific coast South America | variable; 500–1 000 BP for human crossover |
-| *M. orygis* | Antelopes, humans (South Asia) | South Asian wild ungulates | — |
+| *M. orygis* | Antelopes, humans (South Asia) | South Asian wild ungulates |, |
 | Human L1–L9 | Humans | Post-Neolithic demographic transition | last ~10 ka |
 
 > [!WARNING]
 > **Important epistemic caveat.** As of this skill's writing, **no ancient
 > DNA is published for *M. bovis*, *M. caprae*, *M. africanum*, or
-> *M. canettii*** (verified against SPAAM AncientMetagenomeDir — see
+> *M. canettii*** (verified against SPAAM AncientMetagenomeDir, see
 > `spaam-ancient-metagenome-dir`). The only ancient MTBC lineages with
 > published genomes are human-adapted *M. tuberculosis* (Kay2015, Sabin2020,
-> Jager2022 — all <300 BP) and ***M. pinnipedii*** in pre-contact /
-> colonial-era humans (Bos2014, Vagene2022 — 500–1 000 BP in Peru and
+> Jager2022, all <300 BP) and ***M. pinnipedii*** in pre-contact /
+> colonial-era humans (Bos2014, Vagene2022, 500–1 000 BP in Peru and
 > Colombia). Any "domestication-era" narrative built from p3k14c must
 > therefore be framed as a **testable hypothesis based on archaeological and
 > modern-genome evidence**, not as a story backed by ancient pathogen DNA.
@@ -148,7 +148,7 @@ likely to look up:
 
 ## Workflows
 
-### Workflow 1 — Anchor a TMRCA with archaeological evidence
+### Workflow 1 : Anchor a TMRCA with archaeological evidence
 
 1. Obtain TMRCA + 95% HPD from TBannotator / TreeTime / BEAST for a lineage of
    interest.
@@ -162,7 +162,7 @@ likely to look up:
    sites in p3k14c document the presence of [taxon/activity], consistent with
    a host-jump from [host] to [host]."*
 
-### Workflow 2 — Spatial co-location of a modern sampling site
+### Workflow 2 : Spatial co-location of a modern sampling site
 
 1. Obtain (lat, lon) for a modern MTBC isolate (e.g. from TBannotator metadata).
 2. Compute great-circle distance to all p3k14c sites within N km:
@@ -178,7 +178,7 @@ likely to look up:
    ```
 3. Filter the result by `Period` or `Taxa` to surface only context-relevant sites.
 
-### Workflow 3 — Neolithic demographic transition and human TB persistence
+### Workflow 3 : Neolithic demographic transition and human TB persistence
 
 1. Compute Summed Probability Distributions (SPD) of calibrated dates per
    region using the R package `rcarbon`:
@@ -190,7 +190,7 @@ likely to look up:
    ```
 2. Identify population expansions / declines in the region of interest.
 3. Compare with divergence / star-like radiations of human-adapted L4 or L2
-   sublineages — population density is a prerequisite for sustained TB
+   sublineages, population density is a prerequisite for sustained TB
    transmission chains.
 
 ## Pandas Snippets
@@ -237,16 +237,16 @@ gdf = gpd.GeoDataFrame(
 gdf.to_file("p3k14c_sites.gpkg", driver="GPKG")
 ```
 
-## Calibration — **do not skip**
+## Calibration : **do not skip**
 
 p3k14c stores **uncalibrated** radiocarbon BP dates. Before reporting any date
 in an article or comparing to a molecular-clock TMRCA, calibrate with:
 
-- **R** — `rcarbon::calibrate(x, errors, calCurves = "intcal20")` (or
+- **R**, `rcarbon::calibrate(x, errors, calCurves = "intcal20")` (or
   `"shcal20"` for Southern Hemisphere, `"marine20"` for marine samples)
-- **Python** — [`iosacal`](https://iosacal.readthedocs.io/) with IntCal20/SHCal20/Marine20
+- **Python**, [`iosacal`](https://iosacal.readthedocs.io/) with IntCal20/SHCal20/Marine20
 
-Reporting uncalibrated BP as if it were calendar years is a common error —
+Reporting uncalibrated BP as if it were calendar years is a common error,
 it misaligns with molecular-clock estimates by up to several thousand years.
 
 ## Integration with Other Skills

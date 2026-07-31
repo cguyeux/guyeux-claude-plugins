@@ -1,6 +1,12 @@
 ---
 name: sklearn-advanced
-description: Professional sub-skill for scikit-learn focused on robust pipeline architecture, custom estimator development, advanced feature engineering, and rigorous model validation. Covers Target Encoding, Nested Cross-Validation, and Production Deployment.
+description: >-
+  Professional scikit-learn sub-skill: robust Pipeline and ColumnTransformer architecture,
+  custom estimators and transformers implementing the fit/transform contract, target and
+  rare-category encoding, and rigorous validation including nested cross-validation. Use
+  when leakage is a risk, when a preprocessing step must be fitted inside cross-validation,
+  when tuning and evaluating in the same procedure, when writing a reusable estimator, or
+  when a validation score looks too good to be true.
 version: 1.4
 license: BSD-3-Clause
 ---

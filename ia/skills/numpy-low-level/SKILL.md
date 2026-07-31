@@ -1,6 +1,12 @@
 ---
 name: numpy-low-level
-description: Advanced sub-skill for NumPy focused on internal memory management, stride manipulation, structured arrays, and interfacing with C/Cython. Covers zero-copy operations and SIMD vectorization principles.
+description: >-
+  Advanced NumPy sub-skill: memory layout, strides, views versus copies, structured and
+  record arrays, buffer protocol, and interfacing with C/Cython. Use when an array operation
+  is unexpectedly slow or memory-hungry, when a mutation unexpectedly propagates through a
+  view, when building sliding windows or rolling statistics without copying, when reading a
+  binary layout into a structured dtype, or when the user mentions strides, as_strided,
+  sliding_window_view, ascontiguousarray, zero-copy or SIMD vectorisation.
 version: 1.26
 license: BSD-3-Clause
 ---
@@ -59,25 +65,56 @@ print(arr.__array_interface__['data']) # Memory pointer address
 
 - **Don't use np.append or np.concatenate in loops** - These are O(N²) because they copy the entire buffer every time.
 - **Don't ignore the "Copy Warning"** - Fancy indexing (`arr[[1, 3, 5]]`) always creates a copy, unlike basic slicing.
-- **Don't use as_strided blindly** - It is the most dangerous function in NumPy. It can lead to memory corruption or crashes if bounds are miscalculated.
+- **Don't use as_strided blindly** - It is the most dangerous function in NumPy. It can lead to memory corruption or crashes if bounds are miscalculated. Prefer `sliding_window_view` for every window that it can express.
 
 ## Low-Level Patterns
 
 ### 1. Sliding Windows (Zero-Copy Convolution)
 
+Use the built-in `sliding_window_view` (NumPy >= 1.20). It is the same zero-copy
+stride trick, with the shape and stride arithmetic done correctly for you, and it
+returns a read-only view so a stray write cannot corrupt the source buffer.
+
+```python
+from numpy.lib.stride_tricks import sliding_window_view
+
+win = sliding_window_view(arr, window_shape=5)   # (arr.size - 4, 5), no copy
+win.mean(axis=-1)                                # rolling mean
+
+# 2D, e.g. a 3x3 kernel over an image or a genome-position matrix
+sliding_window_view(img, (3, 3))                 # (H-2, W-2, 3, 3)
+
+# Strided windows (step > 1): slice the result, still a view
+sliding_window_view(arr, 5)[::2]                 # window every 2 positions
+```
+
+The view is read-only. To write into the windows, copy first
+(`np.ascontiguousarray(win)`), which is where the memory saving stops.
+
+<details>
+<summary>Advanced only: hand-rolled <code>as_strided</code></summary>
+
+`as_strided` is the primitive underneath. Reach for it only for a layout
+`sliding_window_view` cannot express (irregular strides, overlapping in more than
+one axis at once, reinterpreting a buffer). It performs no bounds checking: wrong
+shape or stride arithmetic reads past the end of the buffer and segfaults or, worse,
+returns silently wrong data.
+
 ```python
 from numpy.lib.stride_tricks import as_strided
 
 def sliding_window_1d(arr, window_size):
-    """Creates a virtual 2D view of a 1D array for rolling stats."""
+    arr = np.ascontiguousarray(arr)          # strides below assume C-contiguous
     itemsize = arr.itemsize
     shape = (arr.size - window_size + 1, window_size)
     strides = (itemsize, itemsize)
-    return as_strided(arr, shape=shape, strides=strides)
-
-# Result is a 2D array where each row is a window, 
-# but it uses NO additional memory.
+    return as_strided(arr, shape=shape, strides=strides, writeable=False)
 ```
+
+Note the two guards the naive version omits: forcing contiguity (the hard-coded
+`itemsize` strides are wrong for a sliced or transposed input) and
+`writeable=False`.
+</details>
 
 ### 2. Structured Arrays (Interoperable C-structs)
 

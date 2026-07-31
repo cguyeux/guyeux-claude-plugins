@@ -15,7 +15,7 @@ description: >-
   section for an article or seminar.
 ---
 
-# AADR — Allen Ancient DNA Resource for MTBC × Ancient Humans
+# AADR : Allen Ancient DNA Resource for MTBC × Ancient Humans
 
 ## Overview
 
@@ -100,9 +100,9 @@ is three-fold:
 
 1. **Host–pathogen cross-referencing.** Some skeletons yielded both ancient
    human DNA (catalogued in AADR) *and* ancient *M. tuberculosis* / *M. leprae*
-   DNA (catalogued in separate ancient-metagenome directories — see
+   DNA (catalogued in separate ancient-metagenome directories, see
    `spaam-ancient-metagenome-dir`). Crossing the two gives per-individual
-   host-pathogen pairs — the tightest possible coevolution evidence.
+   host-pathogen pairs, the tightest possible coevolution evidence.
 2. **Population-level context.** For a given region and period, AADR reveals
    population continuity, migration, and admixture events. A TB lineage that
    appears in a region coincident with a detected human population turnover
@@ -113,17 +113,17 @@ is three-fold:
    could first sustain human-adapted MTBC lineages.
 
 Published ancient MTBC / *Mycobacterium* papers (the set **actually
-catalogued** in SPAAM AncientMetagenomeDir as of this skill's writing —
+catalogued** in SPAAM AncientMetagenomeDir as of this skill's writing,
 verify the current state with `spaam-ancient-metagenome-dir`):
 
 | Reference | Site / Population | Age (BP) | Pathogen | Project tag |
 |---|---|---|---|---|
-| Bos et al. 2014, *Nature* (`10.1038/nature13591`) | Peru (pre-Columbian) — El Yaral, El Algodonal, Chiribaya Alta | 900–1 000 | ***M. pinnipedii*** (3 individuals) | `Bos2014` |
-| Kay et al. 2015, *Nat Commun* (`10.1038/ncomms7717`) | Hungary — Dominican church of Vác (mummies) | 100–200 | *M. tuberculosis* (8 individuals) | `Kay2015` |
-| Sabin et al. 2020, *Genome Biol* (`10.1186/s13059-020-02112-1`) | Sweden — Lund Cathedral (Bishop Peder Winstrup, calcified nodule) | ~300 | *M. tuberculosis* (1 individual) | `Sabin2020` |
-| Vågene et al. 2018, *Nat Ecol Evol* | Mexico — Teposcolula-Yucundaa (*cocoliztli*, 1545 CE) | ~500 | *Salmonella enterica* Paratyphi C (context, not MTBC) | `Vagene2018` / `SabinSalmonella` |
-| Vagene et al. 2022, *Nat Commun* (`10.1038/s41467-022-28562-8`) | Peru & Colombia (colonial) — Moquegua M6-Estuquiña, Bogotá | 500–700 | ***M. pinnipedii*** in humans (3 individuals) | `Vagene2022` |
-| Jager et al. 2022, *Tuberculosis* (`10.1016/j.tube.2022.102181`) | Hungary — Vác (additional sample) | ~200 | *M. tuberculosis* (1 individual) | `Jager2022` |
+| Bos et al. 2014, *Nature* (`10.1038/nature13591`) | Peru (pre-Columbian) : El Yaral, El Algodonal, Chiribaya Alta | 900–1 000 | ***M. pinnipedii*** (3 individuals) | `Bos2014` |
+| Kay et al. 2015, *Nat Commun* (`10.1038/ncomms7717`) | Hungary : Dominican church of Vác (mummies) | 100–200 | *M. tuberculosis* (8 individuals) | `Kay2015` |
+| Sabin et al. 2020, *Genome Biol* (`10.1186/s13059-020-02112-1`) | Sweden : Lund Cathedral (Bishop Peder Winstrup, calcified nodule) | ~300 | *M. tuberculosis* (1 individual) | `Sabin2020` |
+| Vågene et al. 2018, *Nat Ecol Evol* | Mexico : Teposcolula-Yucundaa (*cocoliztli*, 1545 CE) | ~500 | *Salmonella enterica* Paratyphi C (context, not MTBC) | `Vagene2018` / `SabinSalmonella` |
+| Vagene et al. 2022, *Nat Commun* (`10.1038/s41467-022-28562-8`) | Peru & Colombia (colonial) : Moquegua M6-Estuquiña, Bogotá | 500–700 | ***M. pinnipedii*** in humans (3 individuals) | `Vagene2022` |
+| Jager et al. 2022, *Tuberculosis* (`10.1016/j.tube.2022.102181`) | Hungary : Vác (additional sample) | ~200 | *M. tuberculosis* (1 individual) | `Jager2022` |
 | Schuenemann et al. 2013 / 2018 | Medieval Europe, broad | variable | *M. leprae* (not TB but genus *Mycobacterium*; cross-reference) | `Schuenemann*` |
 
 > [!WARNING]
@@ -140,7 +140,7 @@ verify the current state with `spaam-ancient-metagenome-dir`):
 1. Go to the Reich Lab AADR page (link above) or Harvard Dataverse (DOI above).
 2. Download the release ZIP (contains `.anno`, `.ind`, `.snp`, `.geno`).
 3. Record the **version string** (e.g. `v54.1.p1` or `v62.0`) + the **DOI**
-   of the exact deposit — this is critical for reproducibility.
+   of the exact deposit, this is critical for reproducibility.
 
 ### Typical release files
 
@@ -195,7 +195,7 @@ MTBC × anthropology cross-referencing:
 > hand-rolled pandas below. The snippets here illustrate the underlying logic and
 > the ADMIXTOOLS steps the client deliberately does not cover.
 
-### Workflow 1 — Ancient host–pathogen pair lookup
+### Workflow 1 : Ancient host–pathogen pair lookup
 
 Goal: for a region/period of MTBC interest, find skeletons that have **both**
 AADR-catalogued human DNA **and** published ancient MTBC DNA.
@@ -220,7 +220,7 @@ pairs = europe_medieval[europe_medieval["Data source"].isin(tb_papers)]
 Then join the result to the `spaam-ancient-metagenome-dir` skill to get the
 corresponding pathogen accession.
 
-### Workflow 2 — Population context for a modern TB lineage
+### Workflow 2 : Population context for a modern TB lineage
 
 Goal: for a modern TB lineage with strong geographic signal, describe the
 ancient human population history of that region.
@@ -234,19 +234,19 @@ ancient human population history of that region.
    ("… the spread of L4.X across region Y is contemporaneous with the
    [Bronze Age steppe] ancestry expansion documented in AADR …").
 
-### Workflow 3 — Demographic transition ↔ TB persistence
+### Workflow 3 : Demographic transition ↔ TB persistence
 
 Goal: anchor the emergence of human-adapted MTBC clades in Neolithic/Bronze
 Age demographic expansions.
 
 1. Filter `.anno` by region + `Date mean in BP` between 12,000 and 2,000.
 2. Bin by 500-year slices, count individuals per slice as a crude proxy of
-   sample density (real demography requires SMC/IBD analyses — see below).
+   sample density (real demography requires SMC/IBD analyses, see below).
 3. Overlay with TMRCA + expansion times of human-adapted L1–L9 lineages.
 4. Complement with **p3k14c** SPD workflow for archaeological demographic
    transitions.
 
-### Workflow 4 — ADMIXTOOLS / qpAdm (Paul Verdu's toolkit)
+### Workflow 4 : ADMIXTOOLS / qpAdm (Paul Verdu's toolkit)
 
 AADR is the standard input for ADMIXTOOLS 2, `qpAdm`, `qpGraph`, `f3`/`f4`
 statistics, and Approximate Bayesian Computation (ABC) population inference
@@ -300,16 +300,16 @@ gdf.to_file("aadr_sites.gpkg", driver="GPKG")
 
 ## When NOT to use
 
-- **Pathogen / TB genomes** — AADR is host-only. For ancient *M. tuberculosis* /
+- **Pathogen / TB genomes** : AADR is host-only. For ancient *M. tuberculosis* /
   *M. leprae* reads use `spaam-ancient-metagenome-dir`, ENA, or the pathogen
   paper supplements. To pair a skeleton's host + pathogen DNA, use
   `host-pathogen-pair`.
-- **Dating an MTBC clade** — that is `molecular-clock` / `iqtree-lsd2` /
+- **Dating an MTBC clade**, that is `molecular-clock` / `iqtree-lsd2` /
   `beast2-phylogeography`. AADR supplies the *human* dates to compare against.
-- **Admixture / f-statistics** — the `.geno` genotype matrix is the input to
+- **Admixture / f-statistics**, the `.geno` genotype matrix is the input to
   ADMIXTOOLS 2 / qpAdm; this client parses only the `.anno` index (the metadata),
   not the genotypes.
-- **Filtering by Ethnographic-Atlas code** — that is `d-place`; AADR has no EA code.
+- **Filtering by Ethnographic-Atlas code**, that is `d-place`; AADR has no EA code.
 
 ## Important caveats
 
@@ -325,7 +325,7 @@ gdf.to_file("aadr_sites.gpkg", driver="GPKG")
   population in a naive sense.
 - **Version drift.** Columns and individual IDs change between versions.
   Always pin the version (e.g. `v54.1.p1`) in articles and skill outputs.
-- **Ethics.** AADR comes from skeletal remains — respect the ethical framing
+- **Ethics.** AADR comes from skeletal remains, respect the ethical framing
   of the source publications (descendant community consultation, repatriation
   status, etc.).
 
@@ -336,7 +336,7 @@ gdf.to_file("aadr_sites.gpkg", driver="GPKG")
 | **TBannotator MCP** | Modern TB lineage geography + TMRCA |
 | **spaam-ancient-metagenome-dir** | Ancient microbial/pathogen metagenomes (planned skill) |
 | **p3k14c** | Archaeological radiocarbon context to frame AADR dates |
-| **slavevoyages** | Post-1500 human movement — downstream of AADR's window |
+| **slavevoyages** | Post-1500 human movement, downstream of AADR's window |
 | **ADMIXTOOLS 2 / qpAdm** | Canonical analysis of the AADR genotype matrix |
 | **TreeTime / BEAST** | Molecular dating of TB clades, comparable to AADR dates |
 

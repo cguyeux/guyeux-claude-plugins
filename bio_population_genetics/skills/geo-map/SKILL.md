@@ -1,22 +1,20 @@
 ---
 name: geo-map
 description: >-
-  Generate publication-quality geographic maps for MTBC studies, with
-  proper cartographic projections, Natural Earth multi-resolution basemaps,
-  scale bar, north arrow, graticule, and journal-ready styling.
-  Supports choropleth, bubble, pie, GPS points (lat/lon), phylogeographic
-  arcs, multi-panel atlases, and multi-layer composites.
-
-  Use when: illustrating geographic distribution of a lineage in an article,
-  showing resistance rates by country on a map, plotting sampling sites
-  from GPS coordinates, drawing phylogeographic migration flows, or
-  producing figures for presentations or posters.
+  Academic research toolkit for peer-reviewed pathogen-genomics publications (Guyeux group,
+  FEMTO-ST). Publication-quality geographic maps for MTBC studies: cartographic projections,
+  Natural Earth multi-resolution basemaps, scale bar, north arrow, graticule, journal
+  presets. Types: choropleth, bubble, pie, GPS points, phylogeographic arcs, multi-panel
+  atlases, multi-layer composites. Use when mapping the distribution of a lineage in a
+  research collection, antimicrobial-resistance allele frequencies by country in a published
+  dataset, sampling sites, inferred migration flows, or any map figure for a scientific
+  article, poster or slide.
 argument-hint: "<data.csv|spec.json> [-t choropleth|pie|bubble|points|arcs|layered] [-o map.pdf] [--preset nature_double]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
 ---
 
-# Geo-Map — Cartes géographiques MTBC qualité publication
+# Geo-Map : Cartes géographiques MTBC qualité publication
 
 Génère des cartes publication-quality pour MTBC avec projections cartographiques propres (Robinson, Albers, Lambert, LAEA), couches Natural Earth multi-résolution (110m / 50m / 10m), océan coloré, graticule, barre d'échelle, north arrow, et presets de format journaux (Nature, Science, PLOS, Cell).
 
@@ -37,7 +35,7 @@ Génère des cartes publication-quality pour MTBC avec projections cartographiqu
 
 2. **Quelle donnée ?**
    - Distribution d'une lignée par pays (depuis TBannotator)
-   - Coordonnées GPS d'isolats (lat, lon, lignée, année...)
+   - Coordonnées GPS d'isolats (latitude, longitude, lignée, année...)
    - Flux phylogéographiques (src_lat, src_lon, dst_lat, dst_lon, weight)
    - Composition en sous-lignées (country, lineage, n)
 
@@ -61,42 +59,50 @@ Génère des cartes publication-quality pour MTBC avec projections cartographiqu
 
 ```sql
 -- Distribution par pays pour une lignée
-SELECT m.country, COUNT(*) AS n
+SELECT m.geo_country, COUNT(*) AS n
 FROM mv_strain_metadata m
-JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-WHERE c.system = 'Senelle' AND c.lineage_code LIKE '4.15%'
-  AND m.country IS NOT NULL AND m.country != ''
-GROUP BY m.country
+JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '4.15%'
+  AND m.geo_country IS NOT NULL AND m.geo_country != ''
+GROUP BY m.geo_country
 ORDER BY n DESC;
 
 -- Composition en sous-lignées par pays
-SELECT m.country, c.lineage_code AS lineage, COUNT(*) AS n
+SELECT m.geo_country, c.lineage_code AS lineage, COUNT(*) AS n
 FROM mv_strain_metadata m
-JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-WHERE c.system = 'Senelle' AND c.lineage_code LIKE '4%'
-GROUP BY m.country, c.lineage_code;
+JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '4%'
+GROUP BY m.geo_country, c.lineage_code;
 
 -- Taux MDR par pays
-SELECT m.country,
-       COUNT(*) AS total,
-       SUM(CASE WHEN m.dr_type IN ('MDR','pre-XDR','XDR') THEN 1 ELSE 0 END) AS n_mdr,
-       ROUND(100.0 * SUM(CASE WHEN m.dr_type IN ('MDR','pre-XDR','XDR') THEN 1 ELSE 0 END) / COUNT(*), 1) AS pct_mdr
+-- NB : pas de `dr_type` en v3.6 → MDR dérivé de l'antibiogramme (INH-R ET RIF-R).
+-- Le dénominateur est restreint aux souches ANTIBIOGRAMMÉES (~23k/255k), sinon le taux est faussement bas.
+SELECT m.geo_country,
+       COUNT(*) AS n_tested,
+       SUM(CASE WHEN m.antibiogram_inh = 'INH-R' AND m.antibiogram_rif = 'RIF-R' THEN 1 ELSE 0 END) AS n_mdr,
+       ROUND(100.0 * SUM(CASE WHEN m.antibiogram_inh = 'INH-R' AND m.antibiogram_rif = 'RIF-R' THEN 1 ELSE 0 END)
+             / COUNT(*), 1) AS pct_mdr
 FROM mv_strain_metadata m
-JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-WHERE c.system = 'Senelle' AND c.lineage_code LIKE '2%'
-GROUP BY m.country
+JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '2%'
+  AND m.antibiogram_inh IS NOT NULL AND m.antibiogram_rif IS NOT NULL
+GROUP BY m.geo_country
 HAVING COUNT(*) >= 10;
 ```
 
 ### Depuis TBannotator (sites GPS)
 
 ```sql
--- Coordonnées GPS des isolats (si geo_lat_lon disponible)
-SELECT m.strain_id, m.lat, m.lon, c.lineage_code AS lineage, m.collection_year
+-- Coordonnées GPS des isolats
+-- Colonnes réelles v3.6 : `latitude`/`longitude` (pas lat/lon) ; l'année se dérive de
+-- `collection_date_parsed` (il n'y a pas de colonne `collection_year`).
+SELECT m.strain_id, m.strain_name, m.latitude, m.longitude,
+       c.lineage_code AS lineage,
+       EXTRACT(YEAR FROM m.collection_date_parsed) AS collection_year
 FROM mv_strain_metadata m
-JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-WHERE c.system = 'Senelle' AND c.lineage_code LIKE '2%'
-  AND m.lat IS NOT NULL AND m.lon IS NOT NULL;
+JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '2%'
+  AND m.latitude IS NOT NULL AND m.longitude IS NOT NULL;
 ```
 
 ### Formats CSV attendus
@@ -118,7 +124,7 @@ India,L1,180
 
 **Points (GPS)** :
 ```csv
-strain_id,lat,lon,lineage,year
+strain_id,latitude,longitude,lineage,year
 TB001,28.6139,77.2090,L1,2018
 TB002,-26.2041,28.0473,L4,2019
 ```
@@ -527,7 +533,7 @@ geo_map.py sea_data.csv -t choropleth -v n --region southeast_asia \
 | `resistance-profiler` | Taux de résistance par pays pour gradient map |
 | `lineage-comparison` | Significativité des différences géographiques |
 | `beast2-phylogeography` | Coordonnées des nœuds ancestraux pour `arcs` |
-| `create-viz` | Figures complémentaires non cartographiques |
+| `sci-figure` | Figures complémentaires non cartographiques ; partage les presets de revue de ce skill (`JOURNAL_PRESETS`) via son `figstyle.py`, donc mêmes largeur, police et dpi |
 
 ## Dépendances
 

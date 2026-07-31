@@ -1,24 +1,14 @@
 ---
 name: host-pathogen-pair
 description: >-
-  Academic eco-anthropology research toolkit (Guyeux group, FEMTO-ST).
-  Generates geo-temporal co-occurrence tables of ancient host–ancient
-  microorganism pairs from two published open-science research corpora:
-  SPAAM AncientMetagenomeDir (ancient microbial genomics, covering
-  *Mycobacterium*, *Yersinia pestis*, *Salmonella*, etc.) and the AADR
-  ancient human genome catalogue (Reich Lab, v66, 16,000+ individuals).
-  Output: a TSV of candidate research pairs ranked by Haversine distance
-  and temporal overlap, plus a per-project summary for the top co-located
-  human groups. Used by the Guyeux group to plan peer-reviewed
-  eco-anthropology host–microorganism co-evolution studies, to document
-  data availability for a given research question, or to demonstrate
-  data absence (a publishable negative finding).
+  Academic eco-anthropology toolkit (Guyeux group, FEMTO-ST). Crosses SPAAM
+  AncientMetagenomeDir (*Mycobacterium*, *Yersinia pestis*, *Salmonella*) with
+  the AADR ancient human genomes (v66) into a TSV of host–pathogen pairs ranked
+  by Haversine distance and temporal overlap.
 
-  Utiliser quand : planifier un projet de recherche sur la co-evolution
-  hote–microorganisme, valider les paires disponibles pour une
-  region/periode donnee, preparer un seminaire ou une candidature
-  academique, ou documenter l'absence de paires (cas negatif valorisable
-  dans une publication scientifique).
+  Use when: planning a peer-reviewed co-evolution study, checking pair
+  availability by region/period, or documenting absent pairs (publishable
+  negative finding).
 ---
 
 # host-pathogen-pair -- Triangulation SPAAM x AADR
@@ -27,11 +17,22 @@ description: >-
 
 Outil minimal pour croiser deux ressources publiques canoniques :
 
-- **SPAAM AncientMetagenomeDir** (cote pathogene, 816 entrees, dont 67 *Mycobacterium*)
+- **SPAAM AncientMetagenomeDir** (cote pathogene, 816 entrees, dont 67 *Mycobacterium* ;
+  couvre aussi *Yersinia pestis*, *Salmonella*, etc.)
   -- Fellows Yates et al. 2021 *Scientific Data*, repo GitHub
   `SPAAM-community/AncientMetagenomeDir`, licence CC BY 4.0
-- **AADR v66** (cote humain, 19 029 individus anciens) -- Mallick et al. 2024
+- **AADR v66** (cote humain, catalogue de genomes humains anciens du **Reich Lab**,
+  19 029 individus anciens) -- Mallick et al. 2024
   *Scientific Data*, Harvard Dataverse doi:10.7910/DVN/FFIDCW, licence CC BY 4.0
+
+## Quand utiliser
+
+- Planifier un projet de recherche sur la co-evolution hote-microorganisme (etudes
+  d'eco-anthropologie destinees a des publications revues par les pairs).
+- Valider les paires disponibles pour une region / une periode donnee, ou documenter la
+  disponibilite des donnees pour une question de recherche precise.
+- Preparer un seminaire ou une candidature academique.
+- Documenter l'absence de paires : cas negatif valorisable dans une publication.
 
 Pour chaque pathogene ancien, le skill trouve les humains anciens AADR
 co-localises temporellement (delta annees BP) et geographiquement (km Haversine).

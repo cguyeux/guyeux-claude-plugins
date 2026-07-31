@@ -10,9 +10,9 @@ description: >-
   "get the Selvaggio EMT model".
 ---
 
-# model-repositories — get a real model, don't hand-write one
+# model-repositories : get a real model, don't hand-write one
 
-## BioModels (REST, no auth) — the most programmatic source
+## BioModels (REST, no auth) : the most programmatic source
 
 ```bash
 # 1) find candidates (many Boolean cancer models: Montagud2022 prostate, Verlingue2016, ...)
@@ -41,7 +41,7 @@ Public repository (cellcollective.org). Export a model as SBML-qual or tabular, 
 GINsim/bioLQM and export to MaBoSS (see the `biolqm-convert` skill). Preferred when you
 need the COMPLETE logic (a raw `.zginml`->`.bnd` export can be degenerate).
 
-## CaSQ — from a pathway map to a model
+## CaSQ : from a pathway map to a model
 
 ```bash
 casq input_map.xml output_model.sbml      # CellDesigner/SBML map -> SBML-qual Boolean model

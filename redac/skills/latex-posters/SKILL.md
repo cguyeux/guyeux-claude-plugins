@@ -1,6 +1,12 @@
 ---
 name: latex-posters
-description: "Create professional research posters in LaTeX using beamerposter, tikzposter, or baposter. Support for conference presentations, academic posters, and scientific communication. Includes layout design, color schemes, multi-column formats, figure integration, and poster-specific best practices for visual communication."
+description: >-
+  Create research posters in LaTeX with beamerposter, tikzposter or baposter: layout and
+  column grids, colour schemes, figure integration, and the poster-specific rules on
+  typography size, reading distance and visual hierarchy. Use when the user asks for a
+  conference poster, mentions A0/A1 format, beamerposter/tikzposter/baposter, or needs to
+  turn a paper into a poster. For slides use beamer-slides, for the figures themselves use
+  sci-figure.
 allowed-tools: [Read, Write, Edit, Bash]
 ---
 
@@ -30,8 +36,8 @@ This skill should be used when:
 3. Les figures devraient occuper 40-50% de la surface
 
 **Comment produire les figures** (outils réellement disponibles ici) :
-- **TikZ / PGFPlots** directement dans le `.tex` du poster — diagrammes vectoriels, qualité publication, reproductibles
-- **matplotlib** (+ le skill `figure-style` du kit pour les règles de lisibilité), export PDF/PNG dans `figures/`
+- **TikZ / PGFPlots** directement dans le `.tex` du poster, diagrammes vectoriels, qualité publication, reproductibles
+- **matplotlib** (ou le skill `sci-figure` pour les presets de revues et les règles de lisibilité), export PDF/PNG dans `figures/`
 - schémas conceptuels : `graphviz` → PDF (voir `latex-document/scripts/graphviz_to_pdf.sh`)
 
 > NB : ce skill ne fournit PAS de générateur d'images par IA (`generate_schematic.py` / `scientific-schematics` n'existent pas dans ce dépôt). Utiliser les outils ci-dessus.
@@ -45,7 +51,7 @@ This skill should be used when:
 - Biological pathway illustrations
 - Any complex concept that benefits from visualization
 
-For detailed guidance on creating schematics, refer to the scientific-schematics skill documentation.
+For schematics, use the tools listed above (TikZ, matplotlib, graphviz). For a data figure that must match a journal's specifications, invoke `sci-figure`; for a map, `geo-map`.
 
 ---
 
@@ -107,7 +113,7 @@ Apply evidence-based design principles for maximum impact. For detailed design g
 - Use high-contrast color schemes for readability
 - Institutional color palettes for branding
 - Color-blind friendly palettes (avoid red-green combinations)
-- White space is active space—don't overcrowd
+- White space is active space, don't overcrowd
 
 **Visual Elements**:
 - High-resolution figures (300 DPI minimum for print)

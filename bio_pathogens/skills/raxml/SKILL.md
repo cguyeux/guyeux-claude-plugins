@@ -1,17 +1,21 @@
 ---
 name: raxml
 description: >-
-  Academic research toolkit for the Guyeux group (FEMTO-ST, University of Franche-Comte). Runs peer-reviewed phylogenomic inference (RAxML-NG) for scientific publications. Submit and manage RAxML-NG phylogenetic inference jobs via TBannotator MCP.
-  Supports direct matrix mode, clustering mode, and contextual placement.
+  Academic research toolkit (Guyeux group, FEMTO-ST): peer-reviewed
+  phylogenomic inference with RAxML-NG, submitted and monitored via the
+  TBannotator MCP. Matrix, clustering and contextual-placement modes.
 
-  Use when: building MTBC phylogenies, placing new strains on reference trees,
-  producing Newick files for iTOL annotation, running RAxML-NG for an article.
+  Use when: building MTBC phylogenies, placing new strains on a reference
+  tree, producing Newick files for iTOL annotation, running RAxML-NG for an
+  article.
 argument-hint: "<strain_sql or lineage> [--mode matrix|clustering|contextual] [--model GTR+G]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres, mcp__tbannotator__tool_submit_raxml_job, mcp__tbannotator__tool_build_nj_tree
 ---
 
-# RAxML-NG — Inférence phylogénétique MTBC
+# RAxML-NG : Inférence phylogénétique MTBC
+
+Outil de recherche académique du groupe Guyeux, Institut FEMTO-ST (CNRS UMR 6174), Université Marie et Louis Pasteur (ex-Université de Franche-Comté), Besançon. Produit des inférences phylogénomiques destinées à des publications scientifiques évaluées par des pairs.
 
 Soumission, suivi et récupération de phylogénies RAxML-NG via le serveur MCP TBannotator. Produit des arbres Newick publication-quality pour annotation iTOL.
 
@@ -50,7 +54,7 @@ Avant de lancer un job, **poser ces questions** à l'utilisateur :
 
 ```
 tool_build_nj_tree(
-  strain_sql = "SELECT sra_id AS strain_id FROM mv_strain_classification WHERE system='Senelle' AND lineage_code LIKE '4.15%'",
+  strain_sql = "SELECT strain_id AS strain_id FROM mv_strain_classification WHERE system_name='guyeux' AND lineage_code LIKE '4.15%'",
   max_strains = 5000,
   remove_invariant = true
 )
@@ -65,11 +69,11 @@ Si le NJ est satisfaisant → lancer RAxML. Sinon, ajuster la sélection.
 
 ## Phase 3 : Soumission RAxML-NG
 
-### Mode 1 — Matrix (standard)
+### Mode 1 : Matrix (standard)
 
 ```
 tool_submit_raxml_job(
-  strain_sql = "SELECT sra_id AS strain_id FROM mv_strain_classification WHERE system='Senelle' AND lineage_code LIKE '4.15%'",
+  strain_sql = "SELECT strain_id AS strain_id FROM mv_strain_classification WHERE system_name='guyeux' AND lineage_code LIKE '4.15%'",
   model = "GTR+G",
   starting_trees = "pars{2},rand{2}",
   seed = 42
@@ -78,7 +82,7 @@ tool_submit_raxml_job(
 
 **Retour** : `job_id` (entier). Le job tourne en arrière-plan sur le serveur.
 
-### Mode 2 — Clustering (gros jeux)
+### Mode 2 : Clustering (gros jeux)
 
 Nécessite un `clustering_job_id` d'un job de clustering HDBSCAN déjà terminé.
 
@@ -94,11 +98,11 @@ tool_submit_raxml_job(
 
 Crée un job RAxML par cluster identifié. Utile pour >5000 souches.
 
-### Mode 3 — Contextual (placement sur arbre existant)
+### Mode 3 : Contextual (placement sur arbre existant)
 
 ```
 tool_submit_raxml_job(
-  strain_sql = "SELECT sra_id AS strain_id FROM mv_strain_classification WHERE system='Senelle' AND lineage_code = '4.15.1'",
+  strain_sql = "SELECT strain_id AS strain_id FROM mv_strain_classification WHERE system_name='guyeux' AND lineage_code = '4.15.1'",
   reference_raxml_job_id = 100,
   use_clustering = true,
   max_query_strains = 1000
@@ -154,7 +158,7 @@ Le script poll le statut et télécharge automatiquement le Newick quand le job 
 python3 scripts/raxml_monitor.py --job-id {JOB_ID} --output tree.nwk
 
 # Via curl (URL directe)
-curl -o tree.nwk "https://darthos.freeboxos.fr/mcp/download/tree_newick/{JOB_ID}"
+curl -o tree.nwk "https://tblearn.tbannotator.ideev.universite-paris-saclay.fr/mcp/download/tree_newick/{JOB_ID}"
 ```
 
 ### Vérification
@@ -225,34 +229,34 @@ ORDER BY r.completed_at DESC;
 
 ```sql
 -- Toutes les souches d'une lignée
-SELECT sra_id AS strain_id
+SELECT strain_id AS strain_id
 FROM mv_strain_classification
-WHERE system = 'Senelle' AND lineage_code LIKE '4.15%';
+WHERE system_name = 'guyeux' AND lineage_code LIKE '4.15%';
 
 -- Souches d'une lignée + contexte (lignées sœurs)
-SELECT sra_id AS strain_id
+SELECT strain_id AS strain_id
 FROM mv_strain_classification
-WHERE system = 'Senelle'
+WHERE system_name = 'guyeux'
   AND (lineage_code LIKE '4.15%' OR lineage_code LIKE '4.14%' OR lineage_code LIKE '4.16%');
 
 -- Souches d'un pays
 SELECT m.strain_id
 FROM mv_strain_metadata m
-JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-WHERE c.system = 'Senelle' AND c.lineage_code LIKE '4%'
-  AND m.country = 'France';
+JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '4%'
+  AND m.geo_country = 'France';
 
--- Souches MDR d'une lignée
+-- Souches MDR d'une lignée (pas de `dr_type` en v3.6 : MDR = INH-R ET RIF-R)
 SELECT m.strain_id
 FROM mv_strain_metadata m
-JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-WHERE c.system = 'Senelle' AND c.lineage_code LIKE '2%'
-  AND m.dr_type IN ('MDR', 'XDR', 'pre-XDR');
+JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '2%'
+  AND m.antibiogram_inh = 'INH-R' AND m.antibiogram_rif = 'RIF-R';
 
 -- Vérifier le nombre de souches avant soumission
 SELECT lineage_code, COUNT(*) as n
 FROM mv_strain_classification
-WHERE system = 'Senelle' AND lineage_code LIKE '4.15%'
+WHERE system_name = 'guyeux' AND lineage_code LIKE '4.15%'
 GROUP BY lineage_code
 ORDER BY lineage_code;
 ```

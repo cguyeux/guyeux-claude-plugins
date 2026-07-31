@@ -1,27 +1,18 @@
 ---
 name: europe-pmc
 description: >-
-  Query Europe PMC (EMBL-EBI) — the European biomedical literature
-  repository covering PubMed abstracts, PMC full text, preprints from
-  32+ servers (bioRxiv, medRxiv, Research Square, etc.), books, patents,
-  clinical guidelines, and grants. Provides a REST API for search, full
-  text retrieval, and pre-computed text-mining annotations (genes,
-  diseases, chemicals, organisms, GO terms, accession numbers). The
-  broadest open-access biomedical literature index, complementary to
-  OpenAlex (bibliometric) and BioC-PMC (PMC OA only).
-
-  Use when: searching biomedical literature including preprints, fetching
-  full text of OA papers, retrieving pre-computed annotations in JSON
-  or XML, building a TB corpus that includes preprints (bioRxiv /
-  medRxiv), cross-linking publications to data accessions (ENA, UniProt,
-  ChEMBL, PDB), or discovering related articles via citation graph.
-  For PubMed-only TB literature (no preprints), `tbmonitor-papers` is
-  a faster alternative: ~190k pre-indexed TB abstracts queryable in
-  sub-second SQL with MeSH and keywords as JSON. Use Europe PMC when
-  preprints, full-text, or non-PubMed sources are needed.
+  Query Europe PMC (EMBL-EBI), the European biomedical literature repository covering PubMed
+  abstracts, PMC full text, preprints from 32+ servers (bioRxiv, medRxiv, Research Square),
+  books, patents, guidelines and grants. Provides a REST API for search, full-text retrieval
+  and pre-computed text-mining annotations (genes, diseases, chemicals, organisms, GO terms,
+  accessions). Use when searching biomedical literature including preprints, fetching the
+  full text of an open-access paper, retrieving annotations as JSON or XML, cross-linking
+  publications to data accessions (ENA, UniProt, ChEMBL, PDB), or discovering related
+  articles through the citation graph. For PubMed-only TB literature without preprints,
+  tbmonitor-papers is faster.
 ---
 
-# Europe PMC — European Biomedical Literature + Annotations
+# Europe PMC : European Biomedical Literature + Annotations
 
 ## Overview
 
@@ -31,7 +22,7 @@ International network. It aggregates **~40 million abstracts**, the
 **PMC full-text open-access subset**, **preprints from 32+ servers**
 (bioRxiv, medRxiv, Research Square, ChemRxiv, and more), agricultural
 research, books, patents, clinical guidelines, and funded-research
-grants — all searchable through a unified REST API with
+grants, all searchable through a unified REST API with
 pre-computed text-mining annotations via **SciLite**.
 
 Europe PMC is the **European counterpart** to NCBI PubMed/PMC but with
@@ -66,7 +57,7 @@ Europe PMC fills specific niches in your text-mining stack:
 1. **Preprint coverage.** NCBI PubMed indexes preprints sparingly
    (mostly post-publication). Europe PMC indexes **~30 preprint
    servers** including bioRxiv and medRxiv, making it the best single
-   source for the **latest unpublished MTBC work** — crucial for
+   source for the **latest unpublished MTBC work**, crucial for
    keeping a seminar talking point up-to-date.
 2. **Broader source list.** Europe PMC includes **agricultural
    research** (*M. bovis* cattle literature), **patents** (relevant
@@ -76,15 +67,15 @@ Europe PMC fills specific niches in your text-mining stack:
 3. **Annotations bundled with the article.** The Annotations API
    returns pre-computed entity tags (genes, diseases, chemicals,
    organisms, GO terms, accession numbers) **directly with each
-   article** — avoiding a separate PubTator fetch.
+   article**, avoiding a separate PubTator fetch.
 4. **Cross-linked data references.** Europe PMC SciLite links
    papers to **external data accessions** (ENA, UniProt, ChEMBL,
    PDB, EGA, PRIDE) automatically. For a paper that describes
    ancient MTBC sequencing, this gives you a direct link to the
-   ENA study accession — faster than mining the text yourself.
+   ENA study accession, faster than mining the text yourself.
 5. **Grant information.** For the European funding landscape (ERC,
    H2020, Horizon Europe), Europe PMC tracks the grants that
-   produced each publication — useful for mapping the funding
+   produced each publication, useful for mapping the funding
    ecosystem of your field.
 
 Europe PMC is a **complement**, not a replacement, for the other
@@ -107,8 +98,8 @@ As of 2024:
 | PubMed Central (PMC) | Full-text OA articles | Mirror of the NCBI PMC |
 | **Preprints** | bioRxiv, medRxiv, ChemRxiv, Research Square, ArXiv Q-Bio, SSRN, etc. | 32+ servers as of April 2024 |
 | Agricultural research | AGRICOLA | USDA-provided |
-| Patents | — | Via the patents API endpoint |
-| Clinical guidelines | — | WHO and national guidelines |
+| Patents |, | Via the patents API endpoint |
+| Clinical guidelines |, | WHO and national guidelines |
 | Books | NCBI Bookshelf | Textbooks and reference works |
 
 ## Article REST API
@@ -259,14 +250,14 @@ for hit in r["resultList"]["result"]:
 
 When running multiple searches, fetching several articles, or pulling
 annotations for a batch, issue the REST calls in parallel (multiple tool
-calls per message). Europe PMC endpoints are independent and idempotent —
+calls per message). Europe PMC endpoints are independent and idempotent,
 concurrent WebFetch / curl calls give a significant speedup over sequential
 loops. The Python wrapper above is synchronous; for bulk workflows prefer
 direct parallel tool calls or wrap the wrapper in `concurrent.futures`.
 
 ## Workflows
 
-### Workflow 1 — Latest MTBC preprints
+### Workflow 1 : Latest MTBC preprints
 
 Goal: catch every *M. tuberculosis* or *M. bovis* preprint from the
 last 6 months.
@@ -283,10 +274,10 @@ for hit in r["resultList"]["result"]:
     print(hit["firstPublicationDate"], hit.get("id"), hit.get("title")[:80])
 ```
 
-This is **the** way to stay on top of the field for your seminar —
+This is **the** way to stay on top of the field for your seminar,
 nothing beats a fresh preprint scan on an MNHN jury.
 
-### Workflow 2 — Full text for an ancient MTBC paper
+### Workflow 2 : Full text for an ancient MTBC paper
 
 Goal: fetch the full text of Kay et al. 2015 for NLP processing.
 
@@ -298,7 +289,7 @@ curl -sL "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC4396363/unicode" -
 curl -sL "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC4396363/fullTextXML" -o kay2015.pmc.xml
 ```
 
-### Workflow 3 — Follow the citation graph of a key paper
+### Workflow 3 : Follow the citation graph of a key paper
 
 Goal: build a citation graph around Bos et al. 2014 (*M. pinnipedii*).
 
@@ -313,7 +304,7 @@ citations = requests.get(
 # Iterate over all of them and follow further citations via recursion
 ```
 
-### Workflow 4 — Extract ENA accessions referenced in the literature
+### Workflow 4 : Extract ENA accessions referenced in the literature
 
 Goal: for all MTBC papers in Europe PMC, extract the ENA study
 accessions they reference via SciLite annotations.
@@ -339,7 +330,7 @@ for hit in r["resultList"]["result"]:
 This gives you a **direct link from paper → ENA study accession**,
 a massive time-saver vs manual curation.
 
-### Workflow 5 — Grant mapping for European MTBC research
+### Workflow 5 : Grant mapping for European MTBC research
 
 Goal: identify the ERC / Wellcome / Horizon grants that have funded
 ancient-DNA MTBC research.
@@ -356,7 +347,7 @@ for hit in r["resultList"]["result"]:
         print(g.get("agency"), g.get("grantId"), "→", hit.get("title")[:60])
 ```
 
-### Workflow 6 — Combine with OpenAlex for cross-validation
+### Workflow 6 : Combine with OpenAlex for cross-validation
 
 Goal: cross-check Europe PMC results against OpenAlex to estimate
 coverage bias.
@@ -392,7 +383,7 @@ print(f"EPMC-only: {len(only_epmc)}, OpenAlex-only: {len(only_oa)}, overlap: {le
   but not identical. Read the docs page; avoid assuming PubMed
   query syntax will work verbatim.
 - **Cursor pagination for large results.** Don't use `offset` +
-  `pageSize` for >10k results — use `cursorMark` instead.
+  `pageSize` for >10k results, use `cursorMark` instead.
 - **Rate limit.** No hard limit announced, but the service is
   shared. Polite requests, exponential backoff, cached results.
 - **Citation graph is incomplete.** Europe PMC tracks citations
@@ -409,13 +400,13 @@ print(f"EPMC-only: {len(only_epmc)}, OpenAlex-only: {len(only_oa)}, overlap: {le
 
 | Tool | Purpose |
 |---|---|
-| **`openalex`** | Broader (non-biomedical) bibliometric discovery — pair for cross-validation |
-| **`bioc-pmc`** | PMC OA full text in BioC format for NLP — overlaps for PMC papers |
-| **`pubtator`** | Pre-computed NER annotations — overlaps partly with Europe PMC SciLite |
-| **`spaam-community`** | Ancient metagenomics resources — Europe PMC indexes their publications |
-| **`pathogens-portal`** | Same EMBL-EBI ecosystem — ENA accessions link directly |
-| **TBannotator MCP** | Text-mining backbone — Europe PMC is a canonical source |
-| **`bib-check`** | Reference verification — Europe PMC metadata makes bibliography building reproducible |
+| **`openalex`** | Broader (non-biomedical) bibliometric discovery, pair for cross-validation |
+| **`bioc-pmc`** | PMC OA full text in BioC format for NLP, overlaps for PMC papers |
+| **`pubtator`** | Pre-computed NER annotations, overlaps partly with Europe PMC SciLite |
+| **`spaam-community`** | Ancient metagenomics resources : Europe PMC indexes their publications |
+| **`pathogens-portal`** | Same EMBL-EBI ecosystem : ENA accessions link directly |
+| **TBannotator MCP** | Text-mining backbone : Europe PMC is a canonical source |
+| **`bib-check`** | Reference verification : Europe PMC metadata makes bibliography building reproducible |
 | **Europe PMC Grist** | Internal EMBL-EBI tool for grant tracking |
 | **ENA / UniProt / PDB / ChEMBL / EGA / PRIDE** | Data repositories cross-linked via SciLite |
 | **MeSH** | Europe PMC supports MeSH synonym expansion in queries |

@@ -1,30 +1,22 @@
 ---
 name: atlantic-voyages
 description: >-
-  Aggregate and format historical Atlantic maritime voyage data for
-  comparison with M. tuberculosis L5/L6 (M. africanum) and L4 sub-lineages
-  phylogeography. Wraps six open-data sources : SlaveVoyages Trans-Atlantic
-  (Eltis et al., Emory/Rice — 36 000 voyages, 12 M enslaved persons,
-  1514-1866), AfricanOrigins (~92 000 named enslaved persons with inferred
-  ethnolinguistic origin), Liberated Africans Database (~250 000 individuals
-  freed 1808-1862), Slavery, Abolition and Social Justice portal (Adam
-  Matthew — voyage logs, letters, contracts), Intra-American Voyages
-  (~11 000 inter-Caribbean and coastwise voyages 1626-1860), and Voyages
-  to Liberty (post-1808 returnees from Sierra Leone, Liberia, Bahia).
-
-  Use when : comparing L5/L6 sub-lineage dispersal to historical Atlantic
-  trade routes, building origin-destination matrices for Mantel tests
-  against MTBC pairwise distances, overlaying TMRCA estimates on documented
-  voyage chronologies, preparing figures linking M. africanum phylogeography
-  to Senegambia, Gold Coast, Bight of Benin/Biafra, West-Central Africa or
-  Southeast Africa departures, or correlating diaspora L5/L6 strains
-  (USA, Brazil, Europe) with their probable West African source regions.
+  Aggregate and format historical Atlantic maritime voyage data for comparison with M.
+  tuberculosis L5/L6 (M. africanum) and L4 sub-lineage phylogeography. Wraps six open-data
+  sources: SlaveVoyages Trans-Atlantic (Eltis et al., Emory/Rice, 36 000 voyages,
+  1514-1866), AfricanOrigins (~92 000 named individuals with inferred ethnolinguistic
+  origin), Liberated Africans Database (~250 000 individuals, 1808-1862), the Slavery,
+  Abolition and Social Justice portal, Intra-American Voyages (~11 000 voyages, 1626-1860)
+  and Voyages to Liberty. Use when comparing L5/L6 dispersal to documented Atlantic routes,
+  building origin-destination matrices for Mantel tests against MTBC pairwise distances,
+  overlaying TMRCA estimates on voyage chronologies, or relating diaspora L5/L6 strains to
+  probable West African source regions.
 argument-hint: "<command: slavevoyages|african-origins|liberated|intra-american|returnees|routes|timeline|fetch> [options]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebFetch
 ---
 
-# Atlantic Voyages — Données maritimes historiques pour études MTBC L5/L6/L4
+# Atlantic Voyages : Données maritimes historiques pour études MTBC L5/L6/L4
 
 Skill complémentaire à `indian-ocean-voyages` (océan Indien pour L1) et à
 `slavevoyages` (interface unique avec slavevoyages.org). Ici on cible
@@ -69,7 +61,7 @@ période) pour confronter à l'arbre phylogénétique observé.
 ### 2. Quelle période ?
 
 - **Pré-européenne** (avant 1450) : routes terrestres trans-sahariennes,
-  cabotage afro-africain — **non couvertes par les bases atlantiques**,
+  cabotage afro-africain, **non couvertes par les bases atlantiques**,
   voir `seshat` pour États précoloniaux + `migration-data` pour
   contexte général
 - **Portugaise précoce** (1450-1640) : SlaveVoyages très partiel,

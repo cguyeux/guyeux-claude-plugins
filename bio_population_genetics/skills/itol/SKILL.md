@@ -1,26 +1,22 @@
 ---
 name: itol
 description: >-
-  Upload, annotate, and export publication-quality phylogenetic tree figures via
-  iTOL (Interactive Tree Of Life) using the bundled itolapi pipeline
-  (scripts/itol_pipeline.py). Turns a Newick/Nexus tree plus annotation tracks
-  (lineage colour ranges, branch colours, bootstrap symbols, datasets) into
-  SVG/PDF/PNG figures with presets tuned for an article, a supplement, a
-  presentation, or a poster, plus batch export and comparison mode.
-
-  Use when: producing a final MTBC lineage tree figure for a manuscript or a slide,
-  rendering an annotated RAxML/IQ-TREE tree with lineage colour ranges and bootstrap
-  support, exporting the same tree in several formats/presets at once, or scripting
-  iTOL uploads and exports instead of clicking through the web UI.
+  Upload, annotate and export phylogenetic tree figures via iTOL (Interactive
+  Tree Of Life), using scripts/itol_pipeline.py (itolapi). Turns a Newick/Nexus
+  tree plus annotation tracks (lineage colour ranges, branch colours, bootstrap
+  symbols) into SVG/PDF/PNG, with presets (article, supplement, presentation,
+  poster) and batch export. Use when: a final MTBC lineage tree figure for a
+  manuscript or slide, an annotated RAxML/IQ-TREE tree.
 ---
 
-# iTOL — Annotated Phylogenetic Tree Figures (upload / export pipeline)
+# iTOL : Annotated Phylogenetic Tree Figures (upload / export pipeline)
 
 ## Overview
 
 `scripts/itol_pipeline.py` is an end-to-end wrapper around iTOL (Interactive Tree Of
-Life): it uploads a tree plus iTOL annotation files, configures the display, and
-exports publication-quality figures (SVG / PDF / PNG) with programmatic legends. It
+Life): it uploads a tree (**Newick or Nexus**) plus iTOL annotation files, configures
+the display, and exports publication-quality figures (SVG / PDF / PNG) with
+programmatic legends, instead of clicking through the iTOL web UI. It
 uses the `itolapi` library when available and falls back to direct HTTP `requests`
 otherwise. Companion module `scripts/presets.py` holds the export presets, MTBC
 legends, and comparison configurations; `scripts/itol_api_legacy.py` is the older
@@ -82,9 +78,9 @@ datasets via `presets.COMPARISON_CONFIGS` (e.g. `lineage_overview`).
 iTOL annotation tracks are plain-text dataset files (one per track), uploaded
 alongside the tree:
 
-- `DATASET_COLORSTRIP` / `TREE_COLORS` — lineage colour ranges and branch colours.
-- `DATASET_SYMBOL` / bootstrap display — node support.
-- `DATASET_BINARY` / `DATASET_HEATMAP` — presence/absence (RD, resistance alleles).
+- `DATASET_COLORSTRIP` / `TREE_COLORS`, lineage colour ranges and branch colours.
+- `DATASET_SYMBOL` / bootstrap display, node support.
+- `DATASET_BINARY` / `DATASET_HEATMAP`, presence/absence (RD, resistance alleles).
 
 Several MTBC skills emit such tracks directly (see Integration). Keep one `.txt` per
 track and pass them all to `upload`/`pipeline`.

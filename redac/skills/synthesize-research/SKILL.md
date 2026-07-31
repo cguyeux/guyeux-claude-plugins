@@ -1,6 +1,14 @@
 ---
 name: synthesize-research
-description: Synthesize user research from interviews, surveys, and feedback into structured insights. Use when you have a pile of interview notes, survey responses, or support tickets to make sense of, need to extract themes and rank findings by frequency and impact, or want to turn raw feedback into roadmap recommendations.
+description: >-
+  Synthesise a pile of qualitative material into structured, evidence-ranked findings:
+  thematic analysis, affinity mapping, triangulation across sources, and integration of
+  qualitative with quantitative evidence. Use when the user has many separate sources on one
+  question and needs the themes rather than a summary of each: a set of papers read for a
+  review, notes from expert or stakeholder interviews, free-text survey responses, reviewer
+  comments across several rounds, or field and operational feedback. Not for verifying a
+  manuscript's claims (claim-check) or for a targeted literature search (lit-review), both
+  of which start from the question rather than from the pile.
 argument-hint: "<research topic or question>"
 ---
 
@@ -8,7 +16,32 @@ argument-hint: "<research topic or question>"
 
 > If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).
 
-Synthesize user research from multiple sources into structured insights and recommendations.
+Synthesize research material from multiple sources into structured insights and recommendations.
+
+## Two registers
+
+The methods below (thematic analysis, affinity mapping, triangulation, qual-quant
+integration) are the same in both registers; only the vocabulary and the output
+change. Establish which one applies before starting, because the deliverables are
+not interchangeable.
+
+| | Scientific register | Product register |
+|---|---|---|
+| Sources | Papers read for a review, expert interviews, free-text survey answers, reviewer comments across rounds, field notes | User interviews, support tickets, usability tests, analytics |
+| Unit of evidence | A study, with its design, sample and limitations | A participant, with their context |
+| Weighting | Study quality and independence, not how many papers repeat the same claim. Ten papers citing one primary source is one observation | Frequency across participants, weighted by segment |
+| Disagreement | A genuine finding to characterise (different populations, methods, periods), often the most publishable part | Usually a segmentation signal |
+| Output | A synthesis section, a state of the art, a table of evidence with per-source citations | Themes ranked by frequency and impact, personas, roadmap recommendations |
+| Never produce | Personas or roadmap recommendations | An unattributed claim |
+
+In the scientific register, the sections on personas and roadmap recommendations
+below do not apply: stop after the themes and the evidence table. And a synthesis
+is not a substitute for reading the sources. Every claim in the output carries the
+identifier of the source it came from, so `claim-check` can re-derive it.
+
+The product register is the right one for stakeholder work on operational systems
+(for example the SDIS side of PredictOps), where the sources really are interviews
+and field feedback from users of a deployed tool.
 
 ## Usage
 
@@ -46,7 +79,7 @@ For each source, extract:
 
 ### 3. Identify Themes and Patterns
 
-Apply thematic analysis — see **Research Synthesis Methodology** below for detailed guidance on thematic analysis, affinity mapping, and triangulation techniques.
+Apply thematic analysis, see **Research Synthesis Methodology** below for detailed guidance on thematic analysis, affinity mapping, and triangulation techniques.
 
 Group observations into themes, count frequency across participants, and assess impact severity. Note contradictions and surprises.
 
@@ -115,7 +148,7 @@ After generating the synthesis:
 The core method for synthesizing qualitative research:
 
 1. **Familiarization**: Read through all the data. Get a feel for the overall landscape before coding anything.
-2. **Initial coding**: Go through the data systematically. Tag each observation, quote, or data point with descriptive codes. Be generous with codes — it is easier to merge than to split later.
+2. **Initial coding**: Go through the data systematically. Tag each observation, quote, or data point with descriptive codes. Be generous with codes, it is easier to merge than to split later.
 3. **Theme development**: Group related codes into candidate themes. A theme captures something important about the data in relation to the research question.
 4. **Theme review**: Check themes against the data. Does each theme have sufficient evidence? Are themes distinct from each other? Do they tell a coherent story?
 5. **Theme refinement**: Define and name each theme clearly. Write a 1-2 sentence description of what each theme captures.
@@ -125,7 +158,7 @@ The core method for synthesizing qualitative research:
 A collaborative method for grouping observations:
 
 1. **Capture observations**: Write each distinct observation, quote, or data point as a separate note
-2. **Cluster**: Group related notes together based on similarity. Do not pre-define categories — let them emerge from the data.
+2. **Cluster**: Group related notes together based on similarity. Do not pre-define categories, let them emerge from the data.
 3. **Label clusters**: Give each cluster a descriptive name that captures the common thread
 4. **Organize clusters**: Arrange clusters into higher-level groups if patterns emerge
 5. **Identify themes**: The clusters and their relationships reveal the key themes
@@ -144,7 +177,7 @@ Strengthen findings by combining multiple data sources:
 - **Source triangulation**: Same method, different participants or segments
 - **Temporal triangulation**: Same observation at different points in time
 
-A finding supported by multiple sources and methods is much stronger than one supported by a single source. When sources disagree, that is interesting — it may reveal different user segments or contexts.
+A finding supported by multiple sources and methods is much stronger than one supported by a single source. When sources disagree, that is interesting, it may reveal different user segments or contexts.
 
 ## Interview Note Analysis
 
@@ -154,7 +187,7 @@ For each interview, identify:
 **Observations**: What did the participant describe doing, experiencing, or feeling?
 - Distinguish between behaviors (what they do) and attitudes (what they think/feel)
 - Note context: when, where, with whom, how often
-- Flag workarounds — these are unmet needs in disguise
+- Flag workarounds, these are unmet needs in disguise
 
 **Direct quotes**: Verbatim statements that powerfully illustrate a point
 - Good quotes are specific and vivid, not generic
@@ -194,7 +227,7 @@ After processing individual interviews:
 - Code each response with themes
 - Count frequency of themes across responses
 - Pull representative quotes for each theme
-- Look for themes that appear in open-ended responses but not in structured questions — these are things you did not think to ask about
+- Look for themes that appear in open-ended responses but not in structured questions, these are things you did not think to ask about
 
 ### Common Survey Analysis Mistakes
 - Reporting averages without distributions. A 3.5 average could mean everyone is lukewarm or half love it and half hate it.
@@ -299,7 +332,7 @@ Score opportunities on a simple matrix:
 
 ## Output Format
 
-Use clear headers and structured formatting. Each finding should stand on its own — a reader should be able to read any single finding and understand it without reading the rest.
+Use clear headers and structured formatting. Each finding should stand on its own, a reader should be able to read any single finding and understand it without reading the rest.
 
 ## Tips
 

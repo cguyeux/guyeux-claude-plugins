@@ -10,12 +10,12 @@ description: >-
   "drug repurposing", "NORDic", "which drug combination".
 ---
 
-# pydruglogics — in-silico drug perturbations & synergy
+# pydruglogics : in-silico drug perturbations & synergy
 
 Cancer-oriented layer on top of Boolean models. Needs the CoLoMoTo image or a proper
 conda/pip env (see `colomoto-run`).
 
-## PyDrugLogics — perturbations & synergy
+## PyDrugLogics : perturbations & synergy
 
 ```python
 import pydruglogics
@@ -29,7 +29,7 @@ predictions.run()            # synergy scores (e.g. HSA/Bliss) per drug combinat
 Workflow: a drug = fixing its target node(s) OFF (inhibitor) or ON; a combination = several
 fixings; synergy = combined effect vs single-agent expectation on a phenotype output.
 
-## NORDic — network-oriented repurposing of drugs
+## NORDic : network-oriented repurposing of drugs
 
 ```python
 import NORDic

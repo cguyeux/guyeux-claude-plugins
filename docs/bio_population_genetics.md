@@ -6,13 +6,13 @@
 
 Contexte hôte et outillage générique. Pour une étude M. tuberculosis, l'histoire des populations humaines, les migrations, la paléoclimatologie et l'archéologie éclairent la co-évolution hôte-pathogène et la dispersion des lignées du MTBC. Le plugin porte aussi les briques transversales (phylogénétique, statistiques, fouille de littérature) réutilisées par les analyses MTBC elles-mêmes.
 
-Skills propres (canoniques) : **47** ; skills partagés utilisés (symlinks) : **7**.
+Skills propres (canoniques) : **52** ; skills partagés utilisés (symlinks) : **3**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [aadr](#aadr) ; [abc-xgboost](#abc-xgboost) ; [amtdb](#amtdb) ; [atlantic-voyages](#atlantic-voyages) ; [bayesian-skyline](#bayesian-skyline) ; [beast2-phylogeography](#beast2-phylogeography) ; [bioc-pmc](#bioc-pmc) ; [biopython](#biopython) ; [bioskills](#bioskills) ; [bovine-genomics](#bovine-genomics) ; [card](#card) ; [clinical-trial-protocol-skill](#clinical-trial-protocol-skill) ; [d-place](#d-place) ; [domestication-pathways](#domestication-pathways) ; [esm-atlas-cli](#esm-atlas-cli) ; [europe-pmc](#europe-pmc) ; [geo-map](#geo-map) ; [glottolog](#glottolog) ; [indian-ocean-voyages](#indian-ocean-voyages) ; [iqtree-lsd2](#iqtree-lsd2) ; [itol](#itol) ; [migration-data](#migration-data) ; [modern-human-reference-panels](#modern-human-reference-panels) ; [neolithic-14c](#neolithic-14c) ; [nextflow-development](#nextflow-development) ; [nextstrain](#nextstrain) ; [ontologies](#ontologies) ; [openalex](#openalex) ; [orbis](#orbis) ; [owtrad](#owtrad) ; [p3k14c](#p3k14c) ; [paleoclimate](#paleoclimate) ; [pastml](#pastml) ; [pleiades](#pleiades) ; [pubmed-database](#pubmed-database) ; [pubtator](#pubtator) ; [pysam](#pysam) ; [rdkit](#rdkit) ; [read-scientific-pdf](#read-scientific-pdf) ; [scanpy](#scanpy) ; [scikit-bio](#scikit-bio) ; [seaborn](#seaborn) ; [seshat](#seshat) ; [slavevoyages](#slavevoyages) ; [tooluniverse-sequence-retrieval](#tooluniverse-sequence-retrieval) ; [wals](#wals) ; [worldclim-bioclim](#worldclim-bioclim)
+Sommaire : [aadr](#aadr) ; [abc-xgboost](#abc-xgboost) ; [amtdb](#amtdb) ; [atlantic-voyages](#atlantic-voyages) ; [bayesian-skyline](#bayesian-skyline) ; [beast2-phylogeography](#beast2-phylogeography) ; [bioc-pmc](#bioc-pmc) ; [biopython](#biopython) ; [bioskills](#bioskills) ; [boltz](#boltz) ; [bovine-genomics](#bovine-genomics) ; [card](#card) ; [clinical-trial-protocol-skill](#clinical-trial-protocol-skill) ; [create-viz](#create-viz) ; [d-place](#d-place) ; [domestication-pathways](#domestication-pathways) ; [esm-atlas-cli](#esm-atlas-cli) ; [europe-pmc](#europe-pmc) ; [geo-map](#geo-map) ; [glottolog](#glottolog) ; [indian-ocean-voyages](#indian-ocean-voyages) ; [iqtree-lsd2](#iqtree-lsd2) ; [itol](#itol) ; [migration-data](#migration-data) ; [modern-human-reference-panels](#modern-human-reference-panels) ; [neolithic-14c](#neolithic-14c) ; [nextflow-development](#nextflow-development) ; [nextstrain](#nextstrain) ; [ontologies](#ontologies) ; [openalex](#openalex) ; [orbis](#orbis) ; [owtrad](#owtrad) ; [p3k14c](#p3k14c) ; [paleoclimate](#paleoclimate) ; [pastml](#pastml) ; [pleiades](#pleiades) ; [pubmed-database](#pubmed-database) ; [pubtator](#pubtator) ; [pysam](#pysam) ; [rdkit](#rdkit) ; [read-scientific-pdf](#read-scientific-pdf) ; [scanpy](#scanpy) ; [sci-figure](#sci-figure) ; [scientific-problem-selection](#scientific-problem-selection) ; [scikit-bio](#scikit-bio) ; [scikit-learn](#scikit-learn) ; [seshat](#seshat) ; [slavevoyages](#slavevoyages) ; [statsmodels](#statsmodels) ; [tooluniverse-sequence-retrieval](#tooluniverse-sequence-retrieval) ; [wals](#wals) ; [worldclim-bioclim](#worldclim-bioclim)
 
 ### aadr
 
@@ -34,15 +34,15 @@ Compétences : suivre l'histoire des lignées maternelles de populations utiles 
 
 ### atlantic-voyages
 
-Agrège et met en forme les données historiques de traversées maritimes atlantiques pour comparaison avec la phylogéographie de M. tuberculosis L5/L6 (M. africanum) et des sous-lignées L4. Enveloppe six sources ouvertes : SlaveVoyages transatlantique (36 000 voyages, 1514-1866), AfricanOrigins, Liberated Africans Database, le portail Slavery Abolition and Social Justice, les voyages intra-américains et Voyages to Liberty.
+Agrege et met en forme les donnees historiques de voyages maritimes atlantiques pour comparaison avec la phylogeographie de M. tuberculosis L5/L6 (M. africanum) et des sous-lignees L4. Enveloppe six sources ouvertes : SlaveVoyages Trans-Atlantic (Eltis et al., Emory/Rice, 36 000 voyages, 1514-1866), AfricanOrigins (environ 92 000 individus nommes avec origine ethnolinguistique inferee), Liberated Africans Database (environ 250 000 individus, 1808-1862), le portail Slavery, Abolition and Social Justice, Intra-American Voyages (environ 11 000 voyages, 1626-1860) et Voyages to Liberty.
 
-Compétences : comparer la dispersion des sous-lignées L5/L6 aux routes commerciales atlantiques ; construire des matrices origine-destination pour tests de Mantel contre les distances MTBC ; superposer des TMRCA aux chronologies de voyages ; relier la phylogéographie de M ; africanum aux départs ouest-africains ; corréler des souches L5/L6 de diaspora à leurs régions sources probables
+Compétences : comparer la dispersion L5/L6 aux routes atlantiques documentees ; construire des matrices origine-destination pour des tests de Mantel contre les distances MTBC deux a deux ; superposer des estimations de TMRCA a des chronologies de voyages ; relier des souches L5/L6 de diaspora a leurs regions sources ouest-africaines probables
 
 ### bayesian-skyline
 
-Emploie la famille des méthodes Bayesian Skyline de BEAST (BSP, Skyride, Skygrid, Birth-Death Skyline) pour reconstruire la taille efficace de population Ne(t) ou le nombre de reproduction effectif Re(t) d'un pathogène au cours du temps à partir de génomes échantillonnés. Méthodes phylodynamiques de référence pour relier les phylogénies MTBC aux transitions démographiques humaines et aux dynamiques épidémiques historiques.
+Boite a outils de recherche academique pour la recherche phylodynamique evaluee par les pairs. Famille des skylines bayesiens de BEAST (Bayesian Skyline Plot, Skyride, Skygrid, Birth-Death Skyline) pour reconstruire la taille efficace de population Ne(t) ou le nombre de reproduction effectif Re(t) au cours du temps a partir de genomes dates d'une collection d'etude publiee. Inclut une recette sans interface graphique pour emettre les priors skyline en XML et executer BEAST sans affichage.
 
-Compétences : reconstruire la taille efficace historique d'une lignée MTBC ; tester si son expansion coïncide avec une transition démographique humaine (Néolithique, âge du Bronze, contact colombien) ; estimer Re au cours du temps pendant une épidémie ; produire un skyline plot pour un séminaire
+Compétences : reconstruire le Ne(t) historique d'une lignee MTBC ; tester une expansion contre une transition demographique humaine (Neolithique, age du Bronze, contact colombien) ; estimer un Re(t) sur une periode historique ; produire une figure skyline pour un manuscrit
 
 ### beast2-phylogeography
 
@@ -52,9 +52,9 @@ Compétences : dater des tips MTBC anciens avec intervalles de crédibilité com
 
 ### bioc-pmc
 
-Emploie BioC-PMC, le sous-ensemble PubMed Central Open Access + manuscrits d'auteurs au format BioC (NCBI/NLM) : environ 3 millions d'articles biomédicaux en texte intégral, avec sections structurées (titre, résumé, corps, figures, tableaux) en XML ou JSON, optimisé pour le TAL. Corpus de référence pour la fouille de texte biomédicale à grande échelle.
+BioC-PMC, le sous-ensemble Open Access et manuscrits d'auteur de PubMed Central au format BioC (NCBI/NLM) : environ 3 millions d'articles biomedicaux en texte integral avec sections structurees (titre, resume, corps, figures, tableaux) en XML ou JSON, optimise pour les pipelines de TAL. Pour les flux TB limites aux resumes, preferer tbmonitor-papers (environ 190 000 resumes TB preindexes, SQL en moins d'une seconde) ; BioC-PMC est le bon outil des que le corps du texte, les figures ou les tableaux sont necessaires.
 
-Compétences : construire un corpus texte intégral pour la fouille MTBC ou M ; bovis ; récupérer des sections structurées pour reconnaissance d'entités et extraction de relations ; télécharger en masse des articles PMC OA ; alimenter PubTator ou un modèle NER ; reproduire un corpus « 150k articles » depuis une source publique ; Pour du résumé seul (pas texte intégral) en TB, préférer tbmonitor-papers
+Compétences : construire un corpus plein texte pour le text mining MTBC ou M ; bovis ; recuperer des sections structurees pour de la reconnaissance d'entites nommees ou de l'extraction de relations ; telecharger en masse des articles PMC OA en format lisible par machine ; alimenter PubTator ou un modele de NER
 
 ### biopython
 
@@ -67,6 +67,12 @@ Compétences : manipuler des séquences ou fichiers biologiques en Python ; inte
 Installe 425 skills de bioinformatique couvrant l'analyse de séquences, le RNA-seq, le single-cell, l'appel de variants, la métagénomique, la biologie structurale et 56 autres catégories.
 
 Compétences : mettre en place des capacités de bioinformatique ; quand une tâche bioinfo requiert un skill spécialisé pas encore installé
+
+### boltz
+
+Boite a outils de recherche academique (groupe Guyeux, FEMTO-ST), bio-informatique structurale evaluee par les pairs : predit EN LOCAL des complexes biomoleculaires (multimeres, ions metalliques, ligands) avec Boltz-2, sans compte ni GPU (inference sur processeur), la ou AlphaFold Server n'est pas automatisable. Fournit la recette d'installation validee, l'ecriture des entrees YAML, la reutilisation d'un MSA deja produit, la lecture correcte des sorties (le schema Boltz differe du schema AF3) et les garde-fous d'interpretation.
+
+Compétences : tester une interaction ou une homo-oligomerisation ; savoir si un site metallique est complete en trans ; cribler un ligand ou un substrat candidat ; refaire une prediction de complexe sans solliciter l'utilisateur
 
 ### bovine-genomics
 
@@ -86,6 +92,12 @@ Génère des protocoles d'essais cliniques pour dispositifs médicaux ou médica
 
 Compétences : l'utilisateur demande de créer un protocole d'essai clinique, de concevoir une étude clinique, de rechercher des essais similaires, ou de préparer une documentation de soumission FDA
 
+### create-viz
+
+Crée des visualisations de qualité publication avec Python.
+
+Compétences : transformer un résultat de requête ou un DataFrame en graphique ; choisir le bon type de graphique pour une tendance ou une comparaison ; produire une figure pour un rapport ou une présentation ; obtenir un graphique interactif avec survol et zoom
+
 ### d-place
 
 Interroge D-PLACE (Database of Places, Language, Culture and Environment), base ouverte de référence des traits culturels, linguistiques et environnementaux de plus de 1 400 sociétés humaines préindustrielles. Fournit des variables interculturelles (Ethnographic Atlas, jeu de Binford) reliées aux couches bioclimatiques et aux langues Glottolog, avec pour certaines familles des phylogénies linguistiques bayésiennes.
@@ -94,9 +106,9 @@ Compétences : construire un contexte culturel/écologique de la diffusion d'un 
 
 ### domestication-pathways
 
-Agrège et met en forme les centres de domestication, routes de dispersion et données de transition néolithique pour les études de coévolution avec le MTBC. Enveloppe quatre familles de sources ouvertes : zooarchéologie (ABMAP, sous-ensemble animal AADR), archéobotanique (ADEMNES, BRAIN), ADN humain ancien (AADR) et radiocarbone mondial (p3k14c, CONTEXT, AgriChange). Inclut des tables curées de centres d'origine et de routes de dispersion.
+Agrege centres de domestication, routes de dispersion et donnees de transition neolithique pour les etudes de coevolution avec le complexe M. tuberculosis. Enveloppe quatre familles de sources ouvertes : zooarcheologie (ABMAP, sous-ensemble animal AADR), archeobotanique (ADEMNES, BRAIN), ADN humain ancien (AADR) et radiocarbone mondial (p3k14c, CONTEXT, AgriChange). Inclut des tables curees de centres d'origine (Croissant fertile, Indus, Yangtze, Sahel, Mesoamerique, Andes, Nouvelle-Guinee, Ethiopie, Sahara vert, Amazonie), de routes de dispersion (LBK, Cardial, bantoue, steppique, austronesienne, Lapita, transsaharienne, echange colombien) et d'evenements chronologiques lies a l'emergence du MTBC.
 
-Compétences : construire le contexte coévolutif de M ; bovis, M ; caprae, M ; orygis ; cadrer l'émergence de M ; tuberculosis à partir d'un ancêtre M ; canettii-like via la sédentarisation néolithique ; relier des TMRCA du MTBC aux transitions agricoles
+Compétences : construire l'arriere-plan coevolutif de M ; bovis, M ; caprae ou M ; orygis ; cadrer l'emergence de M ; tuberculosis sensu stricto a partir d'un ancetre de type M ; canettii via la sedentarisation neolithique ; relier des TMRCA MTBC aux transitions agricoles
 
 ### esm-atlas-cli
 
@@ -106,15 +118,15 @@ Compétences : traduire une séquence protéique en résumé de fonction biologi
 
 ### europe-pmc
 
-Interroge Europe PMC (EMBL-EBI), dépôt européen de littérature biomédicale couvrant résumés PubMed, texte intégral PMC, préprints de 32+ serveurs (bioRxiv, medRxiv...), livres, brevets et financements. API REST pour recherche, texte intégral et annotations de fouille pré-calculées (gènes, maladies, chimie, organismes, termes GO, numéros d'accession). Index le plus large en accès ouvert, complémentaire d'OpenAlex et de BioC-PMC.
+Interroge Europe PMC (EMBL-EBI), le depot europeen de litterature biomedicale couvrant les resumes PubMed, le texte integral PMC, les preprints de plus de 32 serveurs (bioRxiv, medRxiv, Research Square), livres, brevets, recommandations et financements. Fournit une API REST pour la recherche, la recuperation du texte integral et des annotations de text mining precalculees (genes, maladies, molecules, organismes, termes GO, numeros d'acces). Pour la litterature TB limitee a PubMed sans preprints, tbmonitor-papers est plus rapide.
 
-Compétences : chercher de la littérature biomédicale préprints inclus ; récupérer le texte intégral d'articles OA ; obtenir des annotations pré-calculées en JSON/XML ; construire un corpus TB incluant préprints ; relier publications et accessions de données ; Pour de la littérature TB PubMed seule (sans préprints), tbmonitor-papers est plus rapide
+Compétences : chercher de la litterature biomedicale y compris des preprints ; recuperer le texte integral d'un article en acces ouvert ; recuperer des annotations en JSON ou XML ; relier des publications a des numeros d'acces de donnees (ENA, UniProt, ChEMBL, PDB) ; decouvrir des articles lies via le graphe de citations
 
 ### geo-map
 
-Génère des cartes géographiques de qualité publication pour les études MTBC, avec projections cartographiques correctes, fonds Natural Earth multi-résolution, échelle, flèche nord, graticule et style prêt pour revue. Gère choroplèthes, bulles, camemberts, points GPS (lat/lon), arcs phylogéographiques, atlas multi-panneaux et compositions multi-couches.
+Boite a outils de recherche academique pour les publications de genomique des pathogenes evaluees par les pairs (groupe Guyeux, FEMTO-ST). Cartes geographiques de qualite publication pour les etudes MTBC : projections cartographiques, fonds Natural Earth multi-resolution, echelle, fleche nord, graticule, gabarits de revues. Types : choroplethe, bulles, camemberts, points GPS, arcs phylogeographiques, atlas multi-panneaux, composites multi-couches.
 
-Compétences : illustrer la distribution géographique d'une lignée dans un article ; montrer des taux de résistance par pays sur une carte ; tracer des sites d'échantillonnage à partir de coordonnées GPS ; dessiner des flux de migration phylogéographiques ; produire des figures pour présentations ou posters
+Compétences : cartographier la distribution d'une lignee dans une collection de recherche ; les frequences d'alleles de resistance par pays dans un jeu publie ; les sites d'echantillonnage ; des flux migratoires inferes ; toute figure de carte pour un article, un poster ou une slide
 
 ### glottolog
 
@@ -166,9 +178,9 @@ Compétences : analyser des données RNA-seq, WGS/WES ou ATAC-seq, FASTQ locaux 
 
 ### nextstrain
 
-Emploie Nextstrain (Augur + Auspice + TreeTime + Nextclade) pour l'analyse phylogéographique en temps réel et la visualisation interactive de l'évolution des pathogènes à grande échelle. Augur chaîne filtrage, alignement, construction d'arbre, calibration temporelle, reconstruction ancestrale et inférence de trait discret (géographie) en un pipeline reproductible produisant du JSON pour le visualiseur web Auspice.
+Boite a outils de recherche academique pour la recherche phylogeographique evaluee par les pairs. Nextstrain (Augur, Auspice, TreeTime, Nextclade) pour l'analyse phylogeographique et la visualisation interactive de collections de genomes de pathogenes publiees. Augur est la boite a outils Python qui enchaine filtrage, alignement, construction d'arbre, mise a l'echelle temporelle, reconstruction ancestrale et inference de trait discret (geographie) en un pipeline reproductible, produisant du JSON pour le visualiseur Auspice.
 
-Compétences : produire une phylogéographie calibrée dans le temps pour une lignée ou un jeu MTBC de 10² à 10⁵ génomes ; construire une visualisation Auspice interactive pour un séminaire ou une revue par un collaborateur ; inférer les événements de transmission les plus probables entre pays ; dater les nœuds ancestraux avec TreeTime ; écrire un build Snakemake reproductible
+Compétences : construire un pipeline phylogeographique reproductible sur un jeu de recherche ; dater un arbre avec TreeTime ; inferer la geographie ancestrale ; produire un arbre interactif accompagnant une publication
 
 ### ontologies
 
@@ -208,9 +220,9 @@ Compétences : tester si l'expansion d'une lignée MTBC coïncide avec un interv
 
 ### pastml
 
-Emploie PastML (Institut Pasteur, Ishikawa, Zhukova, Gascuel) pour la reconstruction rapide de caractères ancestraux en maximum de vraisemblance sur arbres enracinés, avec visualisation en arbre compressé intégrée. Reconstruit les valeurs les plus probables de caractères discrets (localisation, hôte, phénotype de résistance, lignée) à chaque nœud interne, puis condense l'arbre en une carte HTML interactive ne montrant que les zones de changement d'état. Conçu pour des arbres de 10⁴ à 10⁵ tips.
+Boite a outils de recherche academique pour la genomique evolutive evaluee par les pairs. PastML (Institut Pasteur) pour la reconstruction rapide de caracteres ancestraux discrets par maximum de vraisemblance (localisation, hote, allele de resistance aux antimicrobiens, lignee) sur un arbre enracine, avec sortie HTML en arbre compresse ; passe a l'echelle de 10^4 a 10^5 feuilles.
 
-Compétences : reconstruire l'origine géographique d'une sous-lignée MTBC ; inférer des sauts d'hôte ancestraux d'écotypes zoonotiques ; visualiser l'émergence de la résistance sur un arbre TB ; produire un arbre compressé HTML pour une slide ; mapper un trait discret sur une phylogénie existante sans reconstruire l'arbre
+Compétences : inferer l'origine geographique d'une sous-lignee MTBC dans une collection de recherche ; reconstruire des sauts d'hote ancestraux de mycobacteries zoonotiques ; dater l'emergence d'un allele de resistance sur une phylogenie publiee ; projeter un trait discret sur un arbre existant
 
 ### pleiades
 
@@ -232,9 +244,9 @@ Compétences : pré-annoter des résumés ou textes intégraux MTBC avec des ent
 
 ### pysam
 
-Module Python pour lire, manipuler et écrire les formats d'alignement génomique (SAM/BAM/CRAM) et de variants (VCF/BCF). Enveloppe de htslib.
+Lit, manipule et ecrit les formats d'alignement genomique (SAM/BAM/CRAM) et de variants (VCF/BCF) depuis Python ; enveloppe de htslib. Note pour le travail bacterien : les references MTBC comme NC_000962.3 sont mono-contig sans prefixe chr, et les coordonnees de fetch()/pileup() sont 0-based semi-ouvertes alors que VCF et SPDI sont 1-based.
 
-Compétences : lire ou écrire des BAM/CRAM/VCF ; manipuler des alignements ou des variants en Python
+Compétences : inspecter la profondeur ou la couverture a une position ; extraire les lectures d'un intervalle ; construire un pileup pour genotyper un site a la main ; filtrer ou fusionner des BAM ; analyser un VCF par programme plutot qu'avec bcftools ; verifier la qualite de mapping derriere un appel de variant
 
 ### rdkit
 
@@ -250,9 +262,21 @@ Compétences : PDF scientifique long ; article à colonnes ou tableaux complexes
 
 ### scanpy
 
-Boîte à outils passant à l'échelle pour l'analyse de données d'expression génique en cellule unique. Bâtie sur AnnData, axée sur le clustering, l'inférence de trajectoires et la visualisation.
+Boite a outils passant a l'echelle pour l'expression genique en cellule unique, batie sur AnnData : controle qualite, normalisation, reduction de dimension, clustering, inference de trajectoires et graphiques. Pour des matrices d'expression bulk ou du clustering generique, preferer scikit-learn.
 
-Compétences : analyser des données single-cell ; clustering, inférence de trajectoires, visualisation d'expression cellulaire
+Compétences : travailler sur un .h5ad ou un objet AnnData ; derouler un pipeline scRNA-seq (clustering Leiden/Louvain, UMAP, genes marqueurs, pseudotemps) ; l'utilisateur mentionne scanpy, AnnData, scVI ou la transcriptomique en cellule unique
+
+### sci-figure
+
+Figures d'article aux normes des revues : gabarits Nature, Science, PLOS et Cell (largeur en millimetres, resolution, police, PDF vectoriel), palettes compatibles avec le daltonisme, multi-panneaux GridSpec, export PGF et LaTeX. Partage la table de gabarits avec geo-map pour que figures de donnees et cartes d'un meme article sortent aux memes dimensions.
+
+Compétences : toute figure de manuscrit, de poster ou de slide a partir d'un CSV ou d'un DataFrame
+
+### scientific-problem-selection
+
+À utiliser quand des scientifiques ont besoin d'aide pour choisir un problème de recherche, imaginer un projet, débloquer un projet enlisé ou prendre des décisions scientifiques stratégiques.
+
+Compétences : pitcher une nouvelle idée ; travailler un problème de projet ; évaluer les risques d'un projet ; planifier une stratégie de recherche ; choisir sur quel problème travailler (« j'ai une idée de projet », « je suis bloqué », « aide-moi à évaluer ce projet », « sur quoi travailler »)
 
 ### scikit-bio
 
@@ -260,11 +284,11 @@ Bibliothèque de bioinformatique et de statistiques d'écologie des communautés
 
 Compétences : calculer des métriques de diversité alpha/bêta ; ordination (PCoA) ; manipuler séquences ou matrices de distances ; PERMANOVA et analyse d'écologie des communautés
 
-### seaborn
+### scikit-learn
 
-Bibliothèque de visualisation de données Python basée sur matplotlib. Offre une interface de haut niveau pour des graphiques statistiques attrayants et informatifs. Idéale pour explorer les relations entre variables et visualiser des distributions : EDA, graphes de relation, de distribution, comparaisons catégorielles, régression, cartes de chaleur et clustermaps.
+La bibliotheque de reference d'apprentissage automatique en Python : classification, regression, clustering, reduction de dimension, selection de modele et pretraitement. Quand les echantillons sont apparentes (isolats clonaux, ascendance partagee), decouper par groupe et non au hasard : voir senior-data-scientist pour les regles de conception.
 
-Compétences : visualisation statistique et analyse exploratoire (EDA) ; graphes de relation/distribution ; comparaisons catégorielles ; heatmaps ; graphiques de qualité publication depuis des DataFrames pandas
+Compétences : ajuster ou comparer des modeles predictifs sur des donnees tabulaires ; construire un Pipeline ou un ColumnTransformer ; lancer une validation croisee ou une recherche d'hyperparametres ; calculer des metriques de classification ; reduire la dimension par ACP, t-SNE ou UMAP
 
 ### seshat
 
@@ -277,6 +301,12 @@ Compétences : construire un argument quantitatif densité/urbanisation pour la 
 Interroge slavevoyages.org (36k+ voyages, 1514-1866) pour construire des scénarios phylogéographiques d'articles sur les lignées MTBC. Corrèle les distributions de lignées TB aux routes commerciales transatlantiques, aux TMRCA et aux événements migratoires historiques.
 
 Compétences : expliquer la présence dans le Nouveau Monde de lignées TB africaines (L5, L6, L4) ; bâtir une hypothèse de dispersion d'une lignée ; corréler un TMRCA à des mouvements de population historiques (Côte de l'Or → Amériques, golfe du Bénin, etc.)
+
+### statsmodels
+
+Modélisation statistique avancée et tests d'hypothèses. Complémentaire du module stats de SciPy, il fournit des classes et fonctions pour estimer de nombreux modèles statistiques et conduire tests et exploration. Sert à la régression linéaire, aux GLM, aux séries temporelles, à l'ANOVA, à l'analyse de survie, à l'inférence causale et aux tests d'hypothèses.
+
+Compétences : OLS/WLS, régression logistique ou de Poisson ; ARIMA/SARIMAX ; diagnostics statistiques, p-values, intervalles de confiance ; analyse statistique à la R
 
 ### tooluniverse-sequence-retrieval
 
@@ -303,10 +333,6 @@ Documentés sur la page de leur plugin d'origine.
 | Skill | Origine |
 |-------|---------|
 | [claim-check](redac.md#claim-check) | `redac` |
-| [create-viz](ops.md#create-viz) | `ops` |
 | [lit-review](redac.md#lit-review) | `redac` |
 | [reviewer-response](redac.md#reviewer-response) | `redac` |
-| [scientific-problem-selection](ia.md#scientific-problem-selection) | `ia` |
-| [scikit-learn](ia.md#scikit-learn) | `ia` |
-| [statsmodels](ia.md#statsmodels) | `ia` |
 

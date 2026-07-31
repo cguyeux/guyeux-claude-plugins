@@ -7,28 +7,38 @@ description: >
   self-presentation. Use this skill whenever the user is drafting a project proposal,
   candidature dossier, cover letter, research summary, list of publications, supervision
   record, funding history, or needs to cite specific CV elements (publications, funding,
-  impact metrics, co-authors). Trigger even when the user doesn't say "CV" explicitly —
+  impact metrics, co-authors). Trigger even when the user doesn't say "CV" explicitly,
   if they're writing something professional about their research, teaching, or supervision,
   this skill provides the sourced material they need.
 ---
 
 # CV Extraction Skill
 
-You have access to Christophe Guyeux's complete LaTeX CV, located in `~/Documents/docs/cv/`.
+You have access to Christophe Guyeux's complete LaTeX CV, located in `~/docs/cv/`.
+
+Check the path exists before reading (`ls ~/docs/cv/cvDoc/`). If it does not, ask
+the user where the CV lives rather than answering from memory: every figure in this
+skill (h-index, funding amounts, thesis dates) must come from the source files.
 
 ## Your job
 
-When the user is drafting a document (project proposal, application, letter, bio, etc.), read the relevant CV files and extract **exactly what they need**, **sourced to the specific file and section**. Do not summarize from memory — always read the actual files.
+When the user is drafting a document (project proposal, application, letter, bio, etc.), read the relevant CV files and extract **exactly what they need**, **sourced to the specific file and section**. Do not summarize from memory, always read the actual files.
 
 ## CV structure
 
-**Root**: `~/Documents/docs/cv/`
-- `cv.tex` — main content entry point (shows overall structure)
-- `affiliations.txt` — all co-authors: `Lastname, Firstname $ Institution $ Country`
-- `references/conferences.bib` — full BibTeX for conference papers (340 KB)
-- `references/journals.bib` — full BibTeX for journal papers (273 KB)
+**Root**: `~/docs/cv/`
+- `cv.tex`, main content entry point (shows overall structure)
+- `affiliations.txt`, all co-authors: `Lastname, Firstname $ Institution $ Country`
+- `references/conferences.bib`, full BibTeX for conference papers (340 KB)
+- `references/journals.bib`, full BibTeX for journal papers (273 KB)
+- `references/abstracts_found.json`, `references/abstracts_missing.json`, abstract
+  retrieval status per entry; useful to know which papers have no abstract on file
+- Variant CVs at the root (`erc.tex`, `iuf.tex`, `deleg.tex`, `avancement.tex`,
+  `chrysalide.tex`) assemble the same `cvDoc/` blocks for a specific dossier. When
+  the user is preparing one of these exact dossiers, read the variant first: it
+  already encodes which sections that funder or committee expects.
 
-**Modular content in `cvDoc/`** — read only what the context requires:
+**Modular content in `cvDoc/`**, read only what the context requires:
 
 | File | Content |
 |------|---------|
@@ -52,6 +62,15 @@ When the user is drafting a document (project proposal, application, letter, bio
 | `teachingDetails.tex` | Teaching activities by institution and year |
 | `teachingAcademic.tex` | Administrative and academic responsibilities |
 | `expertise.tex` | Expert evaluation roles |
+| `deeps.tex` | Detailed entry for the DEEPS project (earthquake prediction) |
+| `researchSupervision.tex` | Supervision and evaluation section wrapper |
+| `research.tex`, `teaching.tex`, `publications.tex` | Section wrappers that `\input` the blocks above; read them to see the canonical ordering |
+| `journals2pages.tex`, `publications2pages.tex`, `teachingAccShort.tex` | Condensed variants for page-limited dossiers |
+| `titre.tex` | Title block (formatting only, no content) |
+
+Blocks are wrapped in `\begin{francais}...\end{francais}` and
+`\begin{anglais}...\end{anglais}`. Read both and pick the one matching the target
+document's language rather than translating the wrong one.
 
 ## Step-by-step process
 
@@ -74,7 +93,7 @@ Map the request to the files below. Use your judgement for combinations.
 
 ### 2. Read the files
 
-Use the Read tool on each relevant file. For the BibTeX databases (`references/*.bib`), use Grep with specific author names, keywords, or years rather than loading the full file — they are very large.
+Use the Read tool on each relevant file. For the BibTeX databases (`references/*.bib`), use Grep with specific author names, keywords, or years rather than loading the full file, they are very large.
 
 ### 3. Extract and present
 
@@ -102,7 +121,7 @@ Match the language of the target document:
 
 When the user says *"I'm writing an ANR AAPG proposal, give me the funding section"*, you should:
 1. Read `researchFundings.tex` and `researchAwards.tex`
-2. Return the actual content with proper references: project name, grant agency, reference number if available, amount, dates, your role — ready to paste
+2. Return the actual content with proper references: project name, grant agency, reference number if available, amount, dates, your role, ready to paste
 3. Offer to also extract supervision or impact data if relevant
 
 When the user says *"Who are my co-authors at University of Monastir?"*, you should:
@@ -111,7 +130,7 @@ When the user says *"Who are my co-authors at University of Monastir?"*, you sho
 
 ## Important notes
 
-- **Never invent or approximate** publication counts, h-index, funding amounts, or dates — read the source.
-- The CV files use LaTeX macros. Strip formatting commands (`\textbf{}`, `\href{}{}`, `\emph{}`, etc.) when presenting content — show the plain text content.
+- **Never invent or approximate** publication counts, h-index, funding amounts, or dates, read the source.
+- The CV files use LaTeX macros. Strip formatting commands (`\textbf{}`, `\href{}{}`, `\emph{}`, etc.) when presenting content, show the plain text content.
 - For supervision, distinguish clearly between completed PhDs, ongoing theses, and co-supervisions vs. primary supervision.
-- `journals.tex` and `conferences.tex` use `etaremune` (reverse-numbered list) — the most recent entries appear first.
+- `journals.tex` and `conferences.tex` use `etaremune` (reverse-numbered list), the most recent entries appear first.

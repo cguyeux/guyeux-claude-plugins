@@ -1,6 +1,12 @@
 ---
 name: pandas-performance
-description: Advanced sub-skill for pandas focused on memory optimization, execution speed, and handling large-scale datasets (10M+ rows). Covers low-level dtypes, efficient indexing, and vectorization of complex logic.
+description: >-
+  Advanced pandas sub-skill for memory footprint and execution speed on large tables (10M+
+  rows): dtype downcasting, categoricals, efficient indexing, vectorisation of row-wise
+  logic, chunked and out-of-core reads, and the PyArrow backend. Use when a DataFrame
+  operation is too slow or exhausts memory, when replacing apply/iterrows with vectorised or
+  numpy operations, when a groupby or merge blows up, or when the user asks how to load a
+  file too large to fit in RAM.
 version: 2.2
 license: BSD-3-Clause
 ---

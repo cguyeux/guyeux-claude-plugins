@@ -2,7 +2,7 @@
 name: wals
 description: >-
   Query WALS, the World Atlas of Language Structures (Dryer & Haspelmath
-  eds., Max Planck Institute) — the reference open database of typological
+  eds., Max Planck Institute), the reference open database of typological
   features (phonology, morphology, syntax, word order, lexicon) for ~3,500
   languages worldwide. Provides 192 typological parameters with ~76,000
   codings, all keyed to Glottocodes for joining with the rest of the
@@ -16,7 +16,7 @@ description: >-
   to a phylogeographic narrative.
 ---
 
-# WALS — World Atlas of Language Structures
+# WALS : World Atlas of Language Structures
 
 ## Client (resilient, tool-first)
 
@@ -45,8 +45,8 @@ by Oxford University Press in 2005 (Haspelmath, Dryer, Gil & Comrie eds.),
 it has since been continuously expanded as **WALS Online** (2008–present)
 with versioned CLDF releases on GitHub.
 
-WALS catalogues structural properties — phonological, morphological,
-syntactic, lexical — gathered from descriptive grammars and assigned
+WALS catalogues structural properties, phonological, morphological,
+syntactic, lexical, gathered from descriptive grammars and assigned
 discrete categorical values, allowing systematic typological comparison
 at the global scale. Every WALS language is keyed to a **Glottocode**,
 making WALS the canonical typological-trait layer of the
@@ -67,7 +67,7 @@ Glottolog-anchored ecosystem.
 
 > [!NOTE]
 > WALS has **no public REST API**. Access is by per-feature stable URL on
-> `wals.info`, or — recommended for analysis — by downloading the CLDF
+> `wals.info`, or, recommended for analysis, by downloading the CLDF
 > StructureDataset from GitHub. Pin the release tag for reproducibility.
 
 ## Why it matters for MTBC × anthropology
@@ -83,11 +83,11 @@ WALS is **more peripheral** to direct TB research than `glottolog` or
 2. **A bridge from Glottocode to grammar.** When you say *"the populations
    speaking Bantu languages of the Sabaki branch"* in a TB phylogeography
    narrative, WALS tells you what those languages actually look like
-   structurally — not just how they're classified. Useful when arguing
+   structurally, not just how they're classified. Useful when arguing
    that cultural neighbours and linguistic neighbours co-vary with TB
    neighbours.
 
-WALS is **not** a primary scientific resource for TB work — its inclusion
+WALS is **not** a primary scientific resource for TB work, its inclusion
 is justified mainly because it shares the Glottocode backbone and is
 trivially joinable to `d-place`, `glottolog`, `aadr`, `seshat`, and the
 ancient-pathogen catalogues via the language identifier layer.
@@ -103,12 +103,12 @@ WALS is published as a CLDF StructureDataset with the following tables:
 | `languages.csv` | 3,573 | ID, Name, Macroarea, Latitude, Longitude, **Glottocode**, ISO639P3code, Family, Subfamily, Genus, Samples_100, Samples_200, Country_ID |
 | `parameters.csv` | 192 | ID, Name, Description, Chapter_ID |
 | `chapters.csv` | 152 | ID, Number, Name, Description, Contributor, Citation, Area_ID |
-| `codes.csv` | — | ID, Parameter_ID, Name, Description, Number — i.e. the discrete value labels for each parameter |
+| `codes.csv` |, | ID, Parameter_ID, Name, Description, Number, i.e. the discrete value labels for each parameter |
 | `values.csv` | 76,475 | ID, Language_ID, Parameter_ID, Value, Code_ID, Comment, Source, Example_ID |
-| `examples.csv` | — | ID, Language_ID, Primary_Text, Analyzed_Word, Gloss, Translated_Text |
-| `genealogy.csv` | — | Family-level genealogical metadata (some with phylogenies) |
+| `examples.csv` |, | ID, Language_ID, Primary_Text, Analyzed_Word, Gloss, Translated_Text |
+| `genealogy.csv` |, | Family-level genealogical metadata (some with phylogenies) |
 | `areas.csv` | **11** | Top-level thematic groupings of chapters |
-| `countries.csv`, `language_names.csv`, `media.csv`, `contributors.csv` | — | Auxiliary tables |
+| `countries.csv`, `language_names.csv`, `media.csv`, `contributors.csv` |, | Auxiliary tables |
 
 ### The 11 thematic areas
 
@@ -129,20 +129,20 @@ WALS is published as a CLDF StructureDataset with the following tables:
 ### Sampling subsets
 
 The `Samples_100` and `Samples_200` columns flag the **WALS 100-language
-sample** and **WALS 200-language sample** — globally balanced subsets
+sample** and **WALS 200-language sample**, globally balanced subsets
 designed by Dryer to maximise typological and genealogical diversity.
 These are the canonical reference sets for testing global typological
 hypotheses with controlled non-independence.
 
 ### Key column: Glottocode
 
-Every WALS language carries a `Glottocode` — the join key to **`glottolog`**,
+Every WALS language carries a `Glottocode`, the join key to **`glottolog`**,
 **`d-place`**, and any other Glottocode-aware resource in the constellation.
 This is the single most important column for integration.
 
 ## Data access
 
-### Option A — CLDF dataset on GitHub (recommended)
+### Option A : CLDF dataset on GitHub (recommended)
 
 ```bash
 git clone https://github.com/cldf-datasets/wals.git
@@ -166,7 +166,7 @@ print(val.head())
 #    ID Language_ID Parameter_ID Value Code_ID ...
 ```
 
-### Option B — `pycldf` for canonical access
+### Option B : `pycldf` for canonical access
 
 ```python
 from pycldf import Dataset
@@ -176,7 +176,7 @@ for v in ds["ValueTable"]:
         print(v["Language_ID"], v["Value"])
 ```
 
-### Option C — Per-feature web pages on wals.info
+### Option C : Per-feature web pages on wals.info
 
 Each parameter has a stable URL of the form:
 
@@ -188,7 +188,7 @@ e.g. `https://wals.info/feature/81A` for "Order of Subject, Object and
 Verb". Each page includes a global map, the value distribution, the
 language list, and the prose chapter.
 
-### Option D — `lingtypology` (R)
+### Option D : `lingtypology` (R)
 
 For R users, the `lingtypology` package wraps WALS / Glottolog / Phoible /
 AfBo into a unified typology toolkit and is the easiest route for
@@ -196,7 +196,7 @@ comparative-method work in R.
 
 ## Workflows
 
-### Workflow 1 — Join WALS to D-PLACE for cross-cultural analysis
+### Workflow 1 : Join WALS to D-PLACE for cross-cultural analysis
 
 Goal: combine WALS typological features with D-PLACE cultural/environmental
 variables for the same societies, via the Glottocode backbone.
@@ -213,7 +213,7 @@ joined = dpl.merge(
 # Now each D-PLACE society can be linked to its WALS coverage
 ```
 
-### Workflow 2 — Test correlation between a typological feature and an MTBC lineage
+### Workflow 2 : Test correlation between a typological feature and an MTBC lineage
 
 Goal (illustrative, not a serious claim): is lineage X over-represented
 in populations speaking SOV languages?
@@ -236,10 +236,10 @@ sov = val[(val.Parameter_ID == "81A")].merge(
 > if you don't control for areal and genealogical effects. Always (i)
 > restrict to the WALS 100- or 200-language sample, (ii) include `Family`
 > as a random effect, and (iii) report effect sizes with confidence
-> intervals derived from a phylogenetic comparative model — not raw
+> intervals derived from a phylogenetic comparative model, not raw
 > chi-squared tests.
 
-### Workflow 3 — Build a typological profile of a population
+### Workflow 3 : Build a typological profile of a population
 
 Goal: for a population whose Glottocode you know, dump the full WALS
 typological profile to feed into a narrative or a slide.
@@ -262,10 +262,10 @@ def profile(glottocode):
 profile("akan1250")  # Twi (Akan), Ghana — relevant to L4.15 Clade A
 ```
 
-### Workflow 4 — Use the WALS 100/200 sample as a globally balanced reference
+### Workflow 4 : Use the WALS 100/200 sample as a globally balanced reference
 
 Goal: avoid overfitting to well-studied languages (English, French,
-German, Russian — the top of the values count).
+German, Russian, the top of the values count).
 
 ```python
 lang = pd.read_csv("cldf/languages.csv")
@@ -280,7 +280,7 @@ claims and minimise the bias toward Standard Average European.
 
 - **WALS is descriptive linguistics, not biology.** Resist the temptation
   to over-interpret a linguistic-feature ↔ pathogen correlation as
-  causal — the chain language → cultural practice → pathogen exposure has
+  causal, the chain language → cultural practice → pathogen exposure has
   many missing links and the more parsimonious interpretations (areal
   diffusion, ascertainment bias) usually win.
 - **Coverage is uneven.** The most-coded languages (English: 159 features,
@@ -310,12 +310,12 @@ claims and minimise the bias toward Standard Average European.
 | Tool | Purpose |
 |---|---|
 | **`glottolog`** | Backbone language identifier; **the join key** for WALS |
-| **`d-place`** | Cultural variables (subsistence, kinship, religion) — joinable via Glottocode |
+| **`d-place`** | Cultural variables (subsistence, kinship, religion), joinable via Glottocode |
 | **`pleiades`** | Ancient toponyms for the populations studied |
 | **`seshat`** | Polity histories of the regions where WALS languages are spoken |
 | **`aadr`** | Ancient human genomes for the same populations (loose link via region) |
 | **`p3k14c`** | Archaeological context |
-| **`spaam-ancient-metagenome-dir`** | Ancient pathogen samples — same populations |
+| **`spaam-ancient-metagenome-dir`** | Ancient pathogen samples, same populations |
 | **`lingtypology`** (R) | Comparative typology toolkit wrapping WALS / Phoible / Glottolog |
 | **`pycldf`** (Python) | Canonical CLDF loader |
 | **D-PLACE Bayesian phylogenies** | Time-calibrated language trees for comparative phylogenetic methods on WALS features |

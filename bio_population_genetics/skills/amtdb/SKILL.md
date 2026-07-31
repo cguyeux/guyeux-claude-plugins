@@ -2,7 +2,7 @@
 name: amtdb
 description: >-
   Query AmtDB, the Ancient mtDNA Database (Charles University Prague,
-  Ehler et al. 2019) — the reference open repository of ancient human
+  Ehler et al. 2019), the reference open repository of ancient human
   mitochondrial genomes (2,548 samples in v1.009, late Paleolithic →
   Iron Age, mostly Eurasian) with rich metadata: maternal haplogroup,
   Y-chromosome haplogroup when available, archaeological culture, site,
@@ -17,7 +17,7 @@ description: >-
   paleopathology contexts.
 ---
 
-# AmtDB — Ancient mtDNA Database
+# AmtDB : Ancient mtDNA Database
 
 ## Client (resilient, tool-first)
 
@@ -52,7 +52,7 @@ phylogeographic analysis.
   `10.1093/nar/gky843`
 - **Web portal**: `https://amtdb.org/`
 - **Help / changelog**: `https://amtdb.org/help`
-- **Current release**: **v1.009** (28 February 2024) — **2,548 samples**
+- **Current release**: **v1.009** (28 February 2024), **2,548 samples**
 - **License**: **CC BY 4.0**
 - **Hosting**: Charles University Prague (Czech Republic)
 
@@ -73,7 +73,7 @@ specific niches:
    (which is restricted to nuclear-genome reconstructions). AmtDB is the
    way to recover them for cross-referencing.
 2. **Maternal lineage cleanliness.** Mitochondrial haplogroups (`mt_hg`)
-   are simpler to interpret than autosomal admixture components — a
+   are simpler to interpret than autosomal admixture components, a
    single matrilineal trajectory rather than a probabilistic mix. For
    narrative slides on population history this is often more readable
    than ADMIXTOOLS output.
@@ -82,7 +82,7 @@ specific niches:
    For exploratory work and prototyping, it is much faster than the
    full AADR EIGENSTRAT pipeline.
 
-AmtDB does **not** carry pathogen data — for that, you still need
+AmtDB does **not** carry pathogen data, for that, you still need
 `spaam-ancient-metagenome-dir`. Its role in the TB constellation is the
 **maternal-lineage host context** for ancient samples.
 
@@ -93,7 +93,7 @@ AmtDB does **not** carry pathogen data — for that, you still need
   Neolithic and Bronze Age
 - Geographic focus: **Eurasia**, dominated by Europe; smaller numbers from
   Central Asia, Middle East, Near East, and Africa
-- Latest update added 406 FASTA files from older studies — Gamba, Haak,
+- Latest update added 406 FASTA files from older studies : Gamba, Haak,
   Lazaridis, Lipson, Mathieson, Olalde et al. (2014–2019)
 
 ## Metadata fields (verified from AmtDB documentation)
@@ -123,14 +123,14 @@ The CSV download is wide and richly annotated. Key columns:
 | `sequence_source` | Where the sequence comes from (whole-genome capture, mt-capture, etc.) |
 | `avg_coverage` | Mean coverage of the mt sequence |
 
-The `mitopatho_*` family of columns is **unique** in the constellation —
+The `mitopatho_*` family of columns is **unique** in the constellation,
 no other ancient-DNA database catalogues mitochondrial pathological
 mutations at the per-sample level. Useful for niche paleopathology
 arguments.
 
 ## Data access
 
-### Option A — Web UI (interactive)
+### Option A : Web UI (interactive)
 
 1. Go to `https://amtdb.org/`.
 2. Use the search panel to filter by country, culture, epoch, haplogroup,
@@ -138,7 +138,7 @@ arguments.
 3. Display the selected samples on the interactive world map.
 4. Export the selection as CSV (metadata) and FASTA (sequences).
 
-### Option B — Bulk download + pandas
+### Option B : Bulk download + pandas
 
 The full database is a single CSV + a FASTA bundle, small enough to
 inspect locally:
@@ -159,7 +159,7 @@ print(df.country.value_counts().head(15))
 print(df.mt_hg.value_counts().head(15))
 ```
 
-### Option C — Reading the FASTA sequences
+### Option C : Reading the FASTA sequences
 
 The sequences are standard mtDNA FASTA, headers keyed by `id`. Load with
 Biopython:
@@ -172,7 +172,7 @@ print(len(seqs), "sequences")
 
 ## Workflows
 
-### Workflow 1 — Maternal lineage profile of a region
+### Workflow 1 : Maternal lineage profile of a region
 
 Goal: build a per-period, per-region distribution of mitochondrial
 haplogroups for a cultural area relevant to your TB narrative.
@@ -194,7 +194,7 @@ Then compare to the same region's modern population mt-haplogroup
 distribution (e.g. from MITOMAP or Behar 2008) to assess maternal
 continuity vs replacement.
 
-### Workflow 2 — Pair AmtDB samples with SPAAM ancient-pathogen samples
+### Workflow 2 : Pair AmtDB samples with SPAAM ancient-pathogen samples
 
 Goal: when SPAAM has an ancient *Y. pestis* or *M. tuberculosis* sample
 without an AADR nuclear-genome match, check whether AmtDB at least
@@ -216,7 +216,7 @@ spaam["amtdb_id"] = spaam.apply(find_amt_match, axis=1)
 print(spaam[["project_name","site_name","sample_age","amtdb_id"]].dropna(subset=["amtdb_id"]))
 ```
 
-### Workflow 3 — Map of an mt-haplogroup over time
+### Workflow 3 : Map of an mt-haplogroup over time
 
 Goal: visualise the spatiotemporal distribution of a specific maternal
 lineage of interest.
@@ -231,7 +231,7 @@ gdf["period"] = pd.cut(gdf.bp, bins=[-1, 3000, 5000, 7000, 12000],
 # then plot per period
 ```
 
-### Workflow 4 — Mitochondrial pathological mutations in ancient samples
+### Workflow 4 : Mitochondrial pathological mutations in ancient samples
 
 Goal: leverage the unique `mitopatho_*` fields to surface ancient
 individuals carrying known disease-associated mtDNA variants.
@@ -242,8 +242,8 @@ print(len(patho), "samples with at least one pathological annotation")
 print(patho[["id","country","epoch","mitopatho_diseases"]].head(20))
 ```
 
-This is a very niche but unique angle — at the boundary between
-paleogenetics and paleopathology — that AmtDB enables out of the box.
+This is a very niche but unique angle, at the boundary between
+paleogenetics and paleopathology, that AmtDB enables out of the box.
 
 ## Caveats
 
@@ -276,7 +276,7 @@ paleogenetics and paleopathology — that AmtDB enables out of the box.
 | Tool | Purpose |
 |---|---|
 | **`aadr`** | Autosomal/nuclear-genome counterpart for the same skeletons (when both exist) |
-| **`spaam-ancient-metagenome-dir`** | Ancient pathogen samples — pair via `site_name` + age |
+| **`spaam-ancient-metagenome-dir`** | Ancient pathogen samples, pair via `site_name` + age |
 | **`p3k14c`** | Independent radiocarbon chronology of the sites |
 | **`pleiades`** | Toponymic resolution for ancient site names in `site` field |
 | **`d-place`** | Cultural context for the population the skeleton belonged to |
@@ -284,7 +284,7 @@ paleogenetics and paleopathology — that AmtDB enables out of the box.
 | **`seshat`** | Polity context for samples within the historical period |
 | **TBannotator MCP** | Modern TB lineage geography for downstream coevolution arguments |
 | **HaploGrep / Haplofind** | Tools for re-deriving mtDNA haplogroups consistently |
-| **MitoMap** | Reference catalogue of mtDNA pathological variants — source of `mitopatho_*` annotations |
+| **MitoMap** | Reference catalogue of mtDNA pathological variants, source of `mitopatho_*` annotations |
 
 ## Citation
 

@@ -8,6 +8,28 @@ user-invocable: false
 
 Descriptive statistics, trend analysis, outlier detection, hypothesis testing, and guidance on when to be cautious about statistical claims.
 
+## Reading this skill in a research context
+
+The worked examples below are deliberately generic. The following table maps them
+onto the quantities that actually come up in genomics and population work, so the
+reasoning transfers without rewriting it each time.
+
+| Generic example here | Research equivalent |
+|---|---|
+| Revenue per user, session duration | SNP count per genome, branch length, coverage depth, read depth per site |
+| Conversion rate, signup rate | Allele frequency, proportion of isolates carrying a variant, resistance prevalence in a collection |
+| A/B test between two variants | Comparison between two lineages, two sampling periods, two host species |
+| Monthly trend, seasonality | Temporal trend in sampling, allele frequency trajectory through time |
+| Segment, cohort | Lineage, sublineage, country of origin, transmission cluster |
+| Churned users missing from the data | Genomes never sequenced: the sampling frame, and the single largest source of bias in any public-archive analysis |
+
+Two things are different enough in this domain to state up front. First, the
+observations are usually **not independent**: isolates share ancestry, and the
+tests below assume they do not. Second, the sample is usually **not random**:
+genomes enter public archives for a reason. Both are handled at the design stage,
+not by a better test. `senior-data-scientist` covers the design gate;
+`statsmodels` has the mixed-model and FDR machinery.
+
 ## Descriptive Statistics Methodology
 
 ### Central Tendency
@@ -216,7 +238,36 @@ When you find a correlation, explicitly consider:
 When you test many hypotheses, some will be "significant" by chance:
 - Testing 20 metrics at p=0.05 means ~1 will be falsely significant
 - If you looked at many segments before finding one that's different, note that
-- Adjust for multiple comparisons with Bonferroni correction (divide alpha by number of tests) or report how many tests were run
+- Always report how many tests were actually run, including the ones abandoned
+  after a first look. A threshold chosen after seeing the results is not a threshold.
+
+Choose the correction to match the regime:
+
+| Situation | Correction | Why |
+|---|---|---|
+| A handful of pre-registered hypotheses | Holm, or Bonferroni | Controls the chance of any false positive; the cost is affordable at small k |
+| Hundreds to millions of tests (every site, every gene, every trait pair) | Benjamini-Hochberg FDR | Controls the expected *proportion* of false discoveries; Bonferroni at k = 4 million leaves no power at all |
+| Tests that may be negatively dependent | Benjamini-Yekutieli | BH assumes positive or no dependence |
+| Exploratory screen feeding a follow-up experiment | BH at a permissive q, stated as such | The follow-up is the real filter |
+
+```python
+from statsmodels.stats.multitest import multipletests
+
+reject, qvals, _, _ = multipletests(pvals, alpha=0.05, method='fdr_bh')
+# 'fdr_by' for negative dependence, 'holm' for a small pre-registered family
+```
+
+Report q-values, not "corrected p-values", when using FDR, and say what the
+threshold means: at q < 0.05, roughly 5 percent of the calls you declare positive
+are expected to be wrong. That is a different guarantee from Bonferroni, and
+conflating the two in a manuscript is a reviewer magnet.
+
+Two genomic caveats. Linkage makes neighbouring sites redundant, so the effective
+number of independent tests is far below the number of positions: the correction is
+conservative, not anti-conservative, but do not claim k independent tests. And
+p-values from a test whose null is misspecified (for example, ignoring clonal
+structure) are wrong before any correction is applied; no multiple-testing method
+repairs that. See `senior-data-scientist` for the design-level fix.
 
 ### Simpson's Paradox
 

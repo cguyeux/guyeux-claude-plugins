@@ -1,7 +1,7 @@
 ---
 name: spaam-ancient-metagenome-dir
 description: >-
-  Query the SPAAM community AncientMetagenomeDir — the reference community
+  Query the SPAAM community AncientMetagenomeDir, the reference community
   catalogue of all published ancient metagenomic and ancient microbial
   single-genome samples. Find ancient Mycobacterium tuberculosis and related
   pathogen samples, their publications, sites, dates, and ENA/SRA accessions,
@@ -13,7 +13,7 @@ description: >-
   filling the pathogen side of a host–pathogen coevolution story.
 ---
 
-# SPAAM AncientMetagenomeDir — Ancient Metagenomes & Pathogen Genomes
+# SPAAM AncientMetagenomeDir : Ancient Metagenomes & Pathogen Genomes
 
 ## Overview
 
@@ -28,9 +28,9 @@ schema and pull-request review.
   samples with AncientMetagenomeDir.* **Scientific Data** 8:31 (2021).
   DOI: `10.1038/s41597-021-00816-y`
 - **Repository**: `https://github.com/SPAAM-community/AncientMetagenomeDir`
-- **Companion toolkit**: **AMDirT** (`amdirt`), Python package — Fellows Yates
+- **Companion toolkit**: **AMDirT** (`amdirt`), Python package : Fellows Yates
   et al. *F1000Research* 12:926 (2023)
-- **License**: **CC BY 4.0** (data) — the directory citation alone is
+- **License**: **CC BY 4.0** (data), the directory citation alone is
   **insufficient**; also cite each original paper whose data you use
 - **Caveat (quoted from repo)**: *"The AncientMetagenomeDir community curates
   this data on a voluntary basis, and therefore provides no warranty or
@@ -55,7 +55,7 @@ and libraries TSVs:
 
 | Directory | What it catalogues |
 |---|---|
-| `ancientsinglegenome-hostassociated/` | **Ancient single-genome reconstructions** of host-associated microbes (e.g. ancient MTBC, *Y. pestis*, *Salmonella*, *M. leprae*, HBV, B19, etc.) — **the table for ancient TB** |
+| `ancientsinglegenome-hostassociated/` | **Ancient single-genome reconstructions** of host-associated microbes (e.g. ancient MTBC, *Y. pestis*, *Salmonella*, *M. leprae*, HBV, B19, etc.), **the table for ancient TB** |
 | `ancientmetagenome-hostassociated/` | Host-associated shotgun metagenomes (oral microbiome from dental calculus, gut from coprolites, etc.) |
 | `ancientmetagenome-environmental/` | Environmental shotgun metagenomes (sediments, permafrost, lake cores, etc.) |
 
@@ -72,7 +72,7 @@ Each directory contains:
 The **samples** TSV holds one row per biological sample; the **libraries** TSV
 holds one row per sequencing library (a sample can have several).
 
-## Key columns — `ancientsinglegenome-hostassociated_samples.tsv` (19 fields)
+## Key columns : `ancientsinglegenome-hostassociated_samples.tsv` (19 fields)
 
 | Column | Meaning |
 |---|---|
@@ -97,15 +97,15 @@ holds one row per sequencing library (a sample can have several).
 | `archive_accession` | Sample-level or run-level accession |
 
 MTBC-bearing studies **actually present** in the directory (verified
-snapshot — always re-check the live TSV):
+snapshot, always re-check the live TSV):
 
 | `project_name` | N indiv. | Site / host | Age (BP) | Pathogen | DOI |
 |---|---|---|---|---|---|
-| `Bos2014` | 3 | Peru (pre-Columbian) — El Yaral, El Algodonal, Chiribaya Alta | 900–1 000 | ***M. pinnipedii*** in humans | `10.1038/nature13591` |
-| `Kay2015` | 8 | Hungary — Dominican church of Vác (mummies, bone + lung + abdomen) | 100–200 | *M. tuberculosis* | `10.1038/ncomms7717` |
-| `Sabin2020` | 1 | Sweden — Lund Cathedral (Bishop Winstrup, calcified nodule) | ~300 | *M. tuberculosis* | `10.1186/s13059-020-02112-1` |
-| `Vagene2022` | 3 | Peru + Colombia — Moquegua M6-Estuquiña, Bogotá (colonial) | 500–700 | ***M. pinnipedii*** in humans | `10.1038/s41467-022-28562-8` |
-| `Jager2022` | 1 | Hungary — Dominican church of Vác (additional sample) | ~200 | *M. tuberculosis* | `10.1016/j.tube.2022.102181` |
+| `Bos2014` | 3 | Peru (pre-Columbian) : El Yaral, El Algodonal, Chiribaya Alta | 900–1 000 | ***M. pinnipedii*** in humans | `10.1038/nature13591` |
+| `Kay2015` | 8 | Hungary : Dominican church of Vác (mummies, bone + lung + abdomen) | 100–200 | *M. tuberculosis* | `10.1038/ncomms7717` |
+| `Sabin2020` | 1 | Sweden : Lund Cathedral (Bishop Winstrup, calcified nodule) | ~300 | *M. tuberculosis* | `10.1186/s13059-020-02112-1` |
+| `Vagene2022` | 3 | Peru + Colombia : Moquegua M6-Estuquiña, Bogotá (colonial) | 500–700 | ***M. pinnipedii*** in humans | `10.1038/s41467-022-28562-8` |
+| `Jager2022` | 1 | Hungary : Dominican church of Vác (additional sample) | ~200 | *M. tuberculosis* | `10.1016/j.tube.2022.102181` |
 
 Related (non-MTBC, but ancient *Mycobacterium* or useful context):
 
@@ -115,39 +115,39 @@ Related (non-MTBC, but ancient *Mycobacterium* or useful context):
 | `Vagene` (2018) | *Salmonella enterica* Paratyphi C | 1545 CE Mexican *cocoliztli* (Teposcolula-Yucundaa), cross-reference for post-contact epidemics |
 
 > [!WARNING]
-> The MTBC corpus in SPAAM is **very small** — **16 individuals, 5 projects,
+> The MTBC corpus in SPAAM is **very small**, **16 individuals, 5 projects,
 > 4 countries** (Peru, Hungary, Sweden, Colombia), and **nothing older than
 > ~1 000 BP**. By contrast, ancient *M. leprae* counts **49 individuals across
 > 13 countries and 2 200 years**. There is currently **no ancient DNA for
 > *M. bovis*, *M. caprae*, *M. africanum*, or *M. canettii*** in the catalogue,
 > and no Bronze Age or Neolithic human-adapted MTBC. Narratives built on
 > "domestication-era MTBC ancient DNA" are therefore under-constrained by the
-> published record — frame them as testable hypotheses, not demonstrated facts.
+> published record, frame them as testable hypotheses, not demonstrated facts.
 
 > [!NOTE]
 > The directory grows regularly via community pull requests. Always
 > re-download the master-branch TSV and filter for *Mycobacterium* before
 > writing a Methods section.
 
-## *Yersinia pestis* — the richest ancient-pathogen corpus in SPAAM
+## *Yersinia pestis* : the richest ancient-pathogen corpus in SPAAM
 
 *Y. pestis* is the **#1 species** in the SPAAM single-genome table
 by count, with **214 individuals** across **36 distinct projects**
 (verified snapshot). This is **3.1× larger than ancient *M. leprae***
 and **~13× larger than ancient MTBC**. The corpus spans **5 300 years
 BP → modern**, making it the deepest-time ancient-pathogen record
-available — the canonical test-bed for the "history of humans
+available, the canonical test-bed for the "history of humans
 through pathogens" paradigm.
 
-### Verified composition (current snapshot) — by historical period
+### Verified composition (current snapshot) : by historical period
 
 | Period | N | Projects |
 |---|---|---|
 | **Modern (<500 BP)** | 70 | various modern surveys |
-| **Medieval / Black Death (500–1 200 BP)** | 47 | 11 projects — see below |
-| **Late Antique / Justinian (1 200–1 600 BP)** | **35** | 5 projects — see below |
+| **Medieval / Black Death (500–1 200 BP)** | 47 | 11 projects, see below |
+| **Late Antique / Justinian (1 200–1 600 BP)** | **35** | 5 projects, see below |
 | **Bronze Age → Iron Age (1 600–3 000 BP)** | 6 | minor |
-| **Late Neolithic Bronze Age / LNBA (2 500–5 300 BP)** | **65** | 14 projects — **the origin-of-plague corpus** |
+| **Late Neolithic Bronze Age / LNBA (2 500–5 300 BP)** | **65** | 14 projects, **the origin-of-plague corpus** |
 
 ### The Late Neolithic / Bronze Age plague corpus (65 individuals, 14 projects)
 
@@ -157,9 +157,9 @@ infecting *Y. pestis* in Eurasia, beginning with Rasmussen et al. 2015
 
 | Project | N | Age range (BP) | Geography |
 |---|---|---|---|
-| **Seersholm2024** | **17** | **4 700–5 300** | Denmark, Sweden — **the oldest *Y. pestis* known (~3 300 BCE)** |
-| **AndradesValtuena2022** | 17 | 2 500–4 200 | Czechia, Germany, Kazakhstan, Mongolia, Poland, Russia, Spain, Ukraine — pan-Eurasian Bronze Age |
-| **Rasmussen2015** | 7 | 2 800–4 200 | Armenia, Estonia, Poland, Russia — the founding Bronze Age plague paper |
+| **Seersholm2024** | **17** | **4 700–5 300** | Denmark, Sweden, **the oldest *Y. pestis* known (~3 300 BCE)** |
+| **AndradesValtuena2022** | 17 | 2 500–4 200 | Czechia, Germany, Kazakhstan, Mongolia, Poland, Russia, Spain, Ukraine, pan-Eurasian Bronze Age |
+| **Rasmussen2015** | 7 | 2 800–4 200 | Armenia, Estonia, Poland, Russia, the founding Bronze Age plague paper |
 | **AndradesValtuena2017** | 6 | 3 600–4 200 | Croatia, Estonia, Germany, Lithuania, Russia |
 | **Swali2023** | 3 | 3 900–4 000 | United Kingdom |
 | **Neumann2022** | 2 | 4 100–4 200 | Greece |
@@ -184,7 +184,7 @@ pandemics.
 
 | Project | N | Age range (BP) | Countries | Key site(s) |
 |---|---|---|---|---|
-| **Keller2019** | **30** | 1 300–1 600 | France, Germany, Spain, UK | **Edix Hill (UK), Lunel-Viel, Saint-Doulchard (FR), Dittenheim, Petting (DE)** — the dominant Justinian corpus |
+| **Keller2019** | **30** | 1 300–1 600 | France, Germany, Spain, UK | **Edix Hill (UK), Lunel-Viel, Saint-Doulchard (FR), Dittenheim, Petting (DE)**, the dominant Justinian corpus |
 | **Wagner2014** | 2 | 1 400 | Germany | Aschheim-Bajuwarenring (the first published Justinian *Y. pestis*) |
 | **Feldman2016** | 1 | 1 500 | Germany | Altenerding |
 | **Guellil2022** | 1 | 1 500 | UK | Edix Hill, Cambridgeshire |
@@ -194,30 +194,30 @@ pandemics.
 
 | Project | N | Countries | Note |
 |---|---|---|---|
-| **Eaton2023** | 13 | Denmark | — |
-| **Spyrou2019** | 9 | France, Germany, Russia, UK | — |
-| **Namouchi2018** | 5 | France, Italy, Netherlands, Norway | — |
-| **Parker2023** | 5 | Germany | — |
-| **Bos2011** | 4 | UK | **East Smithfield (London 1348–1350), Nature 2011 — a first of its kind** |
-| **Spyrou2022** | 3 | **Kyrgyzstan** | ***Nature* 2022 — the Kara-Djigach + Burana cemeteries near Lake Issyk-Kul, dated 1338–1339 CE by tombstone inscriptions — the canonical "origin of the Black Death" paper** |
-| **Morozova2020** | 3 | Poland, Russia | — |
-| **Spyrou2016** | 2 | Russia, Spain | — |
-| **Schuenemann2011** | 1 | UK | — |
-| **Guellil2020** | 1 | Italy | — |
-| **Bonczarowska2023** | 1 | Denmark | — |
+| **Eaton2023** | 13 | Denmark |, |
+| **Spyrou2019** | 9 | France, Germany, Russia, UK |, |
+| **Namouchi2018** | 5 | France, Italy, Netherlands, Norway |, |
+| **Parker2023** | 5 | Germany |, |
+| **Bos2011** | 4 | UK | **East Smithfield (London 1348–1350), Nature 2011, a first of its kind** |
+| **Spyrou2022** | 3 | **Kyrgyzstan** | ***Nature* 2022, the Kara-Djigach + Burana cemeteries near Lake Issyk-Kul, dated 1338–1339 CE by tombstone inscriptions, the canonical "origin of the Black Death" paper** |
+| **Morozova2020** | 3 | Poland, Russia |, |
+| **Spyrou2016** | 2 | Russia, Spain |, |
+| **Schuenemann2011** | 1 | UK |, |
+| **Guellil2020** | 1 | Italy |, |
+| **Bonczarowska2023** | 1 | Denmark |, |
 
 > [!NOTE]
 > **Canonical references to always cite for ancient *Y. pestis***:
-> - **Rasmussen K. et al. 2015 *Cell* 163(3): 571–582. DOI: `10.1016/j.cell.2015.10.009`** — founding Bronze Age plague paper
-> - **Bos K.I. et al. 2011 *Nature* 478(7370): 506–510. DOI: `10.1038/nature10549`** — first complete ancient *Y. pestis* genome (East Smithfield, London 1348–1350)
-> - **Wagner D.M. et al. 2014 *Lancet Infect Dis* 14(4): 319–326** — first Justinian plague genome (Aschheim)
-> - **Feldman M. et al. 2016 *Mol Biol Evol* 33(11): 2911–2923. DOI: `10.1093/molbev/msw170`** — second Justinian genome (Altenerding)
-> - **Keller M. et al. 2019 *PNAS* 116(25): 12363–12372. DOI: `10.1073/pnas.1820447116`** — 30-genome Justinian panel across Europe
-> - **Spyrou M.A. et al. 2022 *Nature* 606: 718–724. DOI: `10.1038/s41586-022-04800-3`** — Issyk-Kul (Kyrgyzstan) Black Death origin
+> - **Rasmussen K. et al. 2015 *Cell* 163(3): 571–582. DOI: `10.1016/j.cell.2015.10.009`**, founding Bronze Age plague paper
+> - **Bos K.I. et al. 2011 *Nature* 478(7370): 506–510. DOI: `10.1038/nature10549`**, first complete ancient *Y. pestis* genome (East Smithfield, London 1348–1350)
+> - **Wagner D.M. et al. 2014 *Lancet Infect Dis* 14(4): 319–326**, first Justinian plague genome (Aschheim)
+> - **Feldman M. et al. 2016 *Mol Biol Evol* 33(11): 2911–2923. DOI: `10.1093/molbev/msw170`**, second Justinian genome (Altenerding)
+> - **Keller M. et al. 2019 *PNAS* 116(25): 12363–12372. DOI: `10.1073/pnas.1820447116`**,30-genome Justinian panel across Europe
+> - **Spyrou M.A. et al. 2022 *Nature* 606: 718–724. DOI: `10.1038/s41586-022-04800-3`** : Issyk-Kul (Kyrgyzstan) Black Death origin
 
-## Key columns — `ancientmetagenome-hostassociated_samples.tsv` (16 fields)
+## Key columns : `ancientmetagenome-hostassociated_samples.tsv` (16 fields)
 
-This table catalogues **shotgun metagenomes** of host-associated material —
+This table catalogues **shotgun metagenomes** of host-associated material,
 not single-species reconstructions. Verified snapshot: **1,733 samples,
 69 projects, 26 host species, 58 countries**.
 
@@ -235,14 +235,14 @@ not single-species reconstructions. Verified snapshot: **1,733 samples,
 
 ### Verified composition (current snapshot)
 
-**community_type breakdown** — 1,248 oral / 294 skeletal tissue /
+**community_type breakdown**,1,248 oral / 294 skeletal tissue /
 81 plant tissue / 80 gut / 30 soft tissue.
 
-**material top 10** — `dental calculus` (979), `tooth` (376), `bone` (143),
+**material top 10**, `dental calculus` (979), `tooth` (376), `bone` (143),
 `leaf` (81), `palaeofaeces` (42), `rib` (33), `intestine` (14),
 `sediment` (14), `digestive tract contents` (10), `unknown` (6).
 
-**sample_host top 10** — *Homo sapiens* (1 327), *Ursus arctos* (85),
+**sample_host top 10**, *Homo sapiens* (1 327), *Ursus arctos* (85),
 *Ambrosia artemisiifolia* (47), *Rangifer tarandus* (39),
 *Arabidopsis thaliana* (34), ***Homo sapiens neanderthalensis*** (32),
 *Pan troglodytes schweinfurthii* (26), *Mammuthus primigenius* (22),
@@ -253,12 +253,12 @@ not single-species reconstructions. Verified snapshot: **1,733 samples,
 > source of ancient oral microbiome reconstructions, and oral microbiome
 > shotgun reads are the substrate from which several ancient *Mycobacterium*
 > screens have been done. The `oral` community alone holds **1 248 samples**
-> — a vastly larger pool than the 16 single-genome MTBC entries in
+>, a vastly larger pool than the 16 single-genome MTBC entries in
 > `ancientsinglegenome-hostassociated`. Use this table when **screening**
 > for *Mycobacterium* reads in published shotgun data, not when looking
 > for already-reconstructed pathogen genomes.
 
-## Key columns — `ancientmetagenome-environmental_samples.tsv` (19 fields)
+## Key columns : `ancientmetagenome-environmental_samples.tsv` (19 fields)
 
 This table catalogues environmental shotgun metagenomes (sediments,
 permafrost, lake cores, marine cores, cave sediments). Verified
@@ -280,15 +280,15 @@ snapshot: **803 samples, 40 projects, 35 countries**.
 
 ### Verified composition (current snapshot)
 
-**feature top 10** — `lake` (258), `ocean` (228), `cave` (133),
+**feature top 10**, `lake` (258), `ocean` (228), `cave` (133),
 `midden` (47), `sea coast` (44), `swamp forest` (29), `archeological site`
 (17), `shell` (16), `thermokarst` (14), `rock shelter` (13).
 
-**material top 10** — `lake sediment` (258), `sediment` (219),
+**material top 10**, `lake sediment` (258), `sediment` (219),
 `marine sediment` (188), `permafrost` (66), `shallow marine sediment` (36),
 `shell` (16), `midden` (15), `soil` (5).
 
-**study_primary_focus top 5** — `faunal,floral` (239), `faunal` (171),
+**study_primary_focus top 5**, `faunal,floral` (239), `faunal` (171),
 `microbial` (106), `faunal,floral,microbial` (100), `floral` (67).
 
 > [!NOTE]
@@ -301,7 +301,7 @@ snapshot: **803 samples, 40 projects, 35 countries**.
 
 ## Data Access
 
-### Option A — AMDirT (recommended)
+### Option A : AMDirT (recommended)
 
 **Install**:
 ```bash
@@ -335,7 +335,7 @@ amdirt convert \
 AMDirT outputs `curl`/`wget` download scripts plus ready-to-use samplesheets
 for **nf-core/eager**, **aMeta**, and other ancient-DNA pipelines.
 
-### Option B — Raw TSVs from GitHub
+### Option B : Raw TSVs from GitHub
 
 The TSVs are plain version-controlled files. Pull the repo, or fetch a single
 file via `raw.githubusercontent.com`:
@@ -347,11 +347,11 @@ git clone https://github.com/SPAAM-community/AncientMetagenomeDir.git
 curl -LO https://raw.githubusercontent.com/SPAAM-community/AncientMetagenomeDir/master/ancientsinglegenome-hostassociated/samples/ancientsinglegenome-hostassociated_samples.tsv
 ```
 
-Then load with pandas — see snippets below.
+Then load with pandas, see snippets below.
 
 ## Workflows
 
-### Workflow 1 — Find every ancient MTBC sample published
+### Workflow 1 : Find every ancient MTBC sample published
 
 ```python
 import pandas as pd
@@ -365,7 +365,7 @@ print(mtbc[["project_name", "site_name", "geo_loc_name",
             "sample_age", "material", "archive_accession"]])
 ```
 
-### Workflow 2 — Pair an ancient MTBC sample with its AADR human host
+### Workflow 2 : Pair an ancient MTBC sample with its AADR human host
 
 Given an ancient pathogen sample from `spaam-ancient-metagenome-dir`:
 
@@ -382,11 +382,11 @@ Given an ancient pathogen sample from `spaam-ancient-metagenome-dir`:
    )
    ```
 4. Rows with a matched AADR entry are **host–pathogen pairs from the same
-   skeleton** — the strongest possible coevolution evidence.
+   skeleton**, the strongest possible coevolution evidence.
 5. Rows without a match usually mean the paper did not deposit a
    matching nuclear-genome dataset on AADR (check the paper directly).
 
-### Workflow 3 — Build a region/period cohort for download
+### Workflow 3 : Build a region/period cohort for download
 
 For a region + period of interest (e.g. Neolithic Anatolia):
 
@@ -404,7 +404,7 @@ anatolia_neolithic[["project_name", "site_name", "sample_age",
 
 Feed the output to `amdirt convert` to generate a download batch.
 
-### Workflow 4 — Build a citations list for a manuscript section
+### Workflow 4 : Build a citations list for a manuscript section
 
 ```python
 (mtbc[["project_name", "publication_year", "publication_doi"]]
@@ -414,10 +414,10 @@ Feed the output to `amdirt convert` to generate a download batch.
 
 Export → format as BibTeX (cross-reference with `bib-check`).
 
-### Workflow 5 — Screen ancient dental calculus shotgun studies for *Mycobacterium*
+### Workflow 5 : Screen ancient dental calculus shotgun studies for *Mycobacterium*
 
 Goal: identify published ancient oral-microbiome shotgun datasets that
-could be re-screened for *Mycobacterium* (or specifically MTBC) reads —
+could be re-screened for *Mycobacterium* (or specifically MTBC) reads,
 something the 16-row pathogen single-genome table cannot tell you alone.
 
 ```python
@@ -447,18 +447,18 @@ print(cohort.head(20))
 
 Then for each project of interest, fetch the libraries TSV via
 `amdirt`, generate a download script, and run a *Mycobacterium*
-screening pipeline (`nf-core/aMeta` or HOPS — see the
+screening pipeline (`nf-core/aMeta` or HOPS, see the
 `spaam-community` skill for pipeline guidance).
 
 This is an explicit instance of the **TBannotator-style "discover
-unrecognised positives in published data"** workflow — the SPAAM
+unrecognised positives in published data"** workflow, the SPAAM
 catalogue surfaces the substrate, an aMeta/HOPS run does the
 screening, and any hit becomes a candidate for full reconstruction.
 
-### Workflow 6 — Cave sediments as candidate environmental *Mycobacterium* sources
+### Workflow 6 : Cave sediments as candidate environmental *Mycobacterium* sources
 
 Goal: identify cave-sediment metagenomes that could carry environmental
-or bat-associated *Mycobacterium* signal — a niche but defensible
+or bat-associated *Mycobacterium* signal, a niche but defensible
 side-channel for the constellation.
 
 ```python
@@ -482,7 +482,7 @@ print(cave_microbial[["project_name","site_name","geo_loc_name",
 > reference-based mapping plus damage authentication can support an
 > ancient MTBC claim from this kind of substrate.
 
-## Calcified nodules, dental calculus, bone — material strata
+## Calcified nodules, dental calculus, bone : material strata
 
 The `material` column tells you which tissue yielded the ancient genome. For
 MTBC this matters because recovery differs sharply by substrate:
@@ -493,7 +493,7 @@ MTBC this matters because recovery differs sharply by substrate:
 | Vertebral / rib bone lesions | Moderate to high | Bos2014, Vagene2022, Jager2022 |
 | Dental calculus | Low for MTBC, high for oral microbiome | Various oral-metagenome papers |
 | Lung tissue (mummified / preserved soft tissue) | High but rare | Kay2015 (Vác) |
-| Coprolite | Very low for MTBC | — |
+| Coprolite | Very low for MTBC |, |
 
 Use this table to set expectations when suggesting a region/material for a
 new ancient-TB prospecting study.
@@ -517,9 +517,9 @@ new ancient-TB prospecting study.
 
 | Tool | Purpose |
 |---|---|
-| **`aadr`** | Host-side ancient human genomes — pair with this skill for host–pathogen evidence |
+| **`aadr`** | Host-side ancient human genomes, pair with this skill for host–pathogen evidence |
 | **`p3k14c`** | Archaeological chronology to contextualize sample dates |
-| **`slavevoyages`** | Post-colonial human movement — irrelevant before 1500 but complementary for recent ancient TB |
+| **`slavevoyages`** | Post-colonial human movement, irrelevant before 1500 but complementary for recent ancient TB |
 | **TBannotator MCP** | Modern TB comparator for phylogenetic placement of ancient genomes |
 | **nf-core/eager, aMeta** | Pipelines consuming `amdirt convert` samplesheets |
 | **TreeTime / BEAST** | Molecular dating with ancient tip-dates from this directory |

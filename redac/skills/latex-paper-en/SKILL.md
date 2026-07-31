@@ -44,7 +44,7 @@ Do not use this skill for:
 - Chinese thesis-specific structure/template work
 - Typst-first paper workflows
 - DOCX/PDF conversion tasks that do not involve the LaTeX source
-- multi-perspective review, scoring, or submission gate decisions (use `paper-audit`)
+- multi-perspective review or submission gate decisions (use `manuscript-review` for the review itself, then `claim-check`, `bib-check`, `fig-check` and `supp-check` as the gate)
 - standalone algorithm design from scratch without a paper project
 
 ## Module Router

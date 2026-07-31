@@ -1,19 +1,13 @@
 ---
 name: mk-ascertainment
 description: >-
-  McDonald-Kreitman test and ascertainment bias simulation for MTBC
-  tier-stratified SPDI variants. Quantifies whether the non-synonymous
-  excess observed among lineage-defining (core-exclusive) variants is
-  genuine or an artefact of the exclusivity filter. A companion script
-  (`mk_per_gene.py`) writes a per-gene MK table (Dn/Ds/Pn/Ps, alpha, DoS,
-  Fisher p) consumed by `mtbc-pathway-explain --from-selection`, closing the
-  chain from selection test to pathway narration and Atlas page.
+  McDonald-Kreitman test and ascertainment-bias simulation for MTBC
+  tier-stratified SPDI variants: is the non-synonymous excess among
+  core-exclusive (lineage-defining) variants genuine, or an artefact of the
+  exclusivity filter? Writes a per-gene MK table for `mtbc-gene` (pathway mode).
 
-  Use when: a sub-lineage characterisation reports a high dN/dS or
-  non-synonymous excess among core-exclusive SPDI markers and a
-  reviewer (or the authors themselves) question whether ascertainment
-  bias explains the signal. Requires a tier-annotated CSV with NS/S
-  counts per tier (output of annotate_spdis.py or equivalent).
+  Use when: a sub-lineage characterisation reports a high dN/dS or NS excess
+  and ascertainment bias is questioned. Needs a tier-annotated CSV.
 argument-hint: "<annotated_csv> [--gb NC_000962.3.gb] [--gff3 NC_000962.3.gff3] [--outdir results/]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
@@ -37,6 +31,17 @@ souvent un excès de non-synonymes. Deux explications possibles :
    (neutres → plus partagés avec les lignées sœurs → exclus)
 
 Ce skill distingue les deux en appliquant trois tests complémentaires.
+
+## Quand utiliser ce skill
+
+Dès qu'une caractérisation de sous-lignée rapporte un **dN/dS élevé** ou un
+**excès de non-synonymes parmi les marqueurs SPDI core-exclusifs**, et qu'un
+**reviewer** (ou les auteurs eux-mêmes) demande si le biais d'ascertainment
+n'explique pas à lui seul le signal. Le skill fournit la réponse chiffrée et
+le texte de Limitations correspondant (voir « Intégration manuscrit »).
+
+**Prérequis** : un CSV tier-annoté portant les comptes NS/S par tier (sortie
+d'`annotate_spdis.py` ou équivalent, voir « Entrées requises »).
 
 ## Les trois analyses
 
@@ -91,7 +96,7 @@ simulations par valeur. Rapporte le **biais critique** : valeur de b
 Le test ci-dessus est *poolé* (génome entier). Pour relier la sélection à des voies
 métaboliques précises et alimenter une fiche Atlas, le script `scripts/mk_per_gene.py`
 calcule le **même test MK gène par gène** et écrit une table tidy directement consommée
-par `mtbc-pathway-explain --from-selection` :
+par `mtbc-gene` en mode pathway (`--from-selection`) :
 
 ```bash
 python scripts/mk_per_gene.py data/mk_input_annotated.csv --out mk_per_gene.tsv
@@ -104,11 +109,11 @@ ajustables par `--fixed-tiers` / `--poly-tiers`) et mêmes formules que le test 
 table se branche ensuite sur la narration de voie, qui applique son sas de significativité :
 
 ```bash
-SK=~/docs/codes/claude_plugins/bio_pathogens/skills/mtbc-pathway-explain
+SK=${CLAUDE_PLUGIN_ROOT}/skills/mtbc-gene
 "$SK/run_pathway.sh" --from-selection mk_per_gene.tsv --lineage <id> --paragraph
 ```
 
-Chaîne complète `annotate_spdis → mk_per_gene → mtbc-pathway-explain → Atlas`, sans étape
+Chaîne complète `annotate_spdis → mk_per_gene → mtbc-gene pathway → Atlas`, sans étape
 manuelle ; la fiche n'écrit la section `selection` que si le sas conclut.
 
 **Limite de puissance (à connaître).** Le MK par gène est *sous-dimensionné* en intra-lignée
@@ -142,8 +147,8 @@ par `annotate_spdis.py` (Phase 4 du pipeline).
 
 ### Référence H37Rv (pour Nei-Gojobori)
 
-- `NC_000962.3.gb` — séquence GenBank
-- `NC_000962.3.gff3` — coordonnées CDS
+- `NC_000962.3.gb`, séquence GenBank
+- `NC_000962.3.gff3`, coordonnées CDS
 
 Ces fichiers sont dans le répertoire racine de chaque sous-projet ou dans
 `investigate_phylo/resources/`.
@@ -154,7 +159,7 @@ Ces fichiers sont dans le répertoire racine de chaque sous-projet ou dans
 |---------|---------|
 | `fig_mk_test_simulation.pdf` | Figure composite 4 panneaux (test poolé) |
 | Texte stdout | Résultats numériques pour intégration manuscrit |
-| `mk_per_gene.tsv` (script `mk_per_gene.py`) | Table MK **par gène** (Dn/Ds/Pn/Ps, DoS, NI, alpha, p_fisher, q_value), consommée par `mtbc-pathway-explain --from-selection` |
+| `mk_per_gene.tsv` (script `mk_per_gene.py`) | Table MK **par gène** (Dn/Ds/Pn/Ps, DoS, NI, alpha, p_fisher, q_value), consommée par `mtbc-gene` pathway `--from-selection` |
 
 ### Les 4 panneaux de la figure
 
@@ -198,7 +203,7 @@ Pour une nouvelle lignée (ex. L4.16), il suffit de :
 | `bio:convergent-evolution` | Le MK test renforce l'interprétation des convergences eccC2 |
 | `bio:molecular-clock` | Complémentaire : datation vs pression de sélection |
 | `bio:lineage-comparison` | Compare les profils MK entre lignées |
-| `bio:mtbc-pathway-explain` | Consomme `mk_per_gene.tsv` (`--from-selection`), narre les voies sous sélection avec sas de significativité, alimente la fiche Atlas |
+| `bio:mtbc-gene` (pathway) | Consomme `mk_per_gene.tsv` (`--from-selection`), narre les voies sous sélection avec sas de significativité, alimente la fiche Atlas |
 
 ## Intégration manuscrit
 

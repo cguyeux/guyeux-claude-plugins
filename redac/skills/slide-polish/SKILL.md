@@ -1,12 +1,23 @@
 ---
 name: slide-polish
-description: Amélioration ciblée d'une slide Beamer existante, sur le fond et sur la forme, **avec étape obligatoire de brassage large pour reconstruire la thèse pleine du projet et éviter la moyennisation par polissage** (un défaut classique : prendre une slide moyenne et la rendre *plus belle moyenne*, en sacrifiant spécificité, nuance et voix). Reçoit en argument le titre (ou l'identifiant, ou le numéro) d'une slide dans un fichier .tex. Localise la slide et son voisinage, compile et lit visuellement les PNG par capacité multimodale, prend de la hauteur sur le fond, **reconstruit la thèse pleine en lisant largement la matière du projet (cahier de labo, manuscrit, JOURNAL, notes, claim-check), détecte les axes de perte par rapport à la thèse pleine (spécificité, contre-intuitivité, nuance) et oriente vers enrichir vers la singularité plutôt qu'alléger vers la généralité**, décide d'une modalité (TikZ, Mermaid, frise, nuage de mots-clés, filigrane, big number, carte via geo-map), cherche au besoin des informations complémentaires, applique `deai-latex` étendu (trois familles : tirets cadratin/demi-cadratin/double, rhétorique pseudo-éloquente type "pas X, j'apporte Y", cohérence manuscrit), **score chaque version sur 16 points avec veto anti-moyennisation (tout gain typographique au prix d'une perte de spécificité, chiffre, nuance ou voix est annulé)**, itère tant que le score progresse, enchaîne une boucle propreté visuelle (10 défauts physiques inspectés sur PNG haute résolution : débordements, collisions, veuves, footer poussé), **puis un test final bloquant de voix scientifique qui valide chaque phrase par la question "l'auteur l'écrirait-il en mail à un collègue ?" et bannit antithèses pompeuses, slogans creux, métaphores filées fades, et tous tirets cadratin résiduels**. Le cycle n'est pas terminé tant que la slide n'est pas propre, spécifique, et écrite en voix d'auteur. Trigger when the user types `/slide-polish`, asks to "améliore la slide X", "polish la slide qui parle de Y", "retravaille la slide n°12", "rends meilleure cette slide", "regarde la slide sur Z et propose une version améliorée", "rework slide titled '...'", or any request to upgrade a specific existing slide rather than build a new one or generate a whole deck.
+description: >-
+  Amelioration ciblee d'une slide Beamer existante, sur le fond et sur la forme, avec une
+  etape obligatoire de brassage large : relire la matiere du projet (cahier de labo,
+  manuscrit, JOURNAL, claim-check) pour reconstruire la these pleine et eviter la
+  moyennisation par polissage, ce defaut classique qui rend une slide moyenne plus belle en
+  sacrifiant specificite, nuance et voix. Compile et lit visuellement les PNG, choisit une
+  modalite (TikZ, Mermaid, frise, big number, carte via geo-map), applique deai-latex
+  etendu, score chaque version sur 16 points avec veto anti-moyennisation, itere tant que le
+  score progresse, puis enchaine une boucle de proprete visuelle sur crops haute resolution
+  et un test final de voix scientifique. A utiliser quand l'utilisateur tape /slide-polish
+  ou demande d'ameliorer, de retravailler ou de rendre meilleure une slide precise
+  existante, plutot que d'en creer une nouvelle ou de generer un deck entier.
 user_invocable: true
 invocation: /slide-polish
 argument-hint: "<titre ou numéro de la slide> [chemin/vers/main.tex]"
 ---
 
-# Slide Polish — Améliorer une slide Beamer existante
+# Slide Polish : Améliorer une slide Beamer existante
 
 Ce skill agit sur **une slide déjà écrite**. Il ne crée pas (c'est `slide-design`), il ne génère pas un deck entier (c'est `beamer-slides`). Il prend une frame existante, la regarde à l'œil et à la tête, décide quoi en faire, et la livre remaniée.
 
@@ -41,13 +52,13 @@ La **Phase 3bis** est la garantie anti-moyennisation : avant toute décision de 
 
 La Phase 7 enchaîne **trois boucles distinctes et toutes bloquantes** :
 
-- **§7.4 — Boucle qualité** : score sur 16, itère tant que ça monte (plafond 16/16, convergence < 2 pts, régression bloquée, limite dure 5 itérations). **Veto anti-moyennisation** : tout gain typographique obtenu au prix d'une perte de spécificité, de chiffre précis, de nuance ou de voix est annulé d'office.
-- **§7.5 — Boucle propreté** : score binaire pass/fail sur 10 défauts physiques (texte qui sort de la slide, texte qui dépasse d'un node TikZ, collisions, image qui déborde, hors-champ, veuves, footer poussé, filigrane qui mord, crédit écrasé, saut de titre malheureux). Itère **jusqu'à zéro défaut**. Limite dure 5 itérations, signalement explicite si défauts résiduels.
-- **§7.5bis — Test de voix scientifique** : pour chaque phrase de la slide, vérifier qu'elle pourrait être écrite par l'auteur dans un mail à un collègue. Bloque toute antithèse pompeuse type *« je n'apporte pas X, j'apporte Y »*, tout slogan creux, tout tiret cadratin / demi-cadratin / double tiret encore présent. **Aucune slide ne sort sans validation §7.5bis.**
+- **§7.4, Boucle qualité** : score sur 16, itère tant que ça monte (plafond 16/16, convergence < 2 pts, régression bloquée, limite dure 5 itérations). **Veto anti-moyennisation** : tout gain typographique obtenu au prix d'une perte de spécificité, de chiffre précis, de nuance ou de voix est annulé d'office.
+- **§7.5, Boucle propreté** : score binaire pass/fail sur les 22 défauts physiques énumérés en §7.5.2.b, organisés en cinq familles (A débordements, B espaces, C collisions, C-bis labels et flèches, D typographie). Itère **jusqu'à zéro défaut**. Limite dure 5 itérations, signalement explicite si défauts résiduels.
+- **§7.5bis, Test de voix scientifique** : pour chaque phrase de la slide, vérifier qu'elle pourrait être écrite par l'auteur dans un mail à un collègue. Bloque toute antithèse pompeuse type *« je n'apporte pas X, j'apporte Y »*, tout slogan creux, tout tiret cadratin / demi-cadratin / double tiret encore présent. **Aucune slide ne sort sans validation §7.5bis.**
 
-**Le cycle n'est pas terminé tant que la slide n'est pas propre *et* écrite en voix scientifique.** Une slide à 16/16 en qualité, 10 NON en propreté, mais 1 antithèse pompeuse à §7.5bis, n'est pas livrable.
+**Le cycle n'est pas terminé tant que la slide n'est pas propre *et* écrite en voix scientifique.** Une slide à 16/16 en qualité, 22 NON en propreté, mais 1 antithèse pompeuse à §7.5bis, n'est pas livrable.
 
-### Phase 1 — Localiser la slide et son voisinage
+### Phase 1 : Localiser la slide et son voisinage
 
 1. **Identifier le fichier** :
    - Si un chemin est passé en argument, l'utiliser.
@@ -68,7 +79,7 @@ La Phase 7 enchaîne **trois boucles distinctes et toutes bloquantes** :
    - Bibliothèques TikZ déjà chargées.
    - Pour ne **rien réinventer** : si une macro maison existe pour les keybox, l'utiliser.
 
-### Phase 2 — Inspecter visuellement (multimodal)
+### Phase 2 : Inspecter visuellement (multimodal)
 
 1. **Compiler le deck complet** une première fois (sans modification) dans un dossier temporaire :
 
@@ -98,7 +109,7 @@ pdftoppm -r 180 -f $((N-1)) -l $((N+1)) <main>.pdf trio -png
 
 Restituer cette lecture en prose courte à l'utilisateur. C'est le diagnostic visuel partagé.
 
-### Phase 3 — Diagnostiquer le fond
+### Phase 3 : Diagnostiquer le fond
 
 Quatre questions de hauteur :
 
@@ -109,7 +120,7 @@ Quatre questions de hauteur :
    - *Récapituler* (synthèse à mi-parcours) ?
    - *Transitionner* (charnière entre deux idées) ?
    - *Lever une objection* anticipée ?
-   - Si la slide ne sait pas quel rôle elle joue, c'est qu'elle est inutile ou mal placée — en parler à l'utilisateur.
+   - Si la slide ne sait pas quel rôle elle joue, c'est qu'elle est inutile ou mal placée, en parler à l'utilisateur.
 3. **Redondance ou orphelinat ?**
    - Y a-t-il chevauchement substantiel avec n-1 ou n+1 (idée déjà dite, donnée déjà montrée) ? Alléger ou fusionner.
    - À l'inverse, la slide est-elle un saut narratif (n-1 parle d'autre chose, n+1 aussi) ? Soit la déplacer, soit la rattacher (transition explicite, ou enrichissement).
@@ -117,26 +128,26 @@ Quatre questions de hauteur :
    - Chiffres, dates, citations : si la slide les affirme sans qu'on puisse les retrouver dans le projet, déclencher `claim-check`.
    - Si un chiffre semble incertain : déclencher `WebSearch` ou `lit-review` ciblé.
 
-### Phase 3bis — Brasser large sur le fond (anti-moyennisation)
+### Phase 3bis : Brasser large sur le fond (anti-moyennisation)
 
 **Phase fondamentale, jamais sautée.** Avant de décider d'une modalité (Phase 4), poser la question qui décide de toute la suite : *la slide actuelle dit-elle le maximum de ce qu'elle pourrait dire, ou est-elle un sous-produit moyennisé d'une thèse plus riche ?*
 
 L'erreur la plus dangereuse d'un polish est de prendre une slide moyenne et de la rendre *plus belle moyenne*. Le résultat lit bien, est typographiquement propre, le score §7.4 grimpe, mais la slide a perdu en singularité. C'est le contraire du but : le polish doit servir l'argument, pas le lisser.
 
-#### 3bis.1 — Reconstruire la thèse pleine
+#### 3bis.1 : Reconstruire la thèse pleine
 
 Sortir de la slide. Lire **largement** la matière du projet pour reconstruire ce que l'auteur pourrait dire de plus pointu sur ce point :
 
-- `cahier_de_labo.md` — entrées datées récentes liées au sujet de la slide. C'est là que la pensée encore vive est consignée, pas dans le manuscrit final.
-- Section du manuscrit `.tex` correspondante — souvent plus riche en nuances que ce que la slide retient.
+- `cahier_de_labo.md`, entrées datées récentes liées au sujet de la slide. C'est là que la pensée encore vive est consignée, pas dans le manuscrit final.
+- Section du manuscrit `.tex` correspondante, souvent plus riche en nuances que ce que la slide retient.
 - Notes / drafts dans le projet (`notes/`, `drafts/`, `brouillons/`, fichiers `.md` éparpillés).
-- `JOURNAL.md` si présent — décisions techniques argumentées récemment.
-- `reviewer-response/` et `claim-check.md` — formulations déjà arbitrées avec des relecteurs ou avec soi-même.
+- `JOURNAL.md` si présent, décisions techniques argumentées récemment.
+- `reviewer-response/` et `claim-check.md`, formulations déjà arbitrées avec des relecteurs ou avec soi-même.
 - Commentaires Git récents sur les figures de la slide.
 
 Synthétiser en **5 à 10 phrases la thèse pleine** : ce que l'auteur sait et pense vraiment de ce point précis, au-delà de ce que la slide retient.
 
-#### 3bis.2 — Comparer slide actuelle vs thèse pleine
+#### 3bis.2 : Comparer slide actuelle vs thèse pleine
 
 Trois axes de perte à inspecter :
 
@@ -146,23 +157,23 @@ Trois axes de perte à inspecter :
 
 Si **au moins une** est perdue, le polish doit *enrichir vers la singularité*, pas *alléger vers la généralité*.
 
-#### 3bis.3 — Inverser le réflexe d'allègement
+#### 3bis.3 : Inverser le réflexe d'allègement
 
 Conséquence souvent négligée : la décision Phase 4 peut être **« enrichir »** alors que la slide paraît déjà chargée. Une slide qui a 5 puces banales n'est pas trop pleine, elle est mal remplie. La remplacer par une seule phrase contre-intuitive précise est un enrichissement *du fond*, pas un allègement.
 
 Inversement, une slide minimaliste à 20 mots peut être un appauvrissement déguisé en élégance, si elle a sacrifié la spécificité au compte de mots. **Le minimalisme typographique ne rachète pas un fond pauvre.**
 
-#### 3bis.4 — Test de moyennisation
+#### 3bis.4 : Test de moyennisation
 
 Avant de passer à la Phase 4, lire la slide actuelle et appliquer trois questions :
 
-- *Cette phrase pourrait-elle être dite par n'importe qui travaillant dans le même champ ?* — si oui, signe de moyennisation.
-- *Y a-t-il un seul mot, un seul chiffre, qui ne pourrait pas figurer dans un slide générique sur le même thème ?* — si non, signe de moyennisation.
-- *L'auteur, en privé avec un collègue, dirait-il cela ainsi, ou dirait-il quelque chose de plus pointu, de plus risqué, de plus personnel ?* — si plus pointu en privé, signe de moyennisation.
+- *Cette phrase pourrait-elle être dite par n'importe qui travaillant dans le même champ ?*, si oui, signe de moyennisation.
+- *Y a-t-il un seul mot, un seul chiffre, qui ne pourrait pas figurer dans un slide générique sur le même thème ?*, si non, signe de moyennisation.
+- *L'auteur, en privé avec un collègue, dirait-il cela ainsi, ou dirait-il quelque chose de plus pointu, de plus risqué, de plus personnel ?*, si plus pointu en privé, signe de moyennisation.
 
 Si moyennisation détectée, **la première mission du polish est de remonter le niveau de spécificité**, pas de ranger les puces.
 
-#### 3bis.5 — Restitution à l'utilisateur
+#### 3bis.5 : Restitution à l'utilisateur
 
 Avant la décision Phase 4, exposer en quelques lignes :
 
@@ -172,23 +183,23 @@ Avant la décision Phase 4, exposer en quelques lignes :
 
 L'utilisateur peut alors rediriger si la thèse pleine reconstruite est inexacte ou si la perte constatée est en fait volontaire (auditoire grand public, ancrage différent du manuscrit, etc.).
 
-### Phase 4 — Décider de la modalité
+### Phase 4 : Décider de la modalité
 
 C'est le cœur du skill. **Toujours envisager quatre directions** avant de choisir, et expliciter le choix.
 
-#### 4.1 — Alléger
+#### 4.1 : Alléger
 
 Indicateurs : densité « surcharge » au diagnostic visuel, plus de 60 mots visibles hors titre, deux idées dans une slide, trois colonnes de puces.
 
 Geste : **retirer** au moins 30 % du texte ; convertir les puces en une seule phrase clé + une visualisation ; remplacer 5 puces par 1 keybox.
 
-#### 4.2 — Enrichir
+#### 4.2 : Enrichir
 
 Indicateurs : densité « vide », slide à 12 mots, titre qui annonce mais corps qui ne montre rien, slide qui s'arrête juste avant le moment intéressant.
 
 Geste : ajouter une donnée (figure, chiffre), une citation, un schéma. Si la matière manque : Phase 5 (recherche complémentaire).
 
-#### 4.3 — Changer de modalité
+#### 4.3 : Changer de modalité
 
 C'est souvent l'amélioration la plus forte. Six modalités à considérer :
 
@@ -204,11 +215,11 @@ C'est souvent l'amélioration la plus forte. Six modalités à considérer :
 
 **Règle** : changer de modalité doit *renforcer* l'argument, pas l'orner. Si le passage de « 5 puces » à « schéma de flux » ne change ni la mémorisation ni la clarté, ne pas changer.
 
-#### 4.4 — Statu quo + polissage cosmétique
+#### 4.4 : Statu quo + polissage cosmétique
 
 Possible si la slide est déjà bonne : seulement alignement, espacement, ajustement de palette, recadrage du titre. Annoncer honnêtement à l'utilisateur que la slide est déjà solide.
 
-#### 4.5 — Document la décision
+#### 4.5 : Document la décision
 
 Avant de réécrire, énoncer en deux phrases :
 - Quelle modalité a été retenue, et pourquoi (en référence au diagnostic).
@@ -216,7 +227,7 @@ Avant de réécrire, énoncer en deux phrases :
 
 L'utilisateur peut alors arbitrer avant qu'on parte.
 
-### Phase 5 — Enrichir si besoin (recherche complémentaire)
+### Phase 5 : Enrichir si besoin (recherche complémentaire)
 
 Si le diagnostic révèle un manque de matière (Phase 4.2 / Phase 4.3) :
 
@@ -230,16 +241,16 @@ Si le diagnostic révèle un manque de matière (Phase 4.2 / Phase 4.3) :
 3. **Toujours sourcer** : tout chiffre nouveau apporté à la slide doit avoir une source affichée en pied (police 8-9 pt). « OMS Global TB Report 2024 », « INSEE 2023 », « Smith et al., Nature 2022 ».
 4. **Refuser le chiffre non sourçable** : si la recherche ne trouve pas de source fiable, ne pas afficher le chiffre.
 
-### Phase 6 — Réécrire la slide
+### Phase 6 : Réécrire la slide
 
-#### 6.1 — Préserver le contexte technique
+#### 6.1 : Préserver le contexte technique
 
 - Conserver les macros maison (`\kb`, `\alert`, etc.) déjà utilisées dans le deck.
 - Conserver la palette (`\definecolor` du préambule). Ne pas redéfinir.
 - Conserver l'`aspectratio` du deck.
 - Si une bibliothèque TikZ supplémentaire est nécessaire, **signaler à l'utilisateur** le `\usetikzlibrary{...}` à ajouter au préambule.
 
-#### 6.2 — Illustration de fond en filigrane (si pertinent)
+#### 6.2 : Illustration de fond en filigrane (si pertinent)
 
 Pattern Beamer pour fond watermark, utilisable seulement quand :
 - Le slide est une transition / question rhétorique / point « contexte ».
@@ -268,14 +279,14 @@ Niveau d'opacité : 0.10 à 0.18 sur fond clair, 0.20 à 0.30 sur fond foncé. *
 
 Ne **jamais** mettre un fond watermark sur une slide qui contient une figure scientifique (deux niveaux de lecture concurrents → confusion).
 
-#### 6.3 — Schémas par délégation
+#### 6.3 : Schémas par délégation
 
 - **Mermaid** : produire le code Mermaid, le rendre en PNG (via `mmdc` si disponible, ou demander à l'utilisateur), puis inclure le PNG dans la frame. Ne pas tenter de rendre du Mermaid natif dans Beamer.
 - **TikZ** : écrire directement dans la frame, en suivant les patrons §6.3bis ci-dessous. **Ne pas réinventer**, surtout pas avec coordonnées absolues à la main.
 - **Carte** : appel à `geo-map` en sous-agent. Produire un PDF, l'inclure.
-- **Nouvelle figure de données** : appel à `create-viz` / `seaborn` / `matplotlib-pro`. Produire un PDF, l'inclure.
+- **Nouvelle figure de données** : appel à `sci-figure` (preset `slide`). Produire un PDF, l'inclure.
 
-#### 6.3bis — Patrons TikZ canoniques pour schémas conceptuels Beamer
+#### 6.3bis : Patrons TikZ canoniques pour schémas conceptuels Beamer
 
 C'est ici que la slide passe d'« amateur » à « chercheur habile ». **Anti-pattern récurrent à éliminer impérativement** :
 
@@ -339,7 +350,7 @@ Pourquoi c'est un antipattern :
 Pourquoi ça marche :
 - `text width=3.8cm` : le texte se *wrappe* automatiquement, pas de débordement
 - `inner sep=8pt` : padding qui sépare le texte du cadre, lisibilité garantie
-- `right=2.5cm of host` : positionnement *relatif* — modifier un node ne casse rien
+- `right=2.5cm of host` : positionnement *relatif*, modifier un node ne casse rien
 - `(host.south) -- (event.north west)` : les flèches partent du **bord exact** du node, pas d'une coordonnée numérique estimée
 - `shorten >=2pt` : la pointe `-Latex` s'arrête proprement, jamais de pénétration
 - `below=1.3cm of $(host)!0.5!(path)$` : positionnement à mi-chemin entre les deux nodes du haut (nécessite la library `calc`, à ajouter si absente)
@@ -381,7 +392,7 @@ Si on hérite d'un schéma avec coordonnées absolues, la réécriture en patron
 
 Pour chacun, utiliser des `style` réutilisables (`concept`, `arrow`, etc.) déclarés dans `[every node/.style={...}]` du `\begin{tikzpicture}` ou dans le préambule via `\tikzset{...}`.
 
-#### 6.4 — Réécriture du texte
+#### 6.4 : Réécriture du texte
 
 - Titre informatif (énonce l'argument).
 - Corps : moins de 40 mots visibles hors titre dans 90 % des cas.
@@ -389,13 +400,13 @@ Pour chacun, utiliser des `style` réutilisables (`concept`, `arrow`, etc.) déc
 - Hiérarchie : un point focal unique.
 - Sources en pied si données externes.
 
-### Phase 7 — Vérifier (deai, compilation, critique visuelle)
+### Phase 7 : Vérifier (deai, compilation, critique visuelle)
 
-#### 7.1 — Passage `deai-latex` étendu (trois familles de défauts)
+#### 7.1 : Passage `deai-latex` étendu (trois familles de défauts)
 
 **Étape obligatoire.** Une fois la frame réécrite, appliquer le skill `deai-latex` *ciblé sur le fragment*, **complété par les vérifications ci-dessous** qui dépassent le périmètre du skill externe. Le passage automatique seul ne suffit pas : il rate la rhétorique pseudo-éloquente, qui est le marqueur IA le plus dégradant pour la qualité ressentie.
 
-##### Famille 1 — Marqueurs typographiques
+##### Famille 1 : Marqueurs typographiques
 
 Bannir **tous les types de tirets non-trait-d'union** :
 - `—` (tiret cadratin, em-dash, U+2014).
@@ -411,7 +422,7 @@ Autres marqueurs typographiques :
 - Pas de listes à puces systématique : si la prose porte le propos, prose.
 - Acronymes définis à la première occurrence dans le deck (chercher en amont).
 
-##### Famille 2 — Rhétorique pseudo-éloquente (le marqueur IA le plus dégradant)
+##### Famille 2 : Rhétorique pseudo-éloquente (le marqueur IA le plus dégradant)
 
 C'est ici que le polish bascule en *plaquette commerciale*. Bannir absolument les patterns suivants, qui sont la signature la plus reconnaissable d'un texte produit par IA :
 
@@ -442,7 +453,7 @@ Si la réponse est **non**, réécrire dans la voix de l'auteur (ce que dirait l
 | « Cette étude met en lumière la complexité du phénomène. » | « Sur 412 isolats, 73 % portent rpoB-S450L ; le reste se répartit entre rpoB-D435V et trois mutations rares. » |
 | « Une approche unique pour comprendre la résistance. » | « Tip-dating BEAST avec horloge log-normale, n=412, 18 régions sanitaires. » |
 
-##### Famille 3 — Cohérence avec le manuscrit et le projet
+##### Famille 3 : Cohérence avec le manuscrit et le projet
 
 - Pas de néologisme inventé pour la slide : cohérence terminologique avec l'article principal.
 - Pas de chiffres approximatifs si le manuscrit a le chiffre précis.
@@ -451,7 +462,7 @@ Si la réponse est **non**, réécrire dans la voix de l'auteur (ce que dirait l
 
 Si `deai-latex` n'est pas exécutable sur un fragment, appliquer manuellement les trois familles ci-dessus. C'est plus long mais c'est ce qui distingue une slide *qui pourrait passer pour humaine* d'une slide *qui sonne IA dès la première lecture*.
 
-#### 7.2 — Recompilation et capture
+#### 7.2 : Recompilation et capture
 
 Recompiler le deck modifié et extraire la nouvelle slide en PNG :
 
@@ -460,7 +471,7 @@ latexmk -xelatex -interaction=nonstopmode <main>.tex >/dev/null
 pdftoppm -r 180 -f $N -l $N <main>.pdf nouvelle -png
 ```
 
-#### 7.3 — Critique visuelle scorée (grille sur 16 points)
+#### 7.3 : Critique visuelle scorée (grille sur 16 points)
 
 Lire les deux PNG (avant : `trio-2.png`, après : `nouvelle-1.png`) et **scorer** chaque version. C'est le score qui pilote la boucle d'amélioration (§7.4), donc il doit être fait honnêtement, pas pour valider une version qu'on aurait envie de garder.
 
@@ -479,8 +490,8 @@ Lire les deux PNG (avant : `trio-2.png`, après : `nouvelle-1.png`) et **scorer*
 
 **Points qualitatifs (2 × 3 pts = 6 pts)** : note de 0 à 3.
 
-11. **Impression éditoriale** — *0 amateur, 1 fonctionnel, 2 soigné, 3 éditorial publiable.*
-12. **Force argumentative** — *0 ne pose pas d'argument, 1 annonce, 2 démontre, 3 démontre et ancre dans le voisinage narratif.*
+11. **Impression éditoriale**, *0 amateur, 1 fonctionnel, 2 soigné, 3 éditorial publiable.*
+12. **Force argumentative**, *0 ne pose pas d'argument, 1 annonce, 2 démontre, 3 démontre et ancre dans le voisinage narratif.*
 
 **Total sur 16.** Une slide à 16/16 est considérée comme publiable et clôt la boucle.
 
@@ -496,7 +507,7 @@ v1 — 11/16
   12. Argument [3/3]
 ```
 
-#### 7.4 — Boucle d'amélioration itérative (tant que ça monte)
+#### 7.4 : Boucle d'amélioration itérative (tant que ça monte)
 
 C'est l'étape qui transforme un polish en un vrai travail d'édition. **Itérer tant que le score progresse strictement.** Le critère d'arrêt est mécanique, pas subjectif.
 
@@ -510,7 +521,7 @@ C'est l'étape qui transforme un polish en un vrai travail d'édition. **Itérer
    - dernière itération a apporté `≥ 2 points` (sinon convergence atteinte).
 4. **À chaque nouvelle itération `vk → vk+1`** :
    - Identifier le **point le plus faible** de `vk` dans le score (le premier des 12 items à valeur la plus basse).
-   - Proposer une modification **ciblée sur ce seul point**, sans toucher au reste. Exemple : si l'impression éditoriale est à 1/3 alors que tout le reste est à 1, retravailler typographie, espacement, palette — pas le titre, pas l'argument.
+   - Proposer une modification **ciblée sur ce seul point**, sans toucher au reste. Exemple : si l'impression éditoriale est à 1/3 alors que tout le reste est à 1, retravailler typographie, espacement, palette, pas le titre, pas l'argument.
    - Compiler, extraire PNG, scorer `vk+1`.
    - **Si `score(vk+1) > score(vk)`** : garder, sauvegarder `vk+1.tex`, `vk+1.png`, `vk+1.score`, continuer.
    - **Si `score(vk+1) ≤ score(vk)`** : restaurer `vk`, *changer de cible* (point faible suivant dans le classement) et retenter. Après **3 tentatives consécutives ratées**, considérer que `vk` est le plateau atteint, arrêter.
@@ -554,10 +565,10 @@ Format de `scores.md` :
   
   Si **une seule** régression est constatée, **`score(vk+1)` est invalidé même si la grille typographique monte**. Restaurer vk, changer de cible vers un autre item. Cette règle prime sur toutes les autres : *la forme ne rachète jamais une perte de fond*.
 
-- **Pas de cosmétique sans gain** : si une modification n'augmente strictement aucun item de la grille, elle est rejetée d'office. La beauté seule ne suffit pas — elle doit faire bouger le score (par exemple via item 11 « impression éditoriale »).
+- **Pas de cosmétique sans gain** : si une modification n'augmente strictement aucun item de la grille, elle est rejetée d'office. La beauté seule ne suffit pas, elle doit faire bouger le score (par exemple via item 11 « impression éditoriale »).
 - **Régression sur un autre item** : si une modification fait passer un item à 1 mais en casse un autre à 0, le score net peut être nul ou négatif. Restaurer.
 - **Honnêteté du scoring** : à chaque itération, scorer comme si la version vk était nouvelle. Ne pas valider à 1 un item douteux pour rester sous le seuil de convergence.
-- **Pas de boucle sur le voisinage** : item 10 (cohérence n-1/n+1) ne peut être l'objet d'une itération — il n'y a qu'une seule façon de le valider et elle se fait en Phase 3. Si l'item 10 est à 0, c'est qu'il faut **déplacer ou supprimer la slide**, pas la repolir.
+- **Pas de boucle sur le voisinage** : item 10 (cohérence n-1/n+1) ne peut être l'objet d'une itération, il n'y a qu'une seule façon de le valider et elle se fait en Phase 3. Si l'item 10 est à 0, c'est qu'il faut **déplacer ou supprimer la slide**, pas la repolir.
 
 **Communication à l'utilisateur** : à chaque itération, **une ligne** :
 
@@ -567,11 +578,11 @@ v3 [14/16] (+1 vs v2) — cible : impression éditoriale → typographie/espacem
 
 À la fin, **livrer un récapitulatif** de la trajectoire (le tableau `scores.md`) en plus de la version retenue.
 
-**Cas spécial — l'utilisateur veut une seule passe** : si la demande contient « une seule passe », « pas de boucle », « directement », « rapide », appliquer Phase 6 + §7.1-7.3 puis livrer v1 sans entrer dans la boucle §7.4. L'annoncer en une ligne : « Mode passe unique — livraison de v1 sans itération. »
+**Cas spécial, l'utilisateur veut une seule passe** : si la demande contient « une seule passe », « pas de boucle », « directement », « rapide », appliquer Phase 6 + §7.1-7.3 puis livrer v1 sans entrer dans la boucle §7.4. L'annoncer en une ligne : « Mode passe unique, livraison de v1 sans itération. »
 
-#### 7.4bis — Audit du code source LaTeX (bloquant, distinct de l'audit visuel)
+#### 7.4bis : Audit du code source LaTeX (bloquant, distinct de l'audit visuel)
 
-**Pourquoi cette phase existe.** Plusieurs épisodes documentés ont montré qu'un score 16/16 (qualité éditoriale) + 10/10 NON (propreté visuelle) peut coexister avec un code source **structurellement amateur** que n'importe quel chercheur habile en LaTeX/Beamer détecterait immédiatement à la lecture du `.tex`. Le rendu PDF peut « presque » marcher, mais le code trahit l'absence d'expertise et devient ingérable en maintenance. Cette phase audite le *code*, pas le *rendu*.
+**Pourquoi cette phase existe.** Plusieurs épisodes documentés ont montré qu'un score 16/16 (qualité éditoriale) + 22/22 NON (propreté visuelle) peut coexister avec un code source **structurellement amateur** que n'importe quel chercheur habile en LaTeX/Beamer détecterait immédiatement à la lecture du `.tex`. Le rendu PDF peut « presque » marcher, mais le code trahit l'absence d'expertise et devient ingérable en maintenance. Cette phase audite le *code*, pas le *rendu*.
 
 **Principe** : grille pass/fail sur 8 antipatterns LaTeX/Beamer/TikZ. Tout OUI bloque la livraison.
 
@@ -582,7 +593,7 @@ v3 [14/16] (+1 vs v2) — cible : impression éditoriale → typographie/espacem
 1. **`\draw rectangle` + `\node` texte séparé** (au lieu de `\node[draw,...]{texte}`)
    - Signal : présence de `\draw[...] (x,y) rectangle (x',y');` suivie d'un `\node[...] at (x'',y'') {...};` qui contient le texte de cette boîte.
    - Pourquoi c'est mauvais : le texte ne s'auto-dimensionne pas, donc tout changement du contenu peut faire déborder le cadre. Corrigeable seulement à coordonnées manuelles.
-   - Remplacement : `\node[draw, rounded corners, fill, text width=Xcm, align=center, inner sep=Ypt] (id) at (x,y) {texte};` — un seul élément, auto-dimensionné.
+   - Remplacement : `\node[draw, rounded corners, fill, text width=Xcm, align=center, inner sep=Ypt] (id) at (x,y) {texte};`, un seul élément, auto-dimensionné.
 
 2. **Coordonnées absolues numériques pour le positionnement relatif** (au lieu de `right=Xcm of A`, `below=Ycm of B`)
    - Signal : plusieurs `\node[...] at (x1,y1)` puis `\node[...] at (x2,y2)` avec relations spatiales évidentes (« à droite de », « en dessous de »).
@@ -645,13 +656,13 @@ Statut : NON propre — corriger items X, Y.
 
 **Cette phase doit être exécutée AVANT §7.5** : un code propre produit le plus souvent un rendu propre. L'audit visuel §7.5 devient alors une confirmation, pas un détecteur.
 
-#### 7.5 — Vérification de propreté visuelle (bloquante, boucle dédiée)
+#### 7.5 : Vérification de propreté visuelle (bloquante, boucle dédiée)
 
 **Le cycle de polish n'est pas terminé tant que la slide n'est pas propre.** La grille de score §7.3 mesure la *qualité éditoriale* (argument, hiérarchie, palette). Elle ne détecte pas les *débordements physiques*. Une slide à 16/16 peut avoir du texte qui sort, un node TikZ trop étroit, un filigrane qui mord sur un mot. Cette §7.5 comble ce manque par une seconde boucle, distincte et bloquante.
 
 **Principe** : score binaire pass/fail sur 10 items concrets ; on ne livre pas tant qu'un seul item est à OUI (défaut présent).
 
-##### 7.5.1 — Parse des warnings de compilation
+##### 7.5.1 : Parse des warnings de compilation
 
 ```bash
 xelatex -interaction=nonstopmode <main>.tex 2>&1 | tee compile.log
@@ -665,7 +676,7 @@ Cibler en priorité :
 
 Pour chaque warning, **vérifier le numéro de ligne** : s'il pointe dans la frame cible, traiter immédiatement, ne pas continuer.
 
-##### 7.5.2 — Inspection visuelle ciblée (capacité multimodale)
+##### 7.5.2 : Inspection visuelle ciblée (capacité multimodale)
 
 Convertir la slide finale en PNG haute résolution :
 
@@ -673,16 +684,16 @@ Convertir la slide finale en PNG haute résolution :
 pdftoppm -r 220 -f $N -l $N <main>.pdf clean -png
 ```
 
-###### 7.5.2.a — Procédure d'inspection par crops obligatoires (anti-mensonge)
+###### 7.5.2.a : Procédure d'inspection par crops obligatoires (anti-mensonge)
 
 **Pourquoi cette procédure existe.** Plusieurs épisodes documentés ont montré qu'une déclaration « 22/22 NON » sur la base d'une vue d'ensemble PNG peut être *factuellement fausse* : des débordements aux bords (texte sortant de la slide en bas, node sortant à droite) sont systématiquement ratés à la résolution PNG d'ensemble. La vue d'ensemble écrase les détails de bord. **L'audit honnête exige des crops dédiés à chaque bord.**
 
-**Procédure obligatoire avant toute déclaration de score §7.5** — utiliser le script fourni dans le skill :
+**Procédure obligatoire avant toute déclaration de score §7.5**, utiliser le script fourni dans le skill :
 
 ```bash
-python3 ~/docs/codes/claude_plugins/bio_redac/skills/slide-polish/slide_crops.py main.pdf --page <N>
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/slide-polish/slide_crops.py main.pdf --page <N>
 # ou directement sur un PNG :
-python3 ~/docs/codes/claude_plugins/bio_redac/skills/slide-polish/slide_crops.py clean-1.png
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/slide-polish/slide_crops.py clean-1.png
 ```
 
 Le script génère 5 fichiers `<base>_{top,bottom,left,right,center}.png` à côté de l'input.
@@ -719,13 +730,13 @@ Lire les 5 crops avec l'outil `Read` (capacité multimodale) et répondre **expl
 - *Crop droit/gauche* : présence de tout cadre TikZ (`\node[draw,...]`) dont la bordure droite/gauche touche ou sort du bord = node hors slide.
 - *Crop centre* : présence de 2 cadres TikZ dont les bordures se chevauchent visiblement = collision nodes.
 
-###### 7.5.2.b — Inspection systématique des 22 items
+###### 7.5.2.b : Inspection systématique des 22 items
 
 Lire `clean-1.png` avec l'outil `Read` (en complément des 5 crops) et **chercher explicitement** chacun des vingt-deux défauts ci-dessous, organisés en cinq familles (A débordements, B espaces, C collisions, C-bis labels et logique des flèches, D typographie). Chaque item se répond OUI (défaut présent) / NON (slide propre sur ce point). Une slide *propre* a **les 22 items à NON**.
 
 **Items A1, A5, C10 ne peuvent jamais être déclarés NON sans crops 7.5.2.a effectués au préalable.**
 
-##### Famille A — Débordements physiques
+##### Famille A : Débordements physiques
 
 1. **Texte qui sort de la slide** : un mot, une ligne, un objet touche ou dépasse un bord (gauche, droit, bas, haut). Inspecter les quatre marges séparément, à la pixel près sur le PNG haute résolution.
 2. **Texte qui dépasse d'un node TikZ** : un mot ou une ligne sort du cadre d'un `node` (rectangle, circle, ellipse, shape custom). Vérifier chaque cellule de chaque schéma : le texte est-il intégralement dans le cadre, ou un mot final ou une virgule sortent-ils ?
@@ -733,14 +744,14 @@ Lire `clean-1.png` avec l'outil `Read` (en complément des 5 crops) et **cherche
 4. **Élément hors-champ** : objet TikZ positionné en `(x,y)` au-delà de la zone visible (typique sur frames à overlay).
 5. **Pied de page / footer poussé** : numéro de slide, footer, *frame title* débordant ou tronqué.
 
-##### Famille B — Espaces et équilibres
+##### Famille B : Espaces et équilibres
 
 6. **Grande zone de blanc inutile** : zone vide d'au moins 1/6 de la surface de la slide qui ne sert ni à respirer un point focal ni à séparer deux blocs distincts. Inspecter spécifiquement : entre titre et premier bloc, entre deux colonnes, entre dernière ligne de contenu et footer.
 7. **Espace injustifié entre éléments** : `\vspace{}` excessif (positif ou négatif), `\medskip` répété, ligne vide LaTeX qui produit un blanc visible non motivé. Si la respiration n'a pas de fonction (séparer un keypoint, isoler un crédit), elle est de trop.
 8. **Saut de ligne pour un seul mot orphelin** : une ligne contient un mot seul ou deux mots courts parce que le précédent a wrappé juste avant. Au lieu d'accepter ce wrap, **reformuler la phrase** pour qu'elle tienne. Le wrap technique n'est pas un substitut à l'écriture ; un mot orphelin signale presque toujours une formulation trop longue d'un cran.
 9. **Densité hétérogène entre colonnes** : 3 colonnes dont une est saturée de texte et les deux autres semi-vides. Soit rééquilibrer le contenu, soit changer de layout.
 
-##### Famille C — Collisions et hiérarchies
+##### Famille C : Collisions et hiérarchies
 
 10. **Collision entre éléments** : deux objets se chevauchent (texte sur figure, label sur axe, légende sur courbe, flèche sur node, accolade sur texte).
 11. **Flèche qui mord un texte ou une cellule** : une flèche TikZ part *au-dessus* du texte d'un node (au lieu de partir du bord bas), ou sa pointe pénètre dans un autre node, ou son trait traverse une légende. Inspecter chaque flèche : son origine est-elle sur le bord propre d'un node ? Sa pointe s'arrête-t-elle visiblement *avant* la cible ?
@@ -748,7 +759,7 @@ Lire `clean-1.png` avec l'outil `Read` (en complément des 5 crops) et **cherche
 13. **Texte de cellule TikZ trop gros** : font qui sature la cellule (texte qui touche les bords, ou pas de marge interne visible). Symptôme : `inner sep` trop petit ou pas de `text width`. Augmenter le padding ou réduire la font.
 14. **Couleur ou trait incohérents entre nodes apparentés** : trois nodes du même type avec trois épaisseurs de trait différentes, ou deux flèches « même rôle » avec deux couleurs aléatoires.
 
-##### Famille C-bis — Labels et logique des flèches dans les schémas TikZ
+##### Famille C-bis : Labels et logique des flèches dans les schémas TikZ
 
 Cette sous-famille est dédiée aux **erreurs sémantiques et de positionnement des labels** dans les schémas conceptuels. Elle est souvent ratée par les audits classiques parce qu'elle exige de comprendre l'argument narratif du schéma, pas seulement le rendu visuel.
 
@@ -773,9 +784,9 @@ Cette sous-famille est dédiée aux **erreurs sémantiques et de positionnement 
    - Si une flèche est de feedback (DoWhy → sim), elle doit être visuellement distincte également (arc inférieur, autre couleur).
    - Vérifier pour chaque type de flèche : *son style est-il cohérent dans tout le schéma ?* Et *son style est-il distinct des autres types ?*
 
-##### Famille D — Typographie et effets
+##### Famille D : Typographie et effets
 
-15. **Trop de gras** : `\textbf{...}` sur plus de ~15 % du texte visible, ou plusieurs mots gras dans une même phrase. Le gras est un signal — il perd son sens si appliqué partout. Le retenir pour : noms propres première occurrence, valeurs clés numériques, terme défini.
+15. **Trop de gras** : `\textbf{...}` sur plus de ~15 % du texte visible, ou plusieurs mots gras dans une même phrase. Le gras est un signal, il perd son sens si appliqué partout. Le retenir pour : noms propres première occurrence, valeurs clés numériques, terme défini.
 16. **Trop d'effets typographiques mixés** : italique + gras + couleur + emphase sur le même mot ; ou plus de 3 grandeurs typographiques dans une même slide. Symptôme du « tout important = rien important ».
 17. **Saut de ligne du titre malheureux** : titre cassé à un endroit qui sépare un nom propre, un terme composé, un sigle de son développement. **Et plus largement** : titre sur 2 lignes alors qu'une reformulation l'aurait fait tenir.
 
@@ -825,7 +836,7 @@ D. Typographie et effets
 Statut : NON propre — corriger items X, Y, Z.
 ```
 
-##### 7.5.3 — Boucle de propreté (jusqu'à zéro défaut)
+##### 7.5.3 : Boucle de propreté (jusqu'à zéro défaut)
 
 Si un ou plusieurs items sont à OUI, **corriger ciblé** et recompiler. Recettes typiques :
 
@@ -858,11 +869,11 @@ Recompiler, re-extraire le PNG, re-lire, re-scorer.
 
 **Limite dure** : 5 itérations de propreté max. Si après 5 cycles certains items restent à OUI, **stopper et signaler honnêtement à l'utilisateur** quels défauts subsistent, leur localisation et leur cause probable. Ne **jamais** livrer une slide non propre en silence.
 
-**Le cycle de polish n'est pas terminé** tant que les 22 items de §7.5.2 ne sont pas tous à NON, ou que la limite dure est atteinte avec signalement explicite. Il est tout à fait possible — et même fréquent — que la boucle qualité §7.4 finisse, donne une version éditorialement bonne, et qu'il faille deux à trois cycles supplémentaires de §7.5 pour rendre la slide *physiquement* propre. C'est attendu, c'est normal, ce n'est pas une régression.
+**Le cycle de polish n'est pas terminé** tant que les 22 items de §7.5.2 ne sont pas tous à NON, ou que la limite dure est atteinte avec signalement explicite. Il est tout à fait possible, et même fréquent, que la boucle qualité §7.4 finisse, donne une version éditorialement bonne, et qu'il faille deux à trois cycles supplémentaires de §7.5 pour rendre la slide *physiquement* propre. C'est attendu, c'est normal, ce n'est pas une régression.
 
-#### 7.5bis — Test de voix scientifique (bloquant, dernière étape avant livraison)
+#### 7.5bis : Test de voix scientifique (bloquant, dernière étape avant livraison)
 
-Une slide peut avoir un score qualité 16/16 (§7.4), être physiquement propre 10 NON (§7.5), et néanmoins **sonner faux à l'oreille de l'auteur**. C'est précisément ce qui s'est produit dans les cas où le polish a inséré des phrases comme *« Je n'apporte pas une transposition d'outils, j'apporge une seconde fenêtre observationnelle »* — phrase au score impeccable, au tiret cadratin caché, et que **l'auteur n'écrirait jamais**.
+Une slide peut avoir un score qualité 16/16 (§7.4), être physiquement propre 22 NON (§7.5), et néanmoins **sonner faux à l'oreille de l'auteur**. C'est précisément ce qui s'est produit dans les cas où le polish a inséré des phrases comme *« Je n'apporte pas une transposition d'outils, j'apporte une seconde fenêtre observationnelle »*, phrase au score impeccable, au tiret cadratin caché, et que **l'auteur n'écrirait jamais**.
 
 Ce test final, multimodal cette fois **sur le texte** (pas sur le PNG), vérifie que la voix est celle d'un scientifique, pas celle d'une plaquette ni d'une IA cultivée.
 
@@ -904,12 +915,12 @@ Statut global : NON valide — réécrire phrase 3.
 
 Si une phrase échoue, **réécrire et reboucler §7.5bis** (zéro tiret, zéro pattern rhétorique). Limite dure 3 itérations de voix : au-delà, signaler à l'utilisateur qu'une phrase résiste à la réécriture et lui proposer une formulation alternative à valider à la main. **Ne jamais livrer une slide non validée §7.5bis**.
 
-#### 7.6 — Livraison
+#### 7.6 : Livraison
 
 - Présenter le PNG **avant** (v0) et le PNG **après** (version retenue à l'issue de §7.4, puis nettoyée par §7.5, puis validée §7.5bis) dans la réponse.
 - Inclure le **tableau des scores qualité** (`scores.md`) pour expliciter la trajectoire d'amélioration et la raison d'arrêt (plafond / convergence / régression bloquée / limite dure).
-- Inclure le **score de propreté final** (`clean.score`) — confirmer 10/10 NON, ou lister honnêtement les défauts résiduels si limite dure §7.5 atteinte.
-- Inclure le **score de voix** (`voice.score`) — confirmer 100 % des phrases validées, ou lister les formulations laissées à l'arbitrage manuel.
+- Inclure le **score de propreté final** (`clean.score`), confirmer 22/22 NON, ou lister honnêtement les défauts résiduels si limite dure §7.5 atteinte.
+- Inclure le **score de voix** (`voice.score`), confirmer 100 % des phrases validées, ou lister les formulations laissées à l'arbitrage manuel.
 - Inclure la **synthèse Phase 3bis** : la thèse pleine reconstituée, les axes de spécificité préservés, ce que la slide finale dit en plus / mieux que la version initiale.
 - Donner le **diff** des lignes modifiées dans le `.tex` (lecture rapide).
 - Sauvegarder l'original sous `<main>.tex.bak.<timestamp>` avant d'écraser.
@@ -921,7 +932,7 @@ Si une phrase échoue, **réécrire et reboucler §7.5bis** (zéro tiret, zéro 
 | Besoin | Skill délégué |
 |--------|---------------|
 | Carte géographique | `geo-map` (toujours, jamais à la main) |
-| Figure de données depuis CSV | `create-viz`, puis `seaborn` / `matplotlib-pro` / `plotly` |
+| Figure de données depuis CSV | `sci-figure` (preset `slide`) |
 | Arbre phylogénétique réel | `iqtree-lsd2`, `itol` |
 | Vérification d'un chiffre / d'une date | `claim-check` |
 | Recherche de littérature ciblée (1 à 3 réfs) | `lit-review` |
@@ -934,9 +945,9 @@ Règle : un seul niveau de délégation par défaut.
 
 ## Anti-patrons à éviter
 
-0bis. **Mensonge structurel d'audit § 7.5 sans crops** (l'antipattern le plus grave, à éliminer en priorité absolue). Déclarer « 22/22 NON » sur la propreté visuelle d'une slide en lisant seulement le PNG d'ensemble, sans générer ni lire les 5 crops obligatoires (top, bottom, left, right, center). La vue d'ensemble écrase systématiquement les détails de bord — un débordement de texte par le bas, un node TikZ qui sort à droite, une collision entre 2 cadres centraux sont **invisibles à la résolution d'ensemble**. Conséquence : on livre une slide bancale avec une déclaration de score qui prétend qu'elle est propre. C'est un *mensonge structurel* car le pipeline a un score de validation, mais ce score peut être fabriqué sans audit réel. Antidote : procédure §7.5.2.a obligatoire — générer les 5 crops via `slide_crops.py` (fourni dans le skill), les lire **chacun** avec `Read`, répondre explicitement avant toute déclaration d'items A1/A5/C10. Sans les crops, on ne déclare *jamais* « propre ».
+0bis. **Mensonge structurel d'audit § 7.5 sans crops** (l'antipattern le plus grave, à éliminer en priorité absolue). Déclarer « 22/22 NON » sur la propreté visuelle d'une slide en lisant seulement le PNG d'ensemble, sans générer ni lire les 5 crops obligatoires (top, bottom, left, right, center). La vue d'ensemble écrase systématiquement les détails de bord, un débordement de texte par le bas, un node TikZ qui sort à droite, une collision entre 2 cadres centraux sont **invisibles à la résolution d'ensemble**. Conséquence : on livre une slide bancale avec une déclaration de score qui prétend qu'elle est propre. C'est un *mensonge structurel* car le pipeline a un score de validation, mais ce score peut être fabriqué sans audit réel. Antidote : procédure §7.5.2.a obligatoire, générer les 5 crops via `slide_crops.py` (fourni dans le skill), les lire **chacun** avec `Read`, répondre explicitement avant toute déclaration d'items A1/A5/C10. Sans les crops, on ne déclare *jamais* « propre ».
 
-0. **Moyennisation par polissage** (le pire après le mensonge structurel). Prendre une slide moyenne et la rendre *plus belle moyenne* : score §7.4 qui grimpe, hiérarchie typographique propre, palette respectée — mais perte de spécificité, perte de nuance, perte de voix. Le polish a servi la forme contre le fond. Antidote : Phase 3bis (reconstruire la thèse pleine), veto anti-moyennisation §7.4, test de voix §7.5bis.
+0. **Moyennisation par polissage** (le pire après le mensonge structurel). Prendre une slide moyenne et la rendre *plus belle moyenne* : score §7.4 qui grimpe, hiérarchie typographique propre, palette respectée, mais perte de spécificité, perte de nuance, perte de voix. Le polish a servi la forme contre le fond. Antidote : Phase 3bis (reconstruire la thèse pleine), veto anti-moyennisation §7.4, test de voix §7.5bis.
 00. **Rhétorique IA insérée comme amélioration**. Patterns à reconnaître au premier regard : « pas X, j'apporte Y », « une seconde fenêtre sur Z », « explorer le paysage de », « une approche unique pour », « met en lumière », « interroge la complexité de ». Aucun chercheur n'écrit cela en mail à un collègue. Antidote : §7.1 Famille 2 et §7.5bis.
 1. **Refondre une slide déjà bonne** par envie de toucher. Si la grille de critique passe à 10/10, livrer telle quelle avec un mot de validation.
 2. **Changer de modalité sans gain narratif** : remplacer une liste correcte par un TikZ joli mais creux est une régression.
@@ -951,17 +962,17 @@ Règle : un seul niveau de délégation par défaut.
 
 ## Exemples d'invocation typiques
 
-**Cas 1 — Slide trop chargée**
+**Cas 1 : Slide trop chargée**
 > « /slide-polish "Caractéristiques épidémiologiques du Burundi" »
 
-Phase 2 : diagnostic visuel — densité saturée, 6 puces, deux idées concurrentes. Phase 3 : titre catégoriel, l'argument se cache au milieu des puces. Phase 4 : décision *alléger + changer de modalité* (big number + sparkline pour le chiffre marquant, le reste passe en commentaire oral). Phase 6 : nouvelle slide « 73 % des isolats portent rpoB-S450L au Burundi » + sparkline 2008-2024. Phase 7 : `deai-latex`, recompilation, critique.
+Phase 2 : diagnostic visuel, densité saturée, 6 puces, deux idées concurrentes. Phase 3 : titre catégoriel, l'argument se cache au milieu des puces. Phase 4 : décision *alléger + changer de modalité* (big number + sparkline pour le chiffre marquant, le reste passe en commentaire oral). Phase 6 : nouvelle slide « 73 % des isolats portent rpoB-S450L au Burundi » + sparkline 2008-2024. Phase 7 : `deai-latex`, recompilation, critique.
 
-**Cas 2 — Slide trop vide**
+**Cas 2 : Slide trop vide**
 > « polish-moi la slide qui s'appelle "Méthodologie" »
 
 Phase 2 : slide à 9 mots, point focal absent. Phase 3 : titre catégoriel, voisinage n+1 parle directement de résultats sans avoir posé l'approche. Phase 4 : décision *enrichir + changer de modalité* (workflow TikZ 4 boîtes : Échantillonnage → Séquençage → Phylogénie → Datation). Phase 5 : matière déjà dans le `cahier_de_labo.md`, pas de recherche externe. Phase 6 : schéma TikZ. Phase 7 : `deai-latex`, vérification.
 
-**Cas 3 — Slide d'introduction sans illustration**
+**Cas 3 : Slide d'introduction sans illustration**
 > « /slide-polish 3 » (la slide 3 introduit la tuberculose globale)
 
 Phase 2 : densité moyenne, palette correcte, pas d'illustration. Phase 3 : voisinage n-1 = titre, n+1 = chiffres précis ; la slide 3 doit poser l'enjeu global. Phase 4 : décision *enrichir avec un filigrane* (carte du monde stylisée en opacity 0.12, incidence TB en arrière-plan). Délégation `geo-map`. Phase 6 : intégration en Phase 6.2. Phase 7 : recompilation, vérification que le texte reste lisible par-dessus, `deai-latex`.
@@ -980,4 +991,4 @@ Une slide remaniée est une slide qui *raisonne* mieux *sur du fond préservé v
 4. **Nettoyer** physiquement (§7.5) : zéro débordement, zéro collision, zéro veuve.
 5. **Valider la voix scientifique** (§7.5bis) : zéro antithèse pompeuse, zéro slogan creux, zéro tiret cadratin / demi-cadratin / double tiret, chaque phrase passe le test « l'auteur l'écrirait-il en mail à un collègue ? ».
 
-Le cycle n'est pas terminé tant que la slide n'est pas *propre*, *spécifique*, et *écrite en voix d'auteur*. Le résultat livré inclut le PNG avant/après, la thèse pleine reconstruite, les tableaux de scores qualité/propreté/voix, et la raison d'arrêt explicite — pour que l'utilisateur sache ce qui a été préservé, ce qui a été gagné, et qu'aucune phrase de plaquette ne s'est glissée dans le rendu final.
+Le cycle n'est pas terminé tant que la slide n'est pas *propre*, *spécifique*, et *écrite en voix d'auteur*. Le résultat livré inclut le PNG avant/après, la thèse pleine reconstruite, les tableaux de scores qualité/propreté/voix, et la raison d'arrêt explicite, pour que l'utilisateur sache ce qui a été préservé, ce qui a été gagné, et qu'aucune phrase de plaquette ne s'est glissée dans le rendu final.

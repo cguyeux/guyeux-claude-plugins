@@ -1,24 +1,13 @@
 ---
 name: esm-atlas-cli
 description: >-
-  Academic research toolkit for the Guyeux group (FEMTO-ST) protein-evolution
-  studies: a resilient Python client for the EvolutionaryScale × BioHub
-  Protein Atlas API (https://biohub.ai/esm/protein/atlas/), which exposes
-  ESMC sparse-autoencoder (SAE) features and ESMFold2 structures across
-  6.8 billion proteins. Provides lookup by content hash, similarity search
-  by amino-acid sequence, SAE-feature interpretation, cluster metadata
-  (Pfam annotation rate), and 3-D structure / thumbnail retrieval, with a
-  disk cache and graceful fallback when the alpha API is degraded.
-  Reusable across any peer-reviewed published research project that maps
-  a protein sequence to a functional annotation: phylogenomic
-  characterisation, codivergence studies, antimicrobial-resistance allele
-  interpretation in the Guyeux group MTBC pipeline, or comparative protein
-  analyses in population genetics.
+  Academic research toolkit (Guyeux group, FEMTO-ST): resilient Python client
+  for the EvolutionaryScale x BioHub ESM Protein Atlas API (ESMC SAE features,
+  ESMFold2 structures), with disk cache and graceful fallback.
 
-  Use when: a project step needs to translate a protein sequence into a
-  biological function summary, retrieve a predicted structure, find
-  ESM-space homologs, or compare two sequences (wild-type vs variant)
-  via SAE feature differences.
+  Use when: turning a protein sequence into a function summary, hash lookup or
+  similarity search, SAE-feature interpretation, cluster metadata, fetching a
+  predicted structure or thumbnail, comparing wild-type vs variant.
 argument-hint: "<subcommand> [args]   # lookup | similarity | features | feature | cluster | structure | thumbnail | hash"
 allowed-tools: Bash, Read, Write, Edit
 user-invocable: true
@@ -26,7 +15,11 @@ user-invocable: true
 
 # /esm-atlas-cli -- ESM Atlas client (lookups, structures, SAE features)
 
-A thin, defensive client around the **alpha** ESM Atlas API. Wraps the seven
+A thin, defensive client around the **alpha** ESM Atlas API, the
+EvolutionaryScale × BioHub Protein Atlas
+(`https://biohub.ai/esm/protein/atlas/`), which exposes ESMC
+sparse-autoencoder (SAE) features and ESMFold2 structures across
+**6.8 billion proteins**. Wraps the seven
 endpoints documented at `https://biohub.ai/esm/protein/atlas/api-docs/` behind
 a stable Python interface, caches every response on disk, retries on transient
 failures, and degrades gracefully when the API is down so a project pipeline
@@ -46,9 +39,9 @@ never breaks just because the alpha API is misbehaving.
 
 Plus utilities :
 
-- `hash_sequence(seq)` — local MD5 of an amino-acid sequence (the Atlas
+- `hash_sequence(seq)`, local MD5 of an amino-acid sequence (the Atlas
   identifier scheme).
-- `mutate_and_compare(seq, mutations)` — apply point mutations and call
+- `mutate_and_compare(seq, mutations)`, apply point mutations and call
   `lookup` on both, returning the SAE feature delta. Useful for variant
   impact estimation.
 
@@ -86,8 +79,8 @@ print(delta["gained_features"], delta["lost_features"])
   sequence-derived lookups. Set `ESM_ATLAS_CACHE_TTL_DAYS=0` to bypass.
 - **Retries** : exponential backoff on 502/503/504 (3 attempts).
 - **Fallback** : on connection failure or 4xx unexpected, raises
-  `EsmAtlasUnavailable`. Caller-side skills (`mtbc-gene-function`,
-  `mtbc-mutation-impact`) catch this and degrade to Mycobrowser-only
+  `EsmAtlasUnavailable`. Caller-side skills (`mtbc-gene`, function and
+  mutation modes) catch this and degrade to Mycobrowser-only
   annotation, with an explicit "ESM Atlas unavailable" note in the output.
 - **Async jobs** : `batch_lookup` polls the job endpoint up to a configurable
   deadline (default 5 min), then surfaces a `EsmAtlasPending` exception with
@@ -101,11 +94,11 @@ print(delta["gained_features"], delta["lost_features"])
 
 ## What this skill does not do
 
-- It does not embed proteins itself — only fetches what the Atlas already has.
+- It does not embed proteins itself, only fetches what the Atlas already has.
 - It does not visualise structures (use `pymol`, `nglview`, or the `itol`
   skill for trees; the thumbnail PNG is for fiche embedding only).
-- It does not paraphrase SAE feature descriptions into Atlas-fiche prose —
-  that's the role of `mtbc-gene-function` and `mtbc-pathway-explain`.
+- It does not paraphrase SAE feature descriptions into Atlas-fiche prose,
+  that's the role of `mtbc-gene` (function and pathway modes).
 
 ## Limits & honesty
 
@@ -120,7 +113,7 @@ print(delta["gained_features"], delta["lost_features"])
   annotation in a manuscript.** They have no validated mapping to functional
   impact (documented over-claim, rehumanisation_L6L9L10, 2026-05-30). For a
   calibrated variant effect use the **ESM-1v masked-marginal LLR** (Meier
-  et al. 2021), exposed by `mtbc-mutation-impact` (`from
+  et al. 2021), exposed by `mtbc-gene` (`from
   mtbc_mutation_impact.llr import llr_of`); to assign protein domains use
   **Pfam/`hmmscan --cut_ga`**. Treat SAE labels as exploratory colour only.
 
@@ -169,21 +162,25 @@ The smoke test fetches `katG` (Rv1908c) from `~/docs/codes/mtbc/investigate_phyl
 
 **Resilience contract (for downstream skills).** Every GET is disk-cached under
 `~/.cache/esm-atlas-cli` (TTL via `ESM_ATLAS_CACHE_TTL_DAYS`). Unrecoverable
-network failures raise `EsmAtlasUnavailable`, which callers (`mtbc-gene-function`,
-`mtbc-mutation-impact`, `mtbc-pathway-explain`, `resistance-explain`,
-`active-site-check`) must catch and degrade gracefully (e.g. Mycobrowser-only
+network failures raise `EsmAtlasUnavailable`, which callers (`mtbc-gene`,
+`resistance-catalogue`, `active-site-check`) must catch and degrade gracefully (e.g. Mycobrowser-only
 annotation with an explicit "ESM Atlas unavailable" note). Set `ESM_ATLAS_OFFLINE=1`
 to force cache-only mode for reproducible runs.
 
 ## Workflow alignment
 
+Reusable across any peer-reviewed published research project that maps a
+protein sequence to a functional annotation : phylogenomic characterisation,
+codivergence studies, antimicrobial-resistance allele interpretation in the
+Guyeux group MTBC pipeline, or comparative protein analyses in population
+genetics.
+
 This skill is the **shared infrastructure layer** for any project that touches
 proteins. It is consumed by :
 
-- `mtbc-gene-function` — annotate a single gene with ESM features + structure.
-- `mtbc-mutation-impact` — interpret a resistance or LoF mutation.
-- `mtbc-pathway-explain` — narrate a positive-selection signal at the pathway
-  level.
+- `mtbc-gene`, annotate a single gene with ESM features + structure (`function`),
+  interpret a resistance or LoF mutation (`mutation`), and narrate a
+  positive-selection signal at the pathway level (`pathway`).
 
 Outside MTBC, it can also serve population-genetics skills (host-side
 adaptations, ESM-space homology of immune genes).

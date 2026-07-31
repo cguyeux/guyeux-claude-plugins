@@ -1,6 +1,13 @@
 ---
 name: scikit-learn
-description: The industry standard library for machine learning in Python. Provides simple and efficient tools for predictive data analysis, covering classification, regression, clustering, dimensionality reduction, model selection, and preprocessing.
+description: >-
+  The reference machine-learning library in Python: classification, regression, clustering,
+  dimensionality reduction, model selection and preprocessing. Use when fitting or comparing
+  predictive models on tabular data, building a Pipeline or ColumnTransformer, running
+  cross-validation or a hyperparameter search, computing classification metrics, or reducing
+  dimensionality with PCA/t-SNE/UMAP. When samples are related (clonal isolates, shared
+  ancestry), split by group rather than at random: see senior-data-scientist for the design
+  rules.
 version: 1.4
 license: BSD-3-Clause
 ---

@@ -11,11 +11,11 @@ A conversational framework for systematic scientific problem selection based on 
 
 Present users with three entry points:
 
-**1) Pitch an idea for a new project** — to work it up together
+**1) Pitch an idea for a new project**, to work it up together
 
-**2) Share a problem in a current project** — to troubleshoot together
+**2) Share a problem in a current project**, to troubleshoot together
 
-**3) Ask a strategic question** — to navigate the decision tree together
+**3) Ask a strategic question**, to navigate the decision tree together
 
 This conversational entry meets scientists where they are and establishes a collaborative tone.
 
@@ -27,7 +27,7 @@ This conversational entry meets scientists where they are and establishes a coll
 Ask: **"Tell me the short version of your idea (1-2 sentences)."**
 
 ### Response Approach
-After the user shares their idea, return a quick summary (no more than one paragraph) demonstrating understanding. Note the general area of research and rephrase the idea in a way that highlights its kernel—showing alignment and readiness to dive into details.
+After the user shares their idea, return a quick summary (no more than one paragraph) demonstrating understanding. Note the general area of research and rephrase the idea in a way that highlights its kernel, showing alignment and readiness to dive into details.
 
 ### Follow-up Prompt
 Then ask for more detail: "Now give me a bit more detail. You might include, however briefly or even say where you are unsure:
@@ -53,7 +53,7 @@ See `references/01-intuition-pumps.md`, `references/02-risk-assessment.md`, `ref
 Ask: **"Tell me a short version of your problem (1-2 sentences or whatever is easy)."**
 
 ### Response Approach
-After the user shares their problem, return a quick summary (no more than one paragraph) demonstrating understanding. Note the context of the project where the problem occurred and rephrase the problem—highlighting its core essence—so the user knows the situation is understood. Also raise additional questions that seem important to discuss.
+After the user shares their problem, return a quick summary (no more than one paragraph) demonstrating understanding. Note the context of the project where the problem occurred and rephrase the problem, highlighting its core essence, so the user knows the situation is understood. Also raise additional questions that seem important to discuss.
 
 ### Follow-up Prompt
 Then ask: "Now give me a bit more detail. You might include, however briefly:
@@ -80,7 +80,7 @@ See `references/05-decision-tree.md`, `references/06-adversity-planning.md`, `re
 Ask: **"Tell me the short version of your question (1-2 sentences)."**
 
 ### Response Approach
-After the user shares their question, return a quick summary (no more than one paragraph) demonstrating understanding. Note the broader context and rephrase the question—highlighting its crux—to confirm alignment with their thinking.
+After the user shares their question, return a quick summary (no more than one paragraph) demonstrating understanding. Note the broader context and rephrase the question, highlighting its crux, to confirm alignment with their thinking.
 
 ### Follow-up Prompt
 Then ask: "Now give me a bit more detail. You might include, however briefly:
@@ -120,7 +120,7 @@ This imbalance limits impact. These skills help invest more time choosing wisely
 Skills help move ideas rightward (more feasible) and upward (more impactful).
 
 ### The Risk Paradox
-- Don't avoid risk—befriend it
+- Don't avoid risk, befriend it
 - No risk = incremental work
 - But: Multiple miracles = avoid or refine
 - **Balance:** Understood, quantified, manageable risk

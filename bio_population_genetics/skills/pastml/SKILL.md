@@ -1,23 +1,16 @@
 ---
 name: pastml
 description: >-
-  Use PastML (Ishikawa, Zhukova, Iwasaki, Gascuel — Institut Pasteur) for
-  fast Maximum-Likelihood Ancestral Character Reconstruction (ACR) on
-  rooted phylogenetic trees, with built-in compressed-tree visualisation.
-  PastML reconstructs the most likely values of discrete characters
-  (geographic location, host, drug-resistance phenotype, lineage, etc.)
-  at every internal node of a tree, then collapses the tree into an
-  interactive HTML "compressed map" that surfaces only the regions of
-  state change. Designed to handle 10^4–10^5-tip trees.
-
-  Use when: reconstructing the geographic origin of an MTBC sublineage,
-  inferring ancestral host-jumps for zoonotic Mycobacterium ecotypes,
-  visualising drug-resistance emergence on a TB tree, producing a
-  compressed-tree HTML for a slide, or any task that maps a discrete
-  trait onto an existing phylogeny without rebuilding the tree.
+  Academic research toolkit for peer-reviewed evolutionary genomics. PastML (Institut
+  Pasteur) for fast maximum-likelihood ancestral character reconstruction of discrete
+  characters (location, host, antimicrobial-resistance allele, lineage) on a rooted tree,
+  with compressed-tree HTML output; scales to 10^4 to 10^5 tips. Use when inferring the
+  geographic origin of an MTBC sublineage in a research collection, reconstructing ancestral
+  host jumps of zoonotic Mycobacterium, dating the emergence of a resistance allele on a
+  published phylogeny, or mapping any discrete trait onto an existing tree.
 ---
 
-# PastML — Fast Ancestral Character Reconstruction
+# PastML : Fast Ancestral Character Reconstruction
 
 ## Overview
 
@@ -37,7 +30,7 @@ The novelty over earlier ACR tools is two-fold:
 1. **Speed and scale.** Linear-time algorithms scale to 10⁴–10⁵-tip trees.
 2. **Decision-theoretic state assignment.** Uses the **Brier score** to
    pick a single state where uncertainty is low, and a *set* of states
-   where uncertainty is high — avoiding the false confidence of
+   where uncertainty is high, avoiding the false confidence of
    single-state predictions everywhere.
 
 - **Reference**: Ishikawa S.A., Zhukova A., Iwasaki W. & Gascuel O.
@@ -60,7 +53,7 @@ its specific niches:
 1. **Geographic ancestral reconstruction at scale.** When you have a
    pre-built MTBC phylogeny (from IQ-TREE / RAxML / TBannotator) and
    you want to ask *"where did this lineage originate?"*, PastML
-   gives you a fast answer with confidence intervals — without having
+   gives you a fast answer with confidence intervals, without having
    to re-run the full Augur pipeline.
 2. **Ancestral host inference for zoonotic *Mycobacterium*.** Mapping
    `host = {Homo sapiens, Bos taurus, Capra hircus, Phocidae, …}` onto
@@ -84,13 +77,13 @@ For each character (geography, host, …) and each tree node, PastML
 computes the likelihood of every possible state given the tip
 annotations and the tree topology, under one of several models:
 
-- **MPPA** (*Maximum a Posteriori with Brier score*) — the default;
+- **MPPA** (*Maximum a Posteriori with Brier score*), the default;
   assigns one state when confident, several states when uncertain
-- **MAP** (*Maximum a Posteriori*) — single-state, may overstate
+- **MAP** (*Maximum a Posteriori*), single-state, may overstate
   certainty
-- **JOINT** — joint reconstruction across the whole tree
-- **DOWNPASS / ACCTRAN / DELTRAN** — parsimony alternatives
-- **F81 / JC / EFT** — substitution models
+- **JOINT**, joint reconstruction across the whole tree
+- **DOWNPASS / ACCTRAN / DELTRAN**, parsimony alternatives
+- **F81 / JC / EFT**, substitution models
 
 Then it collapses subtrees with uniform predicted state into single
 nodes (the *metanodes*) and exports an interactive HTML.
@@ -155,7 +148,7 @@ Verify install:
 
 ## Inputs and outputs
 
-### Input 1 — rooted phylogenetic tree
+### Input 1 : rooted phylogenetic tree
 
 A **rooted** Newick tree. PastML does not root unrooted trees for you;
 use `nw_reroot` (Newick utilities), `gotree`, or specify an outgroup
@@ -167,7 +160,7 @@ iqtree -s alignment.fasta -nt AUTO
 # → produces alignment.fasta.treefile
 ```
 
-### Input 2 — character annotation table
+### Input 2 : character annotation table
 
 TSV or CSV with tip IDs in the first column and one column per
 character to reconstruct.
@@ -185,18 +178,18 @@ values are allowed.
 
 ### Outputs
 
-- **`<name>.html_compressed.html`** — the interactive collapsed map
+- **`<name>.html_compressed.html`**, the interactive collapsed map
   (the main deliverable)
-- **`<name>.html.html`** — the full uncollapsed tree (slower to render)
-- **`marginal_probabilities.tab`** — per-node posterior probabilities
+- **`<name>.html.html`**, the full uncollapsed tree (slower to render)
+- **`marginal_probabilities.tab`**, per-node posterior probabilities
   for each state
-- **`combined_ancestral_states.tab`** — single most-likely state per node
-- **`named.tree_<column>.nwk`** — the tree with internal nodes labelled
+- **`combined_ancestral_states.tab`**, single most-likely state per node
+- **`named.tree_<column>.nwk`**, the tree with internal nodes labelled
   by reconstructed state
 
 ## Workflows
 
-### Workflow 1 — Geographic ancestral reconstruction of an MTBC sublineage
+### Workflow 1 : Geographic ancestral reconstruction of an MTBC sublineage
 
 Goal: given a TBannotator subtree of L4.15 isolates, reconstruct the
 most likely country of origin of the lineage.
@@ -216,7 +209,7 @@ Open `L4_15_geo.html` in a browser. The compressed tree highlights
 the inferred geographic origin and the major dispersal events along
 the backbone.
 
-### Workflow 2 — Ancestral host inference for zoonotic MTBC
+### Workflow 2 : Ancestral host inference for zoonotic MTBC
 
 Goal: confirm the *M. pinnipedii* pre-Columbian Andean host-jump
 hypothesis (Bos2014, Vagene2022) using PastML on a tree that mixes
@@ -237,7 +230,7 @@ Look for the host change at the *M. pinnipedii* split. If PastML
 infers *Phocidae* as ancestral and *Homo sapiens* as derived, that
 is direct visual support for the host-jump narrative.
 
-### Workflow 3 — Drug-resistance emergence pattern
+### Workflow 3 : Drug-resistance emergence pattern
 
 Goal: test whether `rpoB S450L` (rifampicin resistance) emerged once
 or multiple times in your MTBC corpus.
@@ -255,7 +248,7 @@ the tree branches in `marginal_probabilities.tab`. Multiple transitions
 support an "emerges-under-treatment" model; a single transition
 supports a "spreads-clonally" model.
 
-### Workflow 4 — Joint reconstruction of multiple characters
+### Workflow 4 : Joint reconstruction of multiple characters
 
 PastML can reconstruct several characters simultaneously, which is
 useful for asking compositional questions.
@@ -271,7 +264,7 @@ pastml \
 The output annotates each compressed metanode with all four
 reconstructed characters at once.
 
-### Workflow 5 — Python API for programmatic use
+### Workflow 5 : Python API for programmatic use
 
 ```python
 from pastml.acr import pastml_pipeline
@@ -303,7 +296,7 @@ PastML in a larger Snakemake / Nextflow workflow without shelling out.
   infer that country as the most likely ancestral state, regardless
   of biological reality. **Subsample for balance** before
   reconstruction (mirror the `nextstrain` Workflow 4 approach).
-- **MPPA is conservative — by design.** When two or more states are
+- **MPPA is conservative, by design.** When two or more states are
   near-equally likely, MPPA returns *all* of them; this is more
   honest than picking one but can clutter the visualisation. Tune
   with `--prediction_method MAP` for a single-state output if needed,

@@ -10,17 +10,63 @@ license: Biopython License
 Industry-standard Python library for computational biology and bioinformatics workflows.
 
 > **Compatibilite API (Biopython >= 1.78, dont la 1.83 ci-dessus).** Certains
-> exemples historiques ci-dessous utilisent des APIs retirees ou depreciees —
+> exemples historiques ci-dessous utilisent des APIs retirees ou depreciees,
 > les substitutions modernes :
 > - `from Bio.Alphabet import IUPAC` → **retire** (1.78). Ne rien importer ;
 >   les `Seq` n'ont plus d'alphabet.
 > - `from Bio.SeqUtils import GC` → **retire**. Utiliser
 >   `from Bio.SeqUtils import gc_fraction` **en multipliant par 100** :
 >   `gc_fraction(seq) * 100` (gc_fraction renvoie une FRACTION 0–1, GC renvoyait
->   un POURCENTAGE 0–100 — attention au facteur 100). `GC_skew` reste valide.
+>   un POURCENTAGE 0–100, attention au facteur 100). `GC_skew` reste valide.
 > - `from Bio import pairwise2` → **deprecie** (fonctionne encore en 1.83 mais
 >   emet un avertissement). Nouveau code : `from Bio.Align import PairwiseAligner`
 >   (`aligner = PairwiseAligner(); aligner.align(s1, s2)`).
+> - `from Bio.Align.Applications import ClustalwCommandline` (et tout le module
+>   `Bio.Application`) → **retire en 1.85**. Lancer l'aligneur externe via
+>   `subprocess.run([...])` et relire le resultat avec `AlignIO`.
+> - `Bio.Blast.NCBIXML` → **deprecie** au profit de `Bio.Blast.parse` /
+>   `Bio.Blast.read` (retour `Bio.Blast.Records`) depuis 1.85. `NCBIWWW.qblast`
+>   reste valide mais reste lent : preferer un BLAST local sur les gros volumes.
+
+### Traduction pairwise2 vers PairwiseAligner
+
+Correspondance directe pour les cas courants. `PairwiseAligner` est aussi
+nettement plus rapide, et `aligner.score(a, b)` calcule le score sans
+materialiser les alignements, ce qui change tout sur un balayage de milliers de
+paires.
+
+```python
+from Bio.Align import PairwiseAligner
+
+aligner = PairwiseAligner()
+
+# pairwise2.align.globalxx(s1, s2)      -> match 1, aucune penalite
+aligner.mode = "global"
+aligner.match_score, aligner.mismatch_score = 1, 0
+aligner.open_gap_score = aligner.extend_gap_score = 0
+
+# pairwise2.align.globalms(s1, s2, 2, -1, -0.5, -0.1)
+aligner.match_score, aligner.mismatch_score = 2, -1
+aligner.open_gap_score, aligner.extend_gap_score = -0.5, -0.1
+
+# pairwise2.align.localxx(...)          -> mode local
+aligner.mode = "local"
+
+# matrice de substitution (remplace globaldx)
+from Bio.Align import substitution_matrices
+aligner.substitution_matrix = substitution_matrices.load("BLOSUM62")
+
+alignments = aligner.align(seq1, seq2)   # objet paresseux, pas une liste
+best = alignments[0]
+print(best)                              # remplace format_alignment(*best)
+print(best.score, len(alignments))
+```
+
+Deux differences de comportement a connaitre : `aligner.align()` renvoie un
+iterable paresseux et non une liste (le nombre d'alignements optimaux peut etre
+astronomique, `len()` le calcule sans les construire), et les proteines
+requierent une matrice de substitution explicite la ou `globaldx` la prenait en
+argument.
 
 ## When to Use
 
@@ -51,7 +97,7 @@ Industry-standard Python library for computational biology and bioinformatics wo
 |------|--------|---------|
 | Create sequences | `Seq` | `Seq("ATCG")` |
 | Read sequence files | `SeqIO` | `SeqIO.parse("file.fasta", "fasta")` |
-| Pairwise alignment | `pairwise2` | `pairwise2.align.globalxx(s1, s2)` |
+| Pairwise alignment | `Align.PairwiseAligner` | `PairwiseAligner().align(s1, s2)` |
 | Multiple alignment | `AlignIO` | `AlignIO.read("align.fasta", "fasta")` |
 | BLAST searches | `NCBIWWW` | `NCBIWWW.qblast("blastn", "nr", seq)` |
 | PDB structures | `PDB.PDBParser` | `PDBParser().get_structure()` |
@@ -93,9 +139,8 @@ from Bio.SeqRecord import SeqRecord
 from Bio import SeqIO, AlignIO
 
 # Sequence alignment
-from Bio import pairwise2
-from Bio.Align import MultipleSeqAlignment
-from Bio.Align.Applications import ClustalwCommandline
+from Bio.Align import PairwiseAligner, MultipleSeqAlignment, substitution_matrices
+# aligneurs externes (Clustal, MAFFT, MUSCLE) : subprocess, Bio.Application est retire
 
 # BLAST
 from Bio.Blast import NCBIWWW, NCBIXML
@@ -113,7 +158,7 @@ from Bio.Phylo.TreeConstruction import DistanceCalculator, DistanceTreeConstruct
 from Bio import Entrez
 
 # Additional tools
-from Bio.SeqUtils import GC, molecular_weight
+from Bio.SeqUtils import gc_fraction, molecular_weight   # GC est retire : gc_fraction(s) * 100
 from Bio.Restriction import *
 ```
 
@@ -158,18 +203,21 @@ record = SeqIO.read("single.fasta", "fasta")
 ### Basic Pattern - Sequence Alignment
 
 ```python
-from Bio import pairwise2
+from Bio.Align import PairwiseAligner
 from Bio.Seq import Seq
 
 seq1 = Seq("ACCGT")
 seq2 = Seq("ACGT")
 
-# Global alignment
-alignments = pairwise2.align.globalxx(seq1, seq2)
+aligner = PairwiseAligner()          # global par defaut, match 1 / mismatch 0
+alignments = aligner.align(seq1, seq2)
 
-# Print best alignment
 best = alignments[0]
-print(pairwise2.format_alignment(*best))
+print(best)                          # affichage aligne des deux sequences
+print("score:", best.score)
+
+# Score seul, sans construire les alignements (bien plus rapide en boucle)
+print(aligner.score(seq1, seq2))
 ```
 
 ## Critical Rules

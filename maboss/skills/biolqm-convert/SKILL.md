@@ -11,7 +11,7 @@ description: >-
   logic", "sbml-qual to bnd", "biolqm", "re-export the GINsim model", "model has no dynamics".
 ---
 
-# biolqm-convert — robust format conversion (and fixing broken exports)
+# biolqm-convert : robust format conversion (and fixing broken exports)
 
 **Why it matters (our case).** A GINsim `.zginml` -> MaBoSS export can be DEGENERATE:
 most nodes get `Node X { rate_up = 0; rate_down = $u_X; }` with NO `logic =` line, so

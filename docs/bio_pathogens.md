@@ -6,13 +6,13 @@
 
 Cœur du dispositif. Rassemble les skills qui touchent directement le complexe Mycobacterium tuberculosis (MTBC) et les pathogènes apparentés : accès aux génomes de référence et aux isolats de recherche publiés, fréquences alléliques de résistance aux antituberculeux telles que rapportées dans la littérature évaluée par des pairs, assignation de lignées, bases de données génomiques spécialisées. C'est le plugin qu'on active quand le travail porte effectivement sur M. tuberculosis.
 
-Skills propres (canoniques) : **55** ; skills partagés utilisés (symlinks) : **37**.
+Skills propres (canoniques) : **49** ; skills partagés utilisés (symlinks) : **38**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [active-site-check](#active-site-check) ; [ancestral-reconstruction](#ancestral-reconstruction) ; [atlas-add-lineage](#atlas-add-lineage) ; [bacdive](#bacdive) ; [bdd-bridge](#bdd-bridge) ; [beast2-dating](#beast2-dating) ; [clade-finder](#clade-finder) ; [coevolution](#coevolution) ; [convergent-evolution](#convergent-evolution) ; [denovo-content-qc](#denovo-content-qc) ; [enterobase](#enterobase) ; [fetch-tbannotator](#fetch-tbannotator) ; [helicobacter-pylori-phylogeography](#helicobacter-pylori-phylogeography) ; [host-pathogen-pair](#host-pathogen-pair) ; [lineage-comparison](#lineage-comparison) ; [lineage-mdl](#lineage-mdl) ; [mbovis](#mbovis) ; [mk-ascertainment](#mk-ascertainment) ; [molecular-clock](#molecular-clock) ; [mtbc-atlas](#mtbc-atlas) ; [mtbc-bilan](#mtbc-bilan) ; [mtbc-deepen](#mtbc-deepen) ; [mtbc-gene-function](#mtbc-gene-function) ; [mtbc-gene-network](#mtbc-gene-network) ; [mtbc-lineages](#mtbc-lineages) ; [mtbc-mutation-impact](#mtbc-mutation-impact) ; [mtbc-pathway-explain](#mtbc-pathway-explain) ; [mtbc-reboot](#mtbc-reboot) ; [mycobacterium-leprae](#mycobacterium-leprae) ; [ncbi-pathogen-detection](#ncbi-pathogen-detection) ; [pangenome-enrichment](#pangenome-enrichment) ; [pathogens-portal](#pathogens-portal) ; [pectinated-subclade-mining](#pectinated-subclade-mining) ; [phylogeography](#phylogeography) ; [raxml](#raxml) ; [resistance-catalogue](#resistance-catalogue) ; [resistance-discovery](#resistance-discovery) ; [resistance-explain](#resistance-explain) ; [resistance-predict](#resistance-predict) ; [resistance-profiler](#resistance-profiler) ; [sitvitweb](#sitvitweb) ; [snp-distance](#snp-distance) ; [spaam-ancient-metagenome-dir](#spaam-ancient-metagenome-dir) ; [spaam-community](#spaam-community) ; [spdi-annotation](#spdi-annotation) ; [species-id](#species-id) ; [sra-geolocate](#sra-geolocate) ; [strain-qc](#strain-qc) ; [string-db](#string-db) ; [tb-cli](#tb-cli) ; [tbannotator-mcp](#tbannotator-mcp) ; [tbmonitor-papers](#tbmonitor-papers) ; [thd](#thd) ; [triangulate-route](#triangulate-route) ; [tsne-hdbscan](#tsne-hdbscan)
+Sommaire : [active-site-check](#active-site-check) ; [ancestral-reconstruction](#ancestral-reconstruction) ; [atlas-add-lineage](#atlas-add-lineage) ; [bacdive](#bacdive) ; [bdd-bridge](#bdd-bridge) ; [beast2-dating](#beast2-dating) ; [coevolution](#coevolution) ; [convergent-evolution](#convergent-evolution) ; [denovo-content-qc](#denovo-content-qc) ; [enterobase](#enterobase) ; [fetch-tbannotator](#fetch-tbannotator) ; [helicobacter-pylori-phylogeography](#helicobacter-pylori-phylogeography) ; [host-pathogen-pair](#host-pathogen-pair) ; [lineage-comparison](#lineage-comparison) ; [lineage-subdivision](#lineage-subdivision) ; [mbovis](#mbovis) ; [mk-ascertainment](#mk-ascertainment) ; [molecular-clock](#molecular-clock) ; [mtbc-bilan](#mtbc-bilan) ; [mtbc-epistasis](#mtbc-epistasis) ; [mtbc-gene](#mtbc-gene) ; [mtbc-gene-network](#mtbc-gene-network) ; [mtbc-lineages](#mtbc-lineages) ; [mtbc-prospect](#mtbc-prospect) ; [mtbc-reboot](#mtbc-reboot) ; [mycobacterium-leprae](#mycobacterium-leprae) ; [ncbi-pathogen-detection](#ncbi-pathogen-detection) ; [pangenome-enrichment](#pangenome-enrichment) ; [pathogens-portal](#pathogens-portal) ; [pectinated-subclade-mining](#pectinated-subclade-mining) ; [phylogeography](#phylogeography) ; [raxml](#raxml) ; [resistance-catalogue](#resistance-catalogue) ; [resistance-profiler](#resistance-profiler) ; [sitvitweb](#sitvitweb) ; [snp-distance](#snp-distance) ; [spaam-ancient-metagenome-dir](#spaam-ancient-metagenome-dir) ; [spaam-community](#spaam-community) ; [spdi-annotation](#spdi-annotation) ; [species-id](#species-id) ; [sra-geolocate](#sra-geolocate) ; [strain-qc](#strain-qc) ; [string-db](#string-db) ; [tb-cli](#tb-cli) ; [tbannotator-mcp](#tbannotator-mcp) ; [tbmonitor-papers](#tbmonitor-papers) ; [thd](#thd) ; [triangulate-route](#triangulate-route) ; [tsne-hdbscan](#tsne-hdbscan)
 
 ### active-site-check
 
@@ -46,15 +46,9 @@ Compétences : rapporter les effectifs de souches ou le QC par clade pour un man
 
 ### beast2-dating
 
-Boîte à outils académique pour la datation moléculaire bayésienne des phylogénies MTBC avec BEAST2. Génère un XML BEAST2 correct pour des alignements binaires de SNP (présence/absence 0/1), format produit par le pipeline TB du groupe Guyeux (FEMTO-ST), et lance BEAST2 sans interface. Corrige les deux défaillances qui font échouer silencieusement la convergence sur données binaires MTBC.
+Boite a outils de recherche academique pour la datation moleculaire bayesienne des phylogenies du complexe Mycobacterium tuberculosis (MTBC) avec BEAST2, pour la recherche phylogenomique evaluee par les pairs. Genere un XML BEAST2 correct pour des alignements SNP BINAIRES (presence/absence 0/1), le format produit par le pipeline TB du groupe Guyeux (FEMTO-ST), et execute BEAST2 sans affichage. Corrige les deux defauts qui font echouer silencieusement la convergence des runs BEAST2 sur donnees binaires MTBC.
 
-Compétences : dater une phylogénie MTBC à partir d'un alignement binaire de SNP ; produire un arbre daté bayésien pour un article de phylogénomique ; éviter les non-convergences silencieuses propres aux données binaires
-
-### clade-finder
-
-Recherche de clades et sous-populations dans une lignée MTBC. Construit des vecteurs de features par SRA (pan-SPDI, positions IS, RD) à partir des fichiers report.json ou spdi.txt de bdd/actuelle/L<x>/, applique t-SNE + HDBSCAN et produit un PNG haute résolution pour visualiser les sous-lignées potentielles. Une fois un cluster identifié, vérifier dans tbmonitor-papers s'il a déjà été décrit dans la littérature.
-
-Compétences : explorer la structure en sous-lignées d'une lignée ; chercher des clusters de population ; décider si une lignée doit être scindée ; Pour la phase post-découverte (extraction pectinée des sous-clades), utiliser pectinated-subclade-mining
+Compétences : dater un noeud ou une lignee avec BEAST2 ; ecrire ou deboguer un XML BEAST2 ; choisir une horloge ou un prior d'arbre pour le MTBC ; diagnostiquer un ESS qui ne monte pas
 
 ### coevolution
 
@@ -100,15 +94,15 @@ Compétences : planifier un projet de coévolution hôte-microorganisme ; valide
 
 ### lineage-comparison
 
-Comparaison statistique entre lignées ou sous-lignées MTBC : test exact de Fisher, khi-deux, intervalle exact binomial, correction FDR, odds ratios et tables de comparaison prêtes à publier.
+Boite a outils de recherche academique pour la phylogenomique MTBC evaluee par les pairs (groupe Guyeux, FEMTO-ST). Comparaison statistique entre lignees ou sous-lignees du complexe Mycobacterium tuberculosis dans des collections de recherche publiees : test exact de Fisher, khi-deux, intervalles de confiance binomiaux exacts, correction FDR, rapports de cotes et tableaux comparatifs prets pour publication.
 
-Compétences : comparer des taux de résistance entre lignées ; tester si un trait est significativement associé à une sous-lignée ; produire des tables statistiques pour articles ; calculer des intervalles de confiance
+Compétences : comparer les frequences d'alleles de resistance aux antimicrobiens entre lignees dans un jeu de recherche ; tester si un trait est significativement associe a une sous-lignee ; produire des tableaux statistiques pour un article ; calculer des intervalles de confiance pour un manuscrit
 
-### lineage-mdl
+### lineage-subdivision
 
-Définit les sous-lignées d'une lignée MTBC (ou bactérie clonale) par optimisation multicritères sous contraintes, le bruit étant traité en amont. Remplace les seuils heuristiques par une formulation principielle : débruitage (masque homoplasie/résistance, QC, chimères), contraintes de faisabilité (un clade seulement si assez de synapomorphies propres multi-signal, ≥5 souches et monophylie), et objectif de sélection de modèle MDL optimisé par programmation dynamique avec balayage de lambda vers un front de Pareto.
+Subdivise une lignée MTBC (ou toute bactérie clonale) en sous-lignées, en deux temps. Mode explore : vecteurs de features par SRA (pan-SPDI, positions IS6110, RD) lus dans report.json ou spdi.txt de bdd/actuelle/L<x>/, t-SNE + HDBSCAN, dendrogramme UPGMA, PNG haute résolution et page HTML interactive (dendrogramme D3 lié au t-SNE, comptage de synapomorphies candidates par nœud, exclusion de souche à la volée). Mode optimize : définition des bornes par optimisation multicritères sous contraintes, le bruit étant traité en amont, débruitage puis contraintes de faisabilité (assez de synapomorphies propres multi-signal, ≥5 souches, monophylie) puis objectif MDL de cohérence géographique résolu par programmation dynamique, balayage de lambda vers un front de Pareto, matérialisation réversible. Règle cardinale du skill : un cluster phénétique n'est pas un clade, seul le mode optimize pose des bornes.
 
-Compétences : obtenir une taxonomie de sous-lignées reproductible et défendable pour des études évolutives (phylogéographie, datation) plutôt qu'un découpage arbitraire ; quand un clade est dense/clonal et sur-séquencé ; quand on veut une granularité pilotée par la biologie sous garantie de support synapomorphique ; Complémentaire de pectinated-subclade-mining (un sous-clade) : ici on optimise la partition entière
+Compétences : explorer la structure en sous-lignées d'une lignée ; chercher des clusters de population ; décider si une lignée doit être scindée ; obtenir une taxonomie reproductible et défendable pour des études évolutives (phylogéographie, datation) plutôt qu'un découpage arbitraire ; quand un clade est dense, clonal et sur-séquencé, et qu'un seuil constant sur- ou sous-résout ; Complémentaire de pectinated-subclade-mining (extraction d'un seul sous-clade) : ici on optimise la partition entière
 
 ### mbovis
 
@@ -124,15 +118,9 @@ Compétences : une caractérisation de sous-lignée rapporte un dN/dS élevé ou
 
 ### molecular-clock
 
-Datation moléculaire des phylogénies MTBC en présence d'un signal temporel faible : régression racine-à-tip, analyse TempEst, génération de XML BEAST, calibration multi-contraintes adaptée aux défis d'horloge propres au MTBC.
+Boite a outils de recherche academique pour la genomique evolutive MTBC evaluee par les pairs (groupe Guyeux, FEMTO-ST). Datation moleculaire des phylogenies du complexe Mycobacterium tuberculosis sous signal temporel faible : regression racine-vers-pointes, analyse TempEst, generation de XML BEAST, calibration multi-contraintes pour les difficultes d'horloge propres au MTBC, et controles par randomisation des dates.
 
-Compétences : estimer les temps de divergence de lignées MTBC ; évaluer le signal temporel d'une phylogénie ; préparer des analyses BEAST/BEAST2 ; dater l'émergence de sous-lignées ou de la résistance
-
-### mtbc-atlas
-
-Boîte à outils académique (groupe Guyeux, FEMTO-ST) : client stdlib résilient de l'API REST du MTBC Gene Annotation Atlas, ré-annotation du protéome du MTBC qui succède à Mycobrowser. Interroge 3906 gènes (ancrés sur le génome ancestral MTBC0, joints à H37Rv), chacun portant une fonction curée, un verdict (requalifié/famille assignée/dark) et jusqu'à ~35 couches de preuves : orthologie, UniProt, conservation intra-MTBC, structure AlphaFold/ESMFold + Foldseek, réseau STRING, sites catalytiques M-CSA, essentialité Tn-seq, vulnérabilité CRISPRi, etc.
-
-Compétences : obtenir l'annotation/preuves courantes d'un gène MTBC par locus tag ; rechercher des gènes par nom/produit/fonction ; lister tous les gènes portant une couche de preuve donnée ; extraire une couche précise ; obtenir des comptes à l'échelle du jeu de données ; Interface machine de l'atlas mtbc.gclab.fr, préférable au scraping HTML
+Compétences : estimer des temps de divergence pour des lignees MTBC dans une etude ; evaluer le signal temporel d'une phylogenie publiee ; preparer des analyses BEAST ou BEAST2 ; dater l'emergence d'une sous-lignee ou d'un allele de resistance pour une publication
 
 ### mtbc-bilan
 
@@ -140,23 +128,23 @@ Bilan complet et honnête d'un projet MTBC : état consolidé des connaissances 
 
 Compétences : faire le point sur un projet ; décider quoi faire ensuite ; préparer une réunion ; arbitrer entre plusieurs projets ; évaluer si un projet est prêt à être clos ; repartir après une pause
 
-### mtbc-deepen
+### mtbc-epistasis
 
-Approfondissement systématique d'une étude MTBC en cours. Enchaîne bilan du projet (mtbc-bilan), revue de littérature élargie (lit-review --wide, appuyée d'abord sur tbmonitor-papers), inventaire des skills pertinents non mobilisés, et synthèse de nouvelles pistes hiérarchisées. Ou conclut honnêtement qu'il n'y a plus rien à investiguer et que l'étude peut être close.
+Boite a outils de recherche academique (groupe Guyeux, FEMTO-ST), phylogenomique MTBC evaluee par les pairs : detecte l'evolution COMPENSATOIRE et l'epistasie de la resistance dans le complexe Mycobacterium tuberculosis, en POLARISANT le signal par lignee pour ecarter le piege de l'homoplasie. Teste si une mutation de resistance couteuse (rpoB dans la RRDR) co-occurre avec une mutation compensatoire candidate (rpoC, rpoA ; ahpC pour katG) plus que le hasard, non pas globalement (ce qui confond avec les marqueurs de lignee) mais entre isolats resistants et non resistants de la MEME lignee, agrege par Mantel-Haenszel.
 
-Compétences : reprendre une étude après une pause ; chercher de nouvelles directions pour un projet qui stagne ; décider si un projet mérite encore du temps ; préparer la suite après une phase d'analyse ; faire le point avant une réunion
+Compétences : se demander si les clones resistants, surtout importes, sont deja compenses donc adaptes et transmissibles ; tester l'affirmation d'une resistance transmise clonalement ; distinguer une vraie compensation d'un simple marqueur de sous-lignee ; alimenter un volet phylodynamique
 
-### mtbc-gene-function
+### mtbc-gene
 
-Boîte à outils académique (groupe Guyeux, FEMTO-ST) : produit une annotation fonctionnelle structurée pour un gène H37Rv (par nom comme katG ou locus tag comme Rv1908c). Répond d'abord depuis le projet curé annotation_mtbc du groupe (fonction UniProt + EC, domaines Pfam, partenaires STRING, conservation/sélection, pistes structurales Foldseek), et n'enrichit via l'API ESM Atlas que ce qui n'est pas encore annoté. Fonctionne hors ligne depuis la source curée.
+Boite a outils de recherche academique (groupe Guyeux, FEMTO-ST), phylogenomique MTBC evaluee par les pairs : la couche gene et proteine de H37Rv. A partir d'un nom de gene (katG) ou d'un identifiant de locus Rv (Rv1908c) : fonction curee hors ligne d'abord (UniProt, EC, Pfam, STRING, conservation) ; impact ESM-1v en rapport de vraisemblance d'une mutation ponctuelle (katG S315T) ; narration de voie ou d'ensemble de genes, y compris depuis une table de McDonald-Kreitman ; recherche a l'echelle de l'atlas, statistiques et couches d'evidence via l'API REST mtbc.gclab.fr.
 
-Compétences : une page de lignée de l'Atlas mentionne un gène (contenu RD, SNP définissant, allèle de résistance, gène de voie) et il faut un encart fonctionnel automatique ; une analyse tombe sur un locus Rv inconnu et l'on veut un contexte de 30 secondes ancré dans le travail d'annotation du groupe
+Compétences : savoir ce que fait un gene ou un locus Rv ; estimer si une substitution est probablement deleteres ; formuler une hypothese sur un gene non caracterise ; narrer un ensemble de genes ou une voie pour un manuscrit ; un nom de gene ou un identifiant Rv apparait dans une question de biologie MTBC
 
 ### mtbc-gene-network
 
-Interroge le réseau d'interactions géniques du MTBC comme un graphe, local-first depuis le réseau STRING pré-calculé du groupe (~4000 gènes, ~38k arêtes de confiance moyenne). Le charge avec networkx et expose ce que le pipeline d'annotation ne fait pas : voisins d'un gène, sous-réseau induit d'un ensemble, plus court chemin, hubs (degré/betweenness), modules fonctionnels (détection de communautés), et guilt-by-association pour un gène dark. L'API STRING n'est que le repli.
+Boite a outils de recherche academique pour la genomique fonctionnelle MTBC evaluee par les pairs (groupe Guyeux, FEMTO-ST). Interroge le reseau d'interactions geniques MTBC comme un graphe, en local d'abord, depuis le reseau STRING proteome-entier precalcule par le groupe (environ 4000 genes, environ 38 000 aretes de confiance moyenne, evidence par canal), charge avec networkx. Expose les operations de graphe absentes du pipeline d'annotation : voisins d'interaction d'un gene, sous-reseau induit d'un ensemble de genes, plus court chemin entre deux genes, hubs par degre et centralite d'intermediarite, modules fonctionnels par detection de communautes, et culpabilite par association pour un locus Rv non caracterise. L'API STRING (skill string-db) n'est que le recours pour un gene absent en local.
 
-Compétences : trouver avec quoi un gène interagit ; construire un sous-réseau d'interactions pour une voie ou une liste de gènes ; localiser les hubs/goulots de l'interactome ; détecter des modules fonctionnels ; hypothéser la fonction d'un locus Rv non caractérisé depuis son voisinage ; produire une figure de réseau pour un manuscrit
+Compétences : trouver avec quoi un gene interagit ; construire un sous-reseau d'interactions pour une voie ; localiser les genes hubs ou goulots de l'interactome ; detecter des modules de type operon ; formuler une hypothese de fonction depuis un voisinage ; produire une evidence de reseau pour une figure de manuscrit
 
 ### mtbc-lineages
 
@@ -164,17 +152,11 @@ Source faisant autorité sur les définitions de lignées du MTBC, les hiérarch
 
 Compétences : chercher le marqueur définissant une lignée ; trouver le parent d'une sous-lignée ; déterminer à quelle lignée appartient un SPDI ; confirmer la hiérarchie L1 à L10 ; réconcilier des classifications contradictoires ; citer la publication d'origine (confirmer titre/auteurs/DOI via tbmonitor-papers) ; À préférer aux requêtes TBannotator ou lectures CSV ad hoc pour les faits de lignée
 
-### mtbc-mutation-impact
+### mtbc-prospect
 
-Boîte à outils académique (groupe Guyeux, FEMTO-ST) : estime l'impact fonctionnel local d'une mutation ponctuelle d'un gène H37Rv en comparant les activations d'autoencodeur parcimonieux (SAE) de l'ESM Atlas par résidu entre protéine sauvage et mutée, à la position de la mutation. Utile quand une page de lignée mentionne un allèle de résistance ou un SPDI non-synonyme sous sélection et qu'on veut un second avis par modèle de langage protéique. Retourne les deltas de features et un score citable (log-likelihood ratio ESM-1v).
+Boite a outils de recherche academique (groupe Guyeux, FEMTO-ST), phylogenomique MTBC evaluee par les pairs : moteur d'ideation divergente qui genere de nouvelles pistes de recherche pour un projet MTBC et les inscrit dans pistes.md. Parcourt des axes lateraux interdisciplinaires (coevolution avec l'hote humain, histoire genetique humaine, routes commerciales, reseaux de genes et evolution compensatoire, conformation 3D des proteines, place du MTBC parmi les mycobacteries), audite chaque skill disponible comme lentille de decouverte, propose de nouveaux skills a forger, relit retrospectivement pistes.md et le cahier de labo, auto-challenge chaque idee (contre-argument le plus fort, modele nul falsifiant, gain contre cout) et inscrit les survivantes.
 
-Compétences : contextualiser un allèle de résistance publié (ex ; katG S315T pour l'INH) ; caractériser un SPDI non-synonyme définissant une sous-lignée ; contrôler la plausibilité d'une substitution adaptative trouvée par McDonald-Kreitman
-
-### mtbc-pathway-explain
-
-Boîte à outils académique (groupe Guyeux, FEMTO-ST) : produit une narration structurée et curée-d'abord d'un ensemble de gènes vu comme une voie (voie prédéfinie du catalogue ESX-1..5, PDIM, acide mycolique, DosR, stress oxydatif, voies de résistance...), le voisinage réseau d'un gène, ou une liste explicite. Annote chaque gène via mtbc-gene-function, agrège les classes d'enzymes et domaines Pfam dominants, signale les gènes dark et narre avec la structure du réseau PPI.
-
-Compétences : une lignée montre un signal de sélection positive sur une voie et l'on veut une narration qui nomme les protéines, leurs fonctions et leur cohésion ; lire un module réseau comme une unité fonctionnelle ; à partir d'une table de sélection (--from-selection, sortie de mk-ascertainment), mapper le signal sur le catalogue avec seuil de significativité
+Compétences : un projet a besoin de directions neuves ; un brainstorming d'angles originaux ; la gap-analysis de mtbc-bilan --deepen ne suffit pas ; trancher s'il reste quelque chose a explorer
 
 ### mtbc-reboot
 
@@ -184,9 +166,9 @@ Compétences : un projet a accumulé trop de dérive, de résultats périmés ou
 
 ### mycobacterium-leprae
 
-Référence de littérature académique. Bibliographie curée des études paléogénomiques évaluées de Mycobacterium leprae, le corpus d'ADN ancien le plus riche pour un Mycobacterium (49 génomes anciens publiés, 13 pays, 2200 ans, contre 16 pour le MTBC ancien). Indexe les articles canoniques, les réservoirs zoologiques non-humains documentés (tatou, écureuils roux médiévaux anglais), l'origine phylogéographique européenne des échantillons du Nouveau Monde et les cinq lignées phylogénétiques publiées.
+Reference bibliographique academique. Bibliographie curee de la recherche paleogenomique evaluee par les pairs sur Mycobacterium leprae, le corpus d'ADN ancien publie le plus riche pour une mycobacterie : 49 genomes anciens dans 13 pays sur 2200 ans, contre 16 pour le MTBC ancien. Indexe les articles canoniques (Schuenemann 2013 et 2018, Krause-Kyora 2018, Kerudin 2019, Fotakis 2020, Neukamm 2020, Pfrengle 2021, Bonczarowska 2022, Urban 2024), les reservoirs non humains documentes (tatou a neuf bandes, ecureuils roux medievaux anglais), l'origine europeenne des echantillons du Nouveau Monde, et les cinq lignees publiees canoniques.
 
-Compétences : rédiger une section comparative M ; leprae vs M ; tuberculosis en paléogénomique ; préparer des slides de séminaire sur la génomique ancienne des Mycobacterium ; contextualiser des réservoirs zoonotiques ; transposer une méthodologie paléogénomique publiée au MTBC
+Compétences : rediger une section comparative M ; leprae contre M ; tuberculosis sur les trajectoires paleogenomiques ; preparer des slides de seminaire sur la genomique des mycobacteries anciennes ; contextualiser les reservoirs zoonotiques dans un article ; transposer une methodologie paleogenomique publiee au MTBC
 
 ### ncbi-pathogen-detection
 
@@ -226,27 +208,9 @@ Compétences : construire des phylogénies MTBC ; placer de nouvelles souches su
 
 ### resistance-catalogue
 
-Boîte à outils académique (groupe Guyeux, FEMTO-ST) : interroge et (re)construit un catalogue de référence consolidé mutation → résistance antimicrobienne pour le MTBC, croisant le catalogue OMS des mutations (2e éd., 2023), la base de tb-profiler et le signal empirique CRyPTIC. Résout la notation HGVS (gène_mutation) vers les coordonnées SPDI 0-based du projet via le fichier officiel de coordonnées OMS, et retourne, pour un variant ou un antituberculeux, le grade d'association catalogué et sa provenance.
+Boite a outils de recherche academique pour la genomique de la resistance aux antimicrobiens du MTBC evaluee par les pairs (groupe Guyeux, FEMTO-ST). Interroge ou reconstruit le catalogue de mutations OMS et tb-profiler, resout HGVS vers SPDI, profile ou predit le phenotype d'un isolat de recherche publie, lance une GWAS tenant compte des lignees pour les determinants non catalogues, et construit le dossier mecanistique d'un variant (association empirique, litterature TB, rapport de vraisemblance ESM-1v, contexte 3D).
 
-Compétences : consulter le grade d'association OMS/tb-profiler d'un variant ; lister les marqueurs catalogués d'un médicament ; calculer une base déterministe par souche (type TB-Profiler) ; convertir HGVS en SPDI ; régénérer le catalogue consolidé après mise à jour d'une source
-
-### resistance-discovery
-
-Boîte à outils académique (groupe Guyeux, FEMTO-ST) : découvre des déterminants de résistance non catalogués dans le MTBC par association pangénomique, en contrôlant la structure de population et la co-résistance, et en validant les candidats par convergence phylogénétique. Complète le catalogue curé (resistance-catalogue) en révélant les variants que le catalogue manque, et documente/corrige les trois angles morts des catalogues indexés en SPDI (codons synonymes, déterminants rares, MNV vs SNP).
-
-Compétences : chercher de nouveaux déterminants de résistance au-delà du catalogue OMS ; auditer pourquoi la base catalogue d'un médicament a une faible sensibilité ; construire une GWAS consciente de la lignée d'un antituberculeux ; cribler des candidats en rejetant les artefacts de liaison clonale
-
-### resistance-explain
-
-Boîte à outils académique (groupe Guyeux, FEMTO-ST) : explique le mécanisme d'une mutation de résistance cataloguée ou candidate dans le MTBC en assemblant, en un dossier mécanistique citable, le verdict du catalogue curé, l'association phénotypique empirique observée dans les souches du projet, la littérature TB publiée sur le variant, un score d'effet par modèle de langage protéique (ESM-1v, Meier 2021), la fonction du gène et le contexte structural 3D (ESMFold).
-
-Compétences : expliquer pourquoi un variant confère (ou pourrait conférer) une résistance ; interpréter un candidat de resistance-discovery ; rédiger le paragraphe mécanistique d'un manuscrit ; distinguer un déterminant causal d'un artefact de co-résistance ou de liaison de lignée
-
-### resistance-predict
-
-Boîte à outils académique (groupe Guyeux, FEMTO-ST) : prédit le phénotype de résistance d'une souche de M. tuberculosis à partir de son profil de variants génomiques, en combinant le catalogue curé déterministe avec un modèle résiduel à gradient boosting, et explique chaque prédiction (importance des features / SHAP + impact protéique ESM). Évalué honnêtement par validation croisée stratifiée par lignée (GroupKFold) et comparé à la base catalogue à spécificité égale.
-
-Compétences : prédire la résistance d'une souche ou cohorte ; quantifier l'apport d'une couche de machine learning au-dessus du catalogue OMS par médicament ; produire une table sensibilité/spécificité par médicament pour un manuscrit ; expliquer une prédiction par les variants qui la portent
+Compétences : savoir si un variant est un determinant de resistance connu du catalogue publie ; connaitre le phenotype predit d'un isolat de recherche ; identifier les determinants expliquant un phenotype inexplique dans une collection d'etude ; comprendre comment une entree de catalogue a ete graduee
 
 ### resistance-profiler
 
@@ -286,9 +250,9 @@ Compétences : annoter une liste de variants SPDI pour un article MTBC ; constru
 
 ### species-id
 
-Identification d'espèce/genre bactérien pour détecter les souches mal étiquetées « M. tuberculosis ». Deux méthodes : BLAST via l'API NCBI (zéro stockage local, précis, ~1 min/souche) et Mash screen (rapide, ~1 Go de sketch RefSeq, optionnel). Conçu pour le criblage de souches suspectes avant intégration dans la BDD MTBC.
+Boite a outils de recherche academique pour la genomique des pathogenes evaluee par les pairs (groupe Guyeux, FEMTO-ST). Identification d'espece et de genre bacteriens pour detecter les isolats de recherche publies mal etiquetes M. tuberculosis, par deux methodes : l'API BLAST du NCBI et Mash screen contre une empreinte RefSeq. Etape de controle qualite avant l'ajout d'un genome a la base de recherche du groupe.
 
-Compétences : une souche étiquetée M ; tuberculosis paraît suspecte (compte de SNP aberrant, placement phylogénétique étrange, trop peu/trop de SPDI) ; importer de nouvelles souches depuis SRA/ENA ; quand TBannotator signale des anomalies suggérant contamination ou mauvaise étiquette (confirmation d'un BioProject mal classé via tbmonitor-papers)
+Compétences : un isolat de recherche etiquete M ; tuberculosis parait suspect (nombre de SNP aberrant, trop peu ou trop de SPDI, placement phylogenetique curieux) ; importer des genomes depuis SRA ou ENA ; TBannotator signale un echantillon melange ou mal assigne
 
 ### sra-geolocate
 
@@ -298,9 +262,9 @@ Compétences : enrichir la métadonnée d'une souche dont geo_loc_name ou collec
 
 ### strain-qc
 
-Contrôle qualité d'une souche MTBC avant intégration dans la BDD ou un arbre phylogénétique. Vérifie 7 critères : chimère intra-MTBC par classification multi-systèmes, taux GC, couverture du génome, profondeur de séquençage, nombre de SPDI vs distribution de la lignée, contamination inter-espèces par signature des gènes de ménage, et qualité de mapping. Produit un verdict PASS/WARN/FAIL justifié, en mode souche unique ou lot.
+Boite a outils de recherche academique pour la phylogenomique MTBC evaluee par les pairs (groupe Guyeux, FEMTO-ST). Controle qualite d'un genome de recherche MTBC avant integration en base ou dans un arbre phylogenetique : 7 criteres (chimere intra-MTBC, taux GC, couverture, profondeur, SPDI contre lignee, melange inter-especes, qualite de mapping), verdict PASS/WARN/FAIL justifie, genome unique ou lot.
 
-Compétences : importer de nouvelles souches depuis SRA/ENA ; filtrer avant reconstruction phylogénétique ; investiguer une souche à placement aberrant ou longue branche ; cribler la BDD ; comprendre pourquoi get_phylo.py exclut une souche (vérifier via tbmonitor-papers un dataset déjà signalé problématique)
+Compétences : importer depuis SRA ou ENA ; filtrer avant une reconstruction phylogenetique ; face a un genome au placement aberrant ou a longue branche ; auditer la base ; decider des exclusions de get_phylo.py
 
 ### string-db
 
@@ -328,9 +292,9 @@ Compétences : récupérer des articles TB par auteur, terme MeSH, mot-clé, jou
 
 ### thd
 
-Calcule la Time-scaled Haplotypic Density (THD) d'après Rasigade et al. 2017 (Sci Rep 7:45326). Quantifie le succès épidémique des souches de pathogènes par estimation de densité par noyau sur les distances génétiques par paires, avec des échelles de temps biologiquement pertinentes.
+Boite a outils de recherche academique pour l'epidemiologie moleculaire evaluee par les pairs (groupe Guyeux, FEMTO-ST). Calcule la Time-scaled Haplotypic Density (THD, Rasigade et al. 2017), mesure publiee de l'expansion relative des lignees bacteriennes, par estimation de densite par noyau sur les distances genetiques deux a deux, parametree par une echelle de temps.
 
-Compétences : calculer la THD pour des profils MIRU-VNTR, des matrices de distances SNP ou des haplotypes WGS ; comparer le succès épidémique entre lignées MTBC ; associer le succès des souches à des covariables clinico-épidémiologiques ; distinguer succès épidémique (court terme) et endémique (long terme)
+Compétences : calculer la THD sur des profils MIRU-VNTR, des matrices de distance SNP ou des haplotypes WGS d'une collection de recherche ; comparer l'expansion relative entre lignees MTBC ; associer la mesure a des covariables d'etude ; separer le signal recent du signal de long terme pour une publication
 
 ### triangulate-route
 
@@ -356,8 +320,9 @@ Documentés sur la page de leur plugin d'origine.
 | [bioc-pmc](bio_population_genetics.md#bioc-pmc) | `bio_population_genetics` |
 | [biopython](bio_population_genetics.md#biopython) | `bio_population_genetics` |
 | [bioskills](bio_population_genetics.md#bioskills) | `bio_population_genetics` |
+| [boltz](bio_population_genetics.md#boltz) | `bio_population_genetics` |
 | [claim-check](redac.md#claim-check) | `redac` |
-| [create-viz](ops.md#create-viz) | `ops` |
+| [create-viz](bio_population_genetics.md#create-viz) | `bio_population_genetics` |
 | [domestication-pathways](bio_population_genetics.md#domestication-pathways) | `bio_population_genetics` |
 | [esm-atlas-cli](bio_population_genetics.md#esm-atlas-cli) | `bio_population_genetics` |
 | [europe-pmc](bio_population_genetics.md#europe-pmc) | `bio_population_genetics` |
@@ -380,11 +345,11 @@ Documentés sur la page de leur plugin d'origine.
 | [read-scientific-pdf](bio_population_genetics.md#read-scientific-pdf) | `bio_population_genetics` |
 | [reviewer-response](redac.md#reviewer-response) | `redac` |
 | [scanpy](bio_population_genetics.md#scanpy) | `bio_population_genetics` |
-| [scientific-problem-selection](ia.md#scientific-problem-selection) | `ia` |
+| [sci-figure](bio_population_genetics.md#sci-figure) | `bio_population_genetics` |
+| [scientific-problem-selection](bio_population_genetics.md#scientific-problem-selection) | `bio_population_genetics` |
 | [scikit-bio](bio_population_genetics.md#scikit-bio) | `bio_population_genetics` |
-| [scikit-learn](ia.md#scikit-learn) | `ia` |
-| [seaborn](bio_population_genetics.md#seaborn) | `bio_population_genetics` |
+| [scikit-learn](bio_population_genetics.md#scikit-learn) | `bio_population_genetics` |
 | [slavevoyages](bio_population_genetics.md#slavevoyages) | `bio_population_genetics` |
-| [statsmodels](ia.md#statsmodels) | `ia` |
+| [statsmodels](bio_population_genetics.md#statsmodels) | `bio_population_genetics` |
 | [tooluniverse-sequence-retrieval](bio_population_genetics.md#tooluniverse-sequence-retrieval) | `bio_population_genetics` |
 

@@ -22,7 +22,7 @@ Compétences : l'utilisateur demande de construire des composants, pages ou appl
 
 ### webapp-testing
 
-Boîte à outils pour interagir avec et tester des applications web locales avec Playwright. Permet de vérifier une fonctionnalité frontend, déboguer un comportement d'interface, capturer des captures d'écran de navigateur et consulter les logs.
+Pilote et teste une application web locale avec Playwright : navigation, remplissage de formulaires, parcours de clics, assertions sur le DOM rendu, captures d'ecran et lecture des journaux de la console du navigateur.
 
-Compétences : tester une application web locale ; vérifier une fonctionnalité frontend ; déboguer une interface ; capturer des captures d'écran ou lire les logs du navigateur
+Compétences : verifier qu'un frontend local fonctionne ; reproduire un bug d'interface ; controler une page apres une modification ; capturer une copie d'ecran d'un serveur de developpement ; inspecter les erreurs console et reseau depuis un navigateur sans affichage
 

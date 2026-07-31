@@ -1,15 +1,14 @@
 ---
 name: thd
 description: >-
-  Compute Time-scaled Haplotypic Density (THD) from Rasigade et al. 2017
-  (Sci Rep 7:45326). Quantifies epidemic success of pathogen strains using
-  kernel density estimation on pairwise genetic distances with biologically
-  meaningful timescales.
-
-  Use when: computing THD for MIRU-VNTR profiles, SNP distance matrices,
-  or WGS haplotype data; comparing epidemic success across MTBC lineages;
-  associating strain success with clinical/epidemiological covariates;
-  distinguishing epidemic (short-term) from endemic (long-term) success.
+  Academic research toolkit for peer-reviewed molecular-epidemiology research (Guyeux group,
+  FEMTO-ST). Computes Time-scaled Haplotypic Density (THD, Rasigade et al. 2017), a
+  published measure of the relative expansion of bacterial lineages, by kernel density
+  estimation on pairwise genetic distances parameterised by a timescale. Use when computing
+  THD on MIRU-VNTR profiles, SNP distance matrices or WGS haplotypes from a research
+  collection, comparing relative expansion across MTBC lineages in a study, associating the
+  measure with study covariates, or separating recent from long-term signal for a scientific
+  publication.
 argument-hint: "<input_file> [--timescale 20] [--mu 5e-4] [--markers 15]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
@@ -49,7 +48,7 @@ For a genetic distance h (number of allelic differences) between two haplotypes,
 k(h|b,m) = ((1-b) / (1 - b^(m+1))) * b^h
 ```
 
-- `b` : bandwidth (0 < b < 1) — controls how fast density drops with distance
+- `b` : bandwidth (0 < b < 1), controls how fast density drops with distance
 - `m` : number of markers (truncation limit)
 - `h` : pairwise genetic distance (integer, 0 to m)
 
@@ -117,7 +116,7 @@ ERR789,7,5,0
 
 ## Running the Script
 
-The script is at `bio/skills/thd/scripts/thd_compute.py`. Dependencies: `numpy`, `scipy`.
+The script is at `${CLAUDE_PLUGIN_ROOT}/skills/thd/scripts/thd_compute.py`. Dependencies: `numpy`, `scipy`.
 
 ```bash
 # Basic: MIRU-VNTR haplotypes, 20-year timescale
@@ -183,8 +182,8 @@ To compute THD from WGS data stored in TBannotator:
 ```sql
 SELECT ss.strain_id, array_agg(ss.spdi_id ORDER BY ss.spdi_id) as spdis
 FROM tb_report_strain_spdi ss
-JOIN mv_strain_classification c ON ss.strain_id = c.sra_id
-WHERE c.system = 'Senelle' AND c.lineage_code = '4.15'
+JOIN mv_strain_classification c ON ss.strain_id = c.strain_id
+WHERE c.system_name = 'guyeux' AND c.lineage_code = '4.15'
 GROUP BY ss.strain_id;
 ```
 

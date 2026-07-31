@@ -1,15 +1,22 @@
 ---
 name: beast2-dating
-description: Academic research toolkit for Bayesian molecular dating of Mycobacterium tuberculosis complex (MTBC) phylogenies with BEAST2. Generates correct BEAST2 XML for BINARY SNP alignments (presence/absence 0/1) — the format produced by the Guyeux group (FEMTO-ST) TB pipeline — and runs BEAST2 headless. Fixes the two failures that make BEAST2 runs on MTBC binary data silently fail to converge. For peer-reviewed phylogenomic research.
+description: >-
+  Academic research toolkit for Bayesian molecular dating of Mycobacterium tuberculosis
+  complex (MTBC) phylogenies with BEAST2, for peer-reviewed phylogenomic research. Generates
+  correct BEAST2 XML for BINARY SNP alignments (presence/absence 0/1), the format produced
+  by the Guyeux group (FEMTO-ST) TB pipeline, and runs BEAST2 headless. Fixes the two
+  failures that make BEAST2 runs on MTBC binary data silently fail to converge. Use when
+  dating a node or a lineage with BEAST2, writing or debugging a BEAST2 XML, choosing a
+  clock or tree prior for MTBC, or diagnosing an ESS that will not rise.
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 ---
 
-# beast2-dating — BEAST2 sur alignements SNP binaires MTBC
+# beast2-dating : BEAST2 sur alignements SNP binaires MTBC
 
 ## Pourquoi ce skill existe
 
 Les runs BEAST2 sur données MTBC de notre pipeline échouent presque toujours,
-pour **deux raisons distinctes** — identifiées et corrigées ici :
+pour **deux raisons distinctes**, identifiées et corrigées ici :
 
 1. **Modèle de substitution incorrect.** Nos alignements sont *binaires*
    (présence/absence de SNP, encodés `A/T` ou `0/1`). Appliquer un modèle
@@ -28,7 +35,7 @@ pour **deux raisons distinctes** — identifiées et corrigées ici :
    cause. Le patron ci-dessous embarque le namespace **complet et validé**.
 
 > Diagnostic établi en comparant à un exemple **livré** avec BEAST
-> (`examples/testTipDates.xml`) : celui-ci tourne, le nôtre échouait — donc ni
+> (`examples/testTipDates.xml`) : celui-ci tourne, le nôtre échouait, donc ni
 > le sandbox ni le paquet conda n'étaient en cause, uniquement le XML.
 
 ## Générer le XML
@@ -47,7 +54,7 @@ Le générateur : `dataType="binary"`, `GeneralSubstitutionModel` 2-états,
 `StrictClockModel` estimé, coalescent `ConstantPopulation`, dates de
 prélèvement (`date-forward`, aDNA comprises) préservées, arbre initial UPGMA.
 
-## Correction d'ascertainment — INDISPENSABLE pour dater
+## Correction d'ascertainment : INDISPENSABLE pour dater
 
 Un alignement SNP-only ne contient **que des sites variables**. Sans correction,
 BEAST considère que tout le génome varie aussi vite → les longueurs de branches
@@ -75,12 +82,12 @@ vraisemblance de Felsenstein.
 Le taux corrigé ~1.5×10⁻⁷ retombe dans la fourchette publiée pour MTBC (~1×10⁻⁷).
 **Toujours utiliser `--ascertainment` pour une interprétation quantitative.**
 
-## Prior d'horloge — le levier de convergence
+## Prior d'horloge : le levier de convergence
 
 Sur les SNP MTBC, `clockRate` et `tree.height` sont **faiblement identifiables
 ensemble** (taux bas × arbre haut = même nombre de mutations). Résultat : même
 après ascertainment + masquage, l'ESS reste ~5 et le taux dérive jusqu'à 1e-9.
-**Ni le nettoyage des données ni les chaînes longues ne suffisent** — il faut
+**Ni le nettoyage des données ni les chaînes longues ne suffisent**, il faut
 **ancrer** clockRate par un prior informatif.
 
 Le générateur pose un prior LogNormal sur clockRate, paramétrable :
@@ -94,7 +101,7 @@ python scripts/beast2_binary.py --phylip aln.phy --dates dates.tsv --out run.xml
 - `--clock-prior` : **médiane** = M dans l'espace log (défaut `1e-7`, valeur
   génomique publiée pour MTBC). ⚠ sur alignement SNP-only *avec ascertainment*,
   le taux estimé est ~génomique ; sans ascertainment il serait par-site-variable
-  (≫ 1e-7) — caler le prior en cohérence avec `--ascertainment`.
+  (≫ 1e-7), caler le prior en cohérence avec `--ascertainment`.
 - `--clock-prior-sd` : **largeur** en log (défaut `1.25` ; IC95% ≈ [9e-9, 1.2e-6]).
   L'historique `2.0` couvre ~3 ordres de grandeur = trop large, laisse la chaîne
   errer. Resserrer si le taux dérive.
@@ -140,7 +147,7 @@ treeannotator -burnin 10 run.trees mcc.tree   # arbre consensus MCC
 
 TMRCA (année) ≈ date_la_plus_récente − `tree.height` moyen (après burn-in).
 
-## Codage des données — pièges EN AMONT (plus critiques que le XML)
+## Codage des données : pièges EN AMONT (plus critiques que le XML)
 
 Un run BEAST2 qui *tourne* n'est pas un run *juste*. Les erreurs suivantes sont
 dans la **génération de l'alignement**, pas dans le XML, et sont la cause la
@@ -162,7 +169,7 @@ pas : les SNP qu'elle couvre sont **non-appelables = `?`**, jamais `0`. Les code
 
 **Correction** : par souche, mettre à `?` les positions SNP tombant dans ses
 délétions RD. `dataType="binary"` gère nativement `?`/`-` comme données
-manquantes — il suffit de ne pas fournir de faux-0 en amont. Correction dans
+manquantes, il suffit de ne pas fournir de faux-0 en amont. Correction dans
 `bdd_query.py` / `get_phylo.py`, PAS dans le XML.
 
 ### 2. Masquer PE/PPE + répétitions + éléments mobiles
@@ -201,13 +208,13 @@ fréquences.
 Jeu réel du pipeline : **36 taxa, 4303 SNP binaires**, dates 1154–2020
 (8 échantillons aDNA). Trois enseignements successifs :
 
-1. **Le XML tourne** (binaire + namespace complet + `-java`) — `clockRate`
+1. **Le XML tourne** (binaire + namespace complet + `-java`), `clockRate`
    **bouge**, contrairement au HKY cassé où il restait figé (ESS~6 même à 5 M).
 2. **L'ascertainment est indispensable** : sans lui clockRate ~4.9e-5 /
    TMRCA absurde ; avec (`--genome-len 4411532`) le taux retombe à l'échelle
    MTBC (~1.5e-7 en run court). Facteur ~300.
 3. **La convergence reste le vrai obstacle** : à 5 M, taux et hauteur d'arbre
-   dérivent encore (ESS~5), signal temporel faible — MAIS ce jeu contient
+   dérivent encore (ESS~5), signal temporel faible : MAIS ce jeu contient
    **0 cellule manquante**, symptôme du piège RD→0 (section « Codage des
    données » §1). Corriger le codage EN AMONT avant d'accuser le modèle.
 
@@ -215,7 +222,7 @@ Jeu réel du pipeline : **36 taxa, 4303 SNP binaires**, dates 1154–2020
 
 Ce skill vise un run BEAST2 **qui aboutit** pour l'exploration et le débogage.
 Pour un arbre daté de publication, se caler sur la config BEAST2 canonique du
-groupe (priors, modèle démographique, longueur de chaîne) — ce générateur
+groupe (priors, modèle démographique, longueur de chaîne), ce générateur
 utilise un coalescent à taille constante et une horloge stricte par défaut ;
 adapter `--chain` (≥ 20 M pour l'ESS) et, si besoin, éditer le modèle
 démographique / d'horloge dans le XML produit.
@@ -223,7 +230,7 @@ démographique / d'horloge dans le XML produit.
 ## Notes
 
 - `--ascertainment --genome-len N` : correction du biais SNP (voir section
-  dédiée ci-dessus) — réintègre les sites constants via `FilteredAlignment`.
+  dédiée ci-dessus), réintègre les sites constants via `FilteredAlignment`.
 - Sites conservés : le générateur garde tous les sites fournis. Filtrer en
   amont si l'on veut restreindre aux positions informatives.
 - Complément : le skill `molecular-clock` porte la connaissance épistémique

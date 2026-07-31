@@ -18,27 +18,27 @@ allowed-tools:
   - Write
 ---
 
-# /zenodo-deposit — Dépôt Zenodo réutilisable (DOI citable)
+# /zenodo-deposit : Dépôt Zenodo réutilisable (DOI citable)
 
 Résout définitivement la corvée « recréer un token à chaque article » : le token
 Zenodo est **réutilisable à vie** ; ce skill le stocke une fois et le réutilise.
 
 Script : `scripts/zenodo_deposit.py` (urllib, zéro dépendance).
 
-## Préalable — mémoire projet
+## Préalable : mémoire projet
 
 Lire `cahier_de_labo.md` / `JOURNAL.md` / `CLAUDE.md` du projet, et
 `review/INDEX.md` / `response.md` si présents, pour connaître l'état (souvent le
 DOI est une remarque de review du type R01 « released sans DOI »).
 
-## Phase 0 — Token (une seule fois, jamais ré-créé)
+## Phase 0 : Token (une seule fois, jamais ré-créé)
 
 1. Tester si un token est déjà configuré :
    ```bash
    python3 scripts/zenodo_deposit.py status 0 2>&1 | head -3   # imprime le message token si absent
    ```
    (ou vérifier `~/.config/zenodo/token`).
-2. **S'il manque** : guider l'utilisateur (voir `references/TOKEN_SETUP.md`) — créer
+2. **S'il manque** : guider l'utilisateur (voir `references/TOKEN_SETUP.md`), créer
    un Personal Access Token sur zenodo.org (scopes `deposit:write` + `deposit:actions`),
    puis l'enregistrer une fois :
    ```bash
@@ -49,7 +49,7 @@ DOI est une remarque de review du type R01 « released sans DOI »).
 3. **Répétition à blanc** possible sur le bac à sable (`--sandbox`, token sandbox
    séparé créé sur sandbox.zenodo.org) avant le vrai dépôt.
 
-## Phase 1 — Quoi déposer
+## Phase 1 : Quoi déposer
 
 Identifier l'artefact à déposer (demander si ambigu) : typiquement le **harnais
 d'évaluation** / le **code de reproduction** / les **supplementary materials**.
@@ -59,7 +59,7 @@ archive `.zip` déjà prête (`--zip FILE`). Vérifier que l'archive est
 **autosuffisante pour reproduire les chiffres du manuscrit** (scripts + données +
 README), pas seulement le PDF.
 
-## Phase 2 — Métadonnées
+## Phase 2 : Métadonnées
 
 Construire les métadonnées Zenodo à partir du `.tex` :
 - **title** : reformuler le `\title{}` (ou « <Système> reproducibility bundle / evaluation
@@ -76,7 +76,7 @@ Construire les métadonnées Zenodo à partir du `.tex` :
 du projet (ex. `paper/zenodo/metadata.json`), OU passer les champs en flags. Préférer
 le `metadata.json` versionné (traçable, réutilisable pour une v2).
 
-## Phase 3 — Dépôt (brouillon + DOI réservé, SANS publier)
+## Phase 3 : Dépôt (brouillon + DOI réservé, SANS publier)
 
 ```bash
 python3 scripts/zenodo_deposit.py create \
@@ -89,11 +89,39 @@ si `--patch-tex` est fourni remplace le placeholder `[Zenodo DOI to be inserted]
 `\url{https://doi.org/<doi>}`. Recompiler ensuite le manuscrit et vérifier que le DOI
 apparaît bien (le DOI vit dans le PDF rendu).
 
-## Phase 4 — Publication (IRRÉVERSIBLE — confirmation explicite)
+**Vérification d'intégrité automatique (depuis 2026-07-30).** Après l'upload, le script
+compare la **taille** et le **checksum MD5** renvoyés par Zenodo au fichier local ; un
+upload tronqué ou corrompu (ex. timeout partiel) fait ÉCHOUER l'opération au lieu de
+passer pour un succès. `status <id>` affiche aussi `filesize` + `checksum` par fichier,
+pour auditer l'intégrité même a posteriori. Ne jamais se fier au seul « HTTP 200 » : la
+taille/somme distante fait foi. Pour un `update` (ré-upload), garder le MÊME nom de dossier
+source, sinon l'ancien zip subsiste (le PUT bucket ne remplace que le fichier de même nom).
+
+### Phase 3bis : Déposer une NOUVELLE VERSION d'un record déjà publié (v2, v3...)
+
+`update` ne marche QUE sur un brouillon non publié. Pour une v2 d'un record **publié** (Zenodo
+interdit de modifier un record publié ; il faut une version liée sous le même DOI concept) :
+```bash
+python3 scripts/zenodo_deposit.py new-version <record_id_publié> \
+  --zip supplementary_v2.zip --metadata zenodo/metadata.json --patch-tex paper/main.tex
+```
+Le script fait `POST actions/newversion`, retire les fichiers hérités de la version précédente
+(garder avec `--keep-files`), upload la nouvelle archive (avec la même vérif d'intégrité), écrit
+les métadonnées et réserve le **DOI de version**. Il s'arrête au brouillon ; la publication reste
+`publish <draft_id>`. Note : le `conceptdoi` (visible via `status`) pointe toujours vers la
+dernière version, au camera-ready, citer le DOI concept plutôt qu'un DOI de version figé.
+
+> **Sandbox Claude Code : `urllib` est souvent bloqué** (le script est en urllib → échec au 1er
+> appel HTTP). Le réseau passe par `curl` direct en Bash. Si le script ne joint pas Zenodo,
+> soit lancer la commande depuis le shell de l'utilisateur (réseau réel), soit répliquer le flux
+> en curl (`Authorization: Bearer $(cat ~/.config/zenodo/token)`, token jamais affiché). Détail
+> du flux curl new-version en KB `~/.claude/knowledge/python-patterns.md`.
+
+## Phase 4 : Publication (IRRÉVERSIBLE, confirmation explicite)
 
 **Ne jamais publier sans le feu vert explicite de l'auteur.** Un enregistrement
 Zenodo publié ne peut pas être supprimé (seulement versionné). Le DOI réservé est
-déjà citable et s'active à la publication — pratique standard : réserver à la
+déjà citable et s'active à la publication, pratique standard : réserver à la
 soumission, publier au camera-ready.
 
 Quand l'auteur confirme, après vérification du brouillon sur le portail :
@@ -130,7 +158,7 @@ python3 scripts/zenodo_deposit.py publish <id>
 - Versionner `metadata.json` et le script de dépôt dans le repo de l'article ;
   **gitignorer l'archive .zip** (régénérable depuis la source).
 
-## Épilogue — Résumé et suite
+## Épilogue : Résumé et suite
 
 Clore par : ce qui a été déposé, le DOI réservé, l'état (brouillon non publié /
 publié), et le rappel que la publication est une action auteur. Suggérer la suite du

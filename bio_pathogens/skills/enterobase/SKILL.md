@@ -14,7 +14,7 @@ description: >-
   enteric pathogen.
 ---
 
-# EnteroBase — cgMLST & HierCC Reference Database for Enteric Pathogens
+# EnteroBase : cgMLST & HierCC Reference Database for Enteric Pathogens
 
 ## Overview
 
@@ -33,7 +33,7 @@ and epidemiology.
 - **Documentation**: `https://enterobase.readthedocs.io/`
 - **API (Swagger UI)**: `https://enterobase.warwick.ac.uk/api/v2.0/swagger-ui`
 - **Volume** (published baseline, Sept 2019): **~364,690** assembled genomes
-  across 7 genera; catalogue has grown substantially since — always check
+  across 7 genera; catalogue has grown substantially since, always check
   current totals on the web UI.
 
 > [!NOTE]
@@ -45,10 +45,10 @@ and epidemiology.
 ## Why it matters for historical epidemiology
 
 EnteroBase is the pathogen-side counterpart to `slavevoyages`, `p3k14c`,
-`aadr`, and `spaam-ancient-metagenome-dir` — but for **non-TB bacteria**. It
+`aadr`, and `spaam-ancient-metagenome-dir`, but for **non-TB bacteria**. It
 gives direct, immediately usable access to:
 
-- ***Yersinia pestis* historical phylogeny** — at the time of the
+- ***Yersinia pestis* historical phylogeny**, at the time of the
   Zhou et al. 2020 paper, EnteroBase integrated **56 ancient + 622 modern**
   *Y. pestis* genomes. That was a snapshot. **As of the current SPAAM
   AncientMetagenomeDir release** (verified in session), the ancient corpus
@@ -59,14 +59,14 @@ gives direct, immediately usable access to:
   skill for the verified per-project breakdown. For the up-to-date
   ancient corpus, **always query SPAAM first** and use EnteroBase as the
   modern comparison backbone.
-- ***Vibrio cholerae* pandemics** — the 7 classical cholera pandemics since
+- ***Vibrio cholerae* pandemics**, the 7 classical cholera pandemics since
   1817 and the current 7PET clonal expansion are trackable via cgMLST/HierCC.
-- ***Salmonella enterica*** — including the Paratyphi C lineage linked to
+- ***Salmonella enterica***, including the Paratyphi C lineage linked to
   post-contact Mexican *cocoliztli* (Vågene et al. 2018).
-- ***Helicobacter pylori*** — classical proxy of human population movements
-  (Linz et al. 2007 *Nature*) — EnteroBase includes a dedicated *Helicobacter*
+- ***Helicobacter pylori***, classical proxy of human population movements
+  (Linz et al. 2007 *Nature*) : EnteroBase includes a dedicated *Helicobacter*
   database.
-- ***Escherichia* core genomic diversity** — context for zoonotic and
+- ***Escherichia* core genomic diversity**, context for zoonotic and
   commensal evolution.
 
 For your seminar, EnteroBase lets you **generalize the TBannotator message**
@@ -88,12 +88,12 @@ that.
 
 ## Key concepts
 
-### cgMLST — core genome MLST
+### cgMLST : core genome MLST
 A genome-wide MLST scheme using hundreds to thousands of conserved genes
 (e.g., ~3,000 loci for *Salmonella*, ~1,500 for *Y. pestis*), each assigned
 an integer allele. Two genomes are compared by their **allelic distance**.
 
-### HierCC — Hierarchical Clustering of cgMLST
+### HierCC : Hierarchical Clustering of cgMLST
 A single-linkage clustering of cgMLST profiles at nested allelic-distance
 thresholds, giving a hierarchy of cluster labels `HC0`, `HC2`, `HC5`,
 `HC10`, ..., `HC2850`. The lower the number, the tighter the cluster.
@@ -106,7 +106,7 @@ thresholds, giving a hierarchy of cluster labels `HC0`, `HC2`, `HC5`,
 | `HC900` – `HC2850` | Superlineage / subspecies |
 
 HierCC offers the same kind of multi-resolution readout that TBannotator
-gives for MTBC lineages — just expressed as integer cluster codes instead
+gives for MTBC lineages, just expressed as integer cluster codes instead
 of a lineage naming system.
 
 ### Typical metadata fields (per strain)
@@ -129,7 +129,7 @@ of a lineage naming system.
 
 ## Data access
 
-### Option A — Web UI + GrapeTree (no credentials needed for browsing)
+### Option A : Web UI + GrapeTree (no credentials needed for browsing)
 
 1. Navigate to `https://enterobase.warwick.ac.uk/`
 2. Choose a genus (e.g., **Yersinia**)
@@ -140,15 +140,15 @@ of a lineage naming system.
 5. Export selection as TSV / Newick / FASTA.
 
 GrapeTree (Zhou et al. 2018 *Genome Res*) handles 10⁴–10⁵ genomes at cgMLST
-resolution — well beyond what BEAST or RAxML can ingest.
+resolution, well beyond what BEAST or RAxML can ingest.
 
-### Option B — REST API (requires authorization)
+### Option B : REST API (requires authorization)
 
 Request access by email: `enterobase@warwick.ac.uk`. Once approved, the
 Swagger UI at `https://enterobase.warwick.ac.uk/api/v2.0/swagger-ui` lists
 all endpoints.
 
-Typical Python pattern (illustrative — verify endpoint names against the
+Typical Python pattern (illustrative, verify endpoint names against the
 current Swagger UI before relying on them):
 
 ```python
@@ -178,9 +178,9 @@ data = r.json()
 > [!WARNING]
 > The API is paginated and rate-limited. For large queries, always use `limit`
 > + offset/cursor pagination as documented in the Swagger UI. Do not
-> parallelize aggressively — the Warwick servers are shared.
+> parallelize aggressively, the Warwick servers are shared.
 
-### Option C — Bulk metadata dumps
+### Option C : Bulk metadata dumps
 
 Some EnteroBase tables and cgMLST schemes are periodically mirrored on
 Zenodo / Figshare by the authors for reproducibility of specific papers
@@ -189,7 +189,7 @@ Zenodo with the paper DOI for the exact archive.
 
 ## Workflows
 
-### Workflow 1 — *Y. pestis* historical phylogeny for a Silk Road narrative
+### Workflow 1 : *Y. pestis* historical phylogeny for a Silk Road narrative
 
 1. In the *Yersinia* database, restrict to `Yersinia pestis` via species
    filter.
@@ -200,7 +200,7 @@ Zenodo with the paper DOI for the exact archive.
    via `spaam-ancient-metagenome-dir`). For a Silk Road narrative
    specifically, pull **Spyrou et al. 2022 *Nature*** (Issyk-Kul /
    Kyrgyzstan, 1338–1339 CE) which identified the Lake Issyk-Kul
-   cemeteries as the origin of the 14th-century Black Death — a
+   cemeteries as the origin of the 14th-century Black Death, a
    landmark paper to cite in any EnteroBase + SPAAM combined analysis.
 4. Visualize with GrapeTree; export Newick + metadata.
 5. Map geographic origins against Silk Road trade corridors (can be
@@ -209,26 +209,26 @@ Zenodo with the paper DOI for the exact archive.
 6. Narrative: anchor the emergence of each plague pandemic to the
    corresponding clade expansion.
 
-### Workflow 2 — *V. cholerae* 7PET pandemic tracking
+### Workflow 2 : *V. cholerae* 7PET pandemic tracking
 
 1. *Vibrio* database → `Vibrio cholerae`.
 2. Use HierCC to isolate the 7PET (seventh pandemic El Tor) clade.
 3. Group by `Country` and `Collection Year`.
 4. Build a timeline of the three waves of 7PET dispersal (Mukherjee /
    Domman / Weill et al. frameworks).
-5. Overlay with historical cholera records — narrate the transition from
+5. Overlay with historical cholera records, narrate the transition from
    classical to El Tor biotype.
 
-### Workflow 3 — *Helicobacter pylori* as a proxy for human migrations
+### Workflow 3 : *Helicobacter pylori* as a proxy for human migrations
 
 1. *Helicobacter* database → filter by host (*Homo sapiens*) and country.
 2. Retrieve MLST / cgMLST clusters by population.
-3. Reference: Linz B. et al. 2007 *Nature* — *H. pylori* population structure
+3. Reference: Linz B. et al. 2007 *Nature*, *H. pylori* population structure
    mirrors human out-of-Africa migrations.
 4. Cross-reference with **`aadr`** (human genetic ancestry in the same
    regions) for a double human + pathogen coevolution argument.
 
-### Workflow 4 — Transposing the TBannotator methodology
+### Workflow 4 : Transposing the TBannotator methodology
 
 Structural mapping:
 
@@ -237,7 +237,7 @@ Structural mapping:
 | MTBC lineage call (Senelle, Coll, etc.) | HierCC level (HC0–HC2850) |
 | SPDI clustering | cgST + HierCC |
 | Lineage curation via expert review | Agama Study Group curation |
-| LLM-based metadata enrichment | No equivalent — opportunity to pitch |
+| LLM-based metadata enrichment | No equivalent, opportunity to pitch |
 
 **Seminar angle**: EnteroBase shows that the cgMLST/HierCC approach works at
 >300k-genome scale for enterics. TBannotator does the same *with added
@@ -282,7 +282,7 @@ For the ancient-DNA side of EnteroBase genera, pair this skill with
 | **`aadr`** | Ancient human hosts for the same skeletons |
 | **`p3k14c`** | Archaeological context for ancient pathogen sites |
 | **`slavevoyages`** | Post-colonial dispersal (e.g., *V. cholerae* 7PET, *S. enterica*) |
-| **TBannotator MCP** | Analogous platform for MTBC — compare methodologies |
+| **TBannotator MCP** | Analogous platform for MTBC, compare methodologies |
 | **GrapeTree** | Visualization of cgMLST/HierCC trees at 10⁵ genomes scale |
 | **nf-core/bactmap**, **nf-core/eager** | Pipelines feeding EnteroBase-ready assemblies |
 

@@ -54,6 +54,43 @@ Skip for: specific accessions, clear organism+gene combos, complete genome reque
 
 Retrieve silently. Do NOT narrate the search process.
 
+### Obtaining `tu`
+
+Every snippet below assumes a live ToolUniverse instance named `tu`. It does not
+exist by default; create it once per session:
+
+```bash
+pip install tooluniverse
+```
+
+```python
+from tooluniverse import ToolUniverse
+
+tu = ToolUniverse()
+tu.load_tools()                 # populates tu.tools; required before any call
+
+# Confirm the NCBI/ENA tools are actually present in this install
+print([n for n in tu.list_built_in_tools() if "NCBI" in n or "ena" in n.lower()])
+```
+
+If `tooluniverse` is not installed, or the NCBI tools are missing from the build,
+do not fake the calls: fall back to the NCBI E-utilities over plain HTTP, which
+need no package and are the substrate ToolUniverse wraps anyway.
+
+```bash
+# search
+curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=nuccore&term=katG[Gene]+AND+Mycobacterium+tuberculosis[Organism]&retmode=json"
+# fetch FASTA by accession
+curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=NC_000962.3&rettype=fasta&retmode=text"
+# ENA, non-RefSeq accessions only
+curl -s "https://www.ebi.ac.uk/ena/browser/api/fasta/AL123456.3"
+```
+
+Set `NCBI_API_KEY` and pass it as `&api_key=$NCBI_API_KEY` to raise the E-utilities
+rate limit from 3 to 10 requests per second.
+
+### Tool calls
+
 ```python
 # Search NCBI Nucleotide
 result = tu.tools.NCBI_search_nucleotide(
@@ -111,6 +148,41 @@ Present as a **Sequence Profile Report**. Hide search process. Include:
 **Sequence quality**: Prefer RefSeq over GenBank. Check version numbers. Sequences with "PREDICTED" in definition are not experimentally validated.
 
 **Accession guidance**: RefSeq = NCBI-only. GenBank = mirrored in ENA/EMBL. Default to RefSeq mRNA (NM_) for human/model organisms; most complete genome assembly for microbial queries.
+
+### Microbial and MTBC retrieval
+
+The defaults above (NM_/NP_, MANE Select) are human-centric and do not apply to
+bacteria: prokaryotic genes have no introns, no alternative transcripts and
+therefore no MANE concept. For a bacterial gene, retrieve the genome and the CDS
+feature, not a transcript.
+
+| Target | Accession | Note |
+|---|---|---|
+| H37Rv reference genome | `NC_000962.3` (RefSeq) | GenBank equivalent `AL123456.3`; same sequence, different annotation lineage |
+| M. bovis AF2122/97 | `NC_002945.4` | |
+| A single gene, e.g. katG | `Rv1908c` locus tag | Resolve through the genome record's CDS features, or through UniProt; there is no per-gene RefSeq accession |
+| Protein product | `NP_216424.1` (katG) | RefSeq protein accessions do exist for bacteria |
+
+```python
+# Whole genome, FASTA
+seq = tu.tools.NCBI_get_sequence(operation="fetch_sequence",
+                                 accession="NC_000962.3", format="fasta")
+
+# Annotated genome (GenBank) to walk CDS features and pull one locus tag
+gb = tu.tools.NCBI_get_sequence(operation="fetch_sequence",
+                                accession="NC_000962.3", format="gb")
+```
+
+A full H37Rv GenBank record is around 4.4 Mb of sequence plus roughly 4000
+features, so parse it with `biopython` (`SeqIO.parse(..., "genbank")`) rather than
+reading it into the conversation. For a gene's function, `mtbc-gene` answers
+offline-first and is the faster path; use this skill when the raw sequence itself
+is what is needed, for instance to feed an alignment or a BLAST.
+
+Strain matters for MTBC: an accession retrieved for "Mycobacterium tuberculosis"
+without a strain qualifier may be any of thousands of deposited genomes. Always
+confirm the strain in the record before using coordinates from it, because
+positions are only comparable against H37Rv.
 
 **Cross-database reconciliation**: Same sequence may have different accessions (e.g., GenBank U00096 = RefSeq NC_000913 for E. coli K-12). Always report both when available. Discrepancies between GenBank/RefSeq typically indicate RefSeq curation corrected submission errors.
 

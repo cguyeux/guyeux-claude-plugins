@@ -1,24 +1,17 @@
 ---
 name: nextstrain
 description: >-
-  Use Nextstrain (Augur + Auspice + TreeTime + Nextclade) for real-time
-  phylogeographic analysis and interactive visualization of pathogen
-  evolution at scale. Augur is the Python bioinformatics toolkit that
-  chains filtering, alignment, tree building, time-scaling, ancestral
-  reconstruction, and discrete trait (geography) inference into a
-  reproducible pipeline, producing JSON for the Auspice web viewer.
-  Used historically for Ebola, Zika, Influenza, SARS-CoV-2, MTBC, and
-  many other pathogens.
-
-  Use when: producing a time-scaled phylogeography for an MTBC lineage
-  or dataset of 10^2–10^5 genomes, building an interactive Auspice
-  visualization for a seminar slide or a collaborator review, inferring
-  most-likely transmission events between countries, dating ancestral
-  nodes with TreeTime, or authoring a reproducible Snakemake build
-  from a FASTA + metadata TSV pair.
+  Academic research toolkit for peer-reviewed phylogeographic research. Nextstrain (Augur,
+  Auspice, TreeTime, Nextclade) for phylogeographic analysis and interactive visualisation
+  of published pathogen genome collections. Augur is the Python toolkit that chains
+  filtering, alignment, tree building, time scaling, ancestral reconstruction and discrete
+  trait (geography) inference into a reproducible pipeline, producing JSON for the Auspice
+  viewer. Use when building a reproducible phylogeographic pipeline over a research dataset,
+  time-scaling a tree with TreeTime, inferring ancestral geography, or producing an
+  interactive tree to accompany a scientific publication.
 ---
 
-# Nextstrain — Real-Time Phylogeography & Interactive Visualization
+# Nextstrain : Real-Time Phylogeography & Interactive Visualization
 
 ## Overview
 
@@ -63,7 +56,7 @@ seminar it offers three concrete deliverables:
 1. **Publication-grade time-scaled phylogeography.** Given a set of
    MTBC genomes (modern from TBannotator, ancient from SPAAM), Augur
    reconstructs a dated tree with geographic ancestral states in one
-   pipeline — exactly the figure that convinces an MNHN /
+   pipeline, exactly the figure that convinces an MNHN /
    eco-anthropology jury that your claims about lineage dispersal are
    empirically grounded.
 2. **Interactive Auspice views for slides.** Auspice produces
@@ -76,7 +69,7 @@ seminar it offers three concrete deliverables:
    pair and all parameters in a Snakefile. This is the reproducibility
    standard the TB community is moving toward.
 
-## Augur pipeline — the canonical subcommand chain
+## Augur pipeline : the canonical subcommand chain
 
 The typical Augur workflow chains small commands, each doing one thing:
 
@@ -113,22 +106,22 @@ Auspice  ◄──  auspice/mtbc.json
 
 ### Inputs
 
-- **`sequences.fasta`** — genome FASTA, one record per isolate. Headers
+- **`sequences.fasta`**, genome FASTA, one record per isolate. Headers
   must match `strain` values in the metadata.
-- **`metadata.tsv`** — TSV with at minimum `strain`, `date`, `country`,
+- **`metadata.tsv`** : TSV with at minimum `strain`, `date`, `country`,
   and any additional fields you want as colouring dimensions (lineage,
   lineage_code, host, source, …).
-- **`reference.gb`** or **`.fasta`** — reference genome for alignment.
+- **`reference.gb`** or **`.fasta`**, reference genome for alignment.
 - **Optional**: `exclude.txt` (strains to drop), `include.txt` (strains
   to force in), `colors.tsv` (colour scheme), `lat_longs.tsv` (for
   geographic projection).
 
 ### Outputs
 
-- **`tree.nwk`** — Newick tree (midpoint)
+- **`tree.nwk`** : Newick tree (midpoint)
 - **`branch_lengths.json`**, **`nt_muts.json`**, **`aa_muts.json`**,
-  **`traits.json`** — per-step annotation layers
-- **`auspice/<name>.json`** — the **final Auspice bundle**, the single
+  **`traits.json`**, per-step annotation layers
+- **`auspice/<name>.json`**, the **final Auspice bundle**, the single
   file Auspice loads for visualization
 
 ## Installation
@@ -153,7 +146,7 @@ augur --version
 augur --help
 ```
 
-## Minimal MTBC build — walkthrough
+## Minimal MTBC build : walkthrough
 
 ### Directory layout
 
@@ -302,7 +295,7 @@ Always cite the clock rate source explicitly in Methods.
 
 ## Workflows
 
-### Workflow 1 — Time-scaled phylogeography of an MTBC sublineage
+### Workflow 1 : Time-scaled phylogeography of an MTBC sublineage
 
 Goal: produce an Auspice figure of the geographic dispersal of a lineage
 over time.
@@ -316,7 +309,7 @@ over time.
 5. Screenshot the time slider at key moments for slides; embed the
    live JSON in a web page for interactive review by collaborators.
 
-### Workflow 2 — Ancient + modern combined tree
+### Workflow 2 : Ancient + modern combined tree
 
 Goal: place ancient MTBC genomes from SPAAM (Bos2014, Kay2015, Sabin2020,
 Vagene2022, Jager2022) onto a tree with modern references as tips with
@@ -337,7 +330,7 @@ explicit tip dates.
 > clock` subcommand) and show the temporal signal before committing
 > to strong TMRCA claims.
 
-### Workflow 3 — Discrete trait transmission matrix
+### Workflow 3 : Discrete trait transmission matrix
 
 Goal: reconstruct most-likely historical transmission events between
 countries for an MTBC sublineage.
@@ -355,10 +348,10 @@ augur traits \
 The output JSON contains posterior-probability-weighted ancestral
 country assignments at each internal node. Summarise into a
 transmission matrix: for each branch where the parent and child have
-different country assignments, increment a count — that is your
+different country assignments, increment a count, that is your
 directed migration count.
 
-### Workflow 4 — Subsampling to avoid pseudo-replication
+### Workflow 4 : Subsampling to avoid pseudo-replication
 
 When you have 10 000 modern isolates concentrated in 3 countries and 20
 isolates from the rest of the world, a naïve build will be dominated by
@@ -376,16 +369,16 @@ augur filter \
 ```
 
 `--group-by country year` + `--sequences-per-group 50` enforces a
-balanced representation — essential for any phylogeographic claim.
+balanced representation, essential for any phylogeographic claim.
 
-### Workflow 5 — Publish the Auspice JSON
+### Workflow 5 : Publish the Auspice JSON
 
 Once you have `auspice/mtbc.json`, there are several ways to share it:
 
 - **Locally**: `nextstrain view auspice/` → browser at
   `http://localhost:4000`.
 - **Community build**: push the JSON to a GitHub repo structured as
-  `auspice/<build>.json` — it becomes accessible at
+  `auspice/<build>.json`, it becomes accessible at
   `nextstrain.org/community/<github_user>/<repo>/<build>`.
 - **Nextstrain Groups**: for institutional / lab hosting.
 - **Download and archive**: the JSON is the reproducible artefact; pin
@@ -401,7 +394,7 @@ Once you have `auspice/mtbc.json`, there are several ways to share it:
   rates (~3e-8 to 7e-8 sub/site/year). Always cite the one you use and
   run a tempest test.
 - **Discrete trait inference is model-bound.** The model assumes
-  stationary Markov transitions between states (countries) — this is
+  stationary Markov transitions between states (countries), this is
   a simplification. Use `--sampling-bias-correction` and report its
   value.
 - **Ancient tips are rare and noisy.** Only 16 ancient MTBC genomes
@@ -414,7 +407,7 @@ Once you have `auspice/mtbc.json`, there are several ways to share it:
   Auspice that exposes users to the software, you must publish your
   modifications. For internal research use this is a non-issue.
 - **Not a primary data repository.** Nextstrain is an **analysis and
-  visualization layer** — the sequences and metadata always come from
+  visualization layer**, the sequences and metadata always come from
   upstream skills (ENA, SRA, TBannotator, SPAAM, EnteroBase).
 
 ## Integration with Other Skills
@@ -429,10 +422,10 @@ Once you have `auspice/mtbc.json`, there are several ways to share it:
 | **`bacdive`** | Phenotypic reference for lineage representatives |
 | **`p3k14c`**, **`neolithic-14c`**, **`card`** | Chronological anchors for ancient tip dates |
 | **`pleiades`**, **`orbis`**, **`owtrad`** | Historical geographic context for Auspice map overlays |
-| **TreeTime** | Standalone TreeTime is also available (same authors) — Augur wraps it |
+| **TreeTime** | Standalone TreeTime is also available (same authors) : Augur wraps it |
 | **IQ-TREE / RAxML / FastTree** | Tree-building backends for `augur tree` |
 | **MAFFT** | Alignment backend for `augur align` |
-| **Snakemake** | Workflow orchestration — all Nextstrain builds are Snakemake projects |
+| **Snakemake** | Workflow orchestration, all Nextstrain builds are Snakemake projects |
 
 ## Citation
 

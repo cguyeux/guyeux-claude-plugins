@@ -1,63 +1,18 @@
 ---
 name: latex-document
-description: >
-  Universal LaTeX document skill: create, compile, and convert any document to
-  professional PDF with PNG previews. Supports resumes, reports, cover letters,
-  invoices, academic papers, theses/dissertations, academic CVs, presentations
-  (Beamer), scientific posters, formal letters, exams/quizzes, books,
-  cheat sheets, reference cards, exam formula sheets,
-  fillable PDF forms (hyperref form fields), conditional content (etoolbox toggles),
-  mail merge from CSV/JSON (Jinja2 templates), version diffing (latexdiff),
-  charts (pgfplots + matplotlib), tables (booktabs + CSV import), images (TikZ),
-  Mermaid diagrams, AI-generated images, watermarks, landscape pages,
-  bibliography/citations (BibTeX/biblatex), multi-language/CJK (auto XeLaTeX),
-  algorithms/pseudocode, colored boxes (tcolorbox), SI units (siunitx),
-  Pandoc format conversion (Markdown/DOCX/HTML ↔ LaTeX),
-  and PDF-to-LaTeX conversion of handwritten or printed documents (math, business,
-  legal, general). Compile script supports pdflatex, xelatex, lualatex with
-  auto-detection, latexmk backend, texfot log filtering, PDF/A output, and
-  verbosity control (--verbose/--quiet). Empirically optimized scaling: single agent 1-10 pages, split
-  11-20, batch-7 pipeline 21+. Use when user asks to: (1) create a resume/CV/cover
-  letter, (2) write a LaTeX document, (3) create PDF with tables/charts/images,
-  (4) compile a .tex file, (5) make a report/invoice/presentation, (6) anything
-  involving LaTeX or pdflatex, (7) convert/OCR a PDF to LaTeX, (8) convert
-  handwritten notes, (9) create charts/graphs/diagrams, (10) create slides,
-  (11) write a thesis or dissertation, (12) create an academic CV, (13) create
-  a poster, (14) create an exam/quiz, (15) create a book, (16) convert between
-  document formats (Markdown, DOCX, HTML to/from LaTeX), (17) generate Mermaid
-  diagrams for LaTeX, (18) create a formal business letter, (19) create a cheat
-  sheet or reference card, (20) create an exam formula sheet or crib sheet,
-  (21) condense lecture notes/PDFs into a cheat sheet,
-  (22) create a fillable PDF form with text fields/checkboxes/dropdowns,
-  (23) create a document with conditional content/toggles (show/hide sections),
-  (24) generate batch/mail-merge documents from CSV/JSON data,
-  (25) create a version diff PDF (latexdiff) highlighting changes between documents,
-  (26) create a homework or assignment submission with problems and solutions,
-  (27) create a lab report with data tables, graphs, and error analysis,
-  (28) encrypt or password-protect a PDF,
-  (29) merge multiple PDFs into one,
-  (30) optimize/compress a PDF for web or email,
-  (31) lint or check a LaTeX document for common issues,
-  (32) count words in a LaTeX document,
-  (33) analyze document statistics (figures, tables, citations),
-  (34) fetch BibTeX from a DOI,
-  (35) convert a Graphviz .dot file to PDF/PNG,
-  (36) convert a PlantUML .puml file to PDF/PNG,
-  (37) create a one-pager/fact sheet/executive summary,
-  (38) create a datasheet or product specification sheet,
-  (39) extract pages from a PDF (page ranges, odd/even),
-  (40) check LaTeX package availability before compiling,
-  (41) analyze citations and cross-reference with .bib files,
-  (42) debug LaTeX compilation errors,
-  (43) make a document accessible (PDF/A, tagged PDF),
-  (44) create lecture notes or course handouts,
-  (45) fill an existing PDF form (fillable fields or non-fillable with annotations),
-  (46) extract text or tables from a PDF (pdfplumber, pypdf),
-  (47) OCR a scanned PDF to text (pytesseract),
-  (48) create a PDF programmatically with reportlab (Canvas, Platypus),
-  (49) rotate or crop PDF pages (pypdf),
-  (50) add a watermark to an existing PDF,
-  (51) extract metadata from a PDF (title, author, subject).
+description: >-
+  Universal LaTeX document skill: create, compile and convert any document to a professional
+  PDF with PNG previews. Covers reports, theses, books, letters, invoices, resumes and
+  academic CVs, exams, cheat sheets and reference cards, fillable PDF forms, conditional
+  content, mail merge from CSV/JSON, latexdiff version diffs, pgfplots and matplotlib
+  charts, booktabs tables, TikZ, Mermaid diagrams, bibliography, CJK and multilingual
+  documents (auto XeLaTeX), algorithms, tcolorbox, siunitx, Pandoc conversion to and from
+  Markdown/DOCX/HTML, and PDF-to-LaTeX conversion of printed or handwritten documents. Also
+  PDF utilities: merge, split, encrypt, optimise, watermark, extract text or tables, OCR,
+  fill an existing form. Compilation auto-detects pdflatex, xelatex or lualatex, with
+  latexmk, texfot log filtering and PDF/A output. Use when the user asks to write, compile,
+  debug, convert or manipulate a LaTeX document or a PDF. For journal articles prefer latex-
+  paper-en, for slides beamer-slides, for posters latex-posters.
 ---
 
 # LaTeX Document Skill
@@ -70,8 +25,7 @@ Create any LaTeX document, compile to PDF, and generate PNG previews. Convert PD
 2. **If poster:** Run the poster sub-workflow (see [Poster Sub-Workflow](#poster-sub-workflow) below), then skip to step 5.
 3. **If cheat sheet / reference card:** Run the cheat sheet sub-workflow (see [Cheat Sheet / Reference Card Sub-Workflow](#cheat-sheet--reference-card-sub-workflow) below), then skip to step 5.
 4. **Ask the user which enrichment elements they want** (use AskUserQuestion tool with multiSelect). Offer relevant options based on document type:
-   - **AI-generated images** -- custom illustrations, diagrams, photos (uses generate-image skill)
-   - **Charts/graphs** -- bar, line, pie, scatter, heatmap (pgfplots or matplotlib)
+   - **Charts/graphs** -- bar, line, pie, scatter, heatmap (pgfplots or matplotlib; `sci-figure` for journal-grade output)
    - **Flowcharts/diagrams** -- process flows, architecture, decision trees (TikZ or Mermaid)
    - **Citations/bibliography** -- academic references, footnotes, works cited (BibTeX/biblatex)
    - **Tables with data** -- comparison matrices, financial data, statistics (booktabs)
@@ -80,8 +34,10 @@ Create any LaTeX document, compile to PDF, and generate PNG previews. Convert PD
 5. Copy the appropriate template from `assets/templates/` or write from scratch
 6. Customize content based on user requirements
 7. Generate external assets based on user's element choices:
-   - AI images: `python3 <skill_path>/../generate-image/scripts/generate_image.py "prompt" --output ./outputs/figure.png`
    - matplotlib charts: `python3 <skill_path>/scripts/generate_chart.py <type> --data '<json>' --output chart.png`
+   - publication figures (journal presets, shared style): invoke the `sci-figure` skill
+   - maps: invoke the `geo-map` skill
+   - schematics: `bash <skill_path>/scripts/graphviz_to_pdf.sh diagram.dot output.pdf` or hand-written TikZ
    - Mermaid diagrams: `bash <skill_path>/scripts/mermaid_to_image.sh diagram.mmd output.png`
 8. **For documents 5+ pages:** Review the [Long-Form Document Anti-Patterns](#long-form-document-anti-patterns-must-read-for-reports-theses-books) section and run the Content Generation Checklist before compiling. Key rules: prefer prose over bullets, include global list compaction, escape `<`/`>` in text mode, vary section formats, limit `\newpage`, size images at 0.75-0.85 textwidth.
 9. Compile with `scripts/compile_latex.sh` (auto-detects XeLaTeX for CJK/RTL, glossaries, bibliography)
@@ -317,7 +273,7 @@ Always escape: `%` → `\%`, `$` → `\$`, `&` → `\&`, `#` → `\#`, `_` → `
 - `<$300` → `$<$\$300`
 - `>=` → `$\geq$`, `<=` → `$\leq$`
 
-This is one of the most common silent errors in generated LaTeX — the document compiles without errors but the PDF shows garbage characters.
+This is one of the most common silent errors in generated LaTeX, the document compiles without errors but the PDF shows garbage characters.
 
 Date ranges use en-dash: `2019--2025` (double hyphen).
 

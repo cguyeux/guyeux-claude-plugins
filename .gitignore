@@ -26,3 +26,6 @@ env/
 *.ckp.gz
 *.raxml.*
 *.state
+
+# Rapport genere par _audit/tools/audit_skills.py (regenerable, pas a suivre)
+_audit/tools/audit.json

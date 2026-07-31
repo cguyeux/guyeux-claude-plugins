@@ -14,7 +14,7 @@ description: >-
   anchoring a narrative on pre-modern mobility at concrete travel-cost scales.
 ---
 
-# ORBIS — Stanford Geospatial Network Model of the Roman World
+# ORBIS : Stanford Geospatial Network Model of the Roman World
 
 ## Overview
 
@@ -171,7 +171,7 @@ densities.
 
 ## Data access
 
-### Option A — Interactive web UI (exploration)
+### Option A : Interactive web UI (exploration)
 
 1. Go to `https://orbis.stanford.edu/`
 2. Select an origin and a destination site.
@@ -179,10 +179,10 @@ densities.
    transport profile (road/river/sea mix; civilian/military; fast/slow;
    daylight).
 4. The model returns the route, travel time in days, and total cost.
-5. Useful for quick narrative work and producing figures for a talk —
+5. Useful for quick narrative work and producing figures for a talk,
    you can screenshot the route map.
 
-### Option B — Stanford Digital Repository (static node/edge tables)
+### Option B : Stanford Digital Repository (static node/edge tables)
 
 1. Navigate to `https://purl.stanford.edu/mn425tz9757`.
 2. Download the node and edge CSVs.
@@ -208,7 +208,7 @@ for _, r in edges.iterrows():
     )
 ```
 
-### Option C — GitHub repositories
+### Option C : GitHub repositories
 
 ```bash
 git clone https://github.com/emeeks/orbis_v2.git
@@ -227,7 +227,7 @@ QGIS / Leaflet.
 > over rebuilding a NetworkX graph by hand; the snippets below show the equivalent
 > logic and the GeoPandas mapping steps the client does not cover.
 
-### Workflow 1 — Test a Roman-era dispersal hypothesis for an L4 sublineage
+### Workflow 1 : Test a Roman-era dispersal hypothesis for an L4 sublineage
 
 Goal: check whether a sublineage found in multiple Mediterranean sites has
 a phylogeographic signal better explained by ORBIS cost distance than by
@@ -260,7 +260,7 @@ Then correlate pairwise phylogenetic distance (from a TB tree) with:
 If the ORBIS metrics explain more variance, that is direct quantitative
 support for a Roman-era dispersal narrative.
 
-### Workflow 2 — Justinian plague diffusion timing
+### Workflow 2 : Justinian plague diffusion timing
 
 Goal: given the ancient *Y. pestis* genomes from the Justinian plague
 catalogued in `spaam-ancient-metagenome-dir` (Keller 2019, Wagner 2014,
@@ -276,7 +276,7 @@ Compare with the historical chronology of outbreaks reported by Procopius,
 Evagrius, etc., and ask: does ORBIS travel time correlate with the time
 it took the pandemic to reach each city?
 
-### Workflow 3 — Metropolitan connectivity and human-adapted TB persistence
+### Workflow 3 : Metropolitan connectivity and human-adapted TB persistence
 
 Goal: test whether the N cities best connected to Rome (by ORBIS cost
 distance) had the highest bacterial population loads / diversity in
@@ -287,7 +287,7 @@ human-adapted MTBC (if ancient DNA is available) or modern TB isolates.
 3. Correlate centrality with lineage richness controlling for sampling
    effort (this is a rough null-breaking test).
 
-### Workflow 4 — Reconstruct a trade / military route for a narrative slide
+### Workflow 4 : Reconstruct a trade / military route for a narrative slide
 
 Goal: produce a publication-ready map for a seminar slide showing the
 modeled route between two specific sites.
@@ -322,7 +322,7 @@ print("Total:",
 
 - **One snapshot (~200 CE).** ORBIS models the empire at its peak. It is
   **not** a dynamic model covering the Republic, the Crisis, or the late
-  empire transportation regime — and it specifically does **not** model
+  empire transportation regime, and it specifically does **not** model
   post-Roman networks. For other periods you need a different source
   (medieval: ORBIS Latinus, *OWTRAD*, Silk Road networks…).
 - **Cheapest-edge simplification in the static dump.** Where parallel
@@ -334,7 +334,7 @@ print("Total:",
   at endpoints. ORBIS gives you a connectivity *prior*, not a transmission
   model.
 - **Coordinates are stylized.** Node positions are approximately historical,
-  sometimes rounded — don't treat them as archaeological precision.
+  sometimes rounded, don't treat them as archaeological precision.
 - **Map tile license is stricter than data.** If you reuse ORBIS screenshots
   in a commercial product, note that the AWMC basemap is CC BY-NC 3.0 even
   though the v2 network data are CC BY.

@@ -1,23 +1,14 @@
 ---
 name: lit-review
 description: >-
-  Revue de litterature scientifique systematique et incrementale.
-  Recherche, lit, synthetise et stocke dans litterature_review/.
-  A chaque relance, approfondit dans de nouvelles directions ou
-  enrichit les sujets existants. Maintient un BibTeX cumulatif.
-  Integre pubmed-database pour les recherches PubMed. Pour les sujets
-  TB / MTBC, prefere le skill `tbmonitor-papers` (corpus PubMed TB
-  pre-indexe : ~190 000 papiers avec MeSH/auteurs/keywords en JSON,
-  reponses sub-seconde) avant de tomber sur l'API PubMed live. Le mode
-  --wide active la recherche elargie : backward chaining systematique
-  sur les refs de chaque article cle, recherche pre-nomenclature
-  (concepts existant avant d'avoir ete nommes), et expansion des termes
-  historiques.
+  Revue de litterature systematique et incrementale : synthetise dans
+  litterature_review/, maintient un BibTeX cumulatif. Sources :
+  tbmonitor-papers (prioritaire pour TB / MTBC), pubmed-database, WebSearch.
+  Mode --wide : backward chaining, recherche pre-nomenclature.
 
-  Use when: building a literature review on a topic, deepening an
-  existing review, preparing state-of-the-art for a paper or grant,
-  finding gaps in the literature, discovering precursor work that predates
-  current terminology.
+  Use when: construire ou approfondir une revue, preparer un etat de l'art,
+  identifier les lacunes, trouver les travaux precurseurs anterieurs a la
+  nomenclature courante.
 argument-hint: "[sujet] [--deep] [--wide] [--direction 'nouvelle direction']"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebSearch, WebFetch
 ---
@@ -164,7 +155,7 @@ Direction 5 : Nouvelles mutations (hors S315T)
    b. Rechercher les articles recents (depuis la derniere exploration) sur
       les directions deja couvertes (mise a jour temporelle)
    c. **Citation chaining** sur les articles fondateurs existants
-      (voir Phase 2, section 2.1b — systematique, pas reserve a `--deep`)
+      (voir Phase 2, section 2.1b, systematique, pas reserve a `--deep`)
    d. **Si `--wide`** : ajouter automatiquement une direction "Travaux
       precurseurs" qui applique la recherche pre-nomenclature et le
       backward ref scan systematique (voir section 2.1c). Cette direction
@@ -204,6 +195,29 @@ par ordre de plan se fait a la consolidation des resultats, pas a
 l'execution.
 
 ### 2.1 Execution de la recherche
+
+#### Priorite des sources (regle operationnelle)
+
+**Pour tout sujet TB / MTBC, interroger le skill `tbmonitor-papers` AVANT
+l'API PubMed live.** Le corpus `tbmonitor` est un index pre-construit
+d'environ **190 000 papiers PubMed TB**, avec les termes MeSH, les auteurs
+et les keywords stockes en JSON et requetables en **SQL sub-seconde**
+(`mcp__tbmonitor__show_schema` puis `mcp__tbmonitor__execute_sql`). Une
+requete y coute une fraction du temps et du quota d'un aller-retour
+E-utilities, et permet des filtres (MeSH x annee x auteur) impossibles a
+formuler en une seule requete ESearch.
+
+Ordre a respecter :
+
+1. `tbmonitor-papers` (sujets TB / MTBC uniquement) ;
+2. **API PubMed live** (E-utilities) pour ce que `tbmonitor` ne couvre pas :
+   sujets hors TB, articles trop recents pour l'index, ou champs absents ;
+3. `WebSearch` / `WebFetch` pour les sources hors PubMed (preprints,
+   rapports institutionnels, theses).
+
+Ne pas tomber directement sur l'API live ou sur `WebSearch` pour un sujet
+TB : c'est le mode d'echec le plus courant (lent, quota, et couverture
+inferieure a celle de l'index).
 
 1. **PubMed** via E-utilities (lancees en parallele pour toutes directions) :
    - `ESearch` : obtenir les PMIDs correspondant a la requete
@@ -705,8 +719,12 @@ Decouverte notable :
 - **`litterature_review/references.bib`** : depot BibTeX partage. Alimente aussi
   par `/claim-check` et tout skill qui rencontre des references. Le champ
   `keywords` trace l'origine de chaque entree
+- **`tbmonitor-papers`** : source **prioritaire** pour tout sujet TB / MTBC
+  (~190 000 papiers PubMed TB pre-indexes, MeSH/auteurs/keywords en JSON,
+  SQL sub-seconde). A interroger avant l'API PubMed live (voir Phase 2, 2.1)
 - **`pubmed-database`** : utiliser sa syntaxe de requetes PubMed documentee
-  dans ses references/ (search_syntax.md, common_queries.md, api_reference.md)
+  dans ses references/ (search_syntax.md, common_queries.md, api_reference.md).
+  Employe pour les recherches PubMed live, en complement de `tbmonitor-papers`
 - **`bib-check`** : le references.bib produit peut etre verifie par bib-check
 - **`claim-check`** : les claims des articles trouves peuvent alimenter claim-check,
   et claim-check alimente references.bib avec ses propres sources

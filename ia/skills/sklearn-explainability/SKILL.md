@@ -1,6 +1,13 @@
 ---
 name: sklearn-explainability
-description: Advanced sub-skill for scikit-learn focused on model interpretability, feature importance, and diagnostic tools. Covers global and local explanations using built-in inspection tools and SHAP/LIME integrations.
+description: >-
+  scikit-learn sub-skill for interpreting a fitted model: permutation importance, partial
+  dependence and ICE curves, coefficient interpretation under collinearity, and SHAP/LIME
+  integration. Use when the user asks which features matter and why, when a feature-
+  importance ranking must be defended in a paper, when built-in impurity importances look
+  suspicious on high-cardinality features, or when producing an interpretability figure. For
+  a fast SHAP path on tree models, use TreeExplainer rather than the model-agnostic
+  explainer.
 version: 1.4
 license: BSD-3-Clause
 ---
@@ -68,8 +75,10 @@ PartialDependenceDisplay.from_estimator(model, X, features=['temp', 'pressure'])
 ```python
 import shap
 
-# Works for any scikit-learn model
-explainer = shap.Explainer(model.predict, X_test)
+# Let shap dispatch on the model object. For tree ensembles (RandomForest,
+# GradientBoosting, XGBoost, LightGBM) this selects TreeExplainer: exact
+# Shapley values, and orders of magnitude faster than the agnostic path.
+explainer = shap.Explainer(model, X_train)
 shap_values = explainer(X_test)
 
 # Visualize global importance
@@ -78,6 +87,26 @@ shap.plots.bar(shap_values)
 # Visualize local explanation for the first sample
 shap.plots.waterfall(shap_values[0])
 ```
+
+**Do not write `shap.Explainer(model.predict, X_test)`.** Passing the bound
+`predict` method hides the model type, so shap falls back to the model-agnostic
+Permutation or Kernel explainer: approximate values, and minutes-to-hours instead
+of seconds on a forest. Pass the estimator itself.
+
+| Model family | Explainer selected | Cost |
+|---|---|---|
+| Tree ensembles | `TreeExplainer` | fast, exact |
+| Linear models | `LinearExplainer` | fast, exact (given the background) |
+| Neural nets (torch/tf) | `DeepExplainer` / `GradientExplainer` | moderate |
+| Anything else, or a bare callable | `PermutationExplainer` / `KernelExplainer` | slow, approximate |
+
+For multiclass output, `shap_values` gains a trailing class axis: index it
+(`shap_values[..., k]`) before plotting, or the plot silently shows class 0.
+
+Background data matters. `shap.Explainer(model, X_train)` uses `X_train` as the
+reference distribution; on a large training set pass a summary
+(`shap.sample(X_train, 100)` or `shap.kmeans(X_train, 25)`) rather than the whole
+matrix, and keep it fixed across figures so values stay comparable.
 
 ### 2. Partial Dependence (PDP) for Science
 
@@ -91,17 +120,41 @@ PartialDependenceDisplay.from_estimator(model, X, [0, (0, 1)], ax=ax)
 # [0] is a 1D plot, [(0, 1)] is a 2D interaction plot
 ```
 
-### Advanced: Feature Contribution (ELI5 style)
+### Advanced: Feature Contribution for a Linear Model
 
-For a single prediction, see which features pushed it towards which class.
+For a single prediction from a linear or logistic model, the contribution of each
+feature is exactly `coef * value`, summing with the intercept to the log-odds.
+This is worth computing by hand rather than reaching for SHAP: it is exact,
+instant, and directly reportable in a manuscript.
 
 ```python
-def explain_prediction(model, sample):
-    # For linear models, this is: intercept + sum(coef * value)
-    prediction = model.predict_proba(sample)
-    # ... logic to map coefficients to feature names ...
-    pass
+import numpy as np
+import pandas as pd
+
+def explain_linear(model, sample, feature_names):
+    """sample: 1-row DataFrame or 2D array of shape (1, n_features)."""
+    x = np.asarray(sample).ravel()
+    coef = np.ravel(model.coef_)          # binary case; multiclass: model.coef_[k]
+    contrib = coef * x
+    logit = float(model.intercept_[0] + contrib.sum())
+    return pd.DataFrame({
+        "feature": feature_names,
+        "value": x,
+        "coef": coef,
+        "contribution": contrib,
+    }).sort_values("contribution", key=np.abs, ascending=False), logit
+
+table, logit = explain_linear(clf, X_test.iloc[[0]], X_test.columns)
+print(table.head(10))
+print("log-odds:", logit, "-> p =", 1 / (1 + np.exp(-logit)))
 ```
+
+Two caveats. The contributions are on the scale the model was fitted on, so if a
+`StandardScaler` sits in the pipeline the coefficients refer to standardised
+units: pull the fitted scaler out and report either the standardised
+contributions or `coef / scale_` in original units, but say which. And with
+correlated predictors, an individual coefficient is not the effect of that
+feature alone, whatever its magnitude.
 
 ## Practical Workflows: Validating a Scientific Model
 

@@ -1,13 +1,13 @@
 ---
 name: openalex
 description: >-
-  Query OpenAlex — the fully open scholarly knowledge graph (307M works,
-  118M authors, 124k institutions, 281k sources, 65k concepts, 4.5k topics — April 2026 snapshot)
+  Query OpenAlex, the fully open scholarly knowledge graph (307M works,
+  118M authors, 124k institutions, 281k sources, 65k concepts, 4.5k topics : April 2026 snapshot)
   published by OurResearch
   as the successor to Microsoft Academic Graph. Free REST API with
   email-based polite pool, CC0 metadata, and bulk dumps. The reference
   bibliometric substrate for lit-reviews, co-author-network analysis,
-  institution mapping, and concept-based discovery — complementary to
+  institution mapping, and concept-based discovery, complementary to
   PubMed/Europe PMC (which have biomedical focus) and to Google Scholar
   (which has no API).
 
@@ -19,7 +19,7 @@ description: >-
   bibliography with concept / topic tags.
 ---
 
-# OpenAlex — Open Scholarly Knowledge Graph
+# OpenAlex : Open Scholarly Knowledge Graph
 
 ## Overview
 
@@ -37,7 +37,7 @@ theses), **118 million unique authors**, **124,000 institutions**,
 **281,000 sources** (journals, repositories), **65,000 Wikidata-linked
 concepts** (legacy, stable since launch), and **4,516 topics** (the
 new hierarchical taxonomy replacing concepts). The database grows
-rapidly — these numbers are ~50%+ higher than at the 2022 launch, and
+rapidly, these numbers are ~50%+ higher than at the 2022 launch, and
 ~3× higher for authors and sources. Always re-fetch `meta.count` from
 the API when citing absolute counts in a manuscript.
 
@@ -48,12 +48,12 @@ the API when citing absolute counts in a manuscript.
 - **API base**: `https://api.openalex.org/`
 - **Web interface**: `https://openalex.org/`
 - **Blog / changelog**: `https://blog.openalex.org/`
-- **License**: **CC0** — public domain metadata (completely unrestricted
+- **License**: **CC0**, public domain metadata (completely unrestricted
   reuse including commercial)
 - **Rate limit**: 100,000 requests per day + 10/sec, keyed to your API key
 
 > [!IMPORTANT]
-> **OpenAlex now requires an API key on every request** — keyless calls
+> **OpenAlex now requires an API key on every request**, keyless calls
 > are rejected (HTTP 409/429). The old keyless "polite pool" via a `mailto`
 > query parameter is gone: **do not send `mailto`** to `api.openalex.org`.
 > Pass the key as the `api_key` query parameter instead. Get a free key at
@@ -70,11 +70,11 @@ Your seminar foregrounds a "150 000 articles" text-mining corpus
 1. **Topic-based lit-review at scale.** A single query on OpenAlex
    can retrieve all publications tagged with a concept like
    *Mycobacterium tuberculosis*, *ancient DNA*, or
-   *phylogeography* — instantly, with CC0 metadata.
+   *phylogeography*, instantly, with CC0 metadata.
 2. **Co-authorship network mapping.** OpenAlex exposes author IDs,
    institution IDs, and co-authorship edges. You can build a
    network graph of everyone who has published on *M. bovis* in
-   the last 10 years in a few minutes — useful for targeting
+   the last 10 years in a few minutes, useful for targeting
    collaborators, identifying review candidates, or building a
    slide on your field's community structure.
 3. **Institution resolution.** Each work lists institutional
@@ -85,7 +85,7 @@ Your seminar foregrounds a "150 000 articles" text-mining corpus
    concepts (hierarchical, Wikidata-linked). Useful for discovering
    papers you would not find with a keyword search alone.
 5. **Auditable bibliometry.** Unlike Web of Science or Scopus, the
-   metadata are open — anyone can reproduce your figures.
+   metadata are open, anyone can reproduce your figures.
 
 OpenAlex is the **bibliographic layer** of your constellation,
 complementary to the biomedical-focused **Europe PMC** / **PubMed**
@@ -104,8 +104,8 @@ types**, each with its own endpoint:
 | **Institutions** | `/institutions` | **~124k** | Universities, labs, companies (with ROR IDs) |
 | **Topics** | `/topics` | **~4,516** | Hierarchical topic clustering (the new taxonomy) |
 | **Concepts** | `/concepts` | ~65k | Wikidata-linked subject tags (legacy, being replaced by Topics) |
-| **Publishers** | `/publishers` | — | Publishing entities |
-| **Funders** | `/funders` | — | Funding organisations with grants |
+| **Publishers** | `/publishers` |, | Publishing entities |
+| **Funders** | `/funders` |, | Funding organisations with grants |
 
 > [!NOTE]
 > OpenAlex is **migrating from "Concepts" to "Topics"**. As of 2024–2025,
@@ -141,7 +141,7 @@ before running NLP on it (a 5-line Python helper).
 
 ## Data access
 
-### Option A — REST API (recommended for targeted queries)
+### Option A : REST API (recommended for targeted queries)
 
 API key required on every request (do NOT send `mailto`):
 
@@ -167,7 +167,7 @@ for w in r["results"]:
     print(w["id"], w["publication_year"], w["title"])
 ```
 
-### Option B — Filter-based queries (canonical form)
+### Option B : Filter-based queries (canonical form)
 
 OpenAlex's API supports rich filters via the `filter` parameter, e.g.:
 
@@ -183,7 +183,7 @@ r = openalex(
 Multiple filters are comma-separated; the syntax is documented at
 `docs.openalex.org/api-entities/works/filter-works`.
 
-### Option C — Pagination
+### Option C : Pagination
 
 For more than 200 results, use **cursor pagination** (efficient) or
 **offset pagination** (for small result sets):
@@ -204,7 +204,7 @@ while cursor:
 print(len(all_works), "works")
 ```
 
-### Option D — Group-by (for aggregates without fetching records)
+### Option D : Group-by (for aggregates without fetching records)
 
 ```python
 # How many MTBC papers per year?
@@ -217,7 +217,7 @@ for g in r["group_by"]:
     print(g["key"], g["count"])
 ```
 
-### Option E — `pyalex` (Python wrapper)
+### Option E : `pyalex` (Python wrapper)
 
 ```bash
 pip install pyalex
@@ -237,7 +237,7 @@ works = (
 )
 ```
 
-### Option F — Bulk dump (monthly snapshot)
+### Option F : Bulk dump (monthly snapshot)
 
 A full monthly dump of all entities is available as
 gzipped JSON files on Amazon S3 (free). Useful if you want to run
@@ -258,7 +258,7 @@ queries (e.g. several works or authors) should fire concurrently.
 
 ## Workflows
 
-### Workflow 1 — Lit-review of ancient MTBC papers
+### Workflow 1 : Lit-review of ancient MTBC papers
 
 Goal: enumerate all papers on ancient *Mycobacterium tuberculosis*
 published 2010–2024 with their full metadata.
@@ -279,7 +279,7 @@ for w in r["results"][:20]:
 Use this to surface highly cited papers you might have missed and
 populate a `bib-check`-compatible BibTeX export.
 
-### Workflow 2 — Co-authorship network for *M. bovis* research
+### Workflow 2 : Co-authorship network for *M. bovis* research
 
 Goal: build a graph of researchers who have co-authored papers on
 *Mycobacterium bovis* to identify key labs and connectors.
@@ -312,7 +312,7 @@ for name, deg in top:
 Useful for identifying collaborators, reviewers, and for a "field
 landscape" slide.
 
-### Workflow 3 — Institution-filtered publication list
+### Workflow 3 : Institution-filtered publication list
 
 Goal: list all publications of the **Max Planck Institute for
 Evolutionary Anthropology, Leipzig** on ancient DNA topics.
@@ -330,7 +330,7 @@ r = openalex(
 )
 ```
 
-### Workflow 4 — Reconstruct abstracts from `abstract_inverted_index`
+### Workflow 4 : Reconstruct abstracts from `abstract_inverted_index`
 
 ```python
 def inverted_to_text(inv_idx):
@@ -350,7 +350,7 @@ abstract = inverted_to_text(work.get("abstract_inverted_index"))
 Feed `abstract` to your text-mining pipeline (the "150 000 articles"
 corpus of your seminar).
 
-### Workflow 5 — Sustainable Development Goals tagging
+### Workflow 5 : Sustainable Development Goals tagging
 
 OpenAlex annotates works with UN SDG tags. Useful for framing a
 tuberculosis paper in a global-health context:
@@ -365,7 +365,7 @@ r = openalex(
 )
 ```
 
-### Workflow 6 — Group-by aggregate for a field landscape
+### Workflow 6 : Group-by aggregate for a field landscape
 
 Count MTBC papers per country per year (for a histogram slide):
 
@@ -386,7 +386,7 @@ r = openalex(
   same name at different institutions may or may not be separated
   correctly. Verify via ORCID when possible.
 - **Institution hierarchy is flat.** OpenAlex does not model
-  departments or labs within an institution — all affiliations are
+  departments or labs within an institution, all affiliations are
   at the top institution level.
 - **Abstract inverted index is a legal compromise.** You must
   reconstruct the abstract from the positional index; the raw text
@@ -408,14 +408,14 @@ r = openalex(
 
 | Tool | Purpose |
 |---|---|
-| **`spaam-community`** | Meta-index for ancient metagenomics — OpenAlex fills the bibliometric layer around it |
-| **`bib-check`** | Reference verification — OpenAlex metadata can pre-populate BibTeX entries |
-| **`bacdive`**, **`enterobase`**, **`pathogens-portal`**, **`ncbi-pathogen-detection`** | Each publication in these resources has an OpenAlex entry — join on DOI |
+| **`spaam-community`** | Meta-index for ancient metagenomics : OpenAlex fills the bibliometric layer around it |
+| **`bib-check`** | Reference verification : OpenAlex metadata can pre-populate BibTeX entries |
+| **`bacdive`**, **`enterobase`**, **`pathogens-portal`**, **`ncbi-pathogen-detection`** | Each publication in these resources has an OpenAlex entry, join on DOI |
 | **TBannotator MCP** | OpenAlex is the bibliometric counterpart to TBannotator's 150k-articles text-mining corpus |
-| **Europe PMC / PubMed** | Biomedical-focused alternatives — use together with OpenAlex for cross-validation |
-| **Unpaywall** | Same organisation (OurResearch) — OA PDF access |
-| **ORCID** | Author identifiers — resolve OpenAlex authors to ORCIDs when disambiguation matters |
-| **ROR** (Research Organization Registry) | Institution identifiers — OpenAlex uses these |
+| **Europe PMC / PubMed** | Biomedical-focused alternatives, use together with OpenAlex for cross-validation |
+| **Unpaywall** | Same organisation (OurResearch) : OA PDF access |
+| **ORCID** | Author identifiers, resolve OpenAlex authors to ORCIDs when disambiguation matters |
+| **ROR** (Research Organization Registry) | Institution identifiers : OpenAlex uses these |
 | **`pyalex`** (Python) | Canonical Python client |
 | **`openalexR`** (R) | Canonical R client |
 

@@ -1,18 +1,19 @@
 ---
 name: snp-distance
 description: >-
-  Academic research toolkit for the Guyeux group (FEMTO-ST, University of Franche-Comte). Computes pairwise SNP distances on published-research MTBC isolates for peer-reviewed publications. Compute pairwise SNP distance matrices from SPDI presence/absence data.
-  Queries TBannotator for SPDI profiles, builds Hamming/Jaccard distance matrix.
+  Academic research toolkit (Guyeux group, FEMTO-ST) for peer-reviewed
+  publications: pairwise SNP distance matrices for MTBC isolates from SPDI
+  presence/absence data (TBannotator), metrics snp_count / hamming / jaccard.
 
   Use when: computing genetic distances between MTBC strains, preparing input
   for t-SNE+HDBSCAN or THD, identifying transmission clusters by SNP threshold,
-  building distance matrices for NJ trees or population genetics analyses.
+  building distance matrices for NJ trees or population genetics.
 argument-hint: "<input_csv or lineage> [-o distances.csv] [--metric hamming|jaccard|snp_count]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
 ---
 
-# SNP Distance — Matrice de distances pairwise MTBC
+# SNP Distance : Matrice de distances pairwise MTBC
 
 Calcul de matrices de distances SNP pairwise à partir de données SPDI binaires. Produit des matrices symétriques prêtes pour t-SNE+HDBSCAN, THD, arbres NJ, ou identification de clusters de transmission.
 
@@ -41,7 +42,7 @@ snp_distance.py <input_file> [options]
 
 ## Formats d'entrée
 
-### 1. Matrice SPDI binaire (pivot) — RECOMMANDÉ
+### 1. Matrice SPDI binaire (pivot) : RECOMMANDÉ
 
 ```csv
 strain_id,SPDI_001,SPDI_002,SPDI_003,...
@@ -150,8 +151,8 @@ python3 scripts/snp_distance.py strain_spdi_long.csv -o distances.csv
 SELECT ss.strain_id, ss.spdi_id
 FROM tb_report_strain_spdi ss
 WHERE ss.strain_id IN (
-  SELECT sra_id FROM mv_strain_classification
-  WHERE system = 'Senelle' AND lineage_code LIKE '4.15%'
+  SELECT strain_id FROM mv_strain_classification
+  WHERE system_name = 'guyeux' AND lineage_code LIKE '4.15%'
 )
 ORDER BY ss.strain_id, ss.spdi_id;
 ```
@@ -166,11 +167,15 @@ Le script détecte automatiquement le format (liste longue vs matrice) et pivote
 
 ### Distances aux références (vue pré-calculée)
 
+> ⚠ **`strain_id` est un ENTIER** (clé interne, ex. 167563) ; l'accession SRA/ENA est dans **`strain_name`**
+> (ex. `ERR551415`). Un filtre `strain_id IN ('ERR…')` ne renvoie rien.
+
 ```sql
--- Distances SNP aux 10 souches de référence
-SELECT sra_id, ref_strain_id, snp_distance
+-- Distances SNP aux souches de référence (filtrer par ACCESSION = strain_name)
+-- Validé 2026-07-31 : ERR551415 → SRR28393365 à 653 SNP ; SRR33638270 → 640.
+SELECT strain_id, strain_name, reference_strain_name, snp_distance
 FROM mv_strain_reference_snp_distance
-WHERE sra_id IN ('ERR551415', 'SRR33638270');
+WHERE strain_name IN ('ERR551415', 'SRR33638270');
 ```
 
 **Note** : cette vue ne contient que les distances à 10 références, pas les distances pairwise complètes. Pour les distances pairwise, utiliser le script `snp_distance.py`.

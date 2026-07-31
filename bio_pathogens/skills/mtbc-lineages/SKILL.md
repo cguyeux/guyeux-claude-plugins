@@ -1,30 +1,15 @@
 ---
 name: mtbc-lineages
 description: >-
-  Authoritative source on Mycobacterium tuberculosis complex (MTBC) lineage
-  definitions, sub-lineage hierarchies, and SNP/SPDI markers. The taxonomic
-  source-of-truth hierarchy is fixed in
-  global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md: the live placement in
-  bdd/actuelle/ and its derived registry barcode_complete.tsv are authoritative;
-  lignees.py (key "moi" = Guyeux) is a historical SPDI MARKER BANK, reliable for
-  stable major lineages and for third-party system definitions, but possibly
-  DESYNCHRONISED for any sub-lineage produced by the multi-signal cycle (L1.*,
-  Bovis1.*, BCG.*, deep L6). When no system is specified, "moi" is the implicit
-  default for a marker lookup, but for an authoritative definition/assignment of
-  an active clade, consult bdd/actuelle + barcode_complete.tsv first.
+  Authority on Mycobacterium tuberculosis complex (MTBC) lineage
+  definitions, hierarchies and SNP/SPDI markers. Precedence per
+  SOURCES_OF_TRUTH.md: bdd/actuelle + barcode_complete.tsv authoritative;
+  lignees.py (key "moi" = Guyeux) is a marker bank, stale for L1.*,
+  Bovis1.*, BCG.*, deep L6.
 
-  Use this skill WHENEVER you need to: (1) look up a lineage's defining
-  marker, (2) find the parent of a sub-lineage, (3) determine which lineage
-  a SPDI belongs to, (4) confirm the hierarchy of L1/L2/L3/L4/L5/L6/L7/L8/
-  L9/L10 and their sub-lineages, (5) reconcile conflicting classifications
-  across systems, (6) cite the original publication for a taxonomy. ALWAYS
-  prefer this skill over TBannotator MCP queries, direct CSV reads, or
-  ad-hoc literature lookups for lineage facts.
-
-  For step (6) — citing the original publication — also consider the
-  `tbmonitor-papers` skill once a candidate citation is in hand:
-  tbmonitor lets you confirm the paper's title, authors, journal and DOI
-  in sub-second time against the pre-indexed PubMed TB corpus.
+  Use for any lineage fact (marker, parent, SPDI-to-lineage, L1-L10
+  hierarchy, cross-system reconciliation, citation), over TBannotator MCP or
+  CSV.
 allowed-tools: Bash, Read, Grep, Glob
 user-invocable: true
 ---
@@ -40,7 +25,7 @@ The taxonomic authority hierarchy is **fixed canonically** in
 1. bdd/actuelle/<clade>/             ← physical source (existence + per-strain placement)
 2. barcoding_v2/barcode_complete.tsv ← authoritative derived registry (SPDI)
    + rd_markers.json / is_markers.json / _marker_overrides.json / _marker_blacklist.json
-3. TBannotator system='Senelle'      ← snapshot (= moi/Guyeux, may lag)
+3. TBannotator system_name='guyeux' (ex-'Senelle')      ← snapshot (= moi/Guyeux, may lag)
 4. lignees.py key 'moi'              ← MARKER BANK (1 SPDI/clade, possibly stale)
 5. snp_barcoding.csv, strain_lineages.csv  ← OBSOLETE, never authoritative on read
 ```
@@ -56,7 +41,7 @@ It defines a `lignees` dictionary keyed by classification system. Key `"moi"`
 `(lineage_code, defining_SPDI)` (one canonical SPDI per clade; short codes
 WITHOUT the `L` prefix: `"1.2.1.1.2.4"`, `"Bovis La1"`).
 
-**IMPORTANT — `lignees.py` is NOT the gold standard.** It is a historical marker
+**IMPORTANT, `lignees.py` is NOT the gold standard.** It is a historical marker
 bank, frozen out of the cycle's write loop (state of 2026-05-15). It is reliable
 for **stable major lineages** and for **third-party system definitions** (keys
 `"Coll"`, `"Napier"`…), but for any clade touched by the multi-signal cycle
@@ -113,7 +98,7 @@ The skill must only look outside `"moi"` when :
 Lineage lookups go through these sources, **in this exact order, stopping at the
 first authoritative match**. This chain operationalises `SOURCES_OF_TRUTH.md`.
 
-0. **`bdd/actuelle/<clade>/` + `barcode_complete.tsv`** — the authoritative
+0. **`bdd/actuelle/<clade>/` + `barcode_complete.tsv`**, the authoritative
    source for the **existence** of a clade and the **defining marker / hierarchy**
    of any clade touched by the multi-signal cycle (L1.\*, Bovis1.\*, BCG.\*, deep
    L6). For BCG and other SPDI-marker-less clades, the marker lives in
@@ -121,28 +106,28 @@ first authoritative match**. This chain operationalises `SOURCES_OF_TRUTH.md`.
    `barcode_complete.tsv`). **Consult this first for an authoritative definition
    or assignment.**
 
-1. **`lignees["moi"]`** — Guyeux marker bank, loaded live. Convenient first stop
+1. **`lignees["moi"]`** : Guyeux marker bank, loaded live. Convenient first stop
    for a **single defining SPDI of a stable major lineage**. NOT authoritative
-   for active-cycle clades (it is stale there — see the caveat above); when its
+   for active-cycle clades (it is stale there, see the caveat above); when its
    answer would contradict `bdd/actuelle`/`barcode_complete.tsv`, the latter win.
 
-2. **Other systems in the same `lignees.py` file** — Coll, Napier, Freschi,
+2. **Other systems in the same `lignees.py` file** : Coll, Napier, Freschi,
    Stucki, Coscolla, Shitikov, Zwyer, Palittapongarnpim, Thawornwattana, Shuaib,
    Gisch, Netikul, Lipworth, Ates, "Coll L1", Merker, etc. (enumerate the keys
-   dynamically — do not hard-code the list). Consulted when the user asks for a
+   dynamically, do not hard-code the list). Consulted when the user asks for a
    published system, or `"moi"` has no entry.
 
 3. **TBannotator PostgreSQL** (`mv_lineage_markers`, `mv_strain_classification`,
-   `tb_lineage_marker`) — `system='Senelle'` IS the home system (= moi/Guyeux),
+   `tb_lineage_marker`), `system_name='guyeux' (ex-'Senelle')` IS the home system (= moi/Guyeux),
    used for per-strain assignment at scale. It is a **snapshot** that lags the
    live taxonomy; in case of conflict, `bdd/actuelle` + `barcode_complete.tsv`
    win.
 
-4. **Reference notes** (`references/*.md`) — synthesised notes from the original
+4. **Reference notes** (`references/*.md`), synthesised notes from the original
    papers. Used only for **citations, methodology, sample size, geographic scope**
-   of a published taxonomy — never a source of truth for SPDIs or lineage codes.
+   of a published taxonomy, never a source of truth for SPDIs or lineage codes.
 
-5. **`snp_barcoding.csv`** / **`strain_lineages.csv`** — **OBSOLETE (v1 / stale
+5. **`snp_barcoding.csv`** / **`strain_lineages.csv`**, **OBSOLETE (v1 / stale
    export). NEVER read as a source of truth** for the defining SPDI, the
    hierarchy, or an assignment (`snp_barcoding.csv` lags on Bovis and still
    contains "proto-BCG"; `strain_lineages.csv` is from 2026-04-05 and lacks L9).
@@ -154,13 +139,13 @@ first authoritative match**. This chain operationalises `SOURCES_OF_TRUTH.md`.
 
 This skill's answers follow the authority hierarchy of `SOURCES_OF_TRUTH.md`.
 It takes priority over :
-- **TBannotator MCP** (`system='Senelle'` snapshot) when its output conflicts
+- **TBannotator MCP** (`system_name='guyeux' (ex-'Senelle')` snapshot) when its output conflicts
   with `bdd/actuelle` + `barcode_complete.tsv`.
 - **Direct reads** of `snp_barcoding.csv` / `strain_lineages.csv` (obsolete) as a
   primary source.
 - **Web search results** and memory entries that contradict the current
   taxonomy in `bdd/actuelle` + `barcode_complete.tsv`.
-- **Other skills** (`tbannotator-mcp`, `clade-finder`, `lineage-comparison`,
+- **Other skills** (`tbannotator-mcp`, `lineage-subdivision`, `lineage-comparison`,
   `tb-cli`) when their output conflicts with this skill on lineage facts.
 
 Conversely, **this skill must defer** to `bdd/actuelle` + `barcode_complete.tsv`
@@ -198,7 +183,7 @@ answer would be stale for an active-cycle clade. The arbiter is
 The dispatch logic lives in `scripts/lineages.py` (run via
 `python3 ${CLAUDE_PLUGIN_ROOT}/skills/mtbc-lineages/scripts/lineages.py <subcommand>`).
 
-## Classify — multi-system lineage identification
+## Classify : multi-system lineage identification
 
 The `classify` command takes a sample's SPDI set (from `spdi.txt`,
 `report.json`, or `snps.vcf`) and checks it against **all 18 taxonomy
@@ -232,15 +217,15 @@ Markers prefixed with `-` in `lignees.py` match when the SPDI is
 
 ### Input formats
 
-- `spdi.txt` — one SPDI per line (TBannotator standard)
-- `report.json` — TBannotator report (SPDIs extracted by regex)
-- `snps.vcf` — VCF format (position converted to 0-based SPDI)
+- `spdi.txt`, one SPDI per line (TBannotator standard)
+- `report.json` : TBannotator report (SPDIs extracted by regex)
+- `snps.vcf` : VCF format (position converted to 0-based SPDI)
 - A directory containing any of the above
 
 ### Flags
 
-- `--system <name>` — restrict to a single taxonomy system
-- `--min-pct N` — hide matches below N% (useful for noisy systems
+- `--system <name>`, restrict to a single taxonomy system
+- `--min-pct N`, hide matches below N% (useful for noisy systems
   with many markers, default: 0)
 
 ### Interpretation guidelines
@@ -250,19 +235,19 @@ Markers prefixed with `-` in `lignees.py` match when the SPDI is
 - A match in "moi" at a given level (e.g. `1.2.2`) means the sample
   belongs to that lineage.
 - Matches in other systems at <50% should be treated as noise.
-- Discordance between systems is normal and expected — different
+- Discordance between systems is normal and expected, different
   authors define lineages differently.
 
 ---
 
-## Classer un SRA (barcoding v2 — "moi" prioritaire)
+## Classer un SRA (barcoding v2 : "moi" prioritaire)
 
 When the task is **"classify this SRA / this strain / this `spdi.txt`"**
 (rather than looking up a lineage definition), use the dedicated
 **barcoder v2** instead of the in-skill `classify` dispatcher. The
-barcoder applies the same precedence philosophy as this skill — the
+barcoder applies the same precedence philosophy as this skill, the
 Guyeux **"moi"** system is authoritative, published systems are
-informative only — but it ships precomputed marker tables and a
+informative only, but it ships precomputed marker tables and a
 cross-mapping table that make the SRA call fast, offline, and
 reproducible.
 
@@ -286,8 +271,8 @@ differing position, so matching is representation-independent.
    lineage call. The strain is tested against near-MTBC *Mycobacterium* species
    signatures; if >50 % of a species' robust markers are carried, it is flagged
    as that species **before** any MTBC lineage call. A genus-wide recognition
-   reference now exists — single entry point
-   **`global_supplementary/RECOGNITION_STRATEGY.md`** — organised in three
+   reference now exists, single entry point
+   **`global_supplementary/RECOGNITION_STRATEGY.md`**, organised in three
    complementary levels (no single referential covers the whole genus):
    - **category** : `MTBC_founder_markers_19_*` (present ⇒ MTBC),
      `Canettii_ancestral_markers_*` (*M. canettii*), `hors_mtbc_species.tsv` (near-MTBC type strains + ANI);
@@ -297,7 +282,7 @@ differing position, so matching is representation-independent.
      `global_supplementary/species_markers/` (~48 species, 17 robust at n≥3; high
      resolution for species close to H37Rv) **+** `M_kansasii_robust_markers_*`;
    - **subspecies / complex** : `global_supplementary/species_markers/subtypes/`
-     for complexes that have NO species-level core (MAC, MKC) — e.g. *M. avium*
+     for complexes that have NO species-level core (MAC, MKC), e.g. *M. avium*
      subsp. *paratuberculosis* (MAP) ships a panel; MAA/MAH and *M. intracellulare*/
      *chimaera* are paraphyletic / cross-labelled (re-type molecularly first).
    This supersedes the earlier state where only *M. kansasii* shipped a panel.
@@ -323,7 +308,7 @@ They live both at the project root
 |------|------|
 | `barcode_simple.tsv` | **one representative defining SPDI per (sub-)lineage** + `parent` + validation note. The tree skeleton of the "moi" system. |
 | `barcode_complete.tsv` | **full positive/negative marker set per lineage** (`role` = positive/negative, with exclusivity/polarisation notes). Used for the ≥70 % majority support test. |
-| `taxonomy_crossmap.tsv` | **CANONICAL "moi" → published-systems cross-map** (~19 systems incl. Ates, Coll, "Coll L1", Coscolla, Freschi, Gagneux, Gisch, Lipworth, Merker, Napier, Netikul, Palittapongarnpim, Shitikov, Shitikov23, Shuaib, Stucki, Thawornwattana, Zwyer — **enumerate the `system` column dynamically, do not hard-code**); columns `moi_lineage, system, best_match_code, relation, jaccard_pct, inclusion_dir, inclusion_pct, n_moi, n_T, n_inter`. This is THE source for any "moi vs Coll/Napier/…" comparison (population-level); per-strain, cross TBannotator `system='Senelle'` vs `system='Coll'`. `Gagneux` is a broad major-lineage system with no fine SPDI barcode in `lignees.py` — find it here / in TBannotator. |
+| `taxonomy_crossmap.tsv` | **CANONICAL "moi" → published-systems cross-map** (~19 systems incl. Ates, Coll, "Coll L1", Coscolla, Freschi, Gagneux, Gisch, Lipworth, Merker, Napier, Netikul, Palittapongarnpim, Shitikov, Shitikov23, Shuaib, Stucki, Thawornwattana, Zwyer, **enumerate the `system` column dynamically, do not hard-code**); columns `moi_lineage, system, best_match_code, relation, jaccard_pct, inclusion_dir, inclusion_pct, n_moi, n_T, n_inter`. This is THE source for any "moi vs Coll/Napier/…" comparison (population-level); per-strain, cross TBannotator `system_name='guyeux' (ex-'Senelle')` vs `system_name='Coll'`. `Gagneux` is a broad major-lineage system with no fine SPDI barcode in `lignees.py`, find it here / in TBannotator. |
 | `hors_mtbc_species.tsv` | near-MTBC species reference metadata (11 type strains). |
 | `M_kansasii_robust_markers.txt` | robust non-MTBC species panel (kansasii). |
 | `RECOGNITION_STRATEGY.md` | **genus-wide recognition entry point** (3-level decision tree, MTBC + non-MTBC). Read for any non-MTBC sample. |
@@ -346,18 +331,18 @@ The barcoder prints the SPDI count, the **Guyeux lineage** (the answer),
 the full descent path with per-node `matched/total` marker fractions,
 and the informative published equivalents. With `--json` it returns the
 same as a structured object for downstream use. If no root branch is
-supported, the strain is reported **unassigned** rather than guessed —
+supported, the strain is reported **unassigned** rather than guessed,
 in that case fall back to the in-skill `classify` (multi-system) and the
 `is-mtbc` / `ancestral-signature` special-case tests below to diagnose
 whether it is non-MTBC, basal (L8/Canettii), or a coverage problem.
 
 When a reviewer or downstream task needs the published-system label,
 read it from `taxonomy_crossmap.tsv` (or the barcoder's "Informative
-equivalents" block) — do **not** re-derive it from `snp_barcoding.csv`.
+equivalents" block), do **not** re-derive it from `snp_barcoding.csv`.
 
 ---
 
-## Special cases (CRITICAL — do not try to normalise these)
+## Special cases (CRITICAL : do not try to normalise these)
 
 Four MTBC classification problems cannot be solved by a simple
 `(lineage_code → defining_SPDI)` lookup and require dedicated logic.
@@ -375,7 +360,7 @@ files in the `data/` subdirectory.
 > toujours valides), PAS pour ses labels (drifté).
 
 **Structure courante (vérifiée par souches/RD, 2026-06-30) :**
-- `Bovis.1` — proto basal est-africain (11 souches).
+- `Bovis.1`, proto basal est-africain (11 souches).
 - couronne `Bovis.2`, trichotomie :
   - `Bovis.2.1` : Af2 est-africain (`Bovis.2.1.1`, 123) + radiation européenne (`Bovis.2.1.2.2.2.2`) + **clade
     vaccinal BCG = `Bovis.2.1.2.2.2.1`** (722, RD1-délété à 100 % ; sœur sauvage RD1-intacte `Bovis.2.1.2.2.2.2`).
@@ -387,7 +372,7 @@ files in the `data/` subdirectory.
 
 ---
 
-#### [HISTORIQUE pré-22-juin, 2026-05-16] Subdivision pectinée `s2.X.Y.Z` — annotations biologiques valides, labels PÉRIMÉS
+#### [HISTORIQUE pré-22-juin, 2026-05-16] Subdivision pectinée `s2.X.Y.Z` : annotations biologiques valides, labels PÉRIMÉS
 
 Nomenclature historique (convention : `.1` = clade émergent basal, `.2` = continuation pectinée). À lire pour les
 associations hôte/géo, pas pour les labels (cf. bannière ci-dessus) :
@@ -447,17 +432,17 @@ et basales Espagne→France post-médiévale.
 
 **Pour identifier une souche Bovis (méthode COURANTE 2026-06-30)** : utiliser `barcode_complete.tsv` (marqueurs SPDI
 exclusifs, régénéré) + RD via `report.json`/`large_rd` pour les clades RD-définis (BCG = RD1-délété). Les markers
-`Bovis_full/data/markers_v2/Bovis2_*.txt` sont PÉRIMÉS (pré-22-juin) — ne plus les utiliser pour classer. 
+`Bovis_full/data/markers_v2/Bovis2_*.txt` sont PÉRIMÉS (pré-22-juin), ne plus les utiliser pour classer. 
 
 **Voir aussi** : skill [[pectinated-subclade-mining]] pour la méthodo
 de subdivision, mémoire utilisateur `project_bovis_taxonomy.md`
 (1100+ lignes documentation complète).
 
-### L4.9 — inverse-marker detection
+### L4.9 : inverse-marker detection
 
 L4.9 contains H37Rv, which is the reference genome. Because every SPDI
 is defined relative to H37Rv, **L4.9 strains have no positive defining
-marker** — their own lineage-specific variants become the reference
+marker**, their own lineage-specific variants become the reference
 state and disappear from the SPDI list. The solution is **inverse
 markers**: 57 pan-MTBC positions (present in all other lineages AND
 Canettii) whose **absence** defines L4.9.
@@ -478,7 +463,7 @@ Canettii) whose **absence** defines L4.9.
   (`-NC_000962.3:1759251:G:T`, dnaK A58A) is itself an absence
   criterion that misclassifies 2 464 non-L4.9 L4 strains.
 
-### PGG — Principal Genetic Group (operational SPDI rule)
+### PGG : Principal Genetic Group (operational SPDI rule)
 
 The PGG is determined by the presence/absence of exactly **two SPDIs**
 in a sample's `spdi.txt`, relative to the H37Rv reference:
@@ -509,7 +494,7 @@ PGG1 (L+T) → PGG2 (R+T, katG changes first) → PGG3 (R+S, then gyrA)
 **Command**: `pgg` (reference display) or `pgg <spdi.txt>` (computation).
 The command simply greps for the two SPDIs and applies the table above.
 
-### L4.10 — combinatorial criterion with PGG link
+### L4.10 : combinatorial criterion with PGG link
 
 L4.10 is **not** definable by a single positive marker. The entries in
 `lignees.py` split across 2 locations and combine presence AND
@@ -529,16 +514,16 @@ Line 3009–3011 (additional absence conditions):
 A sample is L4.10 **only if all five conditions hold simultaneously**.
 Position `7584` is very likely the `gyrA` codon-95 SNP, which links
 L4.10 directly to the **Principal Genetic Group** (PGG) classification
-from Sreevatsan 1997 — the absence condition means the sample is on
+from Sreevatsan 1997, the absence condition means the sample is on
 the ancestral Thr95 state.
 
 - **Command** : `is-l4.10 <spdi.txt | report.json>`.
 - **Related** : `pgg` command displays the PGG reference table
   (`data/PGG_markers.tsv`). A full PGG computation is **not** wired
-  yet — the katG463 position is approximate and needs verification
+  yet, the katG463 position is approximate and needs verification
   before firm use.
 
-### IS6110 — MTBC sensu lato detection
+### IS6110 : MTBC sensu lato detection
 
 TBannotator indexes all *Mycobacterium*, not just the MTBC complex.
 When the research question concerns the MTBC **and its emergence** (so
@@ -563,7 +548,7 @@ mycobacteria.
 L8 is the most basal MTBC lineage. Together with *M. canettii*, it
 retains several **ancestral genomic features** that were lost in the
 modern MTBC radiation (L1–L7, L9, L10). This provides an independent
-phylogenetic signal — a sample carrying an intact `cobF`, full-length
+phylogenetic signal, a sample carrying an intact `cobF`, full-length
 `PPE50`, `pknH` island or split adenylate cyclase is **basal** and
 most likely L8 or *M. canettii*, not modern MTBC.
 
@@ -577,7 +562,7 @@ most likely L8 or *M. canettii*, not modern MTBC.
   - `TbD1_region` (mycosine transport, deleted in L2/L3/L4)
   - `Rv3728_canettii_shared` SNP (single variant shared with 54.8% of
     Canettii)
-- **Command** : `ancestral-signature <report.json>` — currently
+- **Command** : `ancestral-signature <report.json>`, currently
   displays the reference table and asks for coverage-level data; a
   fully automated check requires reading coverage over these regions
   (methodology documented in `mtbc/L8/l8_results_draft.md`).
@@ -612,12 +597,12 @@ upstream versions change. Current upstream sources :
 
 1. **Parse** the lineage code (normalise variants like `L4.9` vs `4.9`).
    For an **active-cycle clade** (L1.\*, Bovis1.\*, BCG.\*, deep L6), check
-   `bdd/actuelle` + `barcode_complete.tsv` first — `lignees.py` is stale there.
+   `bdd/actuelle` + `barcode_complete.tsv` first, `lignees.py` is stale there.
 2. **Search `lignees["moi"]` first** (for stable major lineages). If found, return :
    - lineage code
    - defining SPDI (from `lignees.py` marker bank)
    - parent (computed by walking the dotted code, e.g. `4.9.1` → `4.9`)
-   - optional enrichment (strain count) — clearly labelled as "enrichment",
+   - optional enrichment (strain count), clearly labelled as "enrichment",
      read from `barcode_complete.tsv`, never `snp_barcoding.csv`.
    - Source tag : `Source: lignees.py ["moi"] (Guyeux marker bank, loaded YYYY-MM-DD HH:MM; verify against bdd/actuelle for active clades)`.
 3. **If not in `"moi"`** and no `--system` flag : scan all other systems
@@ -655,7 +640,7 @@ in the requested system's list.
 ## Mode `system <name>`
 
 Print all `(lineage_code, defining_SPDI)` tuples for a given system.
-Systems are whatever keys exist in the live `lignees.py` — no hard-coded
+Systems are whatever keys exist in the live `lignees.py`, no hard-coded
 whitelist. Aliases : `moi` == `guyeux`.
 
 ## Mode `compare <lineage> <system1> <system2> [...]`
@@ -674,14 +659,18 @@ size, geographic scope, methodology summary, original PDF location.
 
 | File | Source |
 |------|--------|
-| `Coll_2014.md` | Coll et al., Nature Communications 2014 — 62-SNP barcode |
-| `Stucki_2016.md` | Stucki et al., Nature Genetics 2016 — L4 sub-lineages |
-| `Freschi_2021.md` | Freschi et al., Nature Communications 2021 — population structure |
-| `Napier_2020.md` | Napier et al., Genome Medicine 2020 — robust barcoding |
+| `Coll_2014.md` | Coll et al., Nature Communications 2014, barcode 62 SNP |
+| `Stucki_2016.md` | Stucki et al., Nature Genetics 2016 : L4 sub-lineages |
+| `Freschi_2021.md` | Freschi et al., Nature Communications 2021, population structure |
+| `Napier_2020.md` | Napier et al., Genome Medicine 2020, robust barcoding |
 | `INDEX.md` | Index of all reference notes |
 
 These notes are **never** a source of truth for SPDIs or lineage codes.
 Use them only for citation, context, and reading the original PDFs.
+
+Once a candidate citation is in hand, also consider the `tbmonitor-papers`
+skill : it confirms the paper's title, authors, journal and DOI in
+sub-second time against the pre-indexed PubMed TB corpus (~190k abstracts).
 
 ## Loading policy
 
@@ -705,14 +694,14 @@ Lineage definitions are the foundation of every MTBC analysis. Multiple
 classification systems coexist (Coll, Napier, Freschi, Stucki,
 Coscolla, Shitikov, ...), each with its own naming conventions, marker
 SPDIs, and hierarchical depth. The user maintains an evolving personal
-classification (`"moi"` = Guyeux = `Senelle` in TBannotator). The
+classification (`"moi"` = Guyeux = `guyeux` in TBannotator, renamed from `Senelle` on 2026-07-31). The
 **newest lineages, reclassifications and corrections now live in
 `bdd/actuelle` and its derived registry `barcode_complete.tsv`**, produced
 by the multi-signal cycle (`lineage-cycle`); `lignees.py` key `"moi"` is a
 **marker bank that lags** them (frozen 2026-05-15). TBannotator stores a
-`Senelle` snapshot that drifts; `snp_barcoding.csv` / `strain_lineages.csv`
+`guyeux` (ex-`Senelle`) snapshot that drifts; `snp_barcoding.csv` / `strain_lineages.csv`
 are obsolete; published taxonomies are frozen at publication time. This
 skill enforces the precedence fixed in `SOURCES_OF_TRUTH.md`: **bdd/actuelle
 + barcode_complete.tsv first; lignees.py "moi" as a marker bank (verified for
-active clades); TBannotator Senelle snapshot; reference notes for citation
+active clades); TBannotator `guyeux` (ex-Senelle) snapshot; reference notes for citation
 only; obsolete CSVs never**.

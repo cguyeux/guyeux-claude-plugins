@@ -1,30 +1,25 @@
 ---
 name: mbovis
 description: >-
-  Academic research database client for M. bovis and animal MTBC spoligotyping.
-  Queries mbovis.org (the international Spoligo Bovis reference database) for
-  SB number assignments from peer-reviewed published isolates, format conversions
-  (BIN/OCT/HEX), and geographic distribution of animal MTBC spoligotype profiles
-  (M. bovis, M. caprae, M. pinnipedii, M. orygis, M. microti, and other animal hosts).
-  Guyeux group (FEMTO-ST) use case: assigning SB numbers to bovine TB isolates,
-  cross-referencing animal-reservoir spoligotypes with human MTBC data from
-  SITVIT2 ([[sitvitweb]]), identifying clonal complexes (Eu1, Eu2, Af1, Af2).
+  Academic research database client (Guyeux group, FEMTO-ST, peer-reviewed
+  research) for mbovis.org, the Spoligo Bovis (SB) reference database for animal
+  MTBC spoligotypes: SB assignment (M. bovis, M. caprae, M. pinnipedii,
+  M. orygis, M. microti), BIN/OCT/HEX conversion, clonal complexes
+  Eu1/Eu2/Af1/Af2, cross-reference with SITVIT2 ([[sitvitweb]]).
 
-  Use when: converting a M. bovis spoligotype pattern to its SB number, looking
-  up a known SB profile (SB0001..SB2902+), downloading the full SB reference
-  database, querying strains by country, or identifying the clonal complex of
-  an animal MTBC isolate.
+  Use when: pattern to SB number, SB0001..SB2902+ lookup, full DB download,
+  profiles by country.
 argument-hint: "<SB number, BIN/OCT/HEX spoligotype, ou pays>"
 user-invocable: true
 ---
 
-# mbovis.org — Spoligo Bovis (SB) Database Guide
+# mbovis.org : Spoligo Bovis (SB) Database Guide
 
 ## Vue d'ensemble
 
 mbovis.org est la base de données internationale de référence pour la nomination
 des profils de spoligotype issus de souches du complexe MTBC d'origine animale.
-Elle attribue des **numéros SB** (Spoligo Bovis) — identifiants uniques pour
+Elle attribue des **numéros SB** (Spoligo Bovis), identifiants uniques pour
 chaque profil de 43 espaceurs distinct.
 
 | Métrique | Valeur (mai 2026) |
@@ -113,7 +108,7 @@ spécifiques visibles dans le spoligotype (Smith et al. 2011, Berg et al. 2011) 
 
 > [!NOTE]
 > Un 5e complex (European 3) est parfois décrit dans la littérature récente.
-> Eu2 n'a pas de signature spoligotype unique — son identification requiert
+> Eu2 n'a pas de signature spoligotype unique, son identification requiert
 > le génotypage du gène *guaA* ou le WGS.
 
 ---
@@ -272,7 +267,7 @@ Si un pattern ne matche aucun SB existant (réponse "No match found") :
 - **Résolution faible** : convergence évolutive fréquente (même profil SB par pertes indépendantes de spacers dans des lignées différentes). Compléter avec MIRU-VNTR 24-loci ou WGS pour la discrimination fine.
 - **Eu2 invisible** : son marqueur (SNP *guaA*) n'est pas détectable par spoligotypage. L'assignation au complex Eu2 nécessite un génotypage ciblé ou le WGS.
 - **Absence ≠ délétion** : la PCR peut rater un spacer (faux négatif) si la qualité du DNA est mauvaise ou si la souche est en mélange.
-- **À ne pas confondre avec SITVIT2** : les SIT numbers (SITVIT2, [[sitvitweb]]) sont distincts des SB numbers. Un même profil peut avoir un SIT et un SB — les deux bases utilisent des nomenclatures indépendantes.
+- **À ne pas confondre avec SITVIT2** : les SIT numbers (SITVIT2, [[sitvitweb]]) sont distincts des SB numbers. Un même profil peut avoir un SIT et un SB, les deux bases utilisent des nomenclatures indépendantes.
 
 ---
 
@@ -293,11 +288,11 @@ Les deux nomenclatures sont indépendantes et complémentaires.
 
 ## Cross-références avec d'autres skills
 
-- [[sitvitweb]] — Spoligotypes MTBC humain (SITVIT2, SIT numbers, clades Beijing/LAM/T)
-- [[tbannotator-mcp]] — Vue `mv_strain_metadata` contient les champs `spol43` et `spol98`
-- [[mtbc-lineages]] — Lignages SNP-based (L1-L9) complémentaires du spoligotypage
-- [[phylogeography]] — Analyse phylogéographique combinant spoligotypes et SNPs
-- [[ncbi-pathogen-detection]] — Isolats MTBC déposés avec métadonnées de spoligotypage
+- [[sitvitweb]] : Spoligotypes MTBC humain (SITVIT2, SIT numbers, clades Beijing/LAM/T)
+- [[tbannotator-mcp]] : Vue `mv_strain_metadata` contient les champs `spol43` et `spol98`
+- [[mtbc-lineages]] : Lignages SNP-based (L1-L9) complémentaires du spoligotypage
+- [[phylogeography]] : Analyse phylogéographique combinant spoligotypes et SNPs
+- [[ncbi-pathogen-detection]] : Isolats MTBC déposés avec métadonnées de spoligotypage
 
 ---
 

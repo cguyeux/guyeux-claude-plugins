@@ -1,31 +1,33 @@
 ---
 name: pectinated-subclade-mining
 description: >-
-  Methodologie pour extraire iterativement les sous-lignees pectinees au sein
-  d'une lignee MTBC (ou autre bacterie clonale) en utilisant les SPDI core
-  presents dans le sous-clade candidat et absents dans les autres sous-clades
-  et lignees externes proches. Utilise les fichiers spdi.txt directement sur
-  disque (filesystem-based, pas de SQL), filtre PER-POOL (jamais global) pour
-  garantir l'exclusivite, et produit un repertoire dedie par sous-clade avec
-  son fichier de markers TSV.
+  Extraction iterative des sous-lignees pectinees d'une lignee MTBC (ou autre
+  bacterie clonale) via les SPDI core exclusifs du sous-clade. Lit les spdi.txt
+  sur disque, filtre PER-POOL (jamais global), produit un repertoire par
+  sous-clade avec ses markers.
 
-  Utiliser quand : on observe une topologie pectinee dans un arbre phylogenetique
-  RAxML focalise et qu'on veut extraire iterativement les sous-clades pour
-  raffiner la taxonomie ; quand on suspecte qu'un clade trop heterogene contient
-  plusieurs sous-lineages distinctes ; quand on veut produire un classifier
-  SPDI-based pour reclasser des souches en attente (a_ranger).
+  Utiliser quand : topologie pectinee dans un arbre RAxML focalise, clade trop
+  heterogene, classifier SPDI pour reclasser des souches en attente (a_ranger).
 
 argument-hint: "<clade_parent> <sous_clade_name> <list.txt>"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 ---
 
-# pectinated-subclade-mining — Extraction iterative de sous-lignees MTBC
+# pectinated-subclade-mining : Extraction iterative de sous-lignees MTBC
 
 ## Quand l'utiliser
 
 Apres avoir construit un arbre RAxML focalise sur une lignee, on observe
-visuellement des sous-clades emergents. Pour chaque candidat, ce skill :
+visuellement des sous-clades emergents. Cas typiques : raffiner la taxonomie
+d'une lignee pectinee, trancher si un clade trop heterogene contient plusieurs
+sous-lignees distinctes, produire un classifier SPDI-based pour reclasser les
+souches en attente (`a_ranger`).
+
+Le test de synapomorphismes lit les `spdi.txt` **directement sur disque**
+(filesystem-based, pas de SQL) ; TBannotator n'intervient que pour les metadata.
+
+Pour chaque candidat, ce skill :
 1. Verifie les **synapomorphismes SPDI** (presence >=95% dans le candidat,
    absence <=5% partout ailleurs avec **filtre per-pool strict**)
 2. Recupere les **metadata** geo-hote depuis TBannotator
@@ -73,7 +75,7 @@ Stocker chaque liste dans `/tmp/cand_<name>.txt` (un SRA par ligne).
 Script reference : `scripts/find_synapomorphisms.py`
 
 ```bash
-python3 ~/docs/codes/claude_plugins/bio/skills/pectinated-subclade-mining/scripts/find_synapomorphisms.py \
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/pectinated-subclade-mining/scripts/find_synapomorphisms.py \
   --candidates /tmp/cand_X.txt \
   --candidate-current-dir <Bovis1.2.2> \
   --bdd /home/christophe/docs/codes/mtbc/bdd/actuelle \
@@ -124,9 +126,9 @@ Apres extraction, verifier qu'aucune souche n'est mieux classee ailleurs :
 
 ## Seuils typiques
 
-- **Strict (defaut)** : t_in=0.95, t_out=0.05 — pour sous-lignees etablies
-- **Relax** : t_in=0.85, t_out=0.10 — pour sous-lignees recentes/clonales
-- **Tres relax** : t_in=0.70, t_out=0.20 — derniere chance, prudent
+- **Strict (defaut)** : t_in=0.95, t_out=0.05, pour sous-lignees etablies
+- **Relax** : t_in=0.85, t_out=0.10, pour sous-lignees recentes/clonales
+- **Tres relax** : t_in=0.70, t_out=0.20, derniere chance, prudent
 
 Si meme a t_in=0.70 t_out=0.20 on a 0 synapomorphismes, **ne pas extraire**
 le sous-clade : il n'est pas synapomorphiquement distinct. Les sous-divisions

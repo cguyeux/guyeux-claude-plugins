@@ -1,7 +1,7 @@
 ---
 name: seshat
 description: >-
-  Query Seshat: Global History Databank — the reference quantitative historical
+  Query Seshat: Global History Databank, the reference quantitative historical
   database of ~400 polities from the Neolithic to ~1900 CE, covering social
   complexity, warfare, religion, agriculture, and crisis/collapse events.
   Provides the polity-level quantitative scaffold needed to test hypotheses
@@ -16,7 +16,7 @@ description: >-
   complexity.
 ---
 
-# Seshat — Global History Databank for Quantitative History
+# Seshat : Global History Databank for Quantitative History
 
 ## Overview
 
@@ -46,7 +46,7 @@ empires, chiefdoms) covering a temporal range from the **Neolithic
 - **Data releases on GitHub** (mirror): `https://github.com/datasets/seshat`
 - **License**: **CC BY-NC-SA 4.0** (non-commercial, share-alike) for data.
   Note: the GitHub mirror README flags a "license-confused" situation
-  between CC Zero and CC BY-NC-SA — for safety, treat all data as
+  between CC Zero and CC BY-NC-SA, for safety, treat all data as
   **CC BY-NC-SA** unless a specific release says otherwise.
 
 > [!NOTE]
@@ -54,7 +54,7 @@ empires, chiefdoms) covering a temporal range from the **Neolithic
 > to access Seshat for analysis is to download a **periodic snapshot**
 > (Excel / CSV) that corresponds to a published article, so that your
 > analysis is reproducible and version-pinned. Do not invent API endpoints
-> — consult the downloads page instead.
+>, consult the downloads page instead.
 
 ## Client (resilient, tool-first)
 
@@ -105,7 +105,7 @@ real header so you can add a candidate in `schema.py`.
 
 ## Why it matters for MTBC × anthropology
 
-Human-adapted MTBC lineages require **sustained host density** to persist —
+Human-adapted MTBC lineages require **sustained host density** to persist,
 this is a textbook epidemiological fact. What Seshat adds is a **quantitative
 historical scaffold** to test specific claims about when and where density
 thresholds were crossed, and to anchor TB narratives in concrete cliodynamics
@@ -126,10 +126,10 @@ Three concrete uses:
    temporally around polity-level crises.
 3. **Warfare & mass mobility (MilTech).** Seshat codes military organisation
    and troop movements. This is a quantitative proxy for pathogen dispersal
-   pathways in the pre-modern world — complementary to `orbis` for the
+   pathways in the pre-modern world, complementary to `orbis` for the
    Roman window and `slavevoyages` for the trans-Atlantic window.
 
-Unlike `d-place` (which is ethnographic present), Seshat is **diachronic** —
+Unlike `d-place` (which is ethnographic present), Seshat is **diachronic**,
 it codes each polity at multiple time-slices, so you can follow a given NGA
 (say, Upper Egypt) from ~3000 BCE to 1900 CE.
 
@@ -164,7 +164,7 @@ categories plus CrisisDB:
 ### Value / record
 The atomic data unit: a triple of (polity, variable, time-slice) plus a
 coded value, confidence flag, and a prose note with references. Seshat
-is **source-tracked** — every coded value carries its bibliographic
+is **source-tracked**, every coded value carries its bibliographic
 justification.
 
 Volumes (as publicly reported): **~400 polities**, **~300,000 records**,
@@ -173,7 +173,7 @@ snapshot).
 
 ## Data access
 
-### Option A — Downloads page (recommended for reproducibility)
+### Option A : Downloads page (recommended for reproducibility)
 
 1. Go to `https://seshat-db.com/downloads_page/`
 2. Download the snapshot corresponding to a specific publication, or the
@@ -192,7 +192,7 @@ Key files on the GitHub mirror `datasets/seshat`:
 | `mr_dataset.04.2021.csv` | Moralizing Religion | CSV |
 | `CrisisConsequencesData_NavigatingPolycrisis_2023.03.csv` | CrisisDB | CSV |
 
-### Option B — GitHub mirror
+### Option B : GitHub mirror
 
 ```bash
 git clone https://github.com/datasets/seshat.git
@@ -201,7 +201,7 @@ git clone https://github.com/datasets/seshat.git
 This gives you all the snapshots above in one place, pinned by commit hash
 for reproducibility.
 
-### Option C — Web API (limited, experimental)
+### Option C : Web API (limited, experimental)
 
 Some endpoints are exposed at `https://seshat-db.com/api/`. Use with care:
 pagination, versioning, and authentication rules may change, and the
@@ -213,11 +213,11 @@ API is not the canonical reproducible access path.
 > hand-rolled pandas below; the snippets illustrate the underlying logic and the
 > joins/CrisisDB steps the client does not (yet) cover.
 
-### Workflow 1 — Density threshold for human-adapted TB persistence
+### Workflow 1 : Density threshold for human-adapted TB persistence
 
 Goal: for each NGA, extract the time series of `Polity Population` and
 `Capital Population`, and identify the first crossing of a threshold
-(e.g. ~500 k for sustained TB transmission chains — this number is
+(e.g. ~500 k for sustained TB transmission chains, this number is
 illustrative, use the epidemiological literature you actually cite).
 
 ```python
@@ -241,7 +241,7 @@ print(first[["Polity","start_year","value_mid"]])
 Overlay the result with the emergence / radiation dates of human-adapted
 MTBC sublineages from TBannotator.
 
-### Workflow 2 — Crises and epidemic windows (CrisisDB)
+### Workflow 2 : Crises and epidemic windows (CrisisDB)
 
 Goal: check whether ancient pathogen samples (from
 `spaam-ancient-metagenome-dir`) cluster temporally around polity-level
@@ -262,7 +262,7 @@ spaam["year_ce"] = 1950 - spaam["sample_age"]
 # (pseudo-code — adjust to the actual schemas of each file)
 ```
 
-### Workflow 3 — Warfare and long-distance pathogen dispersal
+### Workflow 3 : Warfare and long-distance pathogen dispersal
 
 Goal: test whether the timing of a TB lineage's geographic expansion
 coincides with campaigns of a given polity that Seshat codes as having
@@ -276,9 +276,9 @@ professional standing armies and long-range logistics.
    maximal mobilisation capacity of polity Y, consistent with
    army-mediated dispersal."*
 
-### Workflow 4 — Cross-reference NGAs with MTBC lineage distributions
+### Workflow 4 : Cross-reference NGAs with MTBC lineage distributions
 
-Seshat NGAs are geographic cells — assign each TB sampling location to
+Seshat NGAs are geographic cells, assign each TB sampling location to
 its nearest NGA and bring in the Seshat variables at the right time-slice.
 
 ```python
@@ -292,26 +292,26 @@ tb["nga"] = nga_coords.iloc[tree.query(tb[["lat","lon"]].values, k=1)[1]]["NGA"]
 # Now each TB sample has an NGA — join to Seshat polity variables
 ```
 
-### Workflow 5 — Controlling for historical non-independence
+### Workflow 5 : Controlling for historical non-independence
 
 Polities in the same NGA across time are not independent, and polities
 linked by dynastic succession are even less so. Seshat provides explicit
-`predecessors` and `successors` fields to build polity genealogies — use
+`predecessors` and `successors` fields to build polity genealogies, use
 these as random-effect structure in mixed models, analogous to how
 `d-place` Bayesian phylogenies are used for cross-cultural analyses.
 
 ## When NOT to use
 
-- **Pathogen data** — Seshat is political/cultural history; epidemics appear only
+- **Pathogen data** : Seshat is political/cultural history; epidemics appear only
   indirectly (CrisisDB consequences, narrative notes). For pathogen genomes use
   `aadr` (host), `spaam-ancient-metagenome-dir`, `enterobase`, or the primary
   literature.
-- **Ethnographic present / cross-cultural traits** — that is `d-place` (and its
+- **Ethnographic present / cross-cultural traits**, that is `d-place` (and its
   Ethnographic-Atlas codes); Seshat is diachronic polity-level coding.
-- **Roman-world mobility distances** — use `orbis` for the network / Dijkstra
+- **Roman-world mobility distances**, use `orbis` for the network / Dijkstra
   costs; Seshat gives the polity-level scaffold, not the route graph.
-- **Admixture / `.geno`** — unrelated; that is `aadr` + ADMIXTOOLS.
-- **Moralizing-gods variables** — read the Whitehouse 2019 critique / correction
+- **Admixture / `.geno`**, unrelated; that is `aadr` + ADMIXTOOLS.
+- **Moralizing-gods variables**, read the Whitehouse 2019 critique / correction
   literature first (see below) before building an argument on them.
 
 ## Caveats
@@ -331,7 +331,7 @@ these as random-effect structure in mixed models, analogous to how
 - **Point estimates with wide intervals.** Many numeric variables (e.g.
   polity population) are coded as `[value_from, value_to]` intervals
   reflecting the coders' uncertainty. Always propagate this uncertainty
-  into your downstream analyses — do not just take the midpoint.
+  into your downstream analyses, do not just take the midpoint.
 - **License is restrictive.** CC BY-NC-SA 4.0 forbids commercial use and
   requires share-alike derivatives. If the "license-confused" flag on
   the GitHub mirror matters for your use case, clarify with the Seshat
@@ -347,12 +347,12 @@ these as random-effect structure in mixed models, analogous to how
 |---|---|
 | **`d-place`** | Ethnographic cross-sectional counterpart (present-day snapshot vs Seshat's diachronic coverage) |
 | **`glottolog`** | Language identifiers for the populations living in Seshat NGAs |
-| **`aadr`** | Ancient human genomes from polity territories — joinable via NGA + date window |
+| **`aadr`** | Ancient human genomes from polity territories, joinable via NGA + date window |
 | **`spaam-ancient-metagenome-dir`** | Ancient pathogen samples to overlay on polity timelines |
 | **`enterobase`** | *Y. pestis* historical phylogeny to align with Seshat crisis events |
 | **`orbis`** | Roman-world network model (quantitative mobility) complements Seshat Roman polity data |
 | **`p3k14c`** | Archaeological radiocarbon chronology for polities before written records |
-| **`slavevoyages`** | Post-1500 population movements — downstream of Seshat's window |
+| **`slavevoyages`** | Post-1500 population movements, downstream of Seshat's window |
 | **TBannotator MCP** | Modern TB lineage geography + TMRCA for matching against polity timelines |
 
 ## Citations

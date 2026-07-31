@@ -1,6 +1,12 @@
 ---
 name: overleaf-bridge
-description: Synchronise a local article/ repository with an Overleaf project through Overleaf's official Git integration (git-bridge, git.overleaf.com). Deposit a new manuscript, pull the latest co-author edits, view the diff, and collect co-author comments left in the .tex for processing. Standard git on the official remote — no MCP server, no unofficial API, no scraping.
+description: >-
+  Synchronise a local article/ repository with an Overleaf project through Overleaf's
+  official Git integration (git-bridge, git.overleaf.com). Use when the user wants to push a
+  manuscript to Overleaf, pull co-author edits back into the local repo, see what changed
+  since the last sync, resolve a divergence between the two, or collect comments left by co-
+  authors in the .tex. Standard git on the official remote: no MCP server, no unofficial
+  API, no scraping.
 user_invocable: true
 invocation: /overleaf-bridge
 ---

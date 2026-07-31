@@ -16,7 +16,7 @@ description: >-
   simulation-based-inference baseline before a full coalescent (msprime/SLiM) study.
 ---
 
-# ABC-XGBoost — selection inference for allele-frequency trajectories
+# ABC-XGBoost : selection inference for allele-frequency trajectories
 
 ## Overview
 
@@ -66,7 +66,7 @@ simulate_dataset, fit_regressor, abc_reject, shap_top`.
 - `s_point_estimate` and the ABC `s_median` should agree; a wide `abc_posterior`
   interval means s is weakly identified by these data.
 - `shap_top` names the informative summaries (typically the early/mid frequencies and
-  the steepest inter-bin drop) — report them so the inference is not a black box.
+  the steepest inter-bin drop), report them so the inference is not a black box.
 
 ## Important caveats
 
@@ -79,7 +79,7 @@ simulate_dataset, fit_regressor, abc_reject, shap_top`.
   is real; widen the prior on `Ne` and report the scenario comparison, not just a point.
 - **Wright-Fisher, not coalescent.** This is allele-frequency-trajectory inference, a
   fast baseline. For genealogy-based summary statistics or linked selection, move to a
-  coalescent/forward simulator (msprime / SLiM) — this skill is the quick first pass.
+  coalescent/forward simulator (msprime / SLiM), this skill is the quick first pass.
 
 ## Integration with other skills
 

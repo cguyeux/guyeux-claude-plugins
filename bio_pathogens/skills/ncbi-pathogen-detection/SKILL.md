@@ -18,7 +18,7 @@ description: >-
   for a peer-reviewed study.
 ---
 
-# NCBI Pathogen Detection — Cluster-based Pathogen Surveillance
+# NCBI Pathogen Detection : Cluster-based Pathogen Surveillance
 
 ## Overview
 
@@ -37,10 +37,10 @@ WGS data daily, runs a comparative pipeline, and publishes **SNP clusters**
 - **Host**: NCBI / NIH (USA)
 - **Data sources**: US CDC, FDA, USDA, public-health labs, plus
   international contributions
-- **License**: NCBI public data — free to use with attribution
+- **License**: NCBI public data, free to use with attribution
 
 > [!NOTE]
-> The system is focused on **modern** isolates — it ingests new WGS data
+> The system is focused on **modern** isolates, it ingests new WGS data
 > from ongoing surveillance. It is **not** a catalogue of ancient
 > pathogen genomes. For ancient TB / *Y. pestis* use
 > `spaam-ancient-metagenome-dir` or `aadr` instead.
@@ -100,7 +100,7 @@ Strongest coverage:
 
 ## Data access
 
-### Option A — Isolates Browser (web UI)
+### Option A : Isolates Browser (web UI)
 
 1. Go to `https://www.ncbi.nlm.nih.gov/pathogens/isolates/`
 2. Select a pathogen scope (e.g. *Mycobacterium tuberculosis*)
@@ -110,7 +110,7 @@ Strongest coverage:
    interactive Tree Viewer
 5. Export selected isolates as TSV
 
-### Option B — Bulk FTP dumps
+### Option B : Bulk FTP dumps
 
 NCBI Pathogen Detection publishes daily snapshots via FTP:
 
@@ -141,20 +141,20 @@ Each pathogen directory contains:
 
 Pin the snapshot date for reproducibility.
 
-### Option C — NCBI Datasets API
+### Option C : NCBI Datasets API
 
 The broader NCBI Datasets API (`api.ncbi.nlm.nih.gov/datasets/v2/`)
 exposes many fields from the Pathogen Detection workflow. Useful for
 programmatic bulk retrieval, though the primary access path remains the
 FTP dumps.
 
-### Option D — SNP cluster trees (output formats)
+### Option D : SNP cluster trees (output formats)
 
 From the tree viewer on the Isolates Browser:
 
-- **Newick** (`.newick`) — standard phylogenetic format
-- **ASN.1** (`.asn`) — loadable in NCBI Genome Workbench
-- **PDF** — static rendering for publication figures
+- **Newick** (`.newick`), standard phylogenetic format
+- **ASN.1** (`.asn`), loadable in NCBI Genome Workbench
+- **PDF**, static rendering for publication figures
 
 ## Parallel calls
 
@@ -166,7 +166,7 @@ bottleneck for this skill.
 
 ## Workflows
 
-### Workflow 1 — Pull the latest *M. tuberculosis* snapshot
+### Workflow 1 : Pull the latest *M. tuberculosis* snapshot
 
 ```bash
 mkdir -p ~/data/ncbi_pathogen/mtb && cd ~/data/ncbi_pathogen/mtb
@@ -192,7 +192,7 @@ print(meta.columns.tolist())
 # isolation_source, host, ...
 ```
 
-### Workflow 2 — Cross-reference with AMR gene content
+### Workflow 2 : Cross-reference with AMR gene content
 
 ```python
 amr = pd.read_csv("PDG*.amr.metadata.tsv", sep="\t", low_memory=False)
@@ -207,7 +207,7 @@ For MTBC, standard AMR genes tracked include `rpoB` (rifampicin),
 (fluoroquinolones), etc. The snapshot gives you a **pre-computed
 resistance profile** that can inform lineage-level comparisons.
 
-### Workflow 3 — Cluster look-up for an outbreak
+### Workflow 3 : Cluster look-up for an outbreak
 
 Given a known isolate of interest, find its PDS cluster and the other
 members:
@@ -223,7 +223,7 @@ print(cluster_members[["Isolate","geo_loc_name","collection_date",
 Then download the Newick file for the cluster to visualise the tree
 locally.
 
-### Workflow 4 — Compare NCBI PDS clusters with EnteroBase HierCC
+### Workflow 4 : Compare NCBI PDS clusters with EnteroBase HierCC
 
 For enteric pathogens (*Salmonella*, *E. coli*, *Vibrio*, etc.), the
 same biosamples are often typed in both systems. Cross-referencing
@@ -262,9 +262,9 @@ a surveillance signal across two independent pipelines:
 
 | Tool | Purpose |
 |---|---|
-| **`enterobase`** | cgMLST/HierCC typing — cross-validate PDS clusters |
+| **`enterobase`** | cgMLST/HierCC typing, cross-validate PDS clusters |
 | **`pathogens-portal`** | European counterpart (ENA-backed) |
-| **`spaam-ancient-metagenome-dir`** | Ancient samples — complementary historical layer |
+| **`spaam-ancient-metagenome-dir`** | Ancient samples, complementary historical layer |
 | **`bacdive`** | Phenotypic metadata for strains typed here |
 | **TBannotator MCP** | MTBC lineage typing, complementary to NCBI's per-isolate calls |
 | **AMRFinderPlus** | NCBI's AMR reference pipeline (upstream of the AMR calls in this portal) |

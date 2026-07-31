@@ -1,29 +1,23 @@
 ---
 name: domestication-pathways
 description: >-
-  Aggregate and format domestication centres, dispersal routes, and Neolithic
-  transition data for co-evolution studies with the M. tuberculosis complex.
-  Wraps four families of open-data sources : zooarchaeology (ABMAP, AADR
-  animal subset), archaeobotany (ADEMNES, BRAIN), ancient human DNA (AADR),
-  and global radiocarbon (p3k14c, CONTEXT, AgriChange). Includes curated
-  tables of origin centres (Fertile Crescent, Indus, Yangtze, Sahel,
-  Mesoamerica, Andes, New Guinea, Ethiopia, Green Sahara, Amazonia), dispersal
-  routes (LBK, Cardial, Bantu, Steppe, Austronesian, Lapita, Trans-Saharan,
-  trans-Atlantic / Columbian Exchange), and timeline events linked to MTBC
-  emergence and lineage dispersal.
-
-  Use when : building the co-evolutionary background of M. bovis, M. caprae,
-  M. orygis (animal hosts) ; cadrer l'émergence de M. tuberculosis sensu
-  stricto à partir d'un ancêtre M. canettii-like via la sédentarisation
-  néolithique ; relating MTBC TMRCA to documented agricultural transitions ;
-  preparing figures linking livestock dispersal to MTBC zoonotic lineages ;
-  or supplementing the migration-data skill with the animal/plant component.
+  Aggregate domestication centres, dispersal routes and Neolithic transition data for
+  coevolution studies with the M. tuberculosis complex. Wraps four families of open sources:
+  zooarchaeology (ABMAP, AADR animal subset), archaeobotany (ADEMNES, BRAIN), ancient human
+  DNA (AADR) and global radiocarbon (p3k14c, CONTEXT, AgriChange). Includes curated tables
+  of origin centres (Fertile Crescent, Indus, Yangtze, Sahel, Mesoamerica, Andes, New
+  Guinea, Ethiopia, Green Sahara, Amazonia), dispersal routes (LBK, Cardial, Bantu, Steppe,
+  Austronesian, Lapita, Trans-Saharan, Columbian Exchange) and timeline events linked to
+  MTBC emergence. Use when building the coevolutionary background of M. bovis, M. caprae or
+  M. orygis, framing the emergence of M. tuberculosis sensu stricto from a M. canettii-like
+  ancestor through Neolithic sedentarisation, relating MTBC TMRCA to agricultural
+  transitions, or preparing figures linking livestock dispersal to zoonotic MTBC lineages.
 argument-hint: "<command: centers|routes|timeline|parse|fetch> [options]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebFetch
 ---
 
-# Domestication Pathways — Centres, routes et chronologies pour co-évolution MTBC
+# Domestication Pathways : Centres, routes et chronologies pour co-évolution MTBC
 
 Skill complémentaire à `migration-data` (qui couvre les flux humains avec
 liens MTBC à granularité large) et à `indian-ocean-voyages` (routes maritimes

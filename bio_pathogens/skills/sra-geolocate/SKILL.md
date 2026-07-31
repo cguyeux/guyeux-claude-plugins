@@ -1,26 +1,13 @@
 ---
 name: sra-geolocate
 description: >-
-  Consolidation de l'origine **et de la date** d'une souche SRA, ou
-  construction d'un dataset de SRA correspondant a une zone geographique
-  donnee. Deux cascades paralleles (location + date) puisent dans les
-  memes sources : metadonnees BioSample (geo_loc_name, lat_lon,
-  collection_date), metadonnees BioProject (titre, abstract,
-  submission_date), publications PubMed/Europe PMC liees, supplementary
-  materials des articles (tables S1/S2 par souche), texte integral PDF
-  quand disponible. Chaque resultat est assorti d'un score de confiance
-  et de la source qui l'a produit. Gere les zones non-pays : villes,
-  regions administratives, zones supranationales (Sahel, Maghreb, Corne
-  de l'Afrique), coordonnees x/y. Distingue lieu de **collection** vs
-  lieu de **sequencage**, date de collection vs date de publication.
-
-  Use when: enrichir la metadonnee d'une souche dont `geo_loc_name` ou
-  `collection_date` est vague ou vide, construire une cohorte TB par
-  region (ex. "tuberculose en Franche-Comte"), verifier l'origine et la
-  date revendiquees d'un SRA avant inclusion dans une analyse, detecter
-  des incoherences entre BioSample, BioProject et publications liees,
-  extraire les metadonnees par souche depuis les supplementary
-  materials des articles open access.
+  Consolidation de l'origine geographique et de la date de collecte d'une souche
+  SRA, ou construction d'un dataset de SRA par zone : pays, ville, region,
+  zone supranationale (Sahel, Maghreb, Corne de l'Afrique), coordonnees.
+  Cascade BioSample / BioProject / PubMed / supplementary materials, avec score
+  de confiance et source tracee ; distingue collecte et sequencage.
+  Use when: geo_loc_name ou collection_date vague ou vide, cohorte TB par
+  region, verification d'origine avant inclusion, incoherences entre sources.
 argument-hint: "<SRA | fichier | --zone 'texte'> [--deep] [--with-supp] [--cache /path] [--output file.csv]"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebFetch, WebSearch
 ---
@@ -57,7 +44,7 @@ Les modes partagent le meme moteur d'extraction et le meme cache.
    <liste>` (cf. README du dossier). Raccourci O(BioProjects), pas O(souches).
    **Tables per-strain DÉJÀ consolidées** (à réutiliser avant tout recalcul) :
    `consolidated_geo_<clade>.tsv` pour L1, L2, L3, L4, L5, L6, L7-L10, Bovis,
-   animals_other, Canettii — schéma `strain, lineage, country, country_source,
+   animals_other, Canettii, schéma `strain, lineage, country, country_source,
    date_min, date_max, date_source, flag, bioproject`. Pour (re)consolider une lignée
    ENTIÈRE à l'échelle 10k-80k souches, voir la section **« Mode BULK »** plus bas
    (récupération par marqueur de lignée, pas cascade per-SRA).
@@ -344,7 +331,7 @@ deja ingerees par le pipeline mp. Pour les SRA recemment deposes (non
 encore ingeres -- ex. BioProjects 2024+), le niveau 1 echouera et il
 faudra passer directement au niveau 2 (BioSample XML).
 
-> **Source de vérité taxonomique (cf. `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`)** : dans TBannotator, `system='Senelle'` EST le système maison (= moi/Guyeux), mais c'est un **snapshot** susceptible d'être en retard sur la taxonomie vivante. Pour tout clade récent du cycle multi-signal (L1.\*, Bovis1.\*, BCG.\*, L6 profond), recouper le label avec `bdd/actuelle/` + `barcoding_v2/barcode_complete.tsv`. Ne jamais lire `snp_barcoding.csv` (v1 obsolète) ni `strain_lineages.csv` (périmé) comme référence taxonomique.
+> **Source de vérité taxonomique (cf. `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`)** : dans TBannotator, `system_name='guyeux' (ex-'Senelle')` EST le système maison (= moi/Guyeux), mais c'est un **snapshot** susceptible d'être en retard sur la taxonomie vivante. Pour tout clade récent du cycle multi-signal (L1.\*, Bovis1.\*, BCG.\*, L6 profond), recouper le label avec `bdd/actuelle/` + `barcoding_v2/barcode_complete.tsv`. Ne jamais lire `snp_barcoding.csv` (v1 obsolète) ni `strain_lineages.csv` (périmé) comme référence taxonomique.
 
 ### Niveau 2 -- BioSample XML via NCBI Entrez
 
@@ -397,7 +384,7 @@ Chercher dans ces champs des mentions geographiques. Heuristique :
 - Rien d'exploitable : passer au niveau suivant.
 
 > [!WARNING]
-> **ISOLEMENT vs SÉQUENÇAGE — règle d'or.** Le pays doit etre infere du CONTENU de
+> **ISOLEMENT vs SÉQUENÇAGE, règle d'or.** Le pays doit etre infere du CONTENU de
 > l'etude (titre/abstract = origine des echantillons), JAMAIS de l'INSTITUTION
 > soumettrice (`<Organization>` = lieu de SEQUENCAGE). Un centre comme le Wellcome
 > Sanger Institute, le Broad, l'Institut Pasteur sequence des souches du monde
@@ -409,9 +396,9 @@ Chercher dans ces champs des mentions geographiques. Heuristique :
 > deja basee sur le seul contenu, `org` exclu.)
 
 > [!WARNING]
-> **ISOLEMENT vs DÉCLARATION — deuxieme piege, distinct du precedent.** Pour les
-> pathogenes "voyageurs" — au premier rang *M. canettii*, mais aussi tout cas
-> importe — le `geo_loc_name` BioSample (donc confiance 4-5) donne le pays de
+> **ISOLEMENT vs DÉCLARATION, deuxieme piege, distinct du precedent.** Pour les
+> pathogenes "voyageurs", au premier rang *M. canettii*, mais aussi tout cas
+> importe, le `geo_loc_name` BioSample (donc confiance 4-5) donne le pays de
 > **diagnostic/declaration/residence**, PAS le lieu d'**acquisition**. Cas type :
 > les souches de *M. canettii* declarees France (40), Italie (8), UK (5) sont des
 > patients/militaires diagnostiques au retour de la **Corne de l'Afrique** (Djibouti),
@@ -421,7 +408,7 @@ Chercher dans ces champs des mentions geographiques. Heuristique :
 > `country_source=biosample`, et ajouter une colonne/note `origin_note` portant la
 > reserve (ex. `Horn_of_Africa_origin` vs `Djibouti_acquisition`). Reflexe : pour
 > toute espece a foyer endemique etroit, comparer la distribution des pays BioSample
-> au foyer connu — un exces de pays riches du Nord signale ce biais de declaration.
+> au foyer connu, un exces de pays riches du Nord signale ce biais de declaration.
 
 **Important** : noter la phrase exacte qui a servi a deduire la
 location dans le champ `notes` du cache. Si `geo_country` est vide mais
@@ -494,8 +481,8 @@ sert au texte integral PDF, plus couteux). Activer par defaut, sauf
 3. **Parser** selon le type :
    - `.xlsx` / `.xls` : `python -c "import pandas; print(pandas.read_excel(...).to_csv())"` ou via le skill `xlsx`
    - `.csv` / `.tsv` : `Read` direct
-   - `.docx` : conversion via `markdown-converter` (markitdown) puis Grep
-   - `.pdf` : conversion via `markdown-converter` puis Grep
+   - `.docx` : conversion via `markitdown fichier.docx > fichier.md` (ou pandoc) puis Grep
+   - `.pdf` : conversion via le skill `read-scientific-pdf` (OCR Mistral si le PDF est scanne) puis Grep
 
 4. **Chercher** l'accession SRA dans toutes les feuilles/tables :
 
@@ -556,7 +543,7 @@ Avec `--deep` :
    curl -s "https://api.unpaywall.org/v2/$DOI?email=christophe.guyeux@univ-fcomte.fr" | jq -r '.best_oa_location.url_for_pdf'
    ```
 
-3. **Lecture du PDF** : telecharger, convertir via `markdown-converter`
+3. **Lecture du PDF** : telecharger, convertir via le skill `read-scientific-pdf`
    skill (uvx markitdown) ou `pdftotext`, puis `Grep` l'accession SRA
    dans le texte. Extraire le contexte (+/- 500 chars autour de la
    mention).
@@ -831,7 +818,7 @@ Impossible de faire une requete `IN (...)` de 38 000 accessions ni 38 000
 **une requete**, via son marqueur SPDI racine. Coût O(1 requete) par lignee.
 C'est ce qui a produit les `consolidated_geo_<clade>.tsv` du cache central.
 
-### Étape 1 — spdi_id du marqueur racine de la lignee
+### Étape 1 : spdi_id du marqueur racine de la lignee
 
 Le marqueur racine est dans le barcode (`global_supplementary/barcoding_v2/barcode_complete.tsv`,
 colonne `spdi`/`role` ; `bdd/actuelle` pour la liste ; NE PAS lire `snp_barcoding.csv`
@@ -851,7 +838,7 @@ Marqueurs de reference : L1 `1754298:A:C` (spdi_id 105696, 26 295), L2
 Si plusieurs SNP partagent la position, prendre le `strain_count` le plus proche
 de la taille de lignee (les homoplasies ont un compte minuscule).
 
-### Étape 2 — metadonnee de toute la lignee en une requete
+### Étape 2 : metadonnee de toute la lignee en une requete
 
 ```sql
 SELECT m.strain_name, m.geo_country, m.collection_date_parsed, m.ncbi_bioproject
@@ -862,11 +849,11 @@ WHERE j.spdi_id = <spdi_id>;
 
 Lancer via `tbannotator-mcp` avec `compress=true` et un `max_rows` superieur a
 la taille de lignee. Au-dela de ~25k lignes le retour **depasse la limite de
-tokens et est automatiquement sauve en fichier** `tool-results/...txt` — ce
+tokens et est automatiquement sauve en fichier** `tool-results/...txt`, ce
 n'est PAS une erreur, c'est le comportement attendu. Le fichier contient le
 `csv_gzip_base64`.
 
-### Étape 3 — decoder le gzip+base64 en Python (local, sans limite de tokens)
+### Étape 3 : decoder le gzip+base64 en Python (local, sans limite de tokens)
 
 ```python
 import re, base64, gzip
@@ -882,7 +869,7 @@ csv = gzip.decompress(base64.b64decode(m.group(1))).decode()
 > le `tool-results` directement, ou combiner plusieurs petites lignees en UNE requete
 > (`WHERE j.spdi_id IN (...)`) pour forcer la sauvegarde fichier et eviter le b64 inline.
 
-### Étape 4 — filtrer au placement bdd (verite de classification)
+### Étape 4 : filtrer au placement bdd (verite de classification)
 
 La requete par marqueur ramene TOUTES les souches online portant le SNP
 (souvent 2x ce que contient le bdd local). Garder **uniquement les souches
@@ -891,7 +878,7 @@ l'utilisateur fait foi). Le `lineage` fin (sous-lignee) vient du dossier bdd,
 la geo/date de la metadonnee. Cas du prefixe Bovis : sous-lignees nommees
 `Bovis1*`/`Bovis2*` (glob `Bovis*`, pas `Bovis.*`).
 
-### Étape 5 — sweep des BioProjects nouveaux puis consolidation
+### Étape 5 : sweep des BioProjects nouveaux puis consolidation
 
 ```bash
 # BioProjects de la lignee absents du master → sweep
@@ -919,7 +906,7 @@ bioproject_content(conf>=3, mono) > none ; date = biosample > bioproject_window
   online : aucune metadonnee recuperable par requete, les laisser `none`.
 - **Souches recentes** (BioProjects 2024+) parfois pas encore dans la MV : idem.
 - **Distinguer localisation et datation dans les taux annonces.** Ne pas
-  confondre « X % localise » et « Y % date » — bug de README corrige en session
+  confondre « X % localise » et « Y % date », bug de README corrige en session
   (un « 83 % localise » etait en fait le taux de datation). La datation est
   souvent bien plus haute que la localisation grace a `submission_upper`.
 
@@ -967,7 +954,7 @@ bioproject_content(conf>=3, mono) > none ; date = biosample > bioproject_window
   reutilise a la place de `curl` brut pour les requetes Entrez.
 - **`/pubmed-database`** et **`/europe-pmc`** : fournissent les details
   d'API PubMed/PMC.
-- **`/markdown-converter`** : conversion PDF → texte pour le niveau 5.
+- **`/read-scientific-pdf`** : conversion PDF vers texte pour le niveau 5 (OCR inclus).
 - **`/geo-map`** : peut consommer la sortie pour visualiser la
   distribution geographique de la cohorte.
 - **`/phylogeography`** : complement naturel pour analyser la structure

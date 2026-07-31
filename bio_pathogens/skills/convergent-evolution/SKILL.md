@@ -1,22 +1,19 @@
 ---
 name: convergent-evolution
 description: >-
-  Academic research toolkit for the Guyeux group (FEMTO-ST, University of Franche-Comte). Detects convergent evolution across MTBC lineages for peer-reviewed phylogenomic publications. Detect convergent/parallel evolution across MTBC lineages.
-  Identify genes mutated independently in multiple lineages,
-  enrichment analysis for PE/PPE, ESX, PKS/PDIM pathways. To check
-  whether a candidate convergent gene has prior reports in the
-  literature (and to cite them in the discussion), pair this skill
-  with `tbmonitor-papers` (~190k PubMed TB abstracts, sub-second SQL).
+  Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed MTBC
+  phylogenomics: detects convergent / parallel evolution across MTBC lineages,
+  genes mutated independently in several lineages, enrichment for PE/PPE, ESX,
+  PKS/PDIM.
 
-  Use when: comparing mutation patterns between animal and human lineages,
-  identifying genes under convergent selection, analyzing host adaptation
-  signatures, studying PE/PPE or ESX system evolution.
+  Use when: comparing mutation patterns between animal and human lineages, genes
+  under convergent selection, host adaptation signatures, ESX system evolution.
 argument-hint: "<lineage_list or strain_sql> [--focus pe_ppe|esx|all] [--min-lineages 3]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
 ---
 
-# Convergent Evolution — Évolution convergente MTBC
+# Convergent Evolution : Évolution convergente MTBC
 
 Détection d'évolution convergente (parallèle) entre lignées MTBC indépendantes. Identifie les gènes mutés de façon récurrente dans des lignées phylogénétiquement distinctes, signe de pression de sélection.
 
@@ -58,28 +55,41 @@ Le MTBC présente des patterns d'évolution convergente remarquables, particuli�
 ### Marqueurs par lignée
 
 ```sql
--- SPDIs exclusifs de chaque lignée (marqueurs core)
-SELECT lineage, spdi, gene, effect
-FROM mv_lineage_markers
-WHERE marker_type = 'core_exclusive'
-  AND lineage IN ('M. bovis', 'M. caprae', 'M. orygis', 'L6', 'L9')
-ORDER BY gene, lineage;
+-- SPDIs définissant chaque lignée (mv_lineage_markers : PAS de `marker_type`, `lineage`, `gene` ni `effect` ;
+-- colonnes réelles = lineage_code, spdi_variant_name, spdi_variant_position ; le gène s'obtient par jointure)
+SELECT m.lineage_code, m.spdi_variant_name,
+       a.locus_tag, a.annotation_type
+FROM mv_lineage_markers m
+LEFT JOIN tb_report_spdi_annotations a ON a.spdi_variant_name = m.spdi_variant_name
+WHERE m.lineage_code IN ('Bovis', 'Caprae', 'Orygis', '6', '9')   -- codes réels, pas 'M. bovis'
+ORDER BY a.locus_tag, m.lineage_code;
 ```
 
 ### Mutations protéiques par lignée
 
+> ⚠ **`mv_protein_position_mutations` n'est PAS peuplée** côté serveur (vérifié 2026-07-31) et elle est
+> **agrégée** (pas de `strain_id`) : impossible d'y joindre des souches. Route valide :
+> `tb_report_spdi_annotations` → `tb_report_spdi` → `tb_report_strain_spdi`. Les gènes y sont des
+> **locus_tag `Rv####`** (pas de noms `PE`/`PPE`) : pour cibler PE/PPE, fournir la LISTE des Rv concernés
+> (depuis l'atlas `annotation_mtbc`, catégorie fonctionnelle PE/PPE, ou via `mtbc-gene`), pas un `LIKE 'PE%'`.
+> Champs : `hgvs_p`, `annotation_type` (missense_variant…), `impact` (LOW/MODERATE/HIGH).
+
 ```sql
--- Mutations protéiques dans les gènes PE/PPE pour plusieurs lignées
-SELECT p.gene, p.aa_change, p.effect,
+-- Mutations protéiques d'un ensemble de gènes (ex. PE/PPE) ventilées par lignée
+-- Coût élevé (426M lignes dans tb_report_strain_spdi) : restreindre la liste de locus_tag.
+SELECT a.locus_tag, a.hgvs_p, a.annotation_type,
        c.lineage_code,
-       COUNT(DISTINCT p.sra_id) as n_strains
-FROM mv_protein_position_mutations p
-JOIN mv_strain_classification c ON p.sra_id = c.sra_id
-WHERE c.system = 'Senelle'
-  AND (p.gene LIKE 'PE%' OR p.gene LIKE 'PPE%')
-GROUP BY p.gene, p.aa_change, p.effect, c.lineage_code
-HAVING COUNT(DISTINCT p.sra_id) >= 10
-ORDER BY p.gene, c.lineage_code;
+       COUNT(DISTINCT ss.strain_id) AS n_strains
+FROM tb_report_spdi_annotations a
+JOIN tb_report_spdi s           ON s.spdi_variant_name = a.spdi_variant_name
+JOIN tb_report_strain_spdi ss   ON ss.spdi_id = s.spdi_id
+JOIN mv_strain_classification c ON c.strain_id = ss.strain_id
+WHERE c.system_name = 'guyeux'
+  AND a.locus_tag IN ('Rv0442c', 'Rv1806', 'Rv3018c')   -- remplacer par la liste PE/PPE voulue
+  AND a.annotation_type = 'missense_variant'
+GROUP BY a.locus_tag, a.hgvs_p, a.annotation_type, c.lineage_code
+HAVING COUNT(DISTINCT ss.strain_id) >= 10
+ORDER BY a.locus_tag, c.lineage_code;
 ```
 
 ### Fréquence des SPDIs par lignée
@@ -88,14 +98,14 @@ ORDER BY p.gene, c.lineage_code;
 -- Fréquence d'un SPDI dans chaque lignée majeure
 SELECT c.lineage_code as lineage,
        COUNT(DISTINCT ss.strain_id) as n_with_spdi,
-       (SELECT COUNT(DISTINCT sra_id) FROM mv_strain_classification
-        WHERE system = 'Senelle' AND lineage_code = c.lineage_code) as n_total,
+       (SELECT COUNT(DISTINCT strain_id) FROM mv_strain_classification
+        WHERE system_name = 'guyeux' AND lineage_code = c.lineage_code) as n_total,
        ROUND(100.0 * COUNT(DISTINCT ss.strain_id) /
-         (SELECT COUNT(DISTINCT sra_id) FROM mv_strain_classification
-          WHERE system = 'Senelle' AND lineage_code = c.lineage_code), 2) as freq_pct
+         (SELECT COUNT(DISTINCT strain_id) FROM mv_strain_classification
+          WHERE system_name = 'guyeux' AND lineage_code = c.lineage_code), 2) as freq_pct
 FROM tb_report_strain_spdi ss
-JOIN mv_strain_classification c ON ss.strain_id = c.sra_id
-WHERE c.system = 'Senelle'
+JOIN mv_strain_classification c ON ss.strain_id = c.strain_id
+WHERE c.system_name = 'guyeux'
   AND ss.spdi_id = 'NC_000962.3:761155:T:C'  -- exemple : rpoB S450L
 GROUP BY c.lineage_code
 ORDER BY freq_pct DESC;
@@ -197,6 +207,7 @@ Annotée par famille de gènes (PE/PPE en violet, ESX en bleu, etc.).
 | `pangenome-enrichment` | Enrichissement KEGG des gènes convergents |
 | `lineage-comparison` | Tests statistiques sur les fréquences de mutations |
 | `itol` | Annoter les branches de la phylogénie par mutations convergentes |
+| `tbmonitor-papers` | Vérifier si un gène convergent candidat a déjà été rapporté dans la littérature (et citer ces travaux dans la discussion) : ~190k résumés PubMed TB, SQL sub-seconde |
 
 ## Dépendances
 

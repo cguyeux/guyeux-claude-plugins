@@ -1,27 +1,19 @@
 ---
 name: phylo-history
 description: >-
-  Analyse le placement phylogénétique d'une souche MTBC à travers les arbres
-  dans lesquels elle a figuré. Récupère les arbres depuis
-  investigate_phylo/history/, localise les fichiers Newick archivés, calcule
-  les k plus proches voisins par distance patristique, identifie la sister
-  clade, et quantifie la stabilité (lignée assignée, voisinage) entre
-  reconstructions successives.
+  Analyse le placement phylogénétique d'une souche MTBC dans les arbres où elle
+  a figuré (investigate_phylo/history/, Newick archivés) : k plus proches
+  voisins par distance patristique, sister clade, stabilité lignée/voisinage.
 
-  Use when: investigating a strain whose lineage assignment is doubtful,
-  checking whether a strain's placement is stable across reconstructions,
-  diagnosing long-branch attraction, comparing how a strain moved between
-  lineages over time, or preparing a phylogenetic diagnostic before a manual
-  reclassification. When the diagnosis points to a published study that
-  may have already characterised this strain or its sister clade, look
-  it up via the `tbmonitor-papers` skill (search by SRA, BioProject,
-  or lineage code in title/abstract).
+  Use when: doubtful lineage assignment, placement unstable across
+  reconstructions, long-branch attraction, diagnostic before manual
+  reclassification.
 argument-hint: "<SRA> [--k N] [--format human|json]"
 user-invocable: true
 allowed-tools: Bash, Read, Glob
 ---
 
-# /phylo-history — Diagnostic phylogénétique d'une souche
+# /phylo-history : Diagnostic phylogénétique d'une souche
 
 Pour une souche SRA donnée, récupère tous les arbres dans lesquels elle a
 figuré (via l'historique `investigate_phylo/history/strain_history.json`),
@@ -46,13 +38,13 @@ voisins, sister clade, stabilité inter-arbres.
 
 ## Étapes
 
-### Phase 0 — Localiser investigate_phylo/
+### Phase 0 : Localiser investigate_phylo/
 
 Chercher `investigate_phylo/history/strain_history.json` en remontant depuis
 le cwd, ou dans `mtbc/investigate_phylo/`. Si absent : prévenir l'utilisateur
 qu'aucun historique n'a été enregistré.
 
-### Phase 1 — Lancer l'analyse
+### Phase 1 : Lancer l'analyse
 
 Depuis `investigate_phylo/` :
 
@@ -71,41 +63,41 @@ Le script produit :
     = voisinage cohérent)
   - `common_neighbors` : souches présentes dans TOUS les arbres
 
-### Phase 2 — Interpréter les résultats
+### Phase 2 : Interpréter les résultats
 
 Selon ce que renvoie le script, formuler un diagnostic :
 
-**Cas 1 — Tout stable** (`lineage_stable=true`, `neighbor_jaccard>=0.5`) :
+**Cas 1 : Tout stable** (`lineage_stable=true`, `neighbor_jaccard>=0.5`) :
 la souche est correctement classée, son voisinage est cohérent entre
 reconstructions. Rien à signaler.
 
-**Cas 2 — Lignée instable** (plusieurs lignées assignées entre arbres) :
+**Cas 2 : Lignée instable** (plusieurs lignées assignées entre arbres) :
 examiner le fichier `history/strain_history.json` de la souche
-(`lineage_timeline`) pour comprendre quand le changement a eu lieu — arbre
+(`lineage_timeline`) pour comprendre quand le changement a eu lieu, arbre
 successif ? déplacement manuel (`event: move`) ? Vérifier si la composition
 des voisins diverge entre arbres.
 
-**Cas 3 — Voisinage instable** (`neighbor_jaccard<0.5`) alors que la
+**Cas 3 : Voisinage instable** (`neighbor_jaccard<0.5`) alors que la
 lignée est stable : signal de long-branch attraction ou d'un arbre mal
 résolu localement. Comparer les branch lengths entre arbres ; si la souche
 a une branche très longue, suspecter un problème de qualité (coverage,
 contamination) et croiser avec `report.json` (`mapping_stats.mean_depth`,
 `quality.after_filtering.gc_content`).
 
-**Cas 4 — Discordance lignée enregistrée vs Newick** : la souche a été
+**Cas 4, Discordance lignée enregistrée vs Newick** : la souche a été
 déplacée dans `bdd/` mais l'arbre a été fait avant le déplacement. C'est
 normal si le tree_id est ancien. Suggérer de relancer `get_phylo.py` si
 on veut un arbre reflétant l'état courant.
 
-**Cas 5 — SRA introuvable dans un arbre** (`found_in_tree=false`) :
+**Cas 5 : SRA introuvable dans un arbre** (`found_in_tree=false`) :
 - `Newick introuvable` : le run s'est arrêté avant l'écriture du bestTree
   et les fichiers n'ont pas été archivés dans `experiments/`. Aucune
   analyse possible pour cet arbre.
 - `SRA absent des feuilles` : la souche a été marquée `included` dans
-  l'index mais est absente du Newick — probablement éliminée lors d'une
+  l'index mais est absente du Newick, probablement éliminée lors d'une
   étape RAxML post-metadata (rare). Inspecter manuellement.
 
-### Phase 3 — Recommandations concrètes
+### Phase 3 : Recommandations concrètes
 
 À partir du diagnostic, proposer une action :
 
@@ -116,8 +108,12 @@ on veut un arbre reflétant l'état courant.
   la qualité du `report.json` est faible, déplacer vers `bdd/ignore/`.
 - **Attendre le prochain arbre** : si l'instabilité est récente et qu'un
   arbre plus grand est en préparation, recommander d'attendre.
-- **Investiguer plus loin** : lancer `/clade-finder` sur la lignée parente
-  pour confirmer qu'elle forme bien un clade.
+- **Investiguer plus loin** : lancer `/lineage-subdivision explore` sur la lignée
+  parente pour confirmer qu'elle forme bien un clade.
+- **Croiser avec la littérature** : quand le diagnostic pointe vers une étude
+  publiée qui a peut-être déjà caractérisé cette souche ou sa sister clade,
+  la chercher via le skill `tbmonitor-papers` (recherche par SRA, BioProject
+  ou code de lignée dans les titres et résumés).
 
 ## Sorties attendues
 

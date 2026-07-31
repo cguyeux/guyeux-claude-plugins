@@ -1,15 +1,25 @@
 ---
 name: slide-design
-description: Transform a short description of what you want to say into 1 to a few editorial-grade slides. The skill enforces a design system (palette, typography, grid), reasons about the narrative, proposes several structural options with explicit editorial references (NYT Graphics, Bloomberg, Pudding, Tufte, Nature Methods...), requires at least one option with a strong visual signature (TikZ schema, big number, full-bleed image, sparkline), prefers schemas / timelines / diagrams / illustrations over plain text, looks for reusable figures in local project directories, evaluates whether web image search is relevant, delegates maps to `geo-map` and charts to `create-viz` / `seaborn`, matches the host presentation's style when slides are inserted into an existing deck, and **systematically compiles a preview, reads the PNG and critiques it visually before delivery**. Trigger when the user types `/slide-design`, asks to "make a slide / two slides / a couple of slides" for an idea, says "I need a slide that says...", "design a slide on X", "comment je présenterais X en une slide", "fais-moi 2 slides sur Y", or otherwise needs to convert a verbal idea into polished slide material rather than generating an entire presentation.
+description: >-
+  Transform a short description of what you want to say into one to a few editorial-grade
+  slides. Enforces a design system (palette, typography, grid), reasons about the narrative,
+  proposes several structural options with explicit editorial references (NYT Graphics,
+  Bloomberg, Pudding, Tufte, Nature Methods), requires at least one option with a strong
+  visual signature, prefers schemas, timelines and diagrams over plain text, reuses figures
+  found in the project, delegates maps to geo-map and charts to sci-figure, matches the host
+  deck's style, and systematically compiles a preview and critiques the PNG before delivery.
+  Use when the user types /slide-design, asks for one or two slides on an idea, says "I need
+  a slide that says..." or "fais-moi 2 slides sur Y", or otherwise needs a verbal idea
+  turned into polished slide material rather than a whole presentation.
 user_invocable: true
 invocation: /slide-design
 ---
 
-# Slide Design — Concevoir 1 à quelques slides à partir d'une description
+# Slide Design : Concevoir 1 à quelques slides à partir d'une description
 
 Ce skill ne remplace pas `beamer-slides` (qui génère une présentation entière depuis un article). Il intervient sur l'autre besoin : **partir d'une idée verbale et concevoir 1 à quelques slides** vraiment travaillés, où chaque choix de mise en forme est justifié.
 
-L'objectif est de produire des supports **visuels, clairs, agréables, utiles** — pas du texte mis en colonnes. Tout slide qui peut être un schéma, une frise, un diagramme ou une illustration doit l'être.
+L'objectif est de produire des supports **visuels, clairs, agréables, utiles**, pas du texte mis en colonnes. Tout slide qui peut être un schéma, une frise, un diagramme ou une illustration doit l'être.
 
 ## Quand l'invoquer
 
@@ -28,7 +38,7 @@ L'objectif est de produire des supports **visuels, clairs, agréables, utiles** 
 4. **Proposer avant de produire.** Le skill propose plusieurs options (2 à 3 angles narratifs) en prose courte, l'utilisateur choisit, puis seulement on génère le LaTeX/Beamer (ou PowerPoint si demandé).
 5. **Cohérence avec l'existant.** Si la slide s'insère dans un deck, on respecte la palette, les polices, l'aspect ratio, les macros locales.
 
-## Système de design — la grammaire visuelle avant le contenu
+## Système de design : la grammaire visuelle avant le contenu
 
 Un slide visuellement réussi ne sort pas d'un patron générique : il sort d'un **système cohérent** fixé avant la production. Trois choix à arrêter explicitement à chaque appel.
 
@@ -44,7 +54,7 @@ Cinq palettes professionnelles prêtes à l'emploi (HEX, testées en projection 
 | Vivid | pitch, slide à fort impact | `#0F4C81` | `#F5B82E` | `#E63946` | `#FAFAFA` | `#0A0A0A` |
 | MTBC | toute slide sur la tuberculose | `#264653` | `#2A9D8F` | `#E76F51` | `#F4F1DE` | `#1F1B16` |
 
-Pour les lignées MTBC, **ne jamais redéfinir les couleurs** : importer la palette canonique de `bio/skills/geo-map/scripts/geo_map.py` (constantes `MTBC_PALETTE` et `MTBC_PALETTE_CB`). Cohérence transversale avec les cartes et figures du projet.
+Pour les lignées MTBC, **ne jamais redéfinir les couleurs** : importer la palette canonique de `${CLAUDE_PLUGIN_ROOT}/skills/geo-map/scripts/geo_map.py` (constantes `MTBC_PALETTE` et `MTBC_PALETTE_CB`). Cohérence transversale avec les cartes et figures du projet.
 
 **Règle de hiérarchie chromatique** : 60 % surface neutre / 30 % primaire ou secondaire / 10 % accent. Toute palette qui sort de ce ratio fatigue l'œil.
 
@@ -71,7 +81,7 @@ Trois grandeurs de texte maximum :
 
 Espacement à base de **4 pt** (8, 12, 16, 24, 32, 48). Aucune valeur arbitraire. Marge intérieure 4 % de la largeur. Grille implicite 12 colonnes, gouttière 12 pt.
 
-**Test de justification** : si je ne peux pas justifier en une phrase pourquoi un élément est à *cet* endroit, à *cette* taille, dans *cette* couleur, alors le slide n'est pas conçu — il est jeté ensemble. Reprendre.
+**Test de justification** : si je ne peux pas justifier en une phrase pourquoi un élément est à *cet* endroit, à *cette* taille, dans *cette* couleur, alors le slide n'est pas conçu, il est jeté ensemble. Reprendre.
 
 ### 4. Bibliothèques TikZ à charger systématiquement
 
@@ -90,7 +100,7 @@ Sans ces extensions, la qualité graphique reste celle d'un schéma de 2005. **N
 
 Le skill suit 5 phases : **Cadrer → Inventorier → Proposer → Choisir → Produire**. Ne sauter aucune phase.
 
-### Phase 1 — Cadrer le besoin
+### Phase 1 : Cadrer le besoin
 
 Avant toute production, clarifier (et si l'utilisateur a demandé de ne pas s'interrompre, faire les choix raisonnables en les annonçant) :
 
@@ -104,11 +114,11 @@ Avant toute production, clarifier (et si l'utilisateur a demandé de ne pas s'in
 5. **La langue** : par défaut, celle de l'utilisateur (français). Termes techniques restent dans leur langue d'origine.
 6. **Le degré de formalité** : conférence sérieuse, lab meeting, vulgarisation, pitch ?
 
-### Phase 2 — Inventorier les matériaux disponibles
+### Phase 2 : Inventorier les matériaux disponibles
 
 Avant d'inventer, **chercher ce qui existe déjà**. C'est cette phase qui distingue un slide générique d'un slide réellement ancré dans le travail.
 
-#### 2.1 — Si le slide concerne des résultats d'un projet local
+#### 2.1 : Si le slide concerne des résultats d'un projet local
 
 Identifier le projet (le répertoire courant si l'utilisateur travaille dedans, sinon demander). Puis explorer :
 
@@ -124,9 +134,9 @@ find <project> -type f \( -name "*.csv" -o -name "*.tsv" -o -name "*.parquet" \)
 Pour chaque figure trouvée, juger :
 - Est-elle **lisible telle quelle** projetée à 5 mètres ? (police > 14pt équivalent, légende lisible)
 - Faut-il la **simplifier** (retirer panels secondaires, agrandir légende) ?
-- Faut-il en **produire une nouvelle** à partir des données brutes ? Si oui, déléguer à `create-viz` / `seaborn` / `matplotlib-pro` / `plotly` (selon le type) via le mécanisme sous-agent (voir §Sous-agents).
+- Faut-il en **produire une nouvelle** à partir des données brutes ? Si oui, déléguer à `sci-figure` (preset `slide`) via le mécanisme sous-agent (voir §Sous-agents).
 
-#### 2.2 — Si le slide est conceptuel (schéma, frise, méthode, contexte)
+#### 2.2 : Si le slide est conceptuel (schéma, frise, méthode, contexte)
 
 Pas de figure existante par défaut. Évaluer :
 - Un **schéma TikZ** est-il pertinent ? (pour un workflow, une architecture, un mécanisme)
@@ -135,7 +145,7 @@ Pas de figure existante par défaut. Évaluer :
 - Une **icône + texte minimal** ? (pour une métaphore, un slogan)
 - Une **image illustrative** depuis le web ? Voir §2.3.
 
-#### 2.3 — Recherche web : quand et comment
+#### 2.3 : Recherche web : quand et comment
 
 Une image web n'a sa place que si :
 - Elle est **immédiatement compréhensible** (photo d'objet, carte, portrait historique, organisme).
@@ -147,28 +157,28 @@ Procédure si pertinent :
 2. Toujours **lister à l'utilisateur** les options trouvées avec leur source + licence avant insertion.
 3. Ne jamais télécharger une image sans confirmer la licence. En cas de doute, proposer un schéma TikZ à la place.
 
-**Ne pas chercher d'image web** pour des résultats scientifiques propres au projet — c'est à `create-viz` / aux figures locales de couvrir ce besoin.
+**Ne pas chercher d'image web** pour des résultats scientifiques propres au projet, c'est à `sci-figure` / aux figures locales de couvrir ce besoin.
 
-#### 2.4 — Inventaire iconographique et symbolique
+#### 2.4 : Inventaire iconographique et symbolique
 
 Au-delà des figures, repérer systématiquement les ressources visuelles légères qui transforment un slide en objet éditorial :
 
 - **Icônes vectorielles** : `\usepackage{fontawesome5}` (icônes génériques), `\usepackage{academicons}` (logos académiques : ORCID, arXiv, ResearchGate), `\usepackage{tikzsymbols}` (symboles sciences vivantes). Préférer toujours une icône vectorielle à un PNG.
 - **Pictogrammes ISO** : `\usepackage{tikzpeople}` pour silhouettes humaines (déplacements, contacts, isolement). Domaine public, licence permissive.
 - **Sparklines** : courbes condensées (10 à 20 points) inclusibles inline. Construire avec `\pgfplotsset{compat=1.18}` + axe minimaliste, ou via `\tikz\draw plot coordinates {...};` pour micro-tendances.
-- **Symboles MTBC** : importer la palette canonique de `bio/skills/geo-map/scripts/geo_map.py`. Pour un bacille stylisé, capsule TikZ allongée (`shape=ellipse`, ratio 3:1, contour fin, motif strié léger).
+- **Symboles MTBC** : importer la palette canonique de `${CLAUDE_PLUGIN_ROOT}/skills/geo-map/scripts/geo_map.py`. Pour un bacille stylisé, capsule TikZ allongée (`shape=ellipse`, ratio 3:1, contour fin, motif strié léger).
 - **Numerus / chiffres-clés** : `fontspec` + chiffres tabular / lining (`Numbers=Lining,Tabular`) pour les grands chiffres alignés sur une grille.
 
 Critère : **si l'élément peut être ajouté en moins de 10 lignes TikZ et fait gagner en lisibilité, l'ajouter**. Sinon non.
 
-#### 2.5 — Style du deck hôte
+#### 2.5 : Style du deck hôte
 
 Si l'utilisateur insère dans un deck existant :
 - **Beamer** : lire le préambule du `.tex` parent. Repérer le thème, les couleurs définies (`\definecolor`), les commandes maison (`\kb`, `\alert`, etc.), `aspectratio`, la `\graphicspath`. Réutiliser strictement.
 - **PowerPoint/Keynote** : demander un export PDF du deck ou une capture d'une slide voisine. Lire les polices, palettes, marges, position du titre. Si le skill `pptx` est disponible et que le deck est un `.pptx`, le déléguer en sous-agent pour extraire le master et les layouts.
 - **Aucun deck existant** : utiliser le thème Metropolis par défaut (cohérent avec `beamer-slides`) mais le mentionner.
 
-### Phase 3 — Proposer (toujours 2 à 3 options narratives)
+### Phase 3 : Proposer (toujours 2 à 3 options narratives)
 
 C'est l'apport principal du skill. **Ne pas se contenter d'une seule structure.** Toujours présenter à l'utilisateur 2 à 3 options bien distinctes, en prose courte (pas encore de LaTeX), chacune décrivant :
 
@@ -206,14 +216,14 @@ Option C — 2 slides : "le problème" puis "ce qu'on a trouvé"
 
 **Référence éditoriale explicite** : citer pour chaque option une *inspiration* visuelle, sans copier. Cela aide l'utilisateur à se projeter avant production :
 
-- *NYT Graphics* — typographie éditoriale, hiérarchie forte, palette restreinte.
-- *Pudding (pudding.cool)* — narration visuelle, sparklines, micro-cartes.
-- *Bloomberg Graphics* — densité maîtrisée, slope charts, small multiples.
-- *Nature Methods / Communications* — sobriété scientifique, micro-légendes.
-- *Information is Beautiful* — métaphores graphiques fortes pour publics mixtes.
-- *IPCC AR6 figures* — communication de données complexes au grand public.
-- *Edward Tufte* — sparklines, small multiples, ratio données/encre maximal.
-- *FT Visual Journalism* — annotations dans la figure, pas en légende externe.
+- *NYT Graphics*, typographie éditoriale, hiérarchie forte, palette restreinte.
+- *Pudding (pudding.cool)*, narration visuelle, sparklines, micro-cartes.
+- *Bloomberg Graphics*, densité maîtrisée, slope charts, small multiples.
+- *Nature Methods / Communications*, sobriété scientifique, micro-légendes.
+- *Information is Beautiful*, métaphores graphiques fortes pour publics mixtes.
+- *IPCC AR6 figures*, communication de données complexes au grand public.
+- *Edward Tufte*, sparklines, small multiples, ratio données/encre maximal.
+- *FT Visual Journalism*, annotations dans la figure, pas en légende externe.
 
 Format des options (gabarit interne, à adapter) :
 
@@ -246,17 +256,17 @@ Conclure par une **recommandation explicite** (« je suggère B, car... ») et i
 
 Si l'utilisateur a explicitement demandé à ne pas être interrompu, choisir l'option recommandée et l'annoncer en une phrase avant de produire.
 
-### Phase 4 — Choix et arbitrages
+### Phase 4 : Choix et arbitrages
 
 Une fois l'option retenue, verrouiller les paramètres :
-- **Figure définitive** : chemin local exact, ou plan de production (« je vais lancer `create-viz` sur `data/lineage_counts.csv` pour produire un barplot horizontal »).
+- **Figure définitive** : chemin local exact, ou plan de production (« je vais lancer `sci-figure` sur `data/lineage_counts.csv` pour produire un barplot horizontal »).
 - **Image web définitive** : URL + licence + attribution à mettre en pied de slide.
 - **Palette** : 3 à 5 couleurs maximum, cohérentes avec le deck hôte.
 - **Aspect ratio** : 16:9 par défaut, 4:3 si le deck l'impose.
 
-### Phase 5 — Produire
+### Phase 5 : Produire
 
-#### 5.1 — Format de sortie
+#### 5.1 : Format de sortie
 
 Par défaut : **Beamer/LaTeX** (un fragment `.tex` que l'utilisateur peut `\input{}` ou copier-coller). Demander si l'utilisateur préfère :
 - Un fichier `.tex` autonome compilable (pour test en isolation),
@@ -264,7 +274,7 @@ Par défaut : **Beamer/LaTeX** (un fragment `.tex` que l'utilisateur peut `\inpu
 - Un `.pptx` (déléguer alors au skill `pptx`),
 - Une exportation PDF/PNG d'une slide unique (compiler puis convertir).
 
-#### 5.2 — Patrons techniques utilisables
+#### 5.2 : Patrons techniques utilisables
 
 S'inspirer des patrons déjà documentés dans le skill `beamer-slides` (colonnes, `keybox`, titre informatif, etc.). Ajouter ici les patrons spécifiques à ce skill :
 
@@ -591,7 +601,7 @@ Ne **jamais** reproduire une carte à la main dans TikZ. Pour toute slide impliq
 \end{frame}
 ```
 
-#### 5.3 — Vérifications avant livraison
+#### 5.3 : Vérifications avant livraison
 
 - [ ] Titre **spécifique** (pas « Résultats », pas « Méthodologie »), il dit ce que la slide démontre.
 - [ ] Mot-compte raisonnable (< 40 mots visibles hors titre dans 90 % des cas).
@@ -601,7 +611,7 @@ Ne **jamais** reproduire une carte à la main dans TikZ. Pour toute slide impliq
 - [ ] Aucun `\input{}` cassé, aucun chemin de figure invalide.
 - [ ] Sortie compile : `pdflatex -interaction=nonstopmode` sans erreur (si fichier autonome demandé).
 
-#### 5.4 — Boucle preview + critique visuelle (obligatoire)
+#### 5.4 : Boucle preview + critique visuelle (obligatoire)
 
 C'est l'étape qui distingue un slide *livré* d'un slide *décevant*. **Ne jamais sauter cette boucle**, même quand l'utilisateur a demandé à ne pas être interrompu : ce n'est pas une question, c'est de la production.
 
@@ -647,7 +657,7 @@ pdftoppm -r 200 slide.pdf preview -png
 
 5. **Livraison finale** : ne pointer l'utilisateur vers le `.tex` *que* après cette boucle. Joindre le PNG d'aperçu dans la réponse pour que l'utilisateur puisse juger sans recompiler.
 
-**Cas particulier — figure générée par sous-agent** (`geo-map`, `create-viz`, etc.) : ouvrir le PDF de la figure pour vérifier *avant* de l'intégrer. Une figure laide dans un slide propre reste un slide laid.
+**Cas particulier, figure générée par sous-agent** (`geo-map`, `sci-figure`, etc.) : ouvrir le PDF de la figure pour vérifier *avant* de l'intégrer. Une figure laide dans un slide propre reste un slide laid.
 
 ## Sous-agents et délégation
 
@@ -655,8 +665,8 @@ Ce skill **délègue activement** quand un autre skill est mieux placé. Schéma
 
 | Besoin | Skill à invoquer (via `Skill` ou via `Agent` en sous-agent) |
 |--------|-------------------------------------------------------------|
-| Produire un graphique scientifique depuis un CSV | `create-viz`, puis `seaborn` / `matplotlib-pro` / `plotly` selon le rendu voulu |
-| Carte géographique (monde, région, pays, distribution spatiale) | **`geo-map` (toujours)** — ne jamais redessiner une carte à la main |
+| Produire un graphique scientifique depuis un CSV | `sci-figure` (preset `slide`, ou celui de la revue si la figure ressert dans l'article) |
+| Carte géographique (monde, région, pays, distribution spatiale) | **`geo-map` (toujours)**, ne jamais redessiner une carte à la main |
 | Arbre phylogénétique réel à afficher | `iqtree-lsd2`, `itol`, puis export PDF inclus |
 | Sortie `.pptx` au lieu de Beamer | `pptx` |
 | Le deck hôte est un `.pptx` à analyser pour calquer le style | `pptx` (lecture + extraction layouts) |
@@ -664,13 +674,13 @@ Ce skill **délègue activement** quand un autre skill est mieux placé. Schéma
 | Une revue de littérature courte pour produire une slide « contexte » | `lit-review` |
 | Un thème Beamer spécifique demandé | `theme-factory` |
 | Une figure existe en LaTeX TikZ et doit être resimplifiée | délégation manuelle, sans skill dédié |
-| Conversion d'un PDF de figure en png inclusible | `markdown-converter` ou conversion manuelle (`pdftoppm`) |
+| Conversion d'un PDF de figure en png inclusible | `pdftoppm -png -r 200 fig.pdf fig` (ou `pdftocairo -png -singlefile`) |
 
 Règle : **un seul niveau de délégation** par défaut. Si plusieurs skills sont nécessaires, les enchaîner explicitement et tracer le résultat de chaque sous-agent.
 
 ## Exemples d'invocation typiques
 
-**Cas 1 — Slide unique pour réunion d'équipe**
+**Cas 1 : Slide unique pour réunion d'équipe**
 > « Fais-moi une slide qui montre que la lignée 4.6.1.2 est sur-représentée au Burundi par rapport au Bénin. »
 
 Cadrer : 1 slide, pairs spécialistes, FR, inséré dans deck Beamer local.
@@ -679,7 +689,7 @@ Proposer : (A) barplot horizontal des proportions par pays, (B) carte choroplèt
 Choisir : (selon l'utilisateur).
 Produire : fragment `.tex`.
 
-**Cas 2 — Deux slides « contexte » pour vulgarisation**
+**Cas 2 : Deux slides « contexte » pour vulgarisation**
 > « J'introduis la tuberculose à un public non spécialiste, 2 slides. »
 
 Cadrer : 2 slides, grand public, FR, autonome.
@@ -687,7 +697,7 @@ Inventorier : aucune figure de projet ; envisager photo d'Hippocrate / Koch / ra
 Proposer : (A) frise historique 1 slide + slide « chiffres-clés » ; (B) image pleine + slogan, puis carte mondiale d'incidence ; (C) métaphore visuelle (iceberg : cas déclarés / non déclarés).
 Choisir, produire.
 
-**Cas 3 — Insertion dans deck PowerPoint existant**
+**Cas 3 : Insertion dans deck PowerPoint existant**
 > « Voici `presentation_jury.pptx`, j'ai besoin d'insérer une slide entre la 12 et la 13 qui explique le principe du goodness-of-fit RAxML. »
 
 Cadrer : 1 slide, jury HDR, FR, deck `.pptx` existant.
@@ -699,7 +709,7 @@ Choisir, produire au format `.pptx` via le skill `pptx` pour respecter le master
 
 Trois cas représentatifs où une formulation pauvre devient un slide de qualité éditoriale.
 
-**Cas 1 — Titre indistinct → titre argumentatif**
+**Cas 1 : Titre indistinct → titre argumentatif**
 
 | Avant | Après |
 |-------|-------|
@@ -707,7 +717,7 @@ Trois cas représentatifs où une formulation pauvre devient un slide de qualit�
 
 Le titre *est* l'argument. Le corps de slide ne fait que l'illustrer.
 
-**Cas 2 — Trois colonnes de puces → big number + sparkline**
+**Cas 2 : Trois colonnes de puces → big number + sparkline**
 
 | Avant | Après |
 |-------|-------|
@@ -715,7 +725,7 @@ Le titre *est* l'argument. Le corps de slide ne fait que l'illustrer.
 
 Le slide perd 150 mots, gagne en mémorisation.
 
-**Cas 3 — Carte « monde + ronds » faite à la main → délégation `geo-map`**
+**Cas 3 : Carte « monde + ronds » faite à la main → délégation `geo-map`**
 
 | Avant | Après |
 |-------|-------|
@@ -743,17 +753,17 @@ L'utilisateur a parfois besoin de copier-coller le fragment dans Overleaf ou un 
 
 À consulter mentalement (et à citer en Phase 3 pour fixer un imaginaire commun avec l'utilisateur) :
 
-- **NYT Graphics** (`nytimes.com/spotlight/graphics`) — référence absolue en typographie éditoriale et hiérarchie. Voir notamment leurs *small multiples* et leurs *annotated charts*.
-- **Pudding** (`pudding.cool`) — narration visuelle, sparklines, micro-cartes, scrollytelling. Pour les slides qui doivent *raconter*.
-- **Bloomberg Graphics** — densité élevée mais hiérarchie nette. Excellents *slope charts*.
-- **FT Visual Journalism** — annotations *dans* la figure plutôt qu'en légende externe. Modèle pour les cartes thématiques.
-- **Reuters Graphics** — sobre, fonctionnel, légendes condensées.
-- **Information is Beautiful** (David McCandless) — métaphores visuelles fortes, public mixte.
-- **Nature Methods / Communications** — sobriété scientifique, micro-légendes, ratio donnée/encre élevé.
-- **IPCC AR6 figures** — communication de données complexes pour publics non spécialistes.
-- **Edward Tufte** — *Beautiful Evidence*, *Visual Display of Quantitative Information*. Sparklines, small multiples.
-- **Stefanie Posavec / Giorgia Lupi** (*Dear Data*) — pour la métaphore graphique au-delà de l'orthodoxie chart-bar.
-- **ColorBrewer** (`colorbrewer2.org`) — pour fixer une palette adaptée à un usage cartographique précis.
+- **NYT Graphics** (`nytimes.com/spotlight/graphics`), référence absolue en typographie éditoriale et hiérarchie. Voir notamment leurs *small multiples* et leurs *annotated charts*.
+- **Pudding** (`pudding.cool`), narration visuelle, sparklines, micro-cartes, scrollytelling. Pour les slides qui doivent *raconter*.
+- **Bloomberg Graphics**, densité élevée mais hiérarchie nette. Excellents *slope charts*.
+- **FT Visual Journalism**, annotations *dans* la figure plutôt qu'en légende externe. Modèle pour les cartes thématiques.
+- **Reuters Graphics**, sobre, fonctionnel, légendes condensées.
+- **Information is Beautiful** (David McCandless), métaphores visuelles fortes, public mixte.
+- **Nature Methods / Communications**, sobriété scientifique, micro-légendes, ratio donnée/encre élevé.
+- **IPCC AR6 figures**, communication de données complexes pour publics non spécialistes.
+- **Edward Tufte**, *Beautiful Evidence*, *Visual Display of Quantitative Information*. Sparklines, small multiples.
+- **Stefanie Posavec / Giorgia Lupi** (*Dear Data*), pour la métaphore graphique au-delà de l'orthodoxie chart-bar.
+- **ColorBrewer** (`colorbrewer2.org`), pour fixer une palette adaptée à un usage cartographique précis.
 
 Ne pas copier : citer l'esprit. La copie d'un style éditorial sans en comprendre la logique produit un pastiche.
 

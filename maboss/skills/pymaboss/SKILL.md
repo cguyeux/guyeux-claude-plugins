@@ -1,31 +1,24 @@
 ---
 name: pymaboss
 description: >-
-  Drive the real pyMaBoSS Python API (colomoto/pyMaBoSS, bindings over the MaBoSS
-  C++ engine). Covers loading (maboss.load / loadBNet / loadSBML / loadTabularQual),
-  the Simulation object (.run, .mutate(node, ON|OFF|WT), .copy, .update_parameters,
-  .get_logical_rules), copy_and_mutate / set_output / set_nodes_istate,
-  extracting results (get_nodes_probtraj, get_states_probtraj,
-  get_last_nodes_probtraj), interop (to_biolqm, to_minibn), the MaBoSS server client
-  (MaBoSSClient), UPMaBoSS (UpdatePopulation), Ensemble and PopMaBoSS, Jupyter
-  widgets, AND crucially the temporal-logic / CCT assertion evaluator
-  `maboss.temporal_logic.MaBoSSEvaluator.querying(query, cfg, bnd, [istate],
-  [output])` written by Oscar Dufossez — the real implementation of the P/T/Pmax/
-  Pmin/Tmax/Tmin/Inc/Dec query grammar (node:A, state:A--B, `/ [constraints]
-  [mutations]`). Install: `conda install -c colomoto pymaboss` then
-  `python -m maboss_setup` for the binaries.
-
-  Use when: running a MaBoSS model from Python, applying a knock-out/over-expression,
-  reading P(node) at the last time point, checking a directional literature claim
-  ("does inhibiting X decrease Y?") via MaBoSSEvaluator instead of reimplementing an
-  evaluator, or wiring a real pyMaBoSS runner (e.g. mabossDemo's PyMaBoSSRunner stub).
-  Pairs with `maboss-model` (write the files) and `maboss-ecosystem` (who/what).
+  Drive the real pyMaBoSS Python API (colomoto/pyMaBoSS, bindings over the MaBoSS C++
+  engine). Covers loading (load, loadBNet, loadSBML, loadTabularQual), the Simulation object
+  (run, mutate, copy, update_parameters, get_logical_rules), copy_and_mutate, set_output,
+  set_nodes_istate, result extraction (get_nodes_probtraj, get_states_probtraj,
+  get_last_nodes_probtraj), interop (to_biolqm, to_minibn), MaBoSSClient, UPMaBoSS, Ensemble
+  and PopMaBoSS, Jupyter widgets, and the temporal-logic CCT assertion evaluator
+  maboss.temporal_logic.MaBoSSEvaluator.querying by Oscar Dufossez, the real implementation
+  of the P/T/Pmax/Pmin/Tmax/Tmin/Inc/Dec query grammar. Install with conda install -c
+  colomoto pymaboss then python -m maboss_setup. Use when running a MaBoSS model from
+  Python, applying a knock-out or over-expression, reading P(node) at the last time point,
+  or checking a directional literature claim via MaBoSSEvaluator. Pairs with maboss-model
+  and maboss-ecosystem.
 argument-hint: "[task]   # e.g. 'run BRAF knockout on cancer_signaling and read P(EGFR)'"
 allowed-tools: Read, Write, Edit, Bash
 user-invocable: true
 ---
 
-# /pymaboss — the real pyMaBoSS API (and Oscar's CCT evaluator)
+# /pymaboss : the real pyMaBoSS API (and Oscar's CCT evaluator)
 
 pyMaBoSS = Python interface over the MaBoSS C++ engine. API surface below is from the
 `colomoto/pyMaBoSS` source tree (master, July 2026), not a reconstruction.
@@ -71,7 +64,7 @@ list(sim.network)                                     # node names
 - Populations: `UpdatePopulation` (UPMaBoSS), `PopSimulation` (PopMaBoSS), `Ensemble`.
 - In Jupyter, importing `maboss` registers widgets + a "MaBoSS" menu (via `colomoto_jupyter`).
 
-## CCT / temporal-logic evaluator — DO NOT reimplement it
+## CCT / temporal-logic evaluator : DO NOT reimplement it
 
 `maboss.temporal_logic.MaBoSSEvaluator` (author: **Oscar Dufossez**, in pyMaBoSS master) IS the
 assertion/query engine. mabossDemo's "MCCT" grammar == this CCT. Call it, don't rebuild it.
@@ -101,4 +94,4 @@ Write the current `.bnd`/`.cfg` to temp files, build the CCT query from the deco
 returned comparison onto the app's `{baseline, perturbed, delta, verdict, caveats}` shape. This is
 exactly what the stub in `maboss_runner.py` anticipated (`tl.MaBoSSEvaluator.querying`). Keep the
 mock as offline fallback. Requires the real pyMaBoSS + engine in the image (conda colomoto), which
-is NOT pip-only — see `maboss-ecosystem` for deployment implications.
+is NOT pip-only, see `maboss-ecosystem` for deployment implications.

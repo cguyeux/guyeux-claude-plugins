@@ -1,19 +1,20 @@
 ---
 name: lineage-comparison
 description: >-
-  Statistical comparison between MTBC lineages or sub-lineages.
-  Fisher exact test, chi-squared, binomial exact CI, FDR correction,
-  odds ratios, and publication-ready comparison tables.
-
-  Use when: comparing resistance rates between lineages, testing if a trait
-  is significantly associated with a sub-lineage, producing statistical
-  tables for articles, computing confidence intervals.
+  Academic research toolkit for peer-reviewed MTBC phylogenomics (Guyeux group, FEMTO-ST).
+  Statistical comparison between Mycobacterium tuberculosis complex lineages or sub-lineages
+  in published research collections: Fisher exact test, chi-squared, binomial exact
+  confidence intervals, FDR correction, odds ratios, and publication-ready comparison
+  tables. Use when comparing antimicrobial-resistance allele frequencies between lineages in
+  a research dataset, testing whether a trait is significantly associated with a sub-
+  lineage, producing statistical tables for a scientific article, or computing confidence
+  intervals for a manuscript.
 argument-hint: "<data.csv> --group lineage --variable dr_type [--test fisher|chi2]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
 ---
 
-# Lineage Comparison — Comparaison statistique MTBC
+# Lineage Comparison : Comparaison statistique MTBC
 
 Tests statistiques pour comparer des traits (résistance, géographie, mutations) entre lignées ou sous-lignées MTBC. Produit des tableaux publication-ready avec IC95 et p-values corrigées.
 
@@ -49,17 +50,25 @@ Tests statistiques pour comparer des traits (résistance, géographie, mutations
 
 ```sql
 -- Données pour comparaison résistance entre sous-lignées
-SELECT c.lineage_code as lineage,
-       m.dr_type,
-       m.country,
-       COUNT(*) as n
+-- NB : pas de colonne `dr_type` dans TBannotator v3.6 → dérivée de l'antibiogramme
+-- (`antibiogram_inh`/`antibiogram_rif`, valeurs 'INH-R'/'INH-S', 'RIF-R'/'RIF-S').
+-- Couverture faible (~23k souches sur ~255k) : rapporter le dénominateur réel.
+SELECT c.lineage_code AS lineage,
+       CASE
+         WHEN m.antibiogram_inh = 'INH-R' AND m.antibiogram_rif = 'RIF-R' THEN 'MDR'
+         WHEN m.antibiogram_inh = 'INH-R' OR  m.antibiogram_rif = 'RIF-R' THEN 'mono/poly-R'
+         WHEN m.antibiogram_inh IS NULL AND m.antibiogram_rif IS NULL      THEN NULL
+         ELSE 'susceptible'
+       END AS dr_type,
+       m.geo_country,
+       COUNT(*) AS n
 FROM mv_strain_metadata m
-JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-WHERE c.system = 'Senelle' AND c.lineage_code LIKE '4.15%'
-GROUP BY c.lineage_code, m.dr_type, m.country;
+JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '4.15%'
+GROUP BY c.lineage_code, 2, m.geo_country;
 ```
 
-> **Source de vérité (cf. `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`)** : dans TBannotator, `system='Senelle'` EST le système maison (= moi/Guyeux), mais c'est un **snapshot** susceptible d'être en retard sur la taxonomie vivante. Pour tout clade récent du cycle multi-signal (L1.\*, Bovis1.\*, BCG.\*, L6 profond), recouper le label avec `bdd/actuelle/` + `barcoding_v2/barcode_complete.tsv`. Ne jamais lire `snp_barcoding.csv` (v1 obsolète) ni `strain_lineages.csv` (périmé) comme référence taxonomique.
+> **Source de vérité (cf. `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`)** : dans TBannotator, `system_name='guyeux'` EST le système maison (= moi/Guyeux), mais c'est un **snapshot** susceptible d'être en retard sur la taxonomie vivante. Pour tout clade récent du cycle multi-signal (L1.\*, Bovis1.\*, BCG.\*, L6 profond), recouper le label avec `bdd/actuelle/` + `barcoding_v2/barcode_complete.tsv`. Ne jamais lire `snp_barcoding.csv` (v1 obsolète) ni `strain_lineages.csv` (périmé) comme référence taxonomique.
 
 ### Depuis un CSV
 

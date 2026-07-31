@@ -12,7 +12,7 @@ description: >-
   notebook", "run the CoLoMoTo docker", "tool X is conda-only", "reproduce this .ipynb".
 ---
 
-# colomoto-run — the CoLoMoTo notebook, gateway to the whole ecosystem
+# colomoto-run : the CoLoMoTo notebook, gateway to the whole ecosystem
 
 **When to use.** Any time a CoLoMoTo tool is needed that does not install cleanly in a
 pip/slim image (bioLQM, GINsim, Pint, CABEAN need Java/OCaml/conda). The image already
@@ -29,14 +29,14 @@ colomoto-docker --bind .                # mount the current dir (else files are 
 Files inside the container are deleted on stop EXCEPT the `persistent/` directory and
 anything under a `--bind` mount.
 
-## Launch (plain docker, headless — for scripting/agents)
+## Launch (plain docker, headless : for scripting/agents)
 
 ```bash
 docker run --rm -v "$PWD":/notebook/work colomoto/colomoto-docker:latest \
   python -c "import maboss, biolqm, mpbn; print('ok')"
 ```
 Caveat (this environment): pulling `colomoto/colomoto-docker` is ~3 GB and has failed/
-been killed before — pull once, patiently, and reuse. For MaBoSS-only + attractors, the
+been killed before, pull once, patiently, and reuse. For MaBoSS-only + attractors, the
 lightweight `maboss-mcp` image (see the mcp/ folder) is enough and avoids the big pull.
 
 ## Inventory by function (authoritative: `tools/index.md` of the repo)

@@ -28,7 +28,7 @@ Compétences : compléter, créer ou réparer les sous-titres d'un film muet ; o
 
 ### text-to-speech
 
-Synthèse vocale : convertit un texte en fichier audio parlé, avec choix de voix et de langue.
+Synthetise un fichier .mp3 a partir d'un fichier texte (.txt, .md, chapitre de livre) via trois moteurs. Par defaut Mistral/Voxtral (voxtral-mini-tts) : voix preregles multilingues dont six francaises en registres emotionnels, galerie de voix clonees depuis un enregistrement, clonage ponctuel par echantillon ; le ton se choisit par la variante de voix, Voxtral n'acceptant pas d'instructions de prosodie en texte libre. Alternative OpenAI gpt-4o-mini-tts quand on veut une prosodie pilotee par un prompt sur mesure ou davantage de voix. Kokoro-82M en local, gratuit et hors ligne. Avant synthese, Claude lit un echantillon, identifie auteur, genre, epoque et ton, puis choisit la voix.
 
-Compétences : produire une piste audio à partir d'un texte ; générer une narration ou un support audio
+Compétences : narrer un texte en audio ; generer un MP3 ou un livre audio ; lire un fichier a voix haute ; l'utilisateur mentionne TTS, synthese vocale, Voxtral, Kokoro, F5-TTS ou XTTS ; l'utilisateur dit Whisper en confondant avec la reconnaissance vocale
 

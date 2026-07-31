@@ -1,25 +1,14 @@
 ---
 name: string-db
 description: >-
-  Academic research toolkit for the Guyeux group (FEMTO-ST) MTBC pipeline:
-  a resilient, stdlib-only client for the STRING v12 protein-association REST
-  API (https://string-db.org), which aggregates known and predicted
-  protein-protein associations decomposed into evidence channels
-  (neighborhood, fusion, co-occurrence, co-expression, experimental, database,
-  text-mining). Resolves locus tags to STRING ids, lists functional or physical
-  interaction partners with per-channel scores, builds networks among a gene
-  set, runs functional enrichment (GO/KEGG/Pfam/InterPro) and the PPI-enrichment
-  test, and downloads network pictures. Default species is 83332
-  (M. tuberculosis H37Rv) but works for any organism in STRING.
+  Academic research toolkit (Guyeux group, FEMTO-ST): STRING v12
+  protein-association REST API client. Resolves locus tags, lists
+  functional/physical partners with per-channel evidence scores, builds
+  networks, runs GO/KEGG/Pfam/InterPro enrichment and the PPI-test. Default
+  species 83332 (M. tuberculosis H37Rv).
 
-  Use when: you need a *guilt-by-association* second opinion on a gene
-  (especially a hypothetical), to ask "what does this unknown gene work with?",
-  to test whether a candidate operon/complex is significantly connected, or to
-  get the functional enrichment of a small gene set. Reusable across coevolution,
-  pathway-explanation, pangenome-enrichment and host-pathogen studies. For
-  WHOLE-PROTEOME enrichment, do NOT use this skill (STRING's API is for
-  occasional access): download the per-organism bulk files instead, as the
-  annotation_mtbc `phase2h_string.py` pipeline does.
+  Use when: guilt-by-association on a gene (especially a hypothetical), a
+  candidate operon/complex, or a small gene set.
 argument-hint: "<subcommand> <locus_tag|gene>...   # e.g. partners Rv1462 --required-score 400"
 allowed-tools: Bash, Read, Write
 user-invocable: true
@@ -27,10 +16,27 @@ user-invocable: true
 
 # /string-db -- ad-hoc STRING v12 functional-association queries
 
-This skill wraps the STRING REST API for **occasional, ad-hoc** queries: the
-use STRING's own documentation endorses for the API. It is the live,
-any-species complement to the offline whole-proteome STRING layer that the
-`annotation_mtbc` gene atlas builds from bulk files.
+This skill wraps the STRING v12 REST API (`https://string-db.org`) for
+**occasional, ad-hoc** queries: the use STRING's own documentation endorses
+for the API. It is the live, any-species complement to the offline
+whole-proteome STRING layer that the `annotation_mtbc` gene atlas builds
+from bulk files.
+
+STRING aggregates **known and predicted protein-protein associations**,
+decomposed into seven independent evidence channels:
+
+| Channel | What it captures |
+|---------|------------------|
+| `neighborhood` | conserved gene order / genomic proximity across genomes |
+| `fusion` | gene-fusion events in other genomes |
+| `cooccurrence` | phylogenetic co-occurrence profiles across species |
+| `coexpression` | correlated expression across conditions/datasets |
+| `experimental` | experimentally determined interactions (Y2H, AP-MS...) |
+| `database` | curated pathway/complex databases |
+| `textmining` | co-mention in the primary literature |
+
+The first three are the **genomic-context** channels aggregated in the
+`context` column (see "Reading the partners output" below).
 
 What it adds over orthology (eggNOG), structure (Foldseek/ESMFold) and curated
 function (UniProt): the **functional network context**. Those layers say "this
@@ -46,6 +52,10 @@ Use it for:
 - testing if a candidate operon/complex is real (`ppi`);
 - the enrichment of a small gene set (`enrichment`);
 - a network picture for a figure (`image`).
+
+It is deliberately **reusable across studies**: coevolution analyses,
+pathway explanation (`mtbc-gene`, pathway mode), `pangenome-enrichment`, and
+host-pathogen work all consume the same association layer.
 
 Do NOT use it for whole-proteome annotation: the API is rate-limited and meant
 for limited use. For that, download `83332.protein.links.detailed.v12.0.txt.gz`
@@ -77,7 +87,7 @@ another organism. Output is a compact TSV table, or raw JSON with `--json`.
 | `map <ids...>` | resolve gene names / locus tags to STRING ids + annotation |
 | `partners <id> [--required-score N] [--limit N] [--physical] [--context-only]` | interaction partners, with per-channel scores and a `context` column (max of neighborhood/fusion/co-occurrence) |
 | `network <ids...> [--required-score N] [--add-nodes N] [--physical]` | interactions among the input set |
-| `enrichment <ids...> [--category KEGG Process Pfam ...] [--fdr F]` | functional enrichment with FDR |
+| `enrichment <ids...> [--category KEGG Process Pfam InterPro ...] [--fdr F]` | functional enrichment (GO Process/Function/Component, KEGG, Pfam, InterPro) with FDR |
 | `annotation <ids...>` | per-protein functional annotation |
 | `ppi <ids...>` | PPI-enrichment test: is the set more connected than random? |
 | `image <ids...> -o out.png [--highres] [--svg] [--required-score N]` | rendered network picture |

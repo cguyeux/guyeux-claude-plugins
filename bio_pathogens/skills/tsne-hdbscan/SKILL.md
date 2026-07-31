@@ -1,20 +1,19 @@
 ---
 name: tsne-hdbscan
 description: >-
-  t-SNE dimensionality reduction + HDBSCAN density-based clustering for
-  exploring MTBC genomic diversity. Works on SPDI presence/absence matrices,
-  SNP distance matrices, or MIRU-VNTR profiles.
+  t-SNE dimensionality reduction + HDBSCAN density-based clustering for MTBC
+  genomic diversity. Input: SPDI presence/absence matrices, SNP distance
+  matrices, or MIRU-VNTR profiles.
 
-  Use when: exploring population structure of MTBC strains, identifying
-  transmission clusters, detecting outliers or misclassified lineages,
-  visualizing genomic relationships in 2D, unsupervised clustering of
-  pathogen genomes without specifying the number of clusters.
+  Use when: exploring population structure, identifying transmission clusters,
+  detecting outliers or misclassified lineages, 2D visualisation, unsupervised
+  clustering without fixing the number of clusters.
 argument-hint: "<input_file> [-g lineage] [-o results.csv] [-p plot.png]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
 ---
 
-# t-SNE + HDBSCAN — Exploration génomique MTBC
+# t-SNE + HDBSCAN : Exploration génomique MTBC
 
 Réduction de dimension (t-SNE) et clustering par densité (HDBSCAN) pour explorer la diversité génomique de *M. tuberculosis complex*. Produit des visualisations 2D colorées par lignée et identifie automatiquement les clusters naturels sans spécifier leur nombre.
 
@@ -72,7 +71,7 @@ tsne_hdbscan.py <input_file> [options]
 
 ## Formats d'entrée
 
-### 1. Matrice binaire (SPDI présence/absence) — RECOMMANDÉ pour WGS
+### 1. Matrice binaire (SPDI présence/absence) : RECOMMANDÉ pour WGS
 
 ```csv
 strain_id,lineage,SPDI_001,SPDI_002,SPDI_003,...
@@ -201,8 +200,8 @@ Deux panneaux côte à côte :
 -- Étape 1 : Récupérer les SPDIs pour une lignée
 SELECT ss.strain_id, ss.spdi_id
 FROM tb_report_strain_spdi ss
-JOIN mv_strain_classification c ON ss.strain_id = c.sra_id
-WHERE c.system = 'Senelle' AND c.lineage_code LIKE '4.%'
+JOIN mv_strain_classification c ON ss.strain_id = c.strain_id
+WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '4.%'
 ORDER BY ss.strain_id, ss.spdi_id;
 ```
 
@@ -219,10 +218,13 @@ matrix.to_csv("spdi_matrix.csv")
 
 ### Ajouter les classifications de lignée
 
+> ⚠ **`strain_id` est un ENTIER** (clé interne) ; les accessions SRA/ENA sont dans **`strain_name`**.
+> Filtrer une liste d'accessions par `strain_id` ne renvoie rien.
+
 ```sql
-SELECT sra_id as strain_id, lineage_code as lineage
+SELECT strain_id, strain_name, lineage_code AS lineage
 FROM mv_strain_classification
-WHERE system = 'Senelle' AND sra_id IN ('ERR...', 'SRR...');
+WHERE system_name = 'guyeux' AND strain_name IN ('ERR551415', 'SRR33638270');
 ```
 
 Joindre au CSV pour colorer par lignée avec `--group-column lineage`.
@@ -232,7 +234,7 @@ Joindre au CSV pour colorer par lignée avec `--group-column lineage`.
 ```sql
 -- Distances aux souches de référence (limité à 10 refs)
 SELECT * FROM mv_strain_reference_snp_distance
-WHERE sra_id IN ('ERR...', 'SRR...');
+WHERE strain_name IN ('ERR551415', 'SRR33638270');
 ```
 
 Note : cette vue ne contient que les distances à 10 références, pas les distances pairwise complètes. Pour les distances complètes, calculer depuis la matrice SPDI.
@@ -268,9 +270,9 @@ Note : cette vue ne contient que les distances à 10 références, pas les dista
 - **1 lignée = plusieurs clusters** : sous-structure non capturée par la classification actuelle → potentielle nouvelle sous-lignée
 - **Bruit concentré dans une lignée** : lignée très diverse ou avec beaucoup d'outliers
 
-> **Garde-fou avant de conclure à une sous-lignée non décrite** : un cluster HDBSCAN qui scinde une lignée en deux n'est pas forcément nouveau. Avant d'annoncer une découverte, vérifier qu'il n'est pas DÉJÀ formalisé dans `bdd/actuelle/` (le cycle multi-signal a pu le créer entre-temps) — sinon faux positif de découverte.
+> **Garde-fou avant de conclure à une sous-lignée non décrite** : un cluster HDBSCAN qui scinde une lignée en deux n'est pas forcément nouveau. Avant d'annoncer une découverte, vérifier qu'il n'est pas DÉJÀ formalisé dans `bdd/actuelle/` (le cycle multi-signal a pu le créer entre-temps), sinon faux positif de découverte.
 >
-> **Source de vérité (cf. `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`)** : dans TBannotator, `system='Senelle'` EST le système maison (= moi/Guyeux), mais c'est un **snapshot** susceptible d'être en retard sur la taxonomie vivante. Pour tout clade récent du cycle multi-signal (L1.\*, Bovis1.\*, BCG.\*, L6 profond), recouper le label avec `bdd/actuelle/` + `barcoding_v2/barcode_complete.tsv`. Ne jamais lire `snp_barcoding.csv` (v1 obsolète) ni `strain_lineages.csv` (périmé) comme référence taxonomique.
+> **Source de vérité (cf. `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`)** : dans TBannotator, `system_name='guyeux'` EST le système maison (= moi/Guyeux), mais c'est un **snapshot** susceptible d'être en retard sur la taxonomie vivante. Pour tout clade récent du cycle multi-signal (L1.\*, Bovis1.\*, BCG.\*, L6 profond), recouper le label avec `bdd/actuelle/` + `barcoding_v2/barcode_complete.tsv`. Ne jamais lire `snp_barcoding.csv` (v1 obsolète) ni `strain_lineages.csv` (périmé) comme référence taxonomique.
 
 ### Score de silhouette
 - **> 0.7** : clusters bien séparés

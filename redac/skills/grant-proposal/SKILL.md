@@ -16,7 +16,7 @@ description: >
 
 # Grant Proposal Writing Skill
 
-Rédaction de propositions de recherche adaptées aux formats de financement français et européens. S'appuie sur les propositions précédentes dans `~/Documents/docs/projects/` comme modèles de référence.
+Rédaction de propositions de recherche adaptées aux formats de financement français et européens. S'appuie sur les propositions précédentes dans `~/docs/projects/` comme modèles de référence.
 
 ## Interaction avec les autres skills
 
@@ -24,7 +24,7 @@ Rédaction de propositions de recherche adaptées aux formats de financement fra
 - **`/researcher`** : trouver le contenu thématique (publications, abstracts, réunions, notes) pour nourrir les sections scientifiques
 - Ce skill gère la **structure, le format et la rédaction** de la proposition elle-même
 
-## Étape 1 — Identifier le type de financement
+## Étape 1 : Identifier le type de financement
 
 Demander à l'utilisateur le type d'appel, puis appliquer le format correspondant :
 
@@ -40,7 +40,7 @@ Demander à l'utilisateur le type d'appel, puis appliquer le format correspondan
 | **Région BFC** | XLSX budget + MD résumé | `projects/Région/Urgences-BFC/` |
 | **UMLP Sunergia** | LaTeX | `projects/UMLP/Sunergia_2026/` |
 
-## Étape 2 — Appliquer la structure spécifique
+## Étape 2 : Appliquer la structure spécifique
 
 ### ANR AAPG (Appel à Projets Générique)
 
@@ -151,11 +151,11 @@ III. **Impact et retombées du projet**
 
 **Référence** : lire `projects/UMLP/Sunergia_2026/`.
 
-## Étape 3 — Rédiger section par section
+## Étape 3 : Rédiger section par section
 
 ### Processus pour chaque section
 
-1. **Lire le modèle existant** correspondant dans `~/Documents/docs/projects/` pour s'imprégner du style et du niveau de détail attendu
+1. **Lire le modèle existant** correspondant dans `~/docs/projects/` pour s'imprégner du style et du niveau de détail attendu
 2. **Extraire le contenu thématique** via le skill `/researcher` (publications avec abstracts, notes, CR de réunions récents sur le sujet)
 3. **Extraire les données CV** via le skill `/cv` si la section le requiert (encadrements, financements passés, metrics)
 4. **Rédiger** en respectant le format, les limites de pages, et le style académique français ou anglais selon le document
@@ -182,7 +182,7 @@ III. **Impact et retombées du projet**
 - Justifier scientifiquement chaque poste (pas juste "1 ingénieur" mais "1 ingénieur pour développer le pipeline X")
 - Vérifier la cohérence personne-mois / budget
 
-## Étape 4 — Vérification finale
+## Étape 4 : Vérification finale
 
 Checklist avant soumission :
 
@@ -201,5 +201,5 @@ Checklist avant soumission :
 
 - **Ne jamais inventer** de données, chiffres, ou citations. Toujours lire les sources.
 - **Langue** : ANR et PHC en français ; Horizon et certains Interreg en anglais ; adapter selon l'appel.
-- Les propositions dans `~/Documents/docs/projects/` sont des **modèles de référence**, pas des textes à copier. S'en inspirer pour le style et le niveau de détail.
+- Les propositions dans `~/docs/projects/` sont des **modèles de référence**, pas des textes à copier. S'en inspirer pour le style et le niveau de détail.
 - Pour les budgets complexes, proposer un tableau structuré et demander à l'utilisateur de valider les montants.

@@ -114,7 +114,7 @@ au dépôt final. Les skills cités sont indicatifs ; le catalogue complet suit.
 | 4. Phylogénie et datation | Arbre, horloge moléculaire, skyline démographique | `iqtree-lsd2`, `bayesian-skyline`, `beast2-phylogeography`, `pastml` | bio_population_genetics, bio_pathogens |
 | 5. Phylogéographie, contexte hôte | Dispersion, migrations humaines, paléoclimat | `geo-map`, `nextstrain`, `migration-data`, `itol` | bio_population_genetics |
 | 6. Modélisation, stats, ML | Tests statistiques, classification, modèles | `statsmodels`, `scikit-learn`, `scanpy` | ia, bio_population_genetics |
-| 7. Visualisation | Figures publication, arbres annotés, cartes | `create-viz`, `seaborn`, `matplotlib`, `plotly`, `itol` | bio_population_genetics, ia, redac |
+| 7. Visualisation | Figures publication, arbres annotés, cartes | `sci-figure`, `geo-map`, `itol` | bio_population_genetics, redac |
 | 8. Rédaction | Manuscrit LaTeX, slides, bibliographie | `latex-document`, `latex-writing`, `biblatex`, `deai-latex`, `beamer-slides` | redac |
 | 9. Vérification, réponse aux relecteurs | Affirmations, références, figures, supplémentaires, rebuttal | `claim-check`, `bib-check`, `fig-check`, `supp-check`, `manuscript-review`, `reviewer-response` | redac |
 | 10. Valorisation et dépôt | DOI Zenodo, Overleaf, financements, CV | `zenodo-deposit`, `overleaf-bridge`, `grant-proposal`, `cv` | redac |

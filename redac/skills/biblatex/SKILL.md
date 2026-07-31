@@ -3,7 +3,7 @@ name: biblatex
 description: "LaTeX biblatex/biber packages for modern bibliography management. Use when helping users cite references, manage .bib files, choose citation styles, or troubleshoot bibliography compilation."
 ---
 
-# biblatex + biber — Modern Bibliography Management
+# biblatex + biber : Modern Bibliography Management
 
 **CTAN:** https://ctan.org/pkg/biblatex  
 **Manual:** `texdoc biblatex`
@@ -112,8 +112,8 @@ Or with latexmk: `latexmk -pdf main.tex` (handles everything automatically).
 
 | Field | Description |
 |-------|-------------|
-| `author` | Author(s) — `{Last, First and Last, First}` |
-| `title` | Title — protect caps with `{NASA}` |
+| `author` | Author(s), `{Last, First and Last, First}` |
+| `title` | Title, protect caps with `{NASA}` |
 | `year`/`date` | Publication year or full date (`2023-06-15`) |
 | `journal` | Journal name |
 | `booktitle` | Conference/collection title |
@@ -129,7 +129,7 @@ Or with latexmk: `latexmk -pdf main.tex` (handles everything automatically).
 | `note` | Additional notes |
 | `abstract` | Abstract (not printed by default) |
 | `keywords` | Keywords for filtering |
-| `langid` | Language (`english`, `german`) — for hyphenation |
+| `langid` | Language (`english`, `german`), for hyphenation |
 
 ### Author Name Formats
 
@@ -149,11 +149,11 @@ author = {da Silva, João},                 % name particles
 | `\parencite{key}` | (Einstein 1905) | [1] |
 | `\textcite{key}` | Einstein (1905) | Einstein [1] |
 | `\autocite{key}` | Style-dependent | Style-dependent |
-| `\fullcite{key}` | Full bibliography entry inline | — |
-| `\footcite{key}` | Footnote citation | — |
+| `\fullcite{key}` | Full bibliography entry inline |, |
+| `\footcite{key}` | Footnote citation |, |
 | `\citeauthor{key}` | Einstein | Einstein |
 | `\citeyear{key}` | 1905 | 1905 |
-| `\citetitle{key}` | On the Electro... | — |
+| `\citetitle{key}` | On the Electro... |, |
 
 ### With Options
 

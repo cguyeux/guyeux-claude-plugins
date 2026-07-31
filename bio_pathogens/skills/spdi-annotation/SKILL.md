@@ -1,24 +1,20 @@
 ---
 name: spdi-annotation
 description: >-
-  Academic research toolkit for the Guyeux group (FEMTO-ST, University of Franche-Comte). Annotates MTBC variants for peer-reviewed phylogenomic publications. Annotate MTBC SPDI variants with gene, effect (missense/synonymous/stop/frameshift),
-  amino acid change, and functional category. First queries TBannotator for existing
-  annotations, then falls back to local GenBank/GFF3 annotation for missing variants.
-  To check whether a SPDI variant (especially a high-impact one)
-  has already been described in the literature — useful to add a
-  citation column to the supplementary table — pair with
-  `tbmonitor-papers` and search for the SPDI string, gene name, or
-  HGVS_p notation in title/abstract.
+  Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed MTBC
+  phylogenomics: annotates SPDI variants (NC_000962.3:pos:ref:alt) with gene,
+  effect (missense / synonymous / stop / frameshift), amino acid change, impact
+  and Mycobrowser category. TBannotator first, local GenBank / GFF3 fallback.
 
-  Use when: annotating a list of SPDI variants for an MTBC article, building
-  supplementary tables with functional impact, or classifying variants by effect type.
+  Use when: annotating SPDI variants for an MTBC article, supplementary tables
+  of functional impact, classifying variants by effect.
 argument-hint: "<spdi_list.csv or spdi_list.txt> [-o annotated.csv] [--reference NC_000962.3]"
 user-invocable: true
 disable-model-invocation: false
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres, mcp__tbannotator__tool_get_schema
 ---
 
-# SPDI Annotation — Functional annotation of MTBC variants
+# SPDI Annotation : Functional annotation of MTBC variants
 
 Annotate SPDI variants (format `NC_000962.3:pos:ref:alt`) with gene location, protein effect, amino acid change, impact severity, and Mycobrowser functional category.
 
@@ -29,16 +25,22 @@ The annotation follows a **two-step strategy** to maximise accuracy and minimise
 ### Step 1: Query TBannotator (preferred)
 Query `mv_spdi_mutations` or the raw SNP tables for existing annotations:
 
+> ⚠ **Schéma v3.6 (vérifié 2026-07-31)** : il n'existe **pas** de table `tb_report_snp`, ni de colonnes
+> `spdi` / `gene` / `effect` / `amino_acid_change`. Les annotations vivent dans
+> **`tb_report_spdi_annotations`** : `spdi_variant_name` (le SPDI), `locus_tag` (Rv####, **pas** de nom de
+> gène), `annotation_type` (missense_variant, synonymous_variant, frameshift_variant…), `impact`
+> (LOW/MODERATE/HIGH), `hgvs_c`, `hgvs_p`, `protein_position`.
+
 ```sql
 -- Batch lookup of SPDIs in TBannotator
 SELECT DISTINCT
-    s.spdi,
-    s.gene,
-    s.effect,
-    s.amino_acid_change,
-    s.locus_tag
-FROM tb_report_snp s
-WHERE s.spdi IN ('NC_000962.3:42432:C:T', 'NC_000962.3:1004800:G:A', ...)
+    a.spdi_variant_name,
+    a.locus_tag,
+    a.annotation_type,
+    a.impact,
+    a.hgvs_p
+FROM tb_report_spdi_annotations a
+WHERE a.spdi_variant_name IN ('NC_000962.3:42432:C:T', 'NC_000962.3:1004800:G:A');
 ```
 
 If the MCP server is unavailable or SPDIs are missing, proceed to Step 2.
@@ -130,7 +132,7 @@ NC_000962.3:1004800:G:A
 ### Promoteurs de résistance (annotation locale)
 
 Une mutation qui tombe en amont (5′) d'un gène de résistance connu était
-classée « intergénique / MODIFIER » — perdant une information
+classée « intergénique / MODIFIER », perdant une information
 pharmacologiquement importante. Le fallback local détecte désormais les
 **promoteurs de résistance** (`eis`, `pncA`, `ethA`, `whiB7`, `ahpC`, `embA`,
 fenêtre de 200 pb en amont) et les reclasse en `upstream_promoter_variant`
@@ -167,25 +169,30 @@ All input columns are preserved in the output.
 
 ### Batch annotation lookup
 ```sql
-SELECT DISTINCT s.spdi, s.gene, s.effect, s.amino_acid_change, s.locus_tag
-FROM tb_report_snp s
-WHERE s.spdi IN ($SPDI_LIST)
+SELECT DISTINCT a.spdi_variant_name, a.locus_tag, a.annotation_type, a.impact, a.hgvs_p
+FROM tb_report_spdi_annotations a
+WHERE a.spdi_variant_name IN ($SPDI_LIST)
 LIMIT 1000;
 ```
 
-### Check if annotation exists for a specific SPDI
+### Fréquence d'un SPDI (nombre de souches porteuses)
 ```sql
-SELECT spdi, gene, effect, frequency
+-- mv_spdi_mutations : colonnes réelles = spdi_variant_name, mutation, mutation_type, strain_count
+-- (il n'y a ni `spdi`, ni `gene`, ni `effect`, ni `frequency`)
+SELECT spdi_variant_name, mutation, mutation_type, strain_count
 FROM mv_spdi_mutations
-WHERE spdi = 'NC_000962.3:42432:C:T';
+WHERE spdi_variant_name = 'NC_000962.3:42432:C:T';
 ```
 
-### Get all annotations for a lineage's markers
+### Annotations des marqueurs d'une lignée
 ```sql
-SELECT m.spdi, s.gene, s.effect, s.amino_acid_change
+-- mv_lineage_markers : colonnes réelles = lineage_code, spdi_variant_name, spdi_variant_position
+-- (pas de `lineage`, pas de `marker_type` : les marqueurs stockés SONT les marqueurs définitoires du système)
+SELECT m.lineage_code, m.spdi_variant_name,
+       a.locus_tag, a.annotation_type, a.hgvs_p
 FROM mv_lineage_markers m
-JOIN tb_report_snp s ON m.spdi = s.spdi
-WHERE m.lineage = 'L4.15' AND m.marker_type = 'core_exclusive';
+LEFT JOIN tb_report_spdi_annotations a ON a.spdi_variant_name = m.spdi_variant_name
+WHERE m.lineage_code = '4.15';
 ```
 
 ## Validation
@@ -219,7 +226,7 @@ for feat in record.features:
 
 | Pitfall | Solution |
 |---------|----------|
-| Double complementation on minus strand | NEVER `complement(alt)` — alt is already fwd in SPDI |
+| Double complementation on minus strand | NEVER `complement(alt)`, alt is already fwd in SPDI |
 | SPDI is 0-based, GFF3 is 1-based | Always convert: `pos_1based = spdi_pos + 1` |
 | Gene boundaries off-by-one | GFF3 uses 1-based inclusive start and end |
 | Missing CDS for RNA genes | Skip codon analysis for tRNA/rRNA/ncRNA |
@@ -227,6 +234,12 @@ for feat in record.features:
 | Complex variants (MNV) | Flag as `complex` rather than trying codon analysis |
 
 ## Workflow integration
+
+Pour savoir si un variant SPDI (surtout un variant à fort impact) a déjà été
+décrit dans la littérature, utile pour ajouter une colonne de citation à la
+table supplémentaire, enchaîner avec le skill `tbmonitor-papers` et chercher
+la chaîne SPDI, le nom du gène ou la notation HGVS_p dans les titres et
+résumés.
 
 ```
 fetch-tbannotator → spdi.txt

@@ -1,6 +1,6 @@
 ---
 name: pubmed-database
-description: "Direct REST API access to PubMed. Advanced Boolean/MeSH queries, E-utilities API, batch processing, citation management. For Python workflows, prefer biopython (Bio.Entrez). For TB/MTBC literature specifically, prefer the `tbmonitor-papers` skill (sub-second SQL on a pre-indexed corpus of ~190k PubMed TB papers with MeSH/keywords/authors as queryable JSON). Use this skill for non-TB topics, direct HTTP/REST work, or custom API implementations."
+description: "Direct REST access to the PubMed E-utilities API: advanced Boolean/MeSH queries, batch processing, citation management. For TB/MTBC literature prefer the `tbmonitor-papers` skill (sub-second SQL on ~190k pre-indexed PubMed TB papers). Use here for non-TB topics, direct HTTP/REST work, or custom API implementations."
 argument-hint: "<search query or MeSH terms>"
 user-invocable: true
 ---
@@ -10,6 +10,8 @@ user-invocable: true
 ## Overview
 
 PubMed is the U.S. National Library of Medicine's comprehensive database providing free access to MEDLINE and life sciences literature. Construct advanced queries with Boolean operators, MeSH terms, and field tags, access data programmatically via E-utilities API for systematic reviews and literature analysis.
+
+**For Python workflows, prefer `biopython` (`Bio.Entrez`)** over hand-rolled HTTP calls: it wraps the E-utilities endpoints, handles the API key, rate limiting, and XML parsing. Use this skill's direct REST recipes when you need raw HTTP/REST access or a custom API implementation.
 
 **For tuberculosis / MTBC literature, the `tbmonitor-papers` skill is the preferred entry point**: it queries the tbmonitor MCP server (`Tuberculosis Research Papers v3.2.4`), a pre-indexed SQLite mirror of the PubMed TB corpus (~190 000 papers, 1995-present, daily updates) with `authors`, `keywords`, `mesh_terms`, `publication_types`, `author_affiliations`, and `reference_list` exposed as JSON arrays directly queryable via `json_each`. Typical response time is < 1 s for fulltext-style `LIKE` searches when combined with a `publication_date` filter. Fall back to this `pubmed-database` skill only when the topic falls outside TB or when you need PubMed features (related articles, full E-utilities) that tbmonitor does not expose.
 

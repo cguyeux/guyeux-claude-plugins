@@ -11,9 +11,9 @@ description: >-
   "double mutants", "CCT / MCCT verdict", "MaBoSSEvaluator".
 ---
 
-# maboss-advanced — populations, scans, sensitivity, CCT
+# maboss-advanced : populations, scans, sensitivity, CCT
 
-## UPMaBoSS — dynamics of a cell population (division/death feedback)
+## UPMaBoSS : dynamics of a cell population (division/death feedback)
 
 ```python
 import maboss
@@ -24,7 +24,7 @@ res = up.run()
 res.plot_population()          # population size / node proportions over update rounds
 ```
 
-## PopMaBoSS — explicit population simulation
+## PopMaBoSS : explicit population simulation
 
 `maboss.PopSimulation` (PopMaBoSS engine) for population-level stochastic simulation; see
 the `pymaboss` skill for the API surface.

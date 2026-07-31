@@ -1,24 +1,22 @@
 ---
 name: phylogeography
 description: >-
-  Academic research toolkit for the Guyeux group (FEMTO-ST, University of Franche-Comte). Geographic-distribution analysis of published-research MTBC lineages for peer-reviewed phylogeographic publications. Geographic distribution analysis of MTBC lineages via TBannotator.
-  Cross-tabulation country × lineage, choropleth maps, stacked barplots,
-  and geographic diversity indices. To find prior phylogeographic
-  studies on a lineage or country (and cite them in the article), pair
-  with `tbmonitor-papers` — search by country name + lineage code in
-  title/abstract against the pre-indexed PubMed TB corpus.
-
-  Use when: mapping the geographic distribution of a lineage for an article,
-  comparing geographic structure between sub-lineages, producing distribution
-  figures and supplementary tables, identifying geographic hotspots.
+  Academic research toolkit (Guyeux group, FEMTO-ST): geographic distribution of
+  MTBC lineages via TBannotator, for peer-reviewed phylogeographic publications.
+  Country × lineage cross-tabulation, choropleth maps, stacked barplots,
+  diversity indices. Pair with `tbmonitor-papers` to cite prior studies. Use
+  when: mapping a lineage's distribution, comparing sub-lineages, producing
+  figures and supplementary tables, identifying hotspots.
 argument-hint: "<lineage or strain_sql> [-o distribution.csv] [-p map.png]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
 ---
 
-# Phylogeography — Distribution géographique MTBC
+# Phylogeography : Distribution géographique MTBC
 
 Analyse de la distribution géographique des lignées MTBC. Produit des tableaux pays × lignée, des cartes choroplèthes, et des barplots empilés pour articles.
+
+**Quand l'utiliser** : cartographier la distribution géographique d'une lignée pour un article, comparer la structure géographique entre sous-lignées, produire les figures de distribution **et les tables supplementary**, identifier des **hotspots géographiques**.
 
 ## Phase 1 : Découverte (OBLIGATOIRE)
 
@@ -28,7 +26,7 @@ Analyse de la distribution géographique des lignées MTBC. Produit des tableaux
    - Continent/région (agrégation)
    - Combinaison (pays + continent pour le barplot)
 3. **Quel type de figure ?**
-   - **Barplot empilé** (pays par proportion de sous-lignées) — le plus courant en article
+   - **Barplot empilé** (pays par proportion de sous-lignées), le plus courant en article
    - **Carte choroplèthe** (coloration des pays par prévalence)
    - **Heatmap** (pays × sous-lignée, intensité = proportion)
    - Tableau seul (pas de figure)
@@ -43,12 +41,12 @@ Analyse de la distribution géographique des lignées MTBC. Produit des tableaux
 
 ```sql
 -- Distribution géographique d'une lignée
-SELECT m.country, c.lineage_code, COUNT(*) as n
+SELECT m.geo_country, c.lineage_code, COUNT(*) as n
 FROM mv_strain_metadata m
-JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-WHERE c.system = 'Senelle' AND c.lineage_code LIKE '4.15%'
-  AND m.country IS NOT NULL AND m.country != ''
-GROUP BY m.country, c.lineage_code
+JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '4.15%'
+  AND m.geo_country IS NOT NULL AND m.geo_country != ''
+GROUP BY m.geo_country, c.lineage_code
 ORDER BY n DESC;
 ```
 
@@ -57,23 +55,23 @@ ORDER BY n DESC;
 ```sql
 -- Proportions par pays (pour barplot empilé)
 WITH country_totals AS (
-  SELECT m.country, COUNT(*) as total
+  SELECT m.geo_country, COUNT(*) as total
   FROM mv_strain_metadata m
-  JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-  WHERE c.system = 'Senelle' AND c.lineage_code LIKE '4.15%'
-    AND m.country IS NOT NULL AND m.country != ''
-  GROUP BY m.country
+  JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+  WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '4.15%'
+    AND m.geo_country IS NOT NULL AND m.geo_country != ''
+  GROUP BY m.geo_country
   HAVING COUNT(*) >= 5
 )
-SELECT m.country, c.lineage_code, COUNT(*) as n,
+SELECT m.geo_country, c.lineage_code, COUNT(*) as n,
        ct.total,
        ROUND(100.0 * COUNT(*) / ct.total, 1) as pct
 FROM mv_strain_metadata m
-JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-JOIN country_totals ct ON m.country = ct.country
-WHERE c.system = 'Senelle' AND c.lineage_code LIKE '4.15%'
-GROUP BY m.country, c.lineage_code, ct.total
-ORDER BY ct.total DESC, m.country, c.lineage_code;
+JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+JOIN country_totals ct ON m.geo_country = ct.geo_country
+WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '4.15%'
+GROUP BY m.geo_country, c.lineage_code, ct.total
+ORDER BY ct.total DESC, m.geo_country, c.lineage_code;
 ```
 
 ### Contexte : proportion de la lignée parmi toutes les souches d'un pays
@@ -81,25 +79,25 @@ ORDER BY ct.total DESC, m.country, c.lineage_code;
 ```sql
 -- Quelle fraction du TB national est L4.15 ?
 WITH country_all AS (
-  SELECT m.country, COUNT(*) as total_all
+  SELECT m.geo_country, COUNT(*) as total_all
   FROM mv_strain_metadata m
-  JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-  WHERE c.system = 'Senelle' AND m.country IS NOT NULL
-  GROUP BY m.country
+  JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+  WHERE c.system_name = 'guyeux' AND m.geo_country IS NOT NULL
+  GROUP BY m.geo_country
   HAVING COUNT(*) >= 20
 ),
 country_target AS (
-  SELECT m.country, COUNT(*) as n_target
+  SELECT m.geo_country, COUNT(*) as n_target
   FROM mv_strain_metadata m
-  JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-  WHERE c.system = 'Senelle' AND c.lineage_code LIKE '4.15%'
-    AND m.country IS NOT NULL
-  GROUP BY m.country
+  JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+  WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '4.15%'
+    AND m.geo_country IS NOT NULL
+  GROUP BY m.geo_country
 )
-SELECT a.country, COALESCE(t.n_target, 0) as n_target, a.total_all,
+SELECT a.geo_country, COALESCE(t.n_target, 0) as n_target, a.total_all,
        ROUND(100.0 * COALESCE(t.n_target, 0) / a.total_all, 2) as pct_of_total
 FROM country_all a
-LEFT JOIN country_target t ON a.country = t.country
+LEFT JOIN country_target t ON a.geo_country = t.geo_country
 ORDER BY pct_of_total DESC;
 ```
 
@@ -155,7 +153,7 @@ Matrice colorée par proportion, avec dendrogramme de clustering hiérarchique s
 }
 ```
 
-## Biais d'échantillonnage — ATTENTION
+## Biais d'échantillonnage : ATTENTION
 
 Les données TBannotator reflètent les séquençages publiés, pas la vraie prévalence. Biais connus :
 
@@ -189,7 +187,8 @@ Pour agréger par continent/région :
 | `lineage-comparison` | Tests statistiques (Fisher) sur distribution pays |
 | `resistance-profiler` | Corrélation résistance × géographie |
 | `itol` | Color strip pays sur la phylogénie |
-| `create-viz` | Figures supplémentaires personnalisées |
+| `sci-figure` | Figures supplémentaires personnalisées |
+| `tbmonitor-papers` | Retrouver les études phylogéographiques antérieures sur une lignée ou un pays, pour les citer dans l'article : rechercher **nom de pays + code de lignée** dans le titre/abstract du corpus PubMed TB pré-indexé |
 
 ## Dépendances
 

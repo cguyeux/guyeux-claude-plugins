@@ -14,6 +14,22 @@ import shap
 import matplotlib.pyplot as plt
 
 
+def _is_tree_model(model: Any) -> bool:
+    """True for tree ensembles and single trees that shap.TreeExplainer supports.
+
+    A single sklearn DecisionTree exposes `tree_`; ensembles expose
+    `estimators_`; XGBoost / LightGBM / CatBoost expose a booster instead.
+    Testing only `tree_` sends every ensemble to the slow KernelExplainer.
+    """
+    if hasattr(model, "tree_") or hasattr(model, "estimators_"):
+        return True
+    if any(hasattr(model, attr) for attr in
+           ("get_booster", "booster_", "_Booster", "get_all_params")):
+        return True
+    name = type(model).__name__.lower()
+    return any(k in name for k in ("forest", "boost", "tree", "lgbm", "xgb"))
+
+
 class MLModelExplainer:
     """Explain ML model predictions."""
 
@@ -29,15 +45,17 @@ class MLModelExplainer:
         self.model = model
         self.X_background = X_background
 
-        # Create appropriate explainer
-        if hasattr(model, 'tree_'):
-            # Tree-based model
+        # Create appropriate explainer.
+        # NB: a RandomForest / GradientBoosting / XGBoost has `estimators_` or a
+        # booster, not `tree_` (that attribute only exists on a single
+        # DecisionTree), so testing `tree_` alone silently sends every ensemble
+        # to the slow KernelExplainer path.
+        if _is_tree_model(model):
             self.explainer = shap.TreeExplainer(model)
         elif hasattr(model, 'coef_'):
-            # Linear model
             self.explainer = shap.LinearExplainer(model, X_background)
         else:
-            # General explainer (slower)
+            # General explainer (orders of magnitude slower, approximate)
             self.explainer = shap.KernelExplainer(model.predict, X_background)
 
         return self

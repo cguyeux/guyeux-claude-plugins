@@ -1,20 +1,13 @@
 ---
 name: species-id
 description: >-
-  Identification d'espece/genre bacterien pour detecter les souches mal
-  etiquetees "M. tuberculosis". Deux methodes : (1) BLAST API via NCBI
-  (zero stockage local, precise, ~1 min/souche), (2) Mash screen
-  (rapide, ~1 Go de sketch RefSeq, optionnel). Concu pour le screening
-  de souches suspectes avant integration dans la BDD MTBC.
-
-  Use when: a strain labeled M. tuberculosis looks suspicious (aberrant
-  SNP count, odd phylogenetic placement, too few/many SPDI), when
-  importing new strains from SRA/ENA, or when TBannotator reports
-  anomalies suggesting contamination or mislabeling. Once a non-TB
-  species is identified, `tbmonitor-papers` can confirm whether the
-  underlying BioProject/SRA has already been reported as misclassified
-  in the published literature (search by SRA / BioProject ID in title
-  or abstract).
+  Academic research toolkit for peer-reviewed pathogen-genomics research (Guyeux group,
+  FEMTO-ST). Bacterial species and genus identification to detect published research
+  isolates mislabelled as M. tuberculosis, by two methods: the NCBI BLAST API and Mash
+  screen against a RefSeq sketch. Quality-control step before adding a genome to the group's
+  research database. Use when a research isolate labelled M. tuberculosis looks suspicious
+  (aberrant SNP count, too few or too many SPDI, odd phylogenetic placement), when importing
+  genomes from SRA or ENA, or when TBannotator reports a mixed or misassigned sample.
 argument-hint: "<FASTA|SRA> [--method blast|mash|both] [--gene rpoB|16S|auto]"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebFetch
 user-invocable: true
@@ -37,7 +30,7 @@ on verifie qu'elle est bien ce qu'elle pretend etre.
 > [!CAUTION]
 > **Garde-fou anti-faux-positif (échec Mycobacterium_sp_novel, clos 2026-05-29).**
 > Mesurer l'ANI TOUJOURS via **skani** (ou fastANI), ou à défaut sur contigs filtrés
-> ≥ 10 kb — JAMAIS par un BLAST length-weighted sur un assemblage SPAdes complet : les
+> ≥ 10 kb, JAMAIS par un BLAST length-weighted sur un assemblage SPAdes complet : les
 > petits contigs (rRNA, protéines ribosomales, housekeeping ultra-conservés) matchent
 > toute mycobactérie à ~99 % et fabriquent un faux signal de proximité (faux 92 % vs MTBC
 > au lieu du vrai ~82 %). Inclure le **panel NTM** dans la comparaison, en particulier
@@ -213,7 +206,7 @@ Pour chaque hit dans les 10 meilleurs :
 - 94-97% : meme genre, espece differente
 - Les especes du MTBC (M. tuberculosis, M. bovis, M. africanum,
   M. caprae, M. microti, M. pinnipedii, M. canettii...) ont >99.5%
-  d'identite entre elles sur rpoB — la discrimination intra-MTBC
+  d'identite entre elles sur rpoB, la discrimination intra-MTBC
   se fait par SNP, pas par marqueur.
 
 ### Format de sortie BLAST
@@ -262,7 +255,7 @@ wget https://gembox.cbcb.umd.edu/mash/refseq.genomes.k21s1000.msh \
 
 Si Mash n'est pas installe ou si le sketch n'est pas present :
 signaler a l'utilisateur et proposer les commandes d'installation.
-Ne PAS bloquer — basculer sur la methode BLAST API.
+Ne PAS bloquer, basculer sur la methode BLAST API.
 
 ### Execution
 
@@ -412,6 +405,11 @@ et recommander l'exclusion de la BDD MTBC.
   NCBI Pathogen Detection et avec quel organisme
 - **/phylo-history** : une souche qui se place systematiquement en
   long branch dans tous les arbres pourrait etre mal etiquetee
+- **`tbmonitor-papers`** : une fois une espece non-TB identifiee,
+  confirmer si le BioProject / la SRA sous-jacente a **deja ete
+  rapportee comme mal classee dans la litterature publiee**,
+  rechercher l'identifiant SRA / BioProject dans le titre ou
+  l'abstract du corpus PubMed TB pre-indexe
 
 ---
 

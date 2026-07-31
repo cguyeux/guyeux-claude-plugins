@@ -1,25 +1,17 @@
 ---
 name: beast2-phylogeography
 description: >-
-  Use BEAST2 with its phylogeography packages (MASCOT, BASTA, and the
-  classical DTA approach) for rigorous Bayesian molecular dating,
-  tip-dating of ancient samples, and structured-coalescent
-  phylogeographic inference. BEAST2 is the reference Bayesian framework
-  for low- to mid-scale phylogenetics (10^1–10^3 tips) where full
-  posterior distributions on tree topology, divergence times, migration
-  rates, and ancestral states are required — the gold standard when
-  tip-dating ancient pathogens or testing specific demographic
-  hypotheses.
+  BEAST2 phylogeography packages (MASCOT, BASTA, DTA) for Bayesian molecular
+  dating, tip-dating of ancient samples, and structured-coalescent inference,
+  with full posteriors on topology, divergence times, migration rates and
+  ancestral states.
 
-  Use when: dating ancient MTBC tips with full posterior confidence
-  intervals, running a structured-coalescent phylogeography for a
-  lineage of interest (MASCOT / BASTA), producing a time-scaled
-  Bayesian tree for a seminar slide, testing competing demographic
-  models, or when a Maximum-Likelihood / Nextstrain pipeline is not
-  rigorous enough for a reviewer.
+  Use when: dating ancient MTBC tips with credible intervals, demographic
+  model comparison, or when a Maximum-Likelihood / Nextstrain pipeline is not
+  rigorous enough.
 ---
 
-# BEAST2 Phylogeography — MASCOT, BASTA, and the Structured Coalescent
+# BEAST2 Phylogeography : MASCOT, BASTA, and the Structured Coalescent
 
 ## Overview
 
@@ -28,7 +20,7 @@ is the reference open-source Bayesian framework for phylogenetic and
 phylodynamic inference. Where **Nextstrain/Augur** and **PastML** give
 you fast Maximum-Likelihood point estimates at scale, BEAST2 gives you
 **full posterior distributions** on tree topology, divergence times,
-migration rates, population sizes, and ancestral states — at the cost
+migration rates, population sizes, and ancestral states, at the cost
 of being slower (typically 10²–10³ tips is the sweet spot, not 10⁵).
 
 - **Main reference**: Bouckaert R. et al. *BEAST 2.5: An Advanced
@@ -39,19 +31,31 @@ of being slower (typically 10²–10³ tips is the sweet spot, not 10⁵).
   Platform for Bayesian Evolutionary Analysis.* **PLOS Computational
   Biology** 10(4): e1003537 (2014). DOI: `10.1371/journal.pcbi.1003537`
 - **Main site**: `https://www.beast2.org/`
-- **Tutorials**: `https://taming-the-beast.org/` — community-maintained
+- **Tutorials**: `https://taming-the-beast.org/`, community-maintained
   tutorial collection (Stadler lab, ETH Zürich)
 - **Language**: Java (cross-platform; runs on Linux, macOS, Windows)
 - **License**: **LGPL**
+
+### When to use this skill
+
+- **dating ancient MTBC tips** with full posterior confidence intervals
+  (tip-dating);
+- running a **structured-coalescent phylogeography** for a lineage of
+  interest (MASCOT / BASTA);
+- producing a **time-scaled Bayesian tree as a figure**, manuscript, poster,
+  or seminar slide;
+- **testing competing demographic models** by posterior model comparison;
+- whenever a **Maximum-Likelihood / Nextstrain pipeline is not rigorous
+  enough for a reviewer** and full posterior distributions are required.
 
 ### Core ecosystem
 
 | Tool | Role |
 |---|---|
-| **BEAST2** | MCMC engine — reads an XML specification, produces posterior samples |
-| **BEAUti** | Graphical XML generator — the recommended way to set up a run |
+| **BEAST2** | MCMC engine, reads an XML specification, produces posterior samples |
+| **BEAUti** | Graphical XML generator, the recommended way to set up a run |
 | **Tracer** | Visual inspection of MCMC chains, ESS, convergence |
-| **TreeAnnotator** | Post-processing — produces a single MCC or target tree from the posterior |
+| **TreeAnnotator** | Post-processing, produces a single MCC or target tree from the posterior |
 | **DensiTree** | Visualizes the posterior tree distribution as overlaid trees |
 | **FigTree** / **Icytree** | Final tree visualisation for figures |
 
@@ -59,13 +63,13 @@ of being slower (typically 10²–10³ tips is the sweet spot, not 10⁵).
 
 | Package | Purpose | Key citation |
 |---|---|---|
-| **MASCOT** | Marginal Approximation of the Structured COalescenT — scalable structured-coalescent phylogeography | Müller N.F., Rasmussen D.A., Stadler T. (2018) *Bioinformatics* 34(22): 3843–3848, DOI `10.1093/bioinformatics/bty406` |
-| **BASTA** | Bayesian Structured Coalescent Approximation — more exact but slower than MASCOT | De Maio N., Wu C.-H., O'Reilly K.M., Wilson D. (2015) *PLOS Genetics* 11(8): e1005421, DOI `10.1371/journal.pgen.1005421` |
+| **MASCOT** | Marginal Approximation of the Structured COalescenT, scalable structured-coalescent phylogeography | Müller N.F., Rasmussen D.A., Stadler T. (2018) *Bioinformatics* 34(22): 3843–3848, DOI `10.1093/bioinformatics/bty406` |
+| **BASTA** | Bayesian Structured Coalescent Approximation, more exact but slower than MASCOT | De Maio N., Wu C.-H., O'Reilly K.M., Wilson D. (2015) *PLOS Genetics* 11(8): e1005421, DOI `10.1371/journal.pgen.1005421` |
 | **BEAST_CLASSIC / DiscreteTraits** | The classical Lemey-style Discrete Trait Analysis (DTA, CTMC on the tree) | Lemey P., Rambaut A., Drummond A.J., Suchard M.A. (2009) *PLOS Computational Biology* 5(9): e1000520 |
-| **StructuredCoalescent** | Exact structured coalescent (Ewing et al.) — very slow, rarely used | Ewing G. et al. 2004 |
-| **BDSKY** | Birth-Death Skyline — phylodynamic for time-varying populations | Stadler T. et al. 2013 |
+| **StructuredCoalescent** | Exact structured coalescent (Ewing et al.), very slow, rarely used | Ewing G. et al. 2004 |
+| **BDSKY** | Birth-Death Skyline, phylodynamic for time-varying populations | Stadler T. et al. 2013 |
 | **SA** (Sampled Ancestors) | Correctly handles ancient tips as potentially ancestral | Gavryushkina A. et al. 2014 |
-| **beast-classic** | Classical BEAST v1 models ported to BEAST2 | — |
+| **beast-classic** | Classical BEAST v1 models ported to BEAST2 |, |
 
 ## Why it matters for MTBC × anthropology
 
@@ -75,7 +79,7 @@ BEAST2 is the **rigorous Bayesian layer** above the fast ML tools
 1. **Tip-dating ancient MTBC tips with honest uncertainty.** The 16
    ancient MTBC genomes in SPAAM (Bos, Kay, Sabin, Vagene, Jager)
    can be used as **calibrated tips** in a BEAST2 run that produces
-   posterior divergence-time intervals — not just point estimates.
+   posterior divergence-time intervals, not just point estimates.
    This is the methodological standard a rigorous reviewer will
    expect for any TMRCA claim in an MTBC phylogeographic paper.
 2. **Structured-coalescent phylogeography via MASCOT / BASTA.** These
@@ -87,22 +91,22 @@ BEAST2 is the **rigorous Bayesian layer** above the fast ML tools
    fast it dispersed, structured coalescent is the rigorous choice.
 3. **Posterior model comparison.** BEAST2's marginal likelihood
    estimation (stepping-stone or path sampling) lets you compare
-   alternative migration models or clock models — e.g. strict vs
-   relaxed clock, constant vs time-varying deme sizes — with Bayes
+   alternative migration models or clock models, e.g. strict vs
+   relaxed clock, constant vs time-varying deme sizes, with Bayes
    factors. PastML and Augur do not provide this.
 4. **Sampled Ancestors for ancient tips.** The **SA package** lets
    ancient samples be treated as potentially ancestral (not just
    derived) lineages, which is biologically more honest for
    intermediate-age ancient DNA.
 
-## MASCOT vs BASTA vs DTA — which to use
+## MASCOT vs BASTA vs DTA : which to use
 
 | Method | Speed | Accuracy | Sampling-bias correction | When to use |
 |---|---|---|---|---|
-| **DTA (Lemey 2009)** | Fast (CTMC on tips) | Low for phylogeography — known biases | **No** — assumes random sampling | Only for didactic comparison or initial exploration; **not** for the final manuscript claim |
-| **MASCOT (Müller 2018)** | Moderate | Good approximation of structured coalescent | **Yes** — models migration explicitly | **Default choice** for structured-coalescent phylogeography with many demes |
+| **DTA (Lemey 2009)** | Fast (CTMC on tips) | Low for phylogeography, known biases | **No**, assumes random sampling | Only for didactic comparison or initial exploration; **not** for the final manuscript claim |
+| **MASCOT (Müller 2018)** | Moderate | Good approximation of structured coalescent | **Yes**, models migration explicitly | **Default choice** for structured-coalescent phylogeography with many demes |
 | **BASTA (De Maio 2015)** | Slower than MASCOT | More accurate in some regimes | **Yes** | When the population structure is complex or when you need the reference baseline |
-| **Exact structured coalescent** | Very slow | Most accurate | Yes | Rarely used — only for very small trees |
+| **Exact structured coalescent** | Very slow | Most accurate | Yes | Rarely used, only for very small trees |
 
 **Recommendation for your MTBC work**: use **MASCOT** by default.
 Fall back to **BASTA** only if MASCOT's approximation is challenged by a
@@ -149,16 +153,16 @@ The **Taming the BEAST** platform (`https://taming-the-beast.org/`)
 maintained by the Stadler lab at ETH Zürich is the canonical hands-on
 tutorial collection. Particularly relevant:
 
-- **MASCOT Tutorial** (v3) — `https://taming-the-beast.org/tutorials/Mascot-Tutorial/`
-- **BASTA Tutorial** — also on the same platform
-- **Sampled Ancestors Tutorial** — tip-dating with ancient samples
-- **Introduction to BEAST2** — the onboarding course
+- **MASCOT Tutorial** (v3), `https://taming-the-beast.org/tutorials/Mascot-Tutorial/`
+- **BASTA Tutorial**, also on the same platform
+- **Sampled Ancestors Tutorial**, tip-dating with ancient samples
+- **Introduction to BEAST2**, the onboarding course
 
 These are reproducible end-to-end walkthroughs with example data, XML
 files, and expected outputs. **Do not reinvent the BEAST2 pipeline; use
 a tutorial XML as template and adapt it.**
 
-## Headless / programmatic recipe (no BEAUti — tested 2026-06, BEAST 2.7)
+## Headless / programmatic recipe (no BEAUti : tested 2026-06, BEAST 2.7)
 
 When there is no display (server, agent) or you need to generate many
 XMLs, **emit the XML from a script** and run BEAST headless. A complete,
@@ -186,8 +190,8 @@ SNP-only alignment (variable sites only) makes BEAST overestimate the
 per-site rate and **compress node dates toward the present** (we saw an
 *M. bovis* MRCA pulled from ~835 BCE to ~1390 CE). The robust correction
 is **not** the Felsenstein conditioning (4 constant columns +
-`ascertained excludefrom/to`) — fragile and it crashes the threaded
-likelihood — but the **`siteWeights`** input of `Alignment`: prepend 4
+`ascertained excludefrom/to`), fragile and it crashes the threaded
+likelihood, but the **`siteWeights`** input of `Alignment`: prepend 4
 constant columns (A,C,G,T) and weight them by the *true* invariant-site
 counts of each base (computed over the reference, excluding masked and
 variable positions), SNPs weight 1:
@@ -202,11 +206,11 @@ variable positions), SNPs weight 1:
 BEAST then loads the **whole genome** (`[taxa, patterns, 3,683,905
 sites]`); the clock rate becomes the real per-site molecular rate
 (~7e-8, Menardo range) and branches/dates are not inflated. **Two hard
-constraints:** (1) `siteWeights` requires `spec="TreeLikelihood"` —
+constraints:** (1) `siteWeights` requires `spec="TreeLikelihood"`,
 `ThreadedTreeLikelihood` splits into `FilteredAlignment`s that reject
 weights (*"Cannot handle site weights in FilteredAlignment"*) and NPE
 with ascertainment, so the likelihood is single-threaded (threading does
-not help anyway — MCMC is operator-bound, ~50 min/Msample on ~100 tips);
+not help anyway : MCMC is operator-bound, ~50 min/Msample on ~100 tips);
 (2) center the clock-rate prior on the whole-genome scale,
 `M = ln(rate_SNP_per_genome_per_yr / genome_sites)` (e.g. `M≈-16.5`),
 **not** on the variable-site scale.
@@ -216,20 +220,20 @@ not help anyway — MCMC is operator-bound, ~50 min/Msample on ~100 tips);
 clade age (calendar years; tip dates via a `date` TraitSet). To get
 posterior dates of *un-calibrated* clades (e.g. a clonal complex) without
 parsing trees, add **logging-only** `MRCAPrior monophyletic="false"` with
-no `distr` and `<log idref="cal_X"/>` — the `.log` then carries a
+no `distr` and `<log idref="cal_X"/>`, the `.log` then carries a
 `mrca.date(ts_X)` column. Convert a logged `clockRate` to SNP/genome/yr
 via ×(modelled genome size), not ×(variable sites).
 
 **Gotchas that cost hours.** (a) `NullPointerException
 TreeLikelihood.requiresRecalculation null` is usually **two BEAST runs
-writing the same output files** (a test still running) — check `ps`
+writing the same output files** (a test still running), check `ps`
 before launching, put each chain in its own directory. (b) Kill by PID;
 never `pkill -f run.xml` (it matches the launching shell). (c) **Never
-read rate/dates during burn-in** (ESS≈3-5, parameters still drifting) —
+read rate/dates during burn-in** (ESS≈3-5, parameters still drifting),
 let it pass several M samples first. (d) Run **≥2 independent chains**
 (different seeds, separate dirs) and require ESS≥200 on all parameters
 before any claim. (e) ESS + posterior date HPDs can be computed from the
-`.log` with a tiny Python autocorrelation estimator (Tracer-style) — no
+`.log` with a tiny Python autocorrelation estimator (Tracer-style), no
 GUI needed; see `beast_harvest.py`.
 
 ## Practical chain setup for ancient MTBC
@@ -286,7 +290,7 @@ real problem (model misspecification, poor mixing, too much data).
 
 ## Workflows
 
-### Workflow 1 — Tip-dated Bayesian tree of ancient + modern MTBC
+### Workflow 1 : Tip-dated Bayesian tree of ancient + modern MTBC
 
 Goal: produce a Bayesian time-scaled tree that places the 5–6 ancient
 MTBC projects (Bos, Kay, Sabin, Vagene, Jager) on a modern MTBC
@@ -302,7 +306,7 @@ backbone with full posterior confidence intervals on divergence times.
 5. Save XML, run with `beast <run>.xml`.
 6. Post-process with TreeAnnotator to get the MCC tree.
 
-### Workflow 2 — Structured-coalescent phylogeography of L4.15
+### Workflow 2 : Structured-coalescent phylogeography of L4.15
 
 Goal: reconstruct the migration history of L4.15 Clade A between
 Ghana, Peru, Argentina, and Turkey (from your memory) with rigorous
@@ -320,7 +324,7 @@ posterior intervals on migration rates.
    hypothesis (then chain with `slavevoyages` for the historical
    evidence).
 
-### Workflow 3 — Bayes-factor test of competing demographic models
+### Workflow 3 : Bayes-factor test of competing demographic models
 
 Goal: test whether MTBC L4 population size has been constant, growing,
 or declining over the last 5 000 years.
@@ -334,7 +338,7 @@ or declining over the last 5 000 years.
 3. Compute Bayes factors between models.
 4. Report the best-supported model and the effect size.
 
-### Workflow 4 — Cross-validation with Nextstrain
+### Workflow 4 : Cross-validation with Nextstrain
 
 Goal: use `nextstrain` for a fast ML tree, then port the alignment to
 BEAST2 for a rigorous Bayesian replication on a subsample.
@@ -367,7 +371,7 @@ BEAST2 for a rigorous Bayesian replication on a subsample.
   Augur and accept the ML point estimates.
 - **DTA is biased.** The classical Lemey discrete-trait analysis
   over-weights the most heavily sampled regions. **Do not use DTA**
-  for a publishable phylogeographic claim — use MASCOT / BASTA.
+  for a publishable phylogeographic claim, use MASCOT / BASTA.
 - **Ancient tips with low coverage are noisy.** Use only authenticated
   ancient genomes (see `spaam-community` for damage authentication);
   run sensitivity analyses dropping individual ancient tips.

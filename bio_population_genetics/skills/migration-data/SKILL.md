@@ -13,7 +13,7 @@ user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 ---
 
-# Migration Data — Donnees de migration humaine pour etudes MTBC
+# Migration Data : Donnees de migration humaine pour etudes MTBC
 
 Agregation et formatage de donnees de migration humaine pour comparaison directe avec les patterns de dispersion des lignees MTBC.
 

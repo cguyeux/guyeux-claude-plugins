@@ -6,13 +6,13 @@
 
 Machine learning et data science au service des analyses MTBC : classification de lignées, prédiction de phénotypes de résistance à partir de génotypes, réduction de dimension sur des matrices de SNP, explication des modèles obtenus.
 
-Skills propres (canoniques) : **20** ; skills partagés utilisés (symlinks) : **1**.
+Skills propres (canoniques) : **14** ; skills partagés utilisés (symlinks) : **3**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [causal-inference](#causal-inference) ; [data-visualization](#data-visualization) ; [geopandas](#geopandas) ; [matplotlib](#matplotlib) ; [matplotlib-pro](#matplotlib-pro) ; [ml-model-explainer](#ml-model-explainer) ; [networkx](#networkx) ; [numpy](#numpy) ; [numpy-low-level](#numpy-low-level) ; [pandas-performance](#pandas-performance) ; [scientific-problem-selection](#scientific-problem-selection) ; [scikit-learn](#scikit-learn) ; [scipy](#scipy) ; [senior-data-scientist](#senior-data-scientist) ; [shapely](#shapely) ; [sklearn-advanced](#sklearn-advanced) ; [sklearn-explainability](#sklearn-explainability) ; [statistical-analysis](#statistical-analysis) ; [statsmodels](#statsmodels) ; [xgboost-iterative-optimizer](#xgboost-iterative-optimizer)
+Sommaire : [causal-inference](#causal-inference) ; [geopandas](#geopandas) ; [ml-model-explainer](#ml-model-explainer) ; [networkx](#networkx) ; [numpy](#numpy) ; [numpy-low-level](#numpy-low-level) ; [pandas-performance](#pandas-performance) ; [scipy](#scipy) ; [senior-data-scientist](#senior-data-scientist) ; [shapely](#shapely) ; [sklearn-advanced](#sklearn-advanced) ; [sklearn-explainability](#sklearn-explainability) ; [statistical-analysis](#statistical-analysis) ; [xgboost-iterative-optimizer](#xgboost-iterative-optimizer)
 
 ### causal-inference
 
@@ -20,35 +20,17 @@ Inférence causale et raisonnement contrefactuel pour le machine learning. Sert 
 
 Compétences : l'utilisateur mentionne DoWhy, EconML, CausalML, le do-calcul, les variables instrumentales, l'appariement par score de propension, le double machine learning, les forêts causales, l'hétérogénéité des effets, la découverte causale (PC, FCI, GES, LiNGAM, NOTEARS), ou veut passer de « X est corrélé à Y » à « X cause Y 
 
-### data-visualization
-
-Crée des visualisations de données efficaces avec Python (matplotlib, seaborn, plotly).
-
-Compétences : construire des graphiques ; choisir le bon type de graphique pour un jeu de données ; produire des figures de qualité publication ; appliquer des principes de design (accessibilité, théorie des couleurs)
-
 ### geopandas
 
 Projet open source facilitant le travail sur données géospatiales en Python. Étend les types de pandas pour autoriser des opérations spatiales sur des géométries, en s'appuyant sur Shapely, Fiona et Pyproj. Sert à lire/écrire des formats spatiaux (Shapefile, GeoJSON, GeoPackage, KML), aux jointures spatiales, aux reprojections, à l'analyse géométrique et à la cartographie thématique.
 
 Compétences : manipuler des données vectorielles géographiques en Python ; jointures spatiales, reprojections, cartes choroplèthes ; travailler avec des données OpenStreetMap ou dérivées de satellite
 
-### matplotlib
-
-Bibliothèque fondamentale pour les visualisations statiques, animées et interactives en Python. Hautement personnalisable, standard de l'industrie pour les figures de qualité publication. Sert au tracé 2D, à la visualisation scientifique, aux cartes de chaleur, contours, champs de vecteurs, figures multi-panneaux, tracés au format LaTeX et depuis des tableaux NumPy ou DataFrames pandas.
-
-Compétences : produire des figures scientifiques précises et personnalisées ; tracer depuis NumPy/pandas ; construire des figures multi-panneaux de qualité publication
-
-### matplotlib-pro
-
-Sous-skill professionnel de Matplotlib axé sur les animations performantes, les mises en page multi-figures complexes (GridSpec), les widgets interactifs et la typographie prête à publier (LaTeX/PGF).
-
-Compétences : réaliser des animations performantes ; composer des mises en page multi-figures complexes ; soigner la typographie d'une figure publiée
-
 ### ml-model-explainer
 
-Explique les prédictions d'un modèle de ML via les valeurs SHAP, l'importance des features et les chemins de décision, avec visualisations.
+Explique les predictions d'un modele ajuste par valeurs SHAP, importance par permutation et importance native, plus les chemins de decision par instance, avec graphiques. Pour l'API d'inspection scikit-learn sous-jacente et les compromis LIME/SHAP, voir sklearn-explainability.
 
-Compétences : interpréter les prédictions d'un modèle ; identifier les features déterminantes ; visualiser des chemins de décision
+Compétences : comprendre pourquoi un modele a predit un resultat donne ; savoir quelles variables le pilotent ; produire un graphique SHAP resume ou en cascade pour une figure d'article ; auditer un modele avant de se fier a son classement
 
 ### networkx
 
@@ -64,27 +46,15 @@ Compétences : manipuler des tableaux numériques ; algèbre linéaire, aléatoi
 
 ### numpy-low-level
 
-Sous-skill avancé de NumPy axé sur la gestion mémoire interne, la manipulation des strides, les tableaux structurés et l'interfaçage avec C/Cython. Couvre les opérations zéro-copie et les principes de vectorisation SIMD.
+Sous-skill NumPy avance : disposition memoire, strides, vues contre copies, tableaux structures et d'enregistrements, protocole tampon, et interfacage avec C/Cython.
 
-Compétences : optimiser la mémoire ou la vitesse d'un code NumPy ; opérations zéro-copie ; interfaçage C/Cython ; tableaux structurés
+Compétences : une operation sur tableau est anormalement lente ou gourmande en memoire ; une mutation se propage a travers une vue ; construire des fenetres glissantes ou des statistiques roulantes sans copier ; lire une disposition binaire dans un dtype structure ; l'utilisateur mentionne strides, as_strided, sliding_window_view, ascontiguousarray, zero-copy ou vectorisation SIMD
 
 ### pandas-performance
 
-Sous-skill avancé de pandas axé sur l'optimisation mémoire, la vitesse d'exécution et le traitement de jeux à grande échelle (10 M+ lignes). Couvre les dtypes bas niveau, l'indexation efficace et la vectorisation de logiques complexes.
+Sous-skill pandas avance pour l'empreinte memoire et la vitesse d'execution sur de grandes tables (10M+ lignes) : reduction de dtypes, categorielles, indexation efficace, vectorisation de la logique ligne a ligne, lectures par morceaux et hors memoire, et backend PyArrow.
 
-Compétences : optimiser la mémoire ou la vitesse d'un traitement pandas ; gérer de très gros DataFrames ; vectoriser une logique complexe
-
-### scientific-problem-selection
-
-À utiliser quand des scientifiques ont besoin d'aide pour choisir un problème de recherche, imaginer un projet, débloquer un projet enlisé ou prendre des décisions scientifiques stratégiques.
-
-Compétences : pitcher une nouvelle idée ; travailler un problème de projet ; évaluer les risques d'un projet ; planifier une stratégie de recherche ; choisir sur quel problème travailler (« j'ai une idée de projet », « je suis bloqué », « aide-moi à évaluer ce projet », « sur quoi travailler »)
-
-### scikit-learn
-
-Bibliothèque standard de l'industrie pour le machine learning en Python. Offre des outils simples et efficaces d'analyse prédictive : classification, régression, clustering, réduction de dimension, sélection de modèle et prétraitement.
-
-Compétences : entraîner un modèle de classification ou de régression ; clustering ou réduction de dimension ; sélection de modèle et prétraitement de features
+Compétences : une operation DataFrame est trop lente ou epuise la memoire ; remplacer apply ou iterrows par des operations vectorisees ; un groupby ou un merge explose ; charger un fichier trop gros pour la RAM
 
 ### scipy
 
@@ -94,9 +64,9 @@ Compétences : optimisation, interpolation, intégration ; traitement du signal 
 
 ### senior-data-scientist
 
-Skill de data science de haut niveau pour la modélisation statistique, l'expérimentation, l'inférence causale et l'analytique avancée. Expertise Python (NumPy, Pandas, Scikit-learn), R, SQL, méthodes statistiques, tests A/B, séries temporelles, avec conception d'expériences, feature engineering, évaluation de modèles et communication aux parties prenantes.
+Boite a outils de recherche academique pour concevoir une analyse statistiquement defendable sur des donnees genomiques et de population avant de la lancer, et pour aiguiller vers le skill specialise adapte. Formalise les quatre modes d'echec qui invalident le plus souvent une conclusion dans ce domaine : non-independance due a l'ascendance partagee, tests multiples a l'echelle du genome, biais de constatation dans les archives publiques, et fuite par apparentement dans un modele predictif. N'execute ni ajustement ni graphique : delegue a statsmodels, scikit-learn, statistical-analysis, causal-inference, mk-ascertainment ou sci-figure.
 
-Compétences : concevoir des expériences ; construire des modèles prédictifs ; réaliser une analyse causale ; piloter des décisions fondées sur les données
+Compétences : savoir comment monter une analyse plutot que la lancer ; quel test ou estimateur convient a la question ; si un resultat survit a la non-independance phylogenetique ; comment corriger pour les tests multiples sur des milliers de sites ou de genes ; comment decouper les donnees en validation croisee quand les isolats sont clonaux ; si un resultat de frequence allelique est un artefact d'echantillonnage ; ce qu'un relecteur attaquera dans les statistiques d'un manuscrit
 
 ### shapely
 
@@ -106,27 +76,21 @@ Compétences : opérations de géométrie 2D et relations spatiales ; intersecti
 
 ### sklearn-advanced
 
-Sous-skill professionnel de scikit-learn axé sur l'architecture robuste de pipelines, le développement d'estimateurs personnalisés, le feature engineering avancé et la validation rigoureuse de modèles. Couvre le Target Encoding, la validation croisée imbriquée et le déploiement en production.
+Sous-skill scikit-learn professionnel : architecture robuste de Pipeline et ColumnTransformer, estimateurs et transformateurs personnalises respectant le contrat fit/transform, encodage de cible et de categories rares, et validation rigoureuse dont la validation croisee imbriquee.
 
-Compétences : construire des pipelines robustes ; développer un estimateur personnalisé ; feature engineering avancé ; validation croisée imbriquée et déploiement
+Compétences : il y a un risque de fuite de donnees ; une etape de pretraitement doit etre ajustee a l'interieur de la validation croisee ; regler et evaluer dans la meme procedure ; ecrire un estimateur reutilisable ; un score de validation semble trop beau pour etre vrai
 
 ### sklearn-explainability
 
-Sous-skill avancé de scikit-learn axé sur l'interprétabilité des modèles, l'importance des features et les outils de diagnostic. Couvre les explications globales et locales via les outils d'inspection intégrés et les intégrations SHAP/LIME.
+Sous-skill scikit-learn d'interpretation d'un modele ajuste : importance par permutation, courbes de dependance partielle et ICE, lecture des coefficients sous colinearite, integration SHAP et LIME. Pour un chemin SHAP rapide sur des modeles a arbres, utiliser TreeExplainer plutot que l'explicateur agnostique.
 
-Compétences : interpréter un modèle scikit-learn ; explications globales et locales ; importance des features ; intégrer SHAP ou LIME
+Compétences : savoir quelles variables comptent et pourquoi ; defendre un classement d'importance dans un article ; les importances natives par impurete semblent suspectes sur des variables a forte cardinalite ; produire une figure d'interpretabilite
 
 ### statistical-analysis
 
 Applique des méthodes statistiques : statistiques descriptives, analyse de tendance, détection d'aberrants et tests d'hypothèses.
 
 Compétences : analyser des distributions ; tester la significativité ; détecter des anomalies ; calculer des corrélations ; interpréter des résultats statistiques
-
-### statsmodels
-
-Modélisation statistique avancée et tests d'hypothèses. Complémentaire du module stats de SciPy, il fournit des classes et fonctions pour estimer de nombreux modèles statistiques et conduire tests et exploration. Sert à la régression linéaire, aux GLM, aux séries temporelles, à l'ANOVA, à l'analyse de survie, à l'inférence causale et aux tests d'hypothèses.
-
-Compétences : OLS/WLS, régression logistique ou de Poisson ; ARIMA/SARIMAX ; diagnostics statistiques, p-values, intervalles de confiance ; analyse statistique à la R
 
 ### xgboost-iterative-optimizer
 
@@ -140,5 +104,7 @@ Documentés sur la page de leur plugin d'origine.
 
 | Skill | Origine |
 |-------|---------|
-| [create-viz](ops.md#create-viz) | `ops` |
+| [scientific-problem-selection](bio_population_genetics.md#scientific-problem-selection) | `bio_population_genetics` |
+| [scikit-learn](bio_population_genetics.md#scikit-learn) | `bio_population_genetics` |
+| [statsmodels](bio_population_genetics.md#statsmodels) | `bio_population_genetics` |
 

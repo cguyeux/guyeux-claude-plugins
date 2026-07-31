@@ -1,7 +1,7 @@
 ---
 name: bacdive
 description: >-
-  Academic research database client (Guyeux group, FEMTO-ST). Queries the peer-reviewed BacDive strain metadatabase for published-research isolates. Query BacDive, the DSMZ Bacterial Diversity Metadatabase — the world's
+  Academic research database client (Guyeux group, FEMTO-ST). Queries the peer-reviewed BacDive strain metadatabase for published-research isolates. Query BacDive, the DSMZ Bacterial Diversity Metadatabase, the world's
   largest structured repository of bacterial and archaeal strain
   information. Covers 97,000+ strains with 2.6 million data points across
   1,000+ fields: taxonomy, morphology, physiology, metabolism, cultivation,
@@ -15,7 +15,7 @@ description: >-
   for a taxon, or enriching a genomic analysis with phenotypic context.
 ---
 
-# BacDive — The Bacterial Diversity Metadatabase
+# BacDive : The Bacterial Diversity Metadatabase
 
 ## Overview
 
@@ -36,7 +36,7 @@ focus on **type strains** and reference collections.
   Acids Research** 47(D1): D631–D636 (2019). DOI: `10.1093/nar/gky879`
 - **Web portal**: `https://bacdive.dsmz.de/`
 - **API documentation**: `https://api.bacdive.dsmz.de/`
-- **R package**: `BacDiveR` — `https://tibhannover.github.io/BacDiveR/`
+- **R package**: `BacDiveR`, `https://tibhannover.github.io/BacDiveR/`
 - **Host**: Leibniz Institute DSMZ, Braunschweig
 - **License**: Data are open; cite the DSMZ and the current BacDive paper.
 
@@ -46,7 +46,7 @@ focus on **type strains** and reference collections.
 - **20,060 type strains**
 - **2.6 million data points**
 - **1,000+ data fields**
-- **15,357 API® test results** for **27,634 strains** — the worldwide
+- **15,357 API® test results** for **27,634 strains**, the worldwide
   largest API® biochemical test collection
 - Fatty acid profiles and antibiotic susceptibility data integrated
 
@@ -82,7 +82,7 @@ top of the pure genomic resources. For your TB work its niches are:
    adaptation / niche differentiation between clades.
 
 BacDive is **not** a primary source for phylogeography or surveillance
-— it's the **reference phenotype database** that gives your phylogenetic
+, it's the **reference phenotype database** that gives your phylogenetic
 trees and AMR profiles a concrete biological interpretation.
 
 ## Data model
@@ -109,7 +109,7 @@ DSMZ (or other culture collection) accession.
 
 ## Data access
 
-### Option A — Web UI (exploratory)
+### Option A : Web UI (exploratory)
 
 Search at `https://bacdive.dsmz.de/` by:
 - Free text
@@ -121,7 +121,7 @@ Search at `https://bacdive.dsmz.de/` by:
 
 Each strain page is a rich HTML record; export as PDF or copy fields.
 
-### Option B — REST API (recommended for programmatic use)
+### Option B : REST API (recommended for programmatic use)
 
 Base URL: `https://api.bacdive.dsmz.de/`
 
@@ -144,16 +144,16 @@ hits = r.json()
 ```
 
 > [!NOTE]
-> The exact endpoint structure and field names may have evolved — always
+> The exact endpoint structure and field names may have evolved, always
 > verify against the live docs at `https://api.bacdive.dsmz.de/` before
 > writing a long script.
 
-### Option C — `BacDiveR` R package
+### Option C : `BacDiveR` R package
 
 For R users, `BacDiveR` (TIB Hannover) wraps the API with convenience
 functions. See `https://tibhannover.github.io/BacDiveR/` for usage.
 
-### Option D — Bulk query by strain list
+### Option D : Bulk query by strain list
 
 For batch retrieval, concatenate strain IDs and iterate:
 
@@ -172,7 +172,7 @@ and respect the DSMZ servers.
 
 ## Workflows
 
-### Workflow 1 — Reference phenotype profile for an MTBC ecotype
+### Workflow 1 : Reference phenotype profile for an MTBC ecotype
 
 Goal: for each MTBC ecotype (*M. tuberculosis*, *M. bovis*, *M. caprae*,
 *M. africanum*, *M. microti*, *M. pinnipedii*, *M. canettii*, *M. orygis*),
@@ -198,7 +198,7 @@ for sp in species:
 Produces a reference table you can drop into the Methods / Discussion
 of an MTBC phylogenomic paper.
 
-### Workflow 2 — Biosafety lookup
+### Workflow 2 : Biosafety lookup
 
 Goal: check the BSL classification of a bacterial species before
 planning lab work or writing a protocol.
@@ -212,7 +212,7 @@ strains = r.json()
 MTBC → BSL-3; *M. leprae* → BSL-2 (traditionally, though it is not
 routinely culturable); NTMs → mostly BSL-2.
 
-### Workflow 3 — Isolation source analysis across a genus
+### Workflow 3 : Isolation source analysis across a genus
 
 Goal: for the whole genus *Mycobacterium*, summarise where type
 strains have been isolated (host, environment, geography).
@@ -226,7 +226,7 @@ r = requests.get(f"{BASE}/taxon/Mycobacterium")
 This is the classic host-range argument for the genus, at a resolution
 individual papers cannot easily provide.
 
-### Workflow 4 — Enriching a modern TB isolate list with phenotype
+### Workflow 4 : Enriching a modern TB isolate list with phenotype
 
 Given a list of modern TB samples from TBannotator / EnteroBase,
 enrich each species / subspecies record with BacDive phenotype data
@@ -261,8 +261,8 @@ for the reference strain of that taxon. Useful when a reviewer asks
 | **`enterobase`** | Per-isolate WGS/cgMLST typing of the same species |
 | **`ncbi-pathogen-detection`** | US surveillance data for modern isolates |
 | **`pathogens-portal`** | European ENA-backed counterpart |
-| **`spaam-ancient-metagenome-dir`** | Ancient samples — BacDive provides the phenotype of their modern references |
-| **TBannotator MCP** | MTBC lineage typing — BacDive provides reference phenotypes per ecotype |
+| **`spaam-ancient-metagenome-dir`** | Ancient samples : BacDive provides the phenotype of their modern references |
+| **TBannotator MCP** | MTBC lineage typing : BacDive provides reference phenotypes per ecotype |
 | **NCBI Taxonomy** | Canonical taxonomic IDs for cross-linking |
 | **LPSN (List of Prokaryotic names with Standing in Nomenclature)** | Upstream taxonomic authority also maintained by DSMZ |
 | **`BacDiveR`** (R package) | Alternative programmatic access |

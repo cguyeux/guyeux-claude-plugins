@@ -7,7 +7,7 @@ license: MIT
 
 # Causal Inference - Estimating Causal Hypotheses behind ML Models
 
-Predictive ML answers *"what is Y given X?"* — causal inference answers *"what would Y be if we set X = x?"*. The two questions look similar but require fundamentally different assumptions, estimators, and validation strategies. A model with R² = 0.95 can still produce *causally meaningless* coefficients if confounders are not addressed.
+Predictive ML answers *"what is Y given X?"*, causal inference answers *"what would Y be if we set X = x?"*. The two questions look similar but require fundamentally different assumptions, estimators, and validation strategies. A model with R² = 0.95 can still produce *causally meaningless* coefficients if confounders are not addressed.
 
 This skill provides a rigorous, end-to-end workflow combining **DoWhy** (the unifying causal API), **EconML** (ML estimators for heterogeneous effects), **CausalML** (Uber's uplift / meta-learners) and **causal-learn** (causal discovery from observational data), with the statistical safeguards expected in scientific publications.
 
@@ -41,14 +41,14 @@ This skill provides a rigorous, end-to-end workflow combining **DoWhy** (the uni
 | 2. Intervention | P(Y \| do(X)) | "If we *give* drug A, what is mortality?" | DoWhy, EconML |
 | 3. Counterfactual | P(Y_x \| X', Y') | "Would *this* patient have died without drug A?" | DoWhy + structural models |
 
-ML lives natively on Level 1. Moving up requires *external* assumptions that cannot be tested from the data alone — they must be made explicit through a causal graph.
+ML lives natively on Level 1. Moving up requires *external* assumptions that cannot be tested from the data alone, they must be made explicit through a causal graph.
 
 ### Identifying Assumptions (must be stated and defended)
 
-1. **SUTVA** — Stable Unit Treatment Value Assumption: no interference between units, single version of treatment.
-2. **Ignorability / Conditional exchangeability** — given the adjustment set Z, treatment is independent of potential outcomes: `Y(0), Y(1) ⊥ T | Z`.
-3. **Positivity / Overlap** — for every covariate stratum, both treated and untreated units exist: `0 < P(T=1 | Z) < 1`.
-4. **Consistency** — observed outcome equals the potential outcome under the received treatment.
+1. **SUTVA** : Stable Unit Treatment Value Assumption: no interference between units, single version of treatment.
+2. **Ignorability / Conditional exchangeability**, given the adjustment set Z, treatment is independent of potential outcomes: `Y(0), Y(1) ⊥ T | Z`.
+3. **Positivity / Overlap**, for every covariate stratum, both treated and untreated units exist: `0 < P(T=1 | Z) < 1`.
+4. **Consistency**, observed outcome equals the potential outcome under the received treatment.
 5. **No unmeasured confounding** OR explicit instrument / front-door / proximal identification.
 
 State each assumption in the methods section. Skipping this is the single most common reason causal papers are rejected.
@@ -130,7 +130,7 @@ for refuter in [
 
 **Reading the refutation output**: a *passed* refutation means the test could not falsify the estimate. Report all four; never cherry-pick.
 
-## Identification Strategies — Choosing the Right Estimator
+## Identification Strategies : Choosing the Right Estimator
 
 | Strategy | When to use | DoWhy `method_name` |
 |----------|------------|---------------------|
@@ -181,7 +181,7 @@ print(cf.summary())
 - **X-Learner**: imputes counterfactuals, cross-fits. Best when class sizes are very unequal.
 - **R-Learner / DR-Learner**: Neyman-orthogonal losses, robust to nuisance misspecification. **Default scientific choice**.
 
-## Validation Beyond Refutation — Sensitivity Analysis
+## Validation Beyond Refutation : Sensitivity Analysis
 
 A passed refutation is necessary, not sufficient. Quantify *how strong* an unmeasured confounder would have to be to nullify the result.
 
@@ -199,7 +199,7 @@ print(f"E-value = {e_value(1.8):.2f}")
 
 ### Rosenbaum Bounds (matched designs)
 
-Available via `dowhy.causal_refuters.add_unobserved_common_cause` with `effect_strength_on_treatment` and `effect_strength_on_outcome` swept across a grid. Plot the resulting effect surface — the *tipping point* is the configuration where ATE crosses zero.
+Available via `dowhy.causal_refuters.add_unobserved_common_cause` with `effect_strength_on_treatment` and `effect_strength_on_outcome` swept across a grid. Plot the resulting effect surface, the *tipping point* is the configuration where ATE crosses zero.
 
 ### Partial R² Sensitivity (Cinelli & Hazlett, 2020)
 
@@ -213,9 +213,9 @@ sens.summary()
 sens.plot()
 ```
 
-Report the *robustness value* RV_q — the minimum strength of confounding (in partial R² units) that would reduce the estimated effect by q %.
+Report the *robustness value* RV_q, the minimum strength of confounding (in partial R² units) that would reduce the estimated effect by q %.
 
-## Causal Discovery — When the DAG Is Not Known
+## Causal Discovery : When the DAG Is Not Known
 
 Use only when expert knowledge is insufficient. Always treat the output as a *hypothesis* to be validated experimentally, not as ground truth.
 
@@ -251,19 +251,19 @@ For continuous, differentiable discovery: **NOTEARS** (`pip install notears`) an
 
 - **Draw the DAG first, look at the data second.** The graph encodes assumptions that the data cannot teach you.
 - **Justify every adjustment.** Adjusting on a *collider* or a *mediator* induces bias rather than removing it.
-- **Use cross-fitting** (sample-splitting) when nuisance functions are estimated with ML — this is what makes DML inference valid.
+- **Use cross-fitting** (sample-splitting) when nuisance functions are estimated with ML, this is what makes DML inference valid.
 - **Check positivity / overlap** before any propensity-based method: plot the propensity score distribution by treatment arm.
 - **Run all four refuters** and at least one quantitative sensitivity analysis.
 - **Pre-register** the DAG, adjustment set, estimator, and refutation plan when possible.
-- **Report effects on the additive scale** (ATE) AND a multiplicative scale (RR / OR) — readers from different fields will look for different things.
+- **Report effects on the additive scale** (ATE) AND a multiplicative scale (RR / OR), readers from different fields will look for different things.
 
 ### ❌ DON'T
 
-- **Don't adjust for post-treatment variables** (mediators, colliders downstream of T) — this opens spurious paths.
+- **Don't adjust for post-treatment variables** (mediators, colliders downstream of T), this opens spurious paths.
 - **Don't interpret feature importance from a predictive model as causal effect.** Importance reflects predictive value given correlated covariates, not intervention effect.
 - **Don't use the same data to discover the DAG and to estimate the effect** without holding out a confirmation set.
 - **Don't trust an estimate that survives no refutation test.**
-- **Don't use propensity score matching with extreme positivity violations** — discard non-overlapping units and report the trimmed estimand explicitly.
+- **Don't use propensity score matching with extreme positivity violations**, discard non-overlapping units and report the trimmed estimand explicitly.
 
 ## Anti-Patterns (NEVER)
 
@@ -362,7 +362,7 @@ A causal-inference section that satisfies reviewers should contain:
 6. **Point estimate, 95 % CI, and a relative-scale equivalent**.
 7. **At least three refuters** (random common cause, placebo, subset).
 8. **Quantitative sensitivity analysis** (E-value or robustness value).
-9. **Statement of remaining limitations** — what assumptions could still be violated, and the direction of the resulting bias.
+9. **Statement of remaining limitations**, what assumptions could still be violated, and the direction of the resulting bias.
 
 This roughly maps to the **ROBINS-I** checklist for non-randomized studies and the **STROBE** extension for causal claims.
 

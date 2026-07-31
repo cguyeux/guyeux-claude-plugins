@@ -2,7 +2,7 @@
 name: spaam-community
 description: >-
   Index of the SPAAM (Standards, Precautions and Advances in Ancient
-  Metagenomics) community ecosystem — the umbrella organisation for
+  Metagenomics) community ecosystem, the umbrella organisation for
   ancient metagenomics. Covers tools, pipelines, training materials,
   metadata standards, lab directories, and reference guides beyond the
   AncientMetagenomeDir catalogue itself. Use this as a meta-index when
@@ -17,7 +17,7 @@ description: >-
   infrastructure.
 ---
 
-# SPAAM Community — Ancient Metagenomics Ecosystem Index
+# SPAAM Community : Ancient Metagenomics Ecosystem Index
 
 ## Overview
 
@@ -27,7 +27,7 @@ Fellows Yates** and now coordinated by an international group of ancient
 DNA scientists. It produces and maintains a coherent ecosystem of:
 
 - a curated **catalogue** of all published ancient metagenomic samples
-  (`AncientMetagenomeDir` — covered separately by the
+  (`AncientMetagenomeDir`, covered separately by the
   **`spaam-ancient-metagenome-dir`** skill)
 - a Python **toolkit** for that catalogue (`AMDirT`)
 - **metadata standards** (MInAS extension to MIxS)
@@ -43,7 +43,7 @@ sample catalogue itself, use `spaam-ancient-metagenome-dir`.
 - **GitHub organisation**: `https://github.com/SPAAM-community`
 - **Founder / Lead**: Dr James A. Fellows Yates (Max Planck / Leipzig /
   Jena, Christina Warinner group)
-- **Communication**: monthly online *SPAAMtisch* via Matrix —
+- **Communication**: monthly online *SPAAMtisch* via Matrix,
   `https://matrix.to/#/#spaamtisch:matrix.org`
 
 > [!NOTE]
@@ -61,16 +61,16 @@ for everything ancient-DNA-microbial**. Specific value:
    community-maintained intro chapters are the standard reference for
    that decision.
 2. **Damage authentication.** Authenticating an ancient TB or *Y. pestis*
-   genome requires reading C→T deamination plots correctly — the
+   genome requires reading C→T deamination plots correctly, the
    *Little Book of Smiley Plots* is the **only** dedicated visual
    reference for this kind of inspection.
 3. **Metadata standardisation.** When publishing or sharing an ancient
    pathogen genome, the **MInAS** checklist (MIxS extension for ancient
    sequences) is the emerging community standard. Following it makes
-   your data findable and reusable by the rest of the community —
+   your data findable and reusable by the rest of the community,
    especially via `AncientMetagenomeDir`.
 4. **Lab discovery.** The Ancient Metagenomics Labs directory is a
-   maintained list of who is doing what — useful when looking for
+   maintained list of who is doing what, useful when looking for
    collaborators on ancient TB or for identifying who else in the
    community has worked on a specific pathogen.
 
@@ -88,7 +88,7 @@ for everything ancient-DNA-microbial**. Specific value:
 → **Use the `spaam-ancient-metagenome-dir` skill** for sample lookups
 in the catalogue.
 
-### 2. Introduction to Ancient Metagenomics — the canonical textbook
+### 2. Introduction to Ancient Metagenomics : the canonical textbook
 
 | Item | Detail |
 |---|---|
@@ -129,7 +129,7 @@ The materials (slides, scripts, exercises) are open and reusable. They
 share substantial content with the textbook but are organised as live
 training sessions.
 
-### 4. MInAS — MIxS extension for ancient sequences
+### 4. MInAS : MIxS extension for ancient sequences
 
 | Item | Detail |
 |---|---|
@@ -154,7 +154,7 @@ Browse to find researchers working on a specific ancient pathogen
 (e.g. ancient TB, ancient *Y. pestis*, ancient leprosy, dental calculus,
 coprolites…).
 
-### 6. Little Book of Smiley Plots — damage pattern interpretation
+### 6. Little Book of Smiley Plots : damage pattern interpretation
 
 | Item | Detail |
 |---|---|
@@ -177,7 +177,7 @@ reference for "is this real ancient DNA or modern contamination?"
 Less authoritative than the textbook but useful for catching new
 methodological developments and community announcements.
 
-### 8. SPAAMtisch — community channel
+### 8. SPAAMtisch : community channel
 
 | Item | Detail |
 |---|---|
@@ -194,7 +194,7 @@ from the active ancient metagenomics community.
 | **nf-core/eager** | Reference Nextflow pipeline for ancient DNA preprocessing & authentication (Fellows Yates et al. 2021 *PeerJ*) | `https://nf-co.re/eager` |
 | **nf-core/aMeta** | Nextflow pipeline for ancient-microbiome taxonomic profiling | `https://nf-co.re/ameta` |
 | **HOPS** | Ancient pathogen detection pipeline (Hübler et al. 2019) | `https://github.com/rhuebler/HOPS` |
-| **MALT** | Megan ALignment Tool — ancient DNA-aware metagenomic aligner | `https://software-ab.cs.uni-tuebingen.de/download/malt/` |
+| **MALT** | Megan ALignment Tool, ancient DNA-aware metagenomic aligner | `https://software-ab.cs.uni-tuebingen.de/download/malt/` |
 | **damageprofiler** | C→T damage profile generator | `https://github.com/Integrative-Transcriptomics/DamageProfiler` |
 | **mapDamage** | Classical damage profile generator (Jónsson et al.) | `https://ginolhac.github.io/mapDamage/` |
 
@@ -203,7 +203,7 @@ recommends.
 
 ## Workflows
 
-### Workflow 1 — Choose a pipeline for ancient TB / pinnipedii reads
+### Workflow 1 : Choose a pipeline for ancient TB / pinnipedii reads
 
 Goal: pick the right Nextflow pipeline for processing raw ancient reads
 suspected of containing MTBC.
@@ -223,7 +223,7 @@ suspected of containing MTBC.
 5. Configure either via an `amdirt convert`–generated samplesheet (see
    `spaam-ancient-metagenome-dir` skill).
 
-### Workflow 2 — Authenticate an ancient *M. tuberculosis* read mapping
+### Workflow 2 : Authenticate an ancient *M. tuberculosis* read mapping
 
 Goal: confirm a putative ancient TB result is real ancient DNA, not
 modern contamination.
@@ -240,7 +240,7 @@ modern contamination.
 5. Report the inspection in the Methods, citing both the *Little Book*
    and the original `damageprofiler` paper.
 
-### Workflow 3 — Submit metadata for a new ancient TB genome
+### Workflow 3 : Submit metadata for a new ancient TB genome
 
 Goal: prepare a submission that will be cleanly ingested by
 AncientMetagenomeDir and ENA/SRA.
@@ -255,7 +255,7 @@ AncientMetagenomeDir and ENA/SRA.
 4. Submit the genome to ENA/SRA, then open a pull request to
    AncientMetagenomeDir adding the row.
 
-### Workflow 4 — Find collaborators on a niche ancient pathogen
+### Workflow 4 : Find collaborators on a niche ancient pathogen
 
 Goal: identify labs working on, e.g., ancient *Mycobacterium leprae*
 or pre-Columbian *M. pinnipedii*.
@@ -280,7 +280,7 @@ or pre-Columbian *M. pinnipedii*.
   current practice but are not industrially supported. For critical
   pipelines, mirror locally and pin the commit hash.
 - **MInAS adoption is incomplete.** Many published ancient pathogen
-  papers do not yet follow MInAS — be ready to harmonise heterogeneous
+  papers do not yet follow MInAS, be ready to harmonise heterogeneous
   metadata when working at the corpus level.
 
 ## Integration with Other Skills
@@ -288,8 +288,8 @@ or pre-Columbian *M. pinnipedii*.
 | Tool | Purpose |
 |---|---|
 | **`spaam-ancient-metagenome-dir`** | Catalogue lookups (the *data* skill SPAAM produces) |
-| **`aadr`** | Host nuclear genomes — pair with SPAAM-pipeline-processed pathogen genomes |
-| **`amtdb`** | Host mitochondrial genomes — same skeletons in many cases |
+| **`aadr`** | Host nuclear genomes, pair with SPAAM-pipeline-processed pathogen genomes |
+| **`amtdb`** | Host mitochondrial genomes, same skeletons in many cases |
 | **`enterobase`** | Modern bacterial reference data for placing ancient genomes phylogenetically |
 | **`p3k14c`** | Independent radiocarbon dates for site context |
 | **`pleiades`** | Resolve ancient site names |

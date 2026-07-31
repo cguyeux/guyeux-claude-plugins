@@ -1,28 +1,15 @@
 ---
 name: denovo-content-qc
 description: >-
-  Academic research toolkit (Guyeux group, FEMTO-ST) pour caractériser et
-  CONTRÔLER le contenu génomique "absent de H37Rv" d'une lignée/sous-lignée MTBC,
-  reconstruit par assemblage de novo des reads NON mappés sur H37Rv. Répond à la
-  question récurrente des projets de caractérisation de lignées basales/rares
-  (L8, L9, L10, écotypes animaux) : un contig assemblé est-il un vrai module
-  ancestral que la lignée a gardé, un accessoire de pangénome propre à une souche,
-  ou un simple CONTAMINANT ? Trois outils complémentaires : (1) contamination_filter
-  = re-mappe chaque contig sur le génome FERMÉ de la lignée (verdict cœur /
-  pangénome / singleton-à-arbitrer / bas-cov) ; (2) pangenome_map = pangénome par
-  mapping (breadth, fenêtres à couverture 0, fraction accessoire, GC par souche) ;
-  (3) island_distribution = teste la SPÉCIFICITÉ d'un îlot par BLAST contre un panel
-  de génomes de référence (H37Rv, M. bovis animale, M. leprae outgroup). Corrige
-  deux pièges documentés : "absent de H37Rv" != "spécifique de la lignée" (M. bovis
-  peut l'avoir), et "absent du génome fermé d'UNE souche" != "contaminant" (pangénome).
-  Use when: on a assemblé de novo les reads non-mappés-H37Rv d'une lignée et on veut
-  trier vrai-contenu vs contaminant, mesurer l'accessoire propre d'une souche, ou
-  prouver qu'un "îlot spécifique" l'est vraiment (vs conservé ailleurs) avant de
-  l'écrire dans un manuscrit. Complémentaire de strain-qc (QC souche), species-id
-  (ID d'espèce d'un contaminant), pangenome-enrichment (pangénome sur génomes complets).
+  Academic research toolkit (Guyeux group, FEMTO-ST) : trier le contenu génomique
+  "absent de H37Rv" d'une lignée MTBC (L8, L9, L10, écotypes animaux) assemblé de
+  novo. Module ancestral, accessoire de pangénome, ou CONTAMINANT ? Outils
+  contamination_filter, pangenome_map, island_distribution (BLAST vs H37Rv,
+  M. bovis, M. leprae). Use when: trier des contigs de novo, mesurer l'accessoire
+  d'une souche, valider un "îlot spécifique".
 ---
 
-# denovo-content-qc — QC du contenu de novo "H37Rv-absent" d'une lignée MTBC
+# denovo-content-qc : QC du contenu de novo "H37Rv-absent" d'une lignée MTBC
 
 Quand on caractérise une lignée/sous-lignée MTBC basale ou rare, on assemble de novo les
 reads qui NE mappent PAS sur H37Rv (le contenu H37Rv-absent), et on interprète les contigs
@@ -40,7 +27,7 @@ comme des "îlots ancestraux". Trois erreurs guettent, que ce skill outille :
 
 ## Les trois outils (dans `scripts/`)
 
-### 1. `contamination_filter.py` — trier les contigs vs le génome FERMÉ de la lignée
+### 1. `contamination_filter.py` : trier les contigs vs le génome FERMÉ de la lignée
 Pour chaque contig de chaque assemblage `spades_*_unmapped`, BLASTn sur le génome fermé de la
 lignée (ex. CP048071.1 pour L8). Verdicts :
 - **L8_CLOSED_GENOME** : présent (qcov ≥ 50 %, id ≥ 90 %) → vrai contenu de lignée (SUFFISANT).
@@ -52,7 +39,7 @@ Colonne GC% + hit sur panel mycobactérien (M. bovis/M. leprae). Sortie TSV.
 **Principe clé** : présent-dans-le-génome-fermé est SUFFISANT pour "vrai" ; absent n'est PAS
 suffisant pour "contaminant" (pangénome). Auto-validation : les vrais îlots reviennent à 100 % qcov.
 
-### 2. `pangenome_map.sh` — pangénome par mapping (bwa + samtools)
+### 2. `pangenome_map.sh` : pangénome par mapping (bwa + samtools)
 Mappe les reads de chaque souche sur le génome fermé de la lignée. Sortie par souche : breadth
 (% couvert), profondeur moyenne, fenêtres à couverture 0 ≥ 500 pb (= régions de la référence
 absentes de la souche = versant réciproque du pangénome), fraction de reads non mappés (= contenu
@@ -61,9 +48,9 @@ Inclure la souche d'origine du génome fermé comme CONTRÔLE POSITIF (doit s'au
 Discriminant contaminant vs accessoire mycobactérien : GC% des reads non mappés (~65 % = myco)
 + fraction mappant sur M. bovis (représentant large du MTBC).
 
-### 3. `island_distribution.sh` — spécificité d'un îlot par BLAST vs panel
+### 3. `island_distribution.sh` : spécificité d'un îlot par BLAST vs panel
 Extrait chaque îlot du génome fermé (coordonnées) et le BLASTe (qcov) contre un panel de génomes
-de référence : H37Rv (L4), M. bovis (lignée ANIMALE, le meilleur "second point" local — s'il a
+de référence : H37Rv (L4), M. bovis (lignée ANIMALE, le meilleur "second point" local, s'il a
 l'îlot, ce n'est PAS spécifique de la lignée étudiée), M. leprae (outgroup distant). Matrice
 îlot × référence. Un îlot vraiment restreint est absent de H37Rv ET de M. bovis. Extensible :
 ajouter un génome par lignée dans `REFS` pour compléter la matrice.
@@ -86,6 +73,25 @@ des îlots (`ISLANDS` dans island_distribution.sh), les seuils. Le panel mycobac
 - `/usr/bin/spades.py` peut être cassé (Python 3.14) → utiliser le SPAdes de l'env conda `tbannot`.
 - Un NS/S de marqueurs lignée-définissants > ~3 = drapeau d'artefact, pas de sélection (voir
   mk-ascertainment).
+
+## Couverture et place dans l'écosystème
+
+Champ d'application : les projets de caractérisation de lignées/sous-lignées MTBC
+**basales ou rares** : L8, L9, L10, ainsi que les **écotypes animaux** (M. bovis,
+M. caprae, M. pinnipedii, M. microti…).
+
+Trois usages typiques : (1) on vient d'assembler de novo les reads non-mappés-H37Rv
+d'une lignée et on veut trier vrai-contenu vs contaminant ; (2) on veut mesurer le
+génome accessoire propre d'une souche ; (3) on veut **prouver qu'un « îlot spécifique »
+l'est vraiment** (vs conservé ailleurs) **avant de l'écrire dans un manuscrit**.
+
+Skills complémentaires :
+
+| Skill | Rôle distinct |
+|---|---|
+| `strain-qc` | QC d'une souche (qualité du séquençage/assemblage), en amont |
+| `species-id` | identification d'espèce d'un contaminant repéré ici |
+| `pangenome-enrichment` | pangénome calculé sur génomes complets (pas par mapping) |
 
 ## Origine
 

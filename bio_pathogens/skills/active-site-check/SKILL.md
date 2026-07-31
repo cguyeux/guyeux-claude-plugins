@@ -1,20 +1,28 @@
 ---
 name: active-site-check
 description: >
-  Academic research toolkit (Guyeux group, FEMTO-ST). Validation d'annotation fonctionnelle d'enzymes pour des publications de genomique comparative revues par les pairs. Valide une requalification d'enzyme « same fold → enzyme active » en vérifiant que les RÉSIDUS
-  CATALYTIQUES de l'enzyme M-CSA (Mechanism and Catalytic Site Atlas, EBI) appariée par Foldseek
-  sont bien alignés ET conservés dans la protéine requête. C'est la brique de rigueur qui manque à
-  un transfert de fonction purement structural (Foldseek/GO) : un repli partagé n'implique pas un
-  site actif fonctionnel. Utiliser quand : un gène « hypothetical »/dark du MTBC a un hit Foldseek
-  vers une enzyme connue et on veut trancher « enzyme active vs simple homologie de repli » avant
-  d'écrire une fonction dans une fiche (projets annotation_mtbc, TA_repertoire, dark_enzymes) ;
-  quand on annote un protéome bactérien par structure et qu'il faut graduer la confiance des
-  requalifications enzymatiques ; quand un reviewer demande des preuves de site actif.
-  Déclencheurs : « est-ce une enzyme active ou juste le même repli », « résidus catalytiques »,
-  « site actif conservé », « M-CSA », « valider un hit Foldseek enzyme ».
+  Academic research toolkit (Guyeux group, FEMTO-ST) : valide une requalification
+  d'enzyme « same fold → enzyme active » en vérifiant que les RÉSIDUS CATALYTIQUES
+  de l'enzyme M-CSA appariée par Foldseek sont conservés dans la protéine requête.
+  Utiliser quand : gène « hypothetical »/dark du MTBC avec hit Foldseek vers une
+  enzyme, annotation d'un protéome par structure, preuve de site actif demandée
+  par un reviewer.
 ---
 
-# active-site-check — validation du site catalytique via M-CSA
+# active-site-check : validation du site catalytique via M-CSA
+
+## Quand l'utiliser
+
+- Un gène « hypothetical » / dark du MTBC a un hit Foldseek vers une enzyme connue et il faut
+  trancher « enzyme active vs simple homologie de repli » avant d'écrire une fonction dans une
+  fiche (projets `annotation_mtbc`, `TA_repertoire`, `dark_enzymes`).
+- On annote un protéome bactérien par structure et il faut **graduer la confiance** des
+  requalifications enzymatiques.
+- Un reviewer demande des **preuves de site actif** à l'appui d'une annotation fonctionnelle.
+
+Formulations qui doivent déclencher ce skill : « est-ce une enzyme active ou juste le même
+repli », « résidus catalytiques », « site actif conservé », « M-CSA », « valider un hit
+Foldseek enzyme ».
 
 ## Pourquoi ce skill
 
@@ -37,8 +45,8 @@ C'est l'apport additif par rapport :
 Mechanism and Catalytic Site Atlas (Thornton group, EBI). ~1003 entrées / 895 EC, résidus
 catalytiques curés à la main, mappés sur PDB **et** UniProt, avec leurs rôles mécanistiques.
 API REST (utilisée par le script, cache disque sous `$MCSA_CACHE` ou `~/.cache/mcsa/`) :
-- `…/api/entries/<id>/?format=json` — entrée détaillée (résidus embarqués).
-- `…/api/entries/?format=json` — liste paginée (indexée localement par EC/UniProt/PDB).
+- `…/api/entries/<id>/?format=json`, entrée détaillée (résidus embarqués).
+- `…/api/entries/?format=json`, liste paginée (indexée localement par EC/UniProt/PDB).
 Champs clés : `reaction.ec`, `reference_uniprot_id`, `residues[i].residue_sequences[0].resid`
 (numérotation UniProt), `residues[i].residue_chains[0].{pdb_id,chain_name,auth_resid,code}`,
 `residues[i].roles_summary`. Citation : Ribeiro et al., NAR 2018 (M-CSA), CC-BY 4.0.
@@ -75,7 +83,7 @@ présents, identiques, verdict).
 ## Limites / garde-fous (à respecter, cf. conventions MTBC)
 
 - **Réconciliation de numérotation** (le point délicat). M-CSA donne le résidu en numérotation
-  UniProt ET PDB (`auth_resid`) — souvent décalées (ex. entrée 2 : SER68 UniProt = PDB A:70). Le
+  UniProt ET PDB (`auth_resid`), souvent décalées (ex. entrée 2 : SER68 UniProt = PDB A:70). Le
   script mappe en coordonnées de **séquence cible** (UniProt) : il faut donc que `taln/tstart`
   soient dans la même numérotation que les `uniprot_resid` de M-CSA. Si l'alignement Foldseek est en
   coordonnées de structure PDB, convertir via le mapping SEQRES↔auth_resid de la cible avant `check`.

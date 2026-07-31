@@ -353,7 +353,7 @@ As shown in \cref{fig:memory-hierarchy}, secondary memory is slower but non-vola
 The results in \cref{tab:benchmark} demonstrate...
 ```
 
-**Never** hard-code references like "Figure 1", "Table 3.2", or use manual prefixes like `Figure~\ref{fig:label}`—let cleveref handle both numbering and prefixes automatically.
+**Never** hard-code references like "Figure 1", "Table 3.2", or use manual prefixes like `Figure~\ref{fig:label}`,let cleveref handle both numbering and prefixes automatically.
 
 ### Verbatim and Code
 - Use `listings` package for code with syntax highlighting

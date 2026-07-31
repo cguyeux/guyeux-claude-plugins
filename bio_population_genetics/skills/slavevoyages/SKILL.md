@@ -10,7 +10,7 @@ description: >-
   historical population movements (Gold Coast → Americas, Bight of Benin, etc.).
 ---
 
-# SlaveVoyages.org — Usage Guide for MTBC Phylogeography
+# SlaveVoyages.org : Usage Guide for MTBC Phylogeography
 
 ## Overview
 
@@ -137,8 +137,8 @@ plausible historical dispersal hypothesis:
 1. **Extract lineage geography** from TBannotator MCP:
    ```sql
    SELECT country, COUNT(*) FROM mv_strain_metadata m
-   JOIN mv_strain_classification c ON m.sra_id = c.sra_id
-   WHERE c.system = 'Senelle' AND c.lineage_code = '4.15'
+   JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+   WHERE c.system_name = 'guyeux' AND c.lineage_code = '4.15'
    GROUP BY country ORDER BY COUNT(*) DESC;
    ```
 
@@ -200,7 +200,7 @@ The animated map at `https://www.slavevoyages.org/voyage/maps` is excellent for:
 ## Browser Automation Tips
 
 1. **Use `browser_subagent`** to navigate the SPA (React-based)
-2. The database page loads dynamically — wait for table to render
+2. The database page loads dynamically, wait for table to render
 3. Filters are applied via UI controls (dropdowns, sliders)
 4. **Download CSV** is the most reliable extraction method
 5. For programmatic analysis, download the full dataset once and analyze locally

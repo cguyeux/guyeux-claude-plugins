@@ -2,13 +2,13 @@
 name: neolithic-14c
 description: >-
   Index of regional radiocarbon databases for the Neolithic and adjacent
-  periods — EUROEVOL (European Neolithic, 14,053 dates from 4,757 sites,
+  periods : EUROEVOL (European Neolithic, 14,053 dates from 4,757 sites,
   Shennan/Manning et al. UCL), NERD (Near East, 11,072 dates from 1,027
   sites, Palmisano et al.), plus RADON (Central Europe), NeoNet
   (Mediterranean), and the Radiocarbon Palaeolithic Europe Database (KU
   Leuven). Together they give continuous ¹⁴C coverage from the primary
   Near Eastern domestication centre through the secondary European
-  expansion — the ideal substrate for building demographic-transition
+  expansion, the ideal substrate for building demographic-transition
   and farming-expansion arguments for MTBC / M. bovis narratives.
 
   Use when: building a Neolithic demographic transition argument for
@@ -19,7 +19,7 @@ description: >-
   resolution regional data.
 ---
 
-# Neolithic ¹⁴C — Regional Radiocarbon Databases for Europe and the Near East
+# Neolithic ¹⁴C : Regional Radiocarbon Databases for Europe and the Near East
 
 ## Client (resilient, tool-first)
 
@@ -42,13 +42,13 @@ source` (ages are uncalibrated 14C BP). `NEOLITHIC_14C_FILE` overrides the sourc
 
 This skill indexes the main **open regional radiocarbon databases** for
 the Neolithic and adjacent periods, with a focus on Europe and the Near
-East — the two domestication centres for wheat, barley, cattle, sheep,
+East, the two domestication centres for wheat, barley, cattle, sheep,
 goat, and pig, and by extension the historical substrate for the rise
 of human-adapted MTBC and *M. bovis*.
 
 These regional databases are **higher-resolution, better-curated
 alternatives** to the global **`p3k14c`** skill for their specific
-footprints. They are often the *sources* that p3k14c integrates — so
+footprints. They are often the *sources* that p3k14c integrates, so
 when you need the raw, detailed, up-to-date regional record, go
 straight to them.
 
@@ -58,21 +58,21 @@ straight to them.
 | **NERD** | Near East | **11,072** | **1,027** | Late Pleistocene → Late Holocene (15–1.5 ka cal BP) |
 | **RADON** | Central Europe + S. Scandinavia | ~10,000+ | many | Neolithic + Early Bronze Age |
 | **NeoNet** | Central-Western Mediterranean | 2,506 | 526 | Late Meso / Early Neolithic transition |
-| **Radiocarbon Palaeolithic Europe DB** | Europe + Siberia | — | — | Palaeolithic (v32, March 2025) |
-| **Mediterranean Neolithic Database** | NW Med Arc → High Rhine | 3,617 | — | 5900–2000 cal BC |
+| **Radiocarbon Palaeolithic Europe DB** | Europe + Siberia |, |, | Palaeolithic (v32, March 2025) |
+| **Mediterranean Neolithic Database** | NW Med Arc → High Rhine | 3,617 |, | 5900–2000 cal BC |
 
 ## Why it matters for MTBC × anthropology
 
 The **Neolithic demographic transition** is the moment when:
 
 - Cattle, sheep, goats, and pigs were **domesticated** in the Fertile
-  Crescent (~10,500–8,000 BP) — the presumed origin of *M. bovis*,
+  Crescent (~10,500–8,000 BP), the presumed origin of *M. bovis*,
   *M. caprae*, and related zoonotic MTBC lineages.
 - Farming populations reached **density thresholds** needed to sustain
   human-adapted MTBC in a chain of transmission.
 - **Population expansions and contractions** ("boom-bust") defined by
   the EUROEVOL project showed that Neolithic Europe was not a
-  monotonic growth trajectory but punctuated — relevant for episodes
+  monotonic growth trajectory but punctuated, relevant for episodes
   of pathogen emergence or local extinction.
 
 These regional ¹⁴C databases give you the quantitative scaffold to
@@ -83,7 +83,7 @@ you trace the demographic signal from the primary domestication centre
 
 ---
 
-## 1. EUROEVOL — European Neolithic
+## 1. EUROEVOL : European Neolithic
 
 ### Summary
 
@@ -100,7 +100,7 @@ Sue Colledge, Enrico Crema, Stephen Shennan, and Adrian Timpson.
 - **Size**: **14,053 radiocarbon samples** from **4,757 sites**
 - **Temporal range**: Late Mesolithic → Early Bronze Age
 - **Geographic scope**: Europe (broad)
-- **License**: Journal of Open Archaeology Data — CC BY
+- **License**: Journal of Open Archaeology Data : CC BY
 
 ### Three datasets
 
@@ -125,7 +125,7 @@ assume monotonic expansion.
 
 - Download the XLSX / CSV from UCL Discovery or the Journal of Open
   Archaeology Data article
-- Integrated in the **`rcarbon`** R package (`data("euroevol")`) —
+- Integrated in the **`rcarbon`** R package (`data("euroevol")`),
   the easiest path for analysis:
 
 ```r
@@ -139,7 +139,7 @@ str(euroevol)
 
 ---
 
-## 2. NERD — Near East Radiocarbon Dates
+## 2. NERD : Near East Radiocarbon Dates
 
 ### Summary
 
@@ -185,7 +185,7 @@ releases.
 ### Caveats reported by the authors
 
 - **87%** of dates have material information; only **~29%** have taxon
-  information — filter carefully for faunal/domesticate analyses.
+  information, filter carefully for faunal/domesticate analyses.
 - Heterogeneous source quality → `LocQual` is the critical filter for
   spatial work.
 
@@ -203,10 +203,10 @@ curl -LO https://raw.githubusercontent.com/apalmisano82/NERD/master/nerd.csv
 
 ---
 
-## 3. RADON — Central European Neolithic & Early Bronze Age
+## 3. RADON : Central European Neolithic & Early Bronze Age
 
 - **Portal**: `https://radon.ufg.uni-kiel.de/`
-- **Reference**: Hinz M. et al. *RADON — Radiocarbon dates online 2012.
+- **Reference**: Hinz M. et al. *RADON : Radiocarbon dates online 2012.
   Central European database of ¹⁴C dates for the Neolithic and the
   Early Bronze Age.* **Journal of Neolithic Archaeology** (2012).
 - **Host**: University of Kiel
@@ -215,7 +215,7 @@ curl -LO https://raw.githubusercontent.com/apalmisano82/NERD/master/nerd.csv
 
 ---
 
-## 4. NeoNet — NW Mediterranean Late Meso / Early Neolithic transition
+## 4. NeoNet : NW Mediterranean Late Meso / Early Neolithic transition
 
 - **Reference**: NeoNet Dataset paper on Journal of Open Archaeology Data
 - **Size**: 2,506 dates from 526 archaeological sites, 1,769 archaeological
@@ -235,7 +235,7 @@ curl -LO https://raw.githubusercontent.com/apalmisano82/NERD/master/nerd.csv
 - **Reference**: Vermeersch P.M. (regularly updated dataset on
   ScienceDirect / Data in Brief)
 - **Complements** EUROEVOL at the deep end of the time range (before
-  the Mesolithic) — useful when discussing the population substrate on
+  the Mesolithic), useful when discussing the population substrate on
   which the Neolithic arrived.
 
 ---
@@ -244,7 +244,7 @@ curl -LO https://raw.githubusercontent.com/apalmisano82/NERD/master/nerd.csv
 
 All of the above can be accessed through a single R package:
 
-- **`c14bazAAR`** (rOpenSci) — `https://docs.ropensci.org/c14bazAAR/`
+- **`c14bazAAR`** (rOpenSci), `https://docs.ropensci.org/c14bazAAR/`
 - Provides a unified downloader + harmoniser for EUROEVOL, NERD, RADON,
   p3k14c, Neotoma, and several other databases.
 
@@ -263,7 +263,7 @@ across multiple regional databases.
 
 ## Workflows
 
-### Workflow 1 — Summed Probability Distribution (SPD) of the Neolithic demographic transition
+### Workflow 1 : Summed Probability Distribution (SPD) of the Neolithic demographic transition
 
 Goal: reproduce the Shennan / Timpson "boom-bust" SPD for a specific
 region and overlay it with a pathogen TMRCA.
@@ -287,7 +287,7 @@ plot(spd_out)
 abline(v = 5500, col = "red")   # example: TMRCA of an MTBC clade
 ```
 
-### Workflow 2 — Near East first-appearance chronology for domesticates
+### Workflow 2 : Near East first-appearance chronology for domesticates
 
 Goal: identify the earliest dated sites carrying a specific domesticate
 (cattle, sheep, goat) from NERD.
@@ -321,15 +321,15 @@ oldest iconic sites are:
 
 | Site | Country | CRA BP | Context | Interpretation |
 |---|---|---|---|---|
-| Sakazhia cave | GE | **11 700** | — | Late Pleistocene wild aurochs |
-| Abu Hureyra | SY | 11 090–10 820 | **Late Natufian** (Level 326) | Wild Bos in pre-agricultural context — the direct ancestral window |
+| Sakazhia cave | GE | **11 700** |, | Late Pleistocene wild aurochs |
+| Abu Hureyra | SY | 11 090–10 820 | **Late Natufian** (Level 326) | Wild Bos in pre-agricultural context, the direct ancestral window |
 | Göbekli Tepe | TR | 9 800 | PPNA monumental | Still wild/transitional |
 | Ain Ghazal | JO | 8 554 | PPNB | Transitional |
 | **Çatalhöyük East** | TR | **8 085** | KOPAL Area, quarry pits | **First Bos at Mellaart's iconic site** |
 | Jarmo | IQ | 7 270–6 180 | Soundings PQ/K | Braidwood's early Mesopotamian farming village |
 | **Çatalhöyük West** | TR | **6 944** | Building 98 | **First explicit ***Bos taurus*** (domesticated)** |
 | Tepe Zagheh | IR | 6 100–5 900 | Trench TT-IX | Iranian Plateau farming spread |
-| **Çukuriçi Höyük** | TR | **4 100** | CuHö IV | ***Bos primigenius* (wild aurochs)** still present at the Early Bronze Age — **wild/domestic co-existence persists 3 000 years after initial domestication** |
+| **Çukuriçi Höyük** | TR | **4 100** | CuHö IV | ***Bos primigenius* (wild aurochs)** still present at the Early Bronze Age, **wild/domestic co-existence persists 3 000 years after initial domestication** |
 
 > [!WARNING]
 > **NERD uses ISO2 country codes** (`TR`, `IR`, `IQ`...), not full
@@ -346,7 +346,7 @@ oldest iconic sites are:
 Cross-reference with the ancient cattle genome literature (Verdugo
 et al. 2019 *Science*) and the `p3k14c` domesticate workflow.
 
-### Workflow 3 — Combined EUROEVOL + NERD chronology for farming expansion
+### Workflow 3 : Combined EUROEVOL + NERD chronology for farming expansion
 
 Goal: trace the westward expansion of farming from the Fertile Crescent
 into Europe by combining the two databases.
@@ -368,7 +368,7 @@ advance" narrative (Ammerman & Cavalli-Sforza), and it sets the stage
 for any co-dispersal argument involving human-adapted MTBC or
 *M. bovis*.
 
-### Workflow 4 — Cross-reference to bovine-genomics domestication
+### Workflow 4 : Cross-reference to bovine-genomics domestication
 
 Goal: anchor the *Bos taurus* primary-domestication signal from
 `bovine-genomics` with the earliest dated cattle contexts from NERD.
@@ -382,7 +382,7 @@ Goal: anchor the *Bos taurus* primary-domestication signal from
    primary domestication window implied by the modern cattle breed
    structure.
 
-### Workflow 5 — Higher-resolution alternative to p3k14c for a European/Near Eastern question
+### Workflow 5 : Higher-resolution alternative to p3k14c for a European/Near Eastern question
 
 When `p3k14c` coverage feels sparse for your region of interest, use
 EUROEVOL or NERD directly. These are more recent, more curated, and
@@ -412,7 +412,7 @@ print("p3k14c  Anatolia:", count(p3k))
 - **Inhomogeneous quality.** Especially in NERD, only ~29% of dates
   have taxon information. Use `LocQual` and material filters
   aggressively.
-- **Uncalibrated BP in raw files.** Same caveat as for p3k14c — always
+- **Uncalibrated BP in raw files.** Same caveat as for p3k14c, always
   calibrate with IntCal20 / SHCal20 before reporting dates in calendar
   years.
 - **No pathogen data.** These are human / archaeological records, not
@@ -429,16 +429,16 @@ print("p3k14c  Anatolia:", count(p3k))
 
 | Tool | Purpose |
 |---|---|
-| **`p3k14c`** | Global counterpart — integrates these regional databases |
+| **`p3k14c`** | Global counterpart, integrates these regional databases |
 | **`aadr`** | Ancient human genomes from the same sites |
 | **`amtdb`** | Ancient human mtDNA from the same sites |
-| **`spaam-ancient-metagenome-dir`** | Ancient pathogen samples — overlay on ¹⁴C chronology |
-| **`bovine-genomics`** | Cattle breed structure — anchor primary-domestication signal with NERD dates |
+| **`spaam-ancient-metagenome-dir`** | Ancient pathogen samples, overlay on ¹⁴C chronology |
+| **`bovine-genomics`** | Cattle breed structure, anchor primary-domestication signal with NERD dates |
 | **`d-place`** | Subsistence classification of ethnographic-present successor populations |
 | **`seshat`** | Polity-level history in the same regions |
 | **`pleiades`** | Stable place identifiers for the archaeological sites |
 | **`glottolog`** | Modern language classification of the regions |
-| **`rcarbon`** (R) | Canonical analysis package — ships with EUROEVOL |
+| **`rcarbon`** (R) | Canonical analysis package, ships with EUROEVOL |
 | **`c14bazAAR`** (R) | Unified downloader for multiple ¹⁴C databases |
 | **IntCal20 / SHCal20** | Calibration curves |
 

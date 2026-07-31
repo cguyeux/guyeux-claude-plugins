@@ -16,7 +16,7 @@ description: >-
   (transport) and OWTRAD (trade routes) via stable IDs.
 ---
 
-# Pleiades — Gazetteer and Graph of Ancient Places
+# Pleiades : Gazetteer and Graph of Ancient Places
 
 ## Client (resilient, tool-first)
 
@@ -51,7 +51,7 @@ making it the de-facto authority for "Linked Ancient World Data."
 - **License**: **CC BY 3.0** (Creative Commons Attribution) for the data
 - **Hosting**: ISAW (NYU) + AWMC (UNC), supported by NEH
 - **Atlas of record**: Barrington Atlas of the Greek and Roman World
-  (Talbert et al., 2000) — the cartographic backbone Pleiades extends
+  (Talbert et al., 2000), the cartographic backbone Pleiades extends
 - **Verified content** (snapshot dated April 2026): **42,111 places**
   catalogued in the daily dump
 
@@ -92,7 +92,7 @@ Pleiades distinguishes three resource classes, joined via ID:
 
 | Resource | What it represents |
 |---|---|
-| **Place** | An abstract ancient place (concept) — has period coding, feature types, prose description, and coordinates if known |
+| **Place** | An abstract ancient place (concept), has period coding, feature types, prose description, and coordinates if known |
 | **Location** | A specific spatial reference for a place (one place can have multiple locations: e.g. excavation, attested ruins, modern town) |
 | **Name** | An attested ancient name for a place (one place can have several variants and translations) |
 
@@ -150,7 +150,7 @@ column to filter on when you need a chronologically scoped subset.
 | island | 779 |
 
 > [!WARNING]
-> **6,487 of 42,111 places (15%) are flagged `unlocated`** — they have
+> **6,487 of 42,111 places (15%) are flagged `unlocated`**, they have
 > no usable coordinates. Filter them out before any spatial join.
 > Also inspect the `locationPrecision` column when precision matters.
 
@@ -179,7 +179,7 @@ column to filter on when you need a chronologically scoped subset.
 
 ## Data access
 
-### Option A — Daily CSV dumps (recommended for analysis)
+### Option A : Daily CSV dumps (recommended for analysis)
 
 ```bash
 mkdir -p ~/data/pleiades && cd ~/data/pleiades
@@ -209,7 +209,7 @@ names     = pd.read_csv("pleiades-names-latest.csv",     low_memory=False)
 joined = names.merge(places, left_on="pid", right_on="id", suffixes=("_name","_place"))
 ```
 
-### Option B — Per-place URLs (single lookup)
+### Option B : Per-place URLs (single lookup)
 
 Each place has a stable URL of the form:
 
@@ -227,7 +227,7 @@ curl -LH "Accept: application/json" \
 
 returns the JSON record for *Roma*.
 
-### Option C — Linked Open Data (RDF)
+### Option C : Linked Open Data (RDF)
 
 Pleiades is a node in the LAWDI / Pelagios linked-data graph. Whole-dataset
 RDF is published by AWMC at `http://atlantides.org/downloads/pleiades/rdf/`.
@@ -236,7 +236,7 @@ Nomisma, Trismegistos, Perseus).
 
 ## Workflows
 
-### Workflow 1 — Resolve free-text ancient site names from SPAAM samples
+### Workflow 1 : Resolve free-text ancient site names from SPAAM samples
 
 Goal: take the `site_name` column from `spaam-ancient-metagenome-dir`
 and assign a Pleiades ID + coordinates wherever possible.
@@ -268,10 +268,10 @@ spaam_geocoded = spaam.merge(
 ```
 
 The unmatched rows are typically modern site names (e.g. *Vác*, *Lund
-Cathedral*) — the gazetteer doesn't claim to handle modern toponyms;
+Cathedral*), the gazetteer doesn't claim to handle modern toponyms;
 fall back to OpenStreetMap / Nominatim for those.
 
-### Workflow 2 — Chronologically scoped settlement map
+### Workflow 2 : Chronologically scoped settlement map
 
 Goal: extract every Pleiades settlement occupied in the Roman period
 within a bounding box, to plot as background context for an ORBIS or
@@ -290,7 +290,7 @@ print(len(mediterranean), "Roman-period Mediterranean settlements")
 
 Plot with GeoPandas and overlay TB sample locations from TBannotator.
 
-### Workflow 3 — Chain to ORBIS via stable IDs
+### Workflow 3 : Chain to ORBIS via stable IDs
 
 Goal: identify the Pleiades places that correspond to ORBIS network
 nodes, so that you can display ancient site context (`featureTypes`,
@@ -313,7 +313,7 @@ orbis_nodes["pleiades_id"] = plac_geo.iloc[idx]["id"].values
 orbis_nodes["pleiades_title"] = plac_geo.iloc[idx]["title"].values
 ```
 
-### Workflow 4 — Build a place graph from `connectsWith`
+### Workflow 4 : Build a place graph from `connectsWith`
 
 Goal: construct a NetworkX graph of Pleiades places connected by
 explicit relationships, for centrality analysis on a subregion.
@@ -344,7 +344,7 @@ range.
   spatial work.
 - **Mediterranean and circum-Mediterranean focus.** Coverage is strongest
   for the Greek, Roman, and Late Antique world. Persian / Sasanian /
-  Indian / Chinese coverage is sparse to nonexistent — use other
+  Indian / Chinese coverage is sparse to nonexistent, use other
   gazetteers for those (CHGIS for China, TIB for Late Antique Anatolia,
   etc.).
 - **Period coding is reductive.** The 5-period scheme is a coarse
@@ -367,16 +367,16 @@ range.
 
 | Tool | Purpose |
 |---|---|
-| **`orbis`** | Roman-world transport network — **chain to Pleiades via stable IDs** for chronological context |
-| **`owtrad`** | Old World Trade Routes geometries — pair with Pleiades for ancient toponym lookup |
-| **`seshat`** | Polity histories — Pleiades supplies place URIs for Seshat NGAs |
-| **`d-place`** | Cultural variables — joinable via geographic proximity |
-| **`glottolog`** | Language identifiers — many Pleiades `people` records have a Glottolog match |
-| **`spaam-ancient-metagenome-dir`** | Ancient pathogen samples — use Pleiades to **resolve site names to coordinates** |
-| **`aadr`** | Ancient human samples — same use case as SPAAM |
-| **`p3k14c`** | Archaeological ¹⁴C — Pleiades places provide context for the dated sites |
-| **`enterobase`** | *Y. pestis* / *V. cholerae* historical sites — geocoding via Pleiades |
-| **Pelagios / LAWDI / Trismegistos / Nomisma** | Linked Ancient World Data ecosystem — Pleiades is the central hub |
+| **`orbis`** | Roman-world transport network, **chain to Pleiades via stable IDs** for chronological context |
+| **`owtrad`** | Old World Trade Routes geometries, pair with Pleiades for ancient toponym lookup |
+| **`seshat`** | Polity histories : Pleiades supplies place URIs for Seshat NGAs |
+| **`d-place`** | Cultural variables, joinable via geographic proximity |
+| **`glottolog`** | Language identifiers, many Pleiades `people` records have a Glottolog match |
+| **`spaam-ancient-metagenome-dir`** | Ancient pathogen samples, use Pleiades to **resolve site names to coordinates** |
+| **`aadr`** | Ancient human samples, same use case as SPAAM |
+| **`p3k14c`** | Archaeological ¹⁴C : Pleiades places provide context for the dated sites |
+| **`enterobase`** | *Y. pestis* / *V. cholerae* historical sites, geocoding via Pleiades |
+| **Pelagios / LAWDI / Trismegistos / Nomisma** | Linked Ancient World Data ecosystem : Pleiades is the central hub |
 
 ## Citation
 

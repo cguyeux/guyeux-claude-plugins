@@ -19,7 +19,7 @@ description: >-
   material.
 ---
 
-# Ontologies — OBO Foundry + NCBI Taxonomy
+# Ontologies : OBO Foundry + NCBI Taxonomy
 
 ## Overview
 
@@ -33,7 +33,7 @@ versioning, orthogonality.
 
 The **NCBI Taxonomy** is the canonical taxonomic database of life at
 the U.S. National Library of Medicine. Via the **NCBITaxon** OBO port,
-it also functions as an ontology — the backbone for every species /
+it also functions as an ontology, the backbone for every species /
 strain / lineage normalisation in biomedical data.
 
 Together, OBO Foundry + NCBI Taxonomy form the **normalisation layer**
@@ -47,7 +47,7 @@ PubTator, D-PLACE) point to the same entities.
 - **NCBI Taxonomy FTP (bulk)**: `https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/`
 - **NCBITaxon OBO port**: `https://obofoundry.org/ontology/ncbitaxon.html`
 - **EBI Ontology Lookup Service (OLS)**: `https://www.ebi.ac.uk/ols4/`
-  — the unified web/API front-end to OBO ontologies
+, the unified web/API front-end to OBO ontologies
 
 ### Key references
 
@@ -65,8 +65,8 @@ PubTator, D-PLACE) point to the same entities.
   Kannan S., Khovanskaya R., et al. *NCBI Taxonomy: a comprehensive
   update on curation, resources and tools.* **Database (Oxford)**
   2020: baaa062 (2020). DOI: `10.1093/database/baaa062`
-- **License**: OBO ontologies — typically CC-BY or CC0, per ontology;
-  NCBI Taxonomy — public domain
+- **License**: OBO ontologies, typically CC-BY or CC0, per ontology;
+  NCBI Taxonomy, public domain
 
 ## Why it matters for MTBC × anthropology
 
@@ -90,7 +90,7 @@ Concrete benefits for your TB / anthropology work:
    you aggregate across heterogeneous literature.
 3. **Environment normalisation.** An archaeological context described
    as "cave sediment", "cave floor deposit", "karst cave", or
-   "limestone cavern" all maps to the **ENVO** cave class — useful
+   "limestone cavern" all maps to the **ENVO** cave class, useful
    when filtering `spaam-ancient-metagenome-dir` environmental samples.
 4. **Gazetteer for modern places.** The **GAZ** ontology provides
    hierarchical codes for countries, regions, and named places.
@@ -118,7 +118,7 @@ Concrete benefits for your TB / anthropology work:
 | **OBI** | Ontology of Biomedical Investigations | Experimental processes | Methods and assay descriptions |
 | **SYMP** | Symptom Ontology | Clinical symptoms | Patient phenotype coding |
 
-## Key concepts — NCBI Taxonomy for MTBC
+## Key concepts : NCBI Taxonomy for MTBC
 
 The MTBC occupies a well-defined subtree under **NCBITaxon:77643**
 (*Mycobacterium tuberculosis complex*):
@@ -146,18 +146,18 @@ annotations, **always normalise first on NCBITaxon**.
 
 For well-known reference strains, NCBI Taxonomy has dedicated taxa:
 
-- **H37Rv** (reference MTBC lab strain) — NCBITaxon:83332
-- **H37Ra** (attenuated) — NCBITaxon:419947
-- **CDC1551** — NCBITaxon:83331
-- **BCG Pasteur 1173P2** — NCBITaxon:410289
+- **H37Rv** (reference MTBC lab strain) : NCBITaxon:83332
+- **H37Ra** (attenuated) : NCBITaxon:419947
+- **CDC1551** : NCBITaxon:83331
+- **BCG Pasteur 1173P2** : NCBITaxon:410289
 
 For custom field strains, NCBI Taxonomy normally does not provide
-per-isolate IDs — use the species-level ID + the original sample
+per-isolate IDs, use the species-level ID + the original sample
 accession (`biosample_acc`, `strain`) as identifier.
 
 ## Data access
 
-### Option A — Ontology Lookup Service (OLS4) at EMBL-EBI
+### Option A : Ontology Lookup Service (OLS4) at EMBL-EBI
 
 The unified entry point to all OBO ontologies:
 
@@ -176,7 +176,7 @@ curl -sL "https://www.ebi.ac.uk/ols4/api/ontologies/doid/terms?iri=http://purl.o
 curl -sL "https://www.ebi.ac.uk/ols4/api/ontologies/doid/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FDOID_552/children"
 ```
 
-### Option B — Direct download of OBO/OWL files
+### Option B : Direct download of OBO/OWL files
 
 Each OBO Foundry ontology has a stable download URL:
 
@@ -193,7 +193,7 @@ curl -sL "http://purl.obolibrary.org/obo/envo.owl" -o envo.owl
 
 Files can be large (NCBITaxon OWL is several GB).
 
-### Option C — `pronto` (Python)
+### Option C : `pronto` (Python)
 
 `pronto` is a lightweight pure-Python OBO/OWL parser.
 
@@ -213,7 +213,7 @@ print([c.id for c in tb.subclasses(distance=1)])
 # e.g. ['DOID:4945', 'DOID:12385', ...]
 ```
 
-### Option D — `pyobo` / `bioregistry` (Python — Gyori / Hoyt lab)
+### Option D : `pyobo` / `bioregistry` (Python, Gyori / Hoyt lab)
 
 For cross-ontology normalisation:
 
@@ -227,7 +227,7 @@ name2id = get_name_id_mapping("doid")
 print(name2id.get("tuberculosis"))   # 'DOID:552'
 ```
 
-### Option E — NCBI Taxonomy dedicated tools
+### Option E : NCBI Taxonomy dedicated tools
 
 - **NCBI Datasets CLI**: `conda install -c conda-forge ncbi-datasets-cli`
 - **ete3** (Python): has a `NCBITaxa` class for programmatic access
@@ -247,7 +247,7 @@ print([names[t] for t in lineage])
 
 ## Workflows
 
-### Workflow 1 — Normalise species across heterogeneous sources
+### Workflow 1 : Normalise species across heterogeneous sources
 
 Goal: produce a unified NCBITaxon-keyed table from SPAAM, EnteroBase,
 BacDive, and TBannotator species names.
@@ -270,7 +270,7 @@ spaam["tax_id"] = spaam.singlegenome_species.map(to_ncbitaxon)
 Entries that fail to resolve need manual curation (typos, dialectal
 spelling, unvalidated species).
 
-### Workflow 2 — Filter SPAAM or EnteroBase to MTBC
+### Workflow 2 : Filter SPAAM or EnteroBase to MTBC
 
 Goal: use the MTBC subtree (NCBITaxon:77643) to extract every
 MTBC-related sample from a mixed catalogue.
@@ -291,7 +291,7 @@ This is cleaner than string-matching on `"Mycobacterium"` because it
 automatically handles all named species in the complex without
 missing any.
 
-### Workflow 3 — Disease normalisation for publication metadata
+### Workflow 3 : Disease normalisation for publication metadata
 
 Goal: normalise disease mentions to DOID for cross-paper comparison.
 
@@ -313,7 +313,7 @@ normalise_disease("tuberculosis")          # 'DOID:552'
 normalise_disease("bovine tuberculosis")   # 'DOID:0060153' (or similar)
 ```
 
-### Workflow 4 — Environment normalisation for SPAAM environmental samples
+### Workflow 4 : Environment normalisation for SPAAM environmental samples
 
 Goal: map the `feature` / `material` fields from
 `spaam-ancient-metagenome-dir` (environmental table) to ENVO terms.
@@ -333,9 +333,9 @@ material_to_envo = {
 ```
 
 This lets you publish SPAAM-derived datasets with ENVO-coded sample
-contexts — required by many FAIR-compliant repositories.
+contexts, required by many FAIR-compliant repositories.
 
-### Workflow 5 — Build a manuscript-ready taxonomy appendix
+### Workflow 5 : Build a manuscript-ready taxonomy appendix
 
 Goal: for a TB phylogenomics paper, produce a table listing every
 species and strain mentioned with its NCBITaxon ID and canonical name.
@@ -390,7 +390,7 @@ for sp in species_list:
 |---|---|
 | **`bacdive`** | Uses LPSN + NCBI Taxonomy natively |
 | **`enterobase`** | Genus-specific typing on NCBI Taxonomy subtrees |
-| **`ncbi-pathogen-detection`** | NCBI ecosystem — same Taxonomy backbone |
+| **`ncbi-pathogen-detection`** | NCBI ecosystem, same Taxonomy backbone |
 | **`pathogens-portal`** | ENA uses NCBI Taxonomy IDs |
 | **`spaam-ancient-metagenome-dir`** | Free-text species → NCBITaxon for joins |
 | **`aadr`** | Host species field → NCBITaxon |

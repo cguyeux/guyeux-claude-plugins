@@ -1,15 +1,13 @@
 ---
 name: bib-check
 description: >-
-  Verification exhaustive des references BibTeX d'un article LaTeX.
-  Verifie l'existence reelle de chaque reference en ligne, la coherence des
-  metadonnees (auteurs, titre, annee, journal), la pertinence des citations
-  dans leur contexte, et detecte les doublons semantiques. Outil anti-hallucinations.
-  Pour les references TB / MTBC, le skill `tbmonitor-papers` permet de
-  valider en SQL sub-seconde l'existence d'une reference (DOI ou titre)
-  contre le corpus pre-indexe de ~190 000 papiers PubMed TB, avant de
-  tomber sur WebFetch / OpenAlex / CrossRef. Marque chaque reference
-  verifiee pour ne pas la re-verifier.
+  Verification exhaustive des references BibTeX d'un article LaTeX. Verifie l'existence
+  reelle de chaque reference en ligne (tbmonitor-papers pour la TB / MTBC, puis CrossRef /
+  WebFetch / WebSearch), la coherence des metadonnees (auteurs, titre, annee, journal), la
+  pertinence des citations dans leur contexte, et detecte les doublons semantiques. Outil
+  anti-hallucinations : marque chaque reference verifiee. A utiliser quand l'utilisateur
+  demande de verifier la bibliographie, de controler que les references existent vraiment,
+  de detecter des references inventees ou des doublons, ou avant une soumission.
 argument-hint: "<chemin vers main.tex>"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebSearch, WebFetch, mcp__tbmonitor__execute_sql, mcp__tbmonitor__show_schema
 ---
@@ -118,6 +116,28 @@ le `.bib` et le `.tex`.
 
 ---
 
+## Phase 1bis -- Coherence INTERNE des entrees (hors ligne, avant toute requete reseau)
+
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/bib-check/scripts/doi_coherence.py references.bib
+```
+
+Le prefixe d'un DOI encode l'EDITEUR (`10.1371` = PLOS, `10.1088` = IOP, `10.1126` = AAAS...).
+Une entree qui annonce *Physical Biology* avec un DOI `10.1371/journal.pbio` est donc
+**contradictoire avec elle-meme**, et c'est decidable SANS RESEAU. Ce cas apparait quand deux
+articles sont fusionnes en une entree (moisson automatique, LLM, copier-coller).
+
+**Pourquoi la Phase 3 ne suffit PAS a l'attraper.** Interroger PubMed AVEC le PMID de l'entree
+rend le papier de ce PMID, qui existe, et la verification passe au vert. **Verifier qu'un
+identifiant RESOUT ne prouve rien sur la COHERENCE de l'entree qui le porte.** Il faut confronter
+les champs entre eux, pas seulement chaque champ au monde exterieur.
+
+**Conception de l'outil, et le piege qu'il a fallu eviter.** La v1 faisait « prefixe -> editeur,
+puis le journal est-il un journal de cet editeur ? » : INUTILISABLE, Elsevier publie des milliers
+de titres, donc tout journal absent de la liste devenait un faux positif (15 alertes, 15 fausses).
+La v2 part d'une **liste blanche de journaux a editeur certain** et n'alerte QUE sur ceux-la : un
+journal inconnu n'est pas verifie, et c'est voulu, **mieux vaut ne rien dire que dire faux**.
+
 ## Phase 2 -- Detection de doublons semantiques
 
 Comparer **toutes les paires d'entrees** pour detecter le meme article sous des cles
@@ -140,6 +160,15 @@ DOUBLON : @key1 et @key2 semblent etre le meme article
 ## Phase 3 -- Verification en ligne (coeur du skill)
 
 **Consulter** `references/VERIFICATION_PROTOCOL.md` avant de commencer cette phase.
+
+### Ordre de priorite des sources pour les references TB / MTBC
+
+Pour toute reference relevant de la tuberculose ou du MTBC, interroger
+d'ABORD le skill `tbmonitor-papers` : il valide en SQL sub-seconde l'existence
+d'une reference (par DOI ou par titre) contre le corpus pre-indexe de
+~190 000 papiers PubMed TB. N'en venir a WebFetch / OpenAlex / CrossRef que
+si la reference n'y figure pas (sujet hors TB, rapport, these, papier tres
+recent non encore ingere).
 
 ### Voie rapide et AUTORITAIRE pour les entrees a DOI : CrossRef
 

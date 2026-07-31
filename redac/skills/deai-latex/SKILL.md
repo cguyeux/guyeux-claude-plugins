@@ -1,11 +1,13 @@
 ---
 name: deai-latex
 description: >-
-  Applique les regles de style scientifique a un article LaTeX : supprime le
-  gras abusif, convertit les listes a puces en prose, fusionne les micro-sections,
-  verifie les acronymes (definis une seule fois), met les noms d'especes en
-  italique, elimine les cliches rédactionnels et ameliore la coherence des
-  temps verbaux. Produit un manuscrit conforme aux conventions des revues.
+  Applique les regles de style scientifique a un article LaTeX : supprime le gras abusif,
+  convertit les listes a puces en prose, fusionne les micro-sections, verifie les acronymes
+  (definis une seule fois), met les noms d'especes en italique, elimine les cliches
+  redactionnels et ameliore la coherence des temps verbaux. A utiliser quand l'utilisateur
+  demande de nettoyer les marqueurs de texte genere par IA, de retirer les tirets cadratin,
+  de depuceliser un texte trop liste, d'harmoniser le style d'un manuscrit, ou avant une
+  soumission.
 argument-hint: "<chemin vers main.tex>"
 ---
 
@@ -108,6 +110,39 @@ scientifique utilise `\emph{}` pour insister, pas le gras.
   - Les captions de figures/tables (si utilise comme label)
   - Les en-tetes de tableaux
 - **Ne jamais ajouter** de `\textbf` dans le corps du texte
+
+**GARDE-FOU POST-RETRAIT -- la majuscule perdue** *(ajoute le 2026-07-31, defaut vecu)*.
+Retirer une balise qui ENVELOPPE LE DEBUT D'UNE PHRASE laisse la minuscule de
+l'interieur de l'accolade : `\textbf{The test is only...}` devient `the test is
+only...`. Le LaTeX compile, le PDF s'affiche, et **rien ne signale l'erreur** ; elle
+survit jusqu'a la relecture suivante, voire jusqu'a la soumission. Le meme piege vaut
+pour `\emph{}`, `\textit{}` et pour toute conversion de balise en debut de phrase.
+
+**Controle systematique a passer APRES tout retrait ou conversion de balise** :
+
+```bash
+# phrases commencant par une minuscule, hors abreviations
+python3 - <<'EOS'
+import re
+src=open("main.tex").read()
+body=src[src.index("\\section{Introduction}"):src.index("\\bibliographystyle")]
+flat=re.sub(r"\s+"," ",body)
+for m in re.finditer(r"\.\s+([a-z][a-z]{2,})", flat):
+    pre=flat[:m.start()+1]
+    if re.search(r"(e\.g|i\.e|cf|vs|et al|Fig|Tab|approx|no)\.$", pre): continue
+    print("->", flat[max(0,m.start()-70):m.start()+45])
+EOS
+```
+
+**Calibrage mesure** (manuscrit reel, 12 pages) : 7 detections, dont **1 vrai defaut**
+et 6 faux positifs, TOUS sur des noms d'especes abreges (`\textit{M. decipiens}`, le
+point de `M.` etant pris pour une fin de phrase). Inspecter les 7, ne corriger que le
+vrai : le taux de faux positifs est eleve mais le controle reste rentable, car le vrai
+defaut est invisible autrement.
+
+**Corollaire d'ordonnancement du pipeline qualite** : ce defaut est introduit par le
+nettoyage et n'est visible qu'a la relecture. `/manuscript-review` doit donc passer
+APRES `/deai-latex`, jamais l'inverse.
 
 ### R2. Conversion des listes a puces en prose
 

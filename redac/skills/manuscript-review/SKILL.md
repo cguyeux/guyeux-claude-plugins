@@ -1,18 +1,18 @@
 ---
 name: manuscript-review
 description: >-
-  Peer review of a scientific manuscript as for a high-impact journal. Reads the
-  full paper (LaTeX or text), evaluates structure, methodology, statistics,
-  terminology, figures, references, and produces a structured review in French
-  with severity-ranked recommendations. For TB / MTBC manuscripts, validates
-  the state-of-the-art and citation completeness against `tbmonitor-papers`
-  (~190k pre-indexed PubMed TB abstracts, sub-second SQL access) — surfaces
-  any major recent publication missed by the authors.
+  Peer review of a scientific manuscript as for a high-impact journal. Reads the full paper
+  (LaTeX or text), evaluates structure, methodology, statistics, terminology, figures and
+  references, and produces a structured review in French with severity-ranked
+  recommendations. For TB / MTBC manuscripts, validates the state of the art and citation
+  completeness against tbmonitor-papers (~190k PubMed TB abstracts). Use when the user asks
+  for a critical read of a manuscript, wants to know what a reviewer would object to, asks
+  to review a paper before submission, or wants a second opinion on a draft.
 argument-hint: "<path to main.tex or manuscript file>"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebSearch, WebFetch, mcp__tbmonitor__execute_sql, mcp__tbmonitor__show_schema
 ---
 
-# /manuscript-review — Review de manuscrit scientifique
+# /manuscript-review : Review de manuscrit scientifique
 
 Produit une review structuree, serieuse et complete d'un article scientifique,
 comme le ferait un reviewer exigeant pour un journal a haut facteur d'impact.
@@ -46,7 +46,7 @@ Si aucun argument, chercher un fichier `main.tex` dans le repertoire courant.
 
 ## Processus
 
-### Phase 1 — Lecture integrale du manuscrit
+### Phase 1 : Lecture integrale du manuscrit
 
 Lire le manuscrit **en entier**, section par section. Ne pas commencer la review
 avant d'avoir lu la derniere ligne (bibliographie incluse).
@@ -58,7 +58,7 @@ Pour un fichier LaTeX :
 4. Lire aussi les fichiers inclus (`\input{}`, `\include{}`)
 5. Identifier les figures referencees et verifier qu'elles existent
 
-### Phase 1bis — RECROISEMENT MECANIQUE des chiffres avec les donnees sources (OBLIGATOIRE)
+### Phase 1bis : RECROISEMENT MECANIQUE des chiffres avec les donnees sources (OBLIGATOIRE)
 
 **Ne jamais se fier a la relecture pour verifier un chiffre.** La relecture ne rattrape
 PAS une valeur attribuee au mauvais modele/echantillon/condition : elle lit une phrase
@@ -108,7 +108,7 @@ relecture**. C'est le premier endroit ou chercher.
 
 Consigner les ecarts trouves : ils alimentent les preoccupations MAJEURES de la review.
 
-### Phase 2 — Grille d'evaluation (11 dimensions)
+### Phase 2 : Grille d'evaluation (11 dimensions)
 
 Evaluer le manuscrit sur chaque dimension. Pour chaque probleme identifie,
 attribuer un niveau de severite :
@@ -134,14 +134,14 @@ attribuer un niveau de severite :
 - Objectifs explicites, numerotes si multiples ?
 - Progression logique : contexte → gap → objectifs ?
 
-#### D3. Methodes — Reproductibilite
+#### D3. Methodes : Reproductibilite
 - Un chercheur independant pourrait-il reproduire l'analyse ?
 - Versions logicielles et parametres documentes ?
 - Criteres d'inclusion/exclusion formalises et objectifs ?
 - Pipeline dependant d'un outil unique non valide ? → RED FLAG
 - Donnees d'entree accessibles ?
 
-#### D4. Methodes — Rigueur statistique
+#### D4. Methodes : Rigueur statistique
 - Tests statistiques adaptes aux types de donnees ?
 - Correction pour tests multiples decrite et appliquee ?
 - Tailles d'echantillon suffisantes ?
@@ -149,7 +149,7 @@ attribuer un niveau de severite :
 - Intervalles de confiance rapportes ?
 - Distinction correlation/causalite respectee ?
 
-#### D5. Resultats — Coherence et completude
+#### D5. Resultats : Coherence et completude
 - Tous les objectifs annonces sont-ils traites ?
 - Les resultats soutiennent-ils les claims ?
 - Statistiques de genetique des populations presentes si pertinentes ?
@@ -157,7 +157,7 @@ attribuer un niveau de severite :
 - Chiffres coherents entre abstract, resultats, discussion, tables ?
 - Resultats negatifs rapportes honnetement ?
 
-#### D6. Discussion — Interpretation
+#### D6. Discussion : Interpretation
 - Les interpretations depassent-elles les donnees ?
 - Les limites sont-elles discutees honnetement et completement ?
 - Comparaison adequate avec la litterature existante ?
@@ -186,6 +186,13 @@ attribuer un niveau de severite :
 - References manquantes pour les claims fortes ?
 - Preprints ou « in preparation » pour des outils critiques ? → FLAG
 
+> **Manuscrits TB / MTBC, validation de l'etat de l'art.** Valider la
+> completude de l'etat de l'art et des citations contre `tbmonitor-papers`
+> (~190k abstracts PubMed TB pre-indexes, acces SQL sub-seconde via
+> `mcp__tbmonitor__execute_sql`). Objectif : faire remonter **toute
+> publication recente majeure oubliee par les auteurs** sur le sujet du
+> manuscrit, et la signaler explicitement dans la review.
+
 #### D10. Structure et equilibre
 - Proportions section par section equilibrees ?
 - Discussion structuree en sous-sections thematiques ?
@@ -199,7 +206,7 @@ attribuer un niveau de severite :
 - Les donnees/methodes sont-elles reutilisables par d'autres ?
 - Le manuscrit repond-il a un besoin reel du domaine ?
 
-### Phase 3 — Redaction de la review
+### Phase 3 : Redaction de la review
 
 Produire la review en **francais**, en suivant strictement ce format :
 
@@ -280,7 +287,7 @@ N. [...]
 - Distinguer ce qui est **demontré** vs **suggere** vs **speculé**
 
 ### Ce que la review NE DOIT PAS faire
-- Survoler des sections — chaque paragraphe compte
+- Survoler des sections, chaque paragraphe compte
 - Etre complaisante : une review molle n'aide personne
 - Etre destructrice : critiquer sans proposer
 - Ignorer les points positifs : l'equilibre renforce la credibilite
@@ -305,7 +312,7 @@ N. [...]
 - **NLP / evaluation de LLM / ML** : verifier variance run-a-run et significativite (sorties LLM stochastiques → un run unique ne suffit pas), IC de Wilson/bootstrap sur petits jeux de test, macro-F1 vs accuracy sur classes desequilibrees (le « best model » se renverse selon la metrique), reproductibilite du prompt (texte integral, temperature, version/date d'API, exclusion des sorties invalides), asymetrie par classe masquee par la macro-moyenne, comparaison equitable supervise fine-tune vs LLM zero/few-shot (dispositif souvent apples-to-oranges), recall=1.0 exact = comportement degenere. **Grille detaillee : `~/.claude/knowledge/manuscript-review-llm-eval.md` (a lire avant de reviewer un papier qui mesure/compare un systeme LLM).**
 - **Statistique** : verifier assumptions, puissance, corrections multiples
 
-> Note : la dimension **D5** liste des statistiques de genetique des populations (pi, FST, Tajima's D, AMOVA...) — pertinentes UNIQUEMENT pour les papiers de genomique evolutive. Pour un papier hors de ce domaine (NLP, ML, ingenierie logicielle...), ignorer ces items et appliquer les criteres du domaine ci-dessus a la place.
+> Note : la dimension **D5** liste des statistiques de genetique des populations (pi, FST, Tajima's D, AMOVA...), pertinentes UNIQUEMENT pour les papiers de genomique evolutive. Pour un papier hors de ce domaine (NLP, ML, ingenierie logicielle...), ignorer ces items et appliquer les criteres du domaine ci-dessus a la place.
 
 ### Sauvegarde automatique de la review
 

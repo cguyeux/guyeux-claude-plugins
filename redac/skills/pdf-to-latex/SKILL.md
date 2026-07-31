@@ -20,7 +20,7 @@ Reconstruct LaTeX source code from a PDF document by analyzing its structure, la
 
 ### Step 1: Extract content from the PDF
 
-Use the markdown-converter skill first to get a text extraction:
+Use the `read-scientific-pdf` skill first to get a text extraction (it handles scanned PDFs via OCR):
 
 ```bash
 uvx --with 'markitdown[pdf]' markitdown input.pdf -o input_raw.md
@@ -238,5 +238,5 @@ output/
 - Run `pdffonts input.pdf` (from poppler-utils) to identify fonts used
 - Run `pdfimages -list input.pdf` to inventory embedded images
 - Use `pdfinfo input.pdf` for metadata (page size, creator application)
-- If the PDF was created by Word, the layout may not map cleanly to LaTeX idioms — focus on semantic reconstruction rather than pixel-perfect replication
+- If the PDF was created by Word, the layout may not map cleanly to LaTeX idioms, focus on semantic reconstruction rather than pixel-perfect replication
 - If an institutional template exists (e.g., ANR, IEEE, Springer), find and use it rather than reconstructing from scratch

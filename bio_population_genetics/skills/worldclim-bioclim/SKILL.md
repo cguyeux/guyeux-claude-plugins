@@ -1,7 +1,7 @@
 ---
 name: worldclim-bioclim
 description: >-
-  Use WorldClim 2.1 and CHELSA v2.1 — the two reference high-resolution
+  Use WorldClim 2.1 and CHELSA v2.1, the two reference high-resolution
   global bioclimatic raster datasets (19 BIO variables at up to 1 km
   resolution, present-day and paleo versions for LGM and Mid-Holocene).
   The canonical substrate for ecological niche modelling of pathogens,
@@ -16,7 +16,7 @@ description: >-
   computing niche overlap statistics between pathogen ecotypes.
 ---
 
-# WorldClim 2.1 and CHELSA — High-Resolution Bioclimatic Rasters
+# WorldClim 2.1 and CHELSA : High-Resolution Bioclimatic Rasters
 
 ## Client (resilient, tool-first)
 
@@ -37,7 +37,7 @@ PYTHONPATH="$SRC" $PY -m wcbio_client.smoke_test    # offline raster fixture
 keyed `point_id, lat, lon, bio_1, ...`. Resolves a directory of single-band BIO
 GeoTIFFs (`WORLDCLIM_DIR`); `WORLDCLIM_OFFLINE=1` forces the bundled fixture; a missing
 rasterio degrades to a clear "run via venvs/geo311" message. WorldClim 2.1 temperature
-BIO are in degrees C (older v1 were x10 — check your release).
+BIO are in degrees C (older v1 were x10, check your release).
 
 ## Overview
 
@@ -74,21 +74,21 @@ Mid-Holocene (~6 ka BP), and Last Inter-Glacial (~120 ka BP).
 
 | Code | Variable | Unit |
 |---|---|---|
-| BIO1 | Annual Mean Temperature | °C (2.1) — ×10 en 1.4 |
-| BIO2 | Mean Diurnal Range (monthly max–min) | °C (2.1) — ×10 en 1.4 |
-| BIO3 | Isothermality (BIO2 / BIO7) × 100 | — |
-| BIO4 | Temperature Seasonality (std. dev. × 100) | — |
-| BIO5 | Max Temperature of Warmest Month | °C (2.1) — ×10 en 1.4 |
-| BIO6 | Min Temperature of Coldest Month | °C (2.1) — ×10 en 1.4 |
-| BIO7 | Temperature Annual Range (BIO5 − BIO6) | °C (2.1) — ×10 en 1.4 |
-| BIO8 | Mean Temperature of Wettest Quarter | °C (2.1) — ×10 en 1.4 |
-| BIO9 | Mean Temperature of Driest Quarter | °C (2.1) — ×10 en 1.4 |
-| BIO10 | Mean Temperature of Warmest Quarter | °C (2.1) — ×10 en 1.4 |
-| BIO11 | Mean Temperature of Coldest Quarter | °C (2.1) — ×10 en 1.4 |
+| BIO1 | Annual Mean Temperature | °C (2.1), ×10 en 1.4 |
+| BIO2 | Mean Diurnal Range (monthly max–min) | °C (2.1), ×10 en 1.4 |
+| BIO3 | Isothermality (BIO2 / BIO7) × 100 |, |
+| BIO4 | Temperature Seasonality (std. dev. × 100) |, |
+| BIO5 | Max Temperature of Warmest Month | °C (2.1), ×10 en 1.4 |
+| BIO6 | Min Temperature of Coldest Month | °C (2.1), ×10 en 1.4 |
+| BIO7 | Temperature Annual Range (BIO5 − BIO6) | °C (2.1), ×10 en 1.4 |
+| BIO8 | Mean Temperature of Wettest Quarter | °C (2.1), ×10 en 1.4 |
+| BIO9 | Mean Temperature of Driest Quarter | °C (2.1), ×10 en 1.4 |
+| BIO10 | Mean Temperature of Warmest Quarter | °C (2.1), ×10 en 1.4 |
+| BIO11 | Mean Temperature of Coldest Quarter | °C (2.1), ×10 en 1.4 |
 | BIO12 | Annual Precipitation | mm |
 | BIO13 | Precipitation of Wettest Month | mm |
 | BIO14 | Precipitation of Driest Month | mm |
-| BIO15 | Precipitation Seasonality (CV) | — |
+| BIO15 | Precipitation Seasonality (CV) |, |
 | BIO16 | Precipitation of Wettest Quarter | mm |
 | BIO17 | Precipitation of Driest Quarter | mm |
 | BIO18 | Precipitation of Warmest Quarter | mm |
@@ -97,15 +97,15 @@ Mid-Holocene (~6 ka BP), and Last Inter-Glacial (~120 ka BP).
 > [!WARNING]
 > **Temperature encoding depends on the WorldClim version.**
 > - **WorldClim 2.1** (this skill's default, `wc2.1_*`): temperature BIO
->   are **float °C already** — do **NOT** divide by 10.
-> - **WorldClim 1.4** (legacy integer GeoTIFFs): stored as **°C × 10** —
+>   are **float °C already**, do **NOT** divide by 10.
+> - **WorldClim 1.4** (legacy integer GeoTIFFs): stored as **°C × 10**,
 >   divide by 10.
-> - **CHELSA v2.1**: float °C (some products use offset/scale in metadata —
+> - **CHELSA v2.1**: float °C (some products use offset/scale in metadata,
 >   read the band `scale`/`offset`).
 >
 > Check `rasterio`'s reported dtype: float32 ⇒ already °C (2.1); int16 with
 > values like 234 ⇒ ×10 (1.4). Applying the ×10 rule to 2.1 gives
-> temperatures **10× too low** — a silent, common error.
+> temperatures **10× too low**, a silent, common error.
 
 ## Why it matters for MTBC × anthropology
 
@@ -123,12 +123,12 @@ Three concrete uses:
 3. **High-resolution climate overlays for phylogeographic maps.**
    Unlike `d-place` (society-level point climate) and `paleoclimate`
    (time series), WorldClim/CHELSA give you the **full 2D raster
-   at km-scale** — ready for publication-grade choropleth maps
+   at km-scale**, ready for publication-grade choropleth maps
    overlaid with lineage sampling points.
 
 ## Data access
 
-### Option A — WorldClim direct download
+### Option A : WorldClim direct download
 
 ```bash
 mkdir -p ~/data/worldclim && cd ~/data/worldclim
@@ -148,7 +148,7 @@ Available resolutions:
 | 5 arcmin | ~9 km | `5m` |
 | 10 arcmin | ~18 km | `10m` |
 
-### Option B — WorldClim paleo (LGM, Mid-Holocene)
+### Option B : WorldClim paleo (LGM, Mid-Holocene)
 
 ```bash
 # Mid-Holocene (6 ka BP), CCSM4 model, 2.5 arcmin
@@ -157,10 +157,10 @@ wget "https://geodata.ucdavis.edu/cmip6/2.5m/ACCESS-CM2/ssp126/wc2.1_2.5m_bioc_A
 ```
 
 WorldClim 2.1 paleo uses downscaled CMIP5 / CMIP6 climate model
-output — not a direct reconstruction, but a physically consistent
+output, not a direct reconstruction, but a physically consistent
 model-based estimate.
 
-### Option C — CHELSA
+### Option C : CHELSA
 
 ```bash
 mkdir -p ~/data/chelsa && cd ~/data/chelsa
@@ -173,7 +173,7 @@ CHELSA v2.1 covers 1981–2010 and includes 30 arcsec present-day
 data plus paleo timeslices via CHELSA-TraCE21k (a transient
 simulation back to 21 ka BP).
 
-### Option D — PaleoClim aggregator
+### Option D : PaleoClim aggregator
 
 - `http://www.paleoclim.org/` provides paleo bioclimatic variables
   from multiple sources (WorldClim, CHELSA, others) in a unified
@@ -185,7 +185,7 @@ simulation back to 21 ka BP).
 - Convenient single-stop shop when you want several paleo time slices
   in a consistent format
 
-### Option E — `pastclim` R package
+### Option E : `pastclim` R package
 
 The **most convenient** interface for programmatic point-based
 extraction across multiple time slices:
@@ -208,7 +208,7 @@ climate_for_locations(pts, dataset = "WorldClim_2.1_10m",
 `pastclim` also handles PaleoClim's paleo time slices through the
 same API. This is the **recommended path** for anyone already in R.
 
-### Option F — Python `xarray` + `rasterio`
+### Option F : Python `xarray` + `rasterio`
 
 ```python
 import rasterio
@@ -227,7 +227,7 @@ with rasterio.open("wc2.1_30s_bio_1.tif") as src:
 
 ## Workflows
 
-### Workflow 1 — Extract bioclimatic variables at MTBC sampling sites
+### Workflow 1 : Extract bioclimatic variables at MTBC sampling sites
 
 Goal: produce a table of BIO1–BIO19 values at every TBannotator
 sample location.
@@ -252,7 +252,7 @@ bio_df = pd.DataFrame(bio_values)
 tb_climate = pd.concat([tb.reset_index(drop=True), bio_df], axis=1)
 ```
 
-### Workflow 2 — Niche overlap between MTBC ecotypes
+### Workflow 2 : Niche overlap between MTBC ecotypes
 
 Goal: compute Schoener's D niche overlap between *M. bovis*,
 *M. caprae*, and human-adapted L4.
@@ -279,7 +279,7 @@ l4_kde     = fit_kde(l4_sites)
 The **`ENMeval`**, **`dismo`**, and **`ecospat`** R packages are the
 canonical tools for rigorous niche overlap calculation.
 
-### Workflow 3 — Paleo climate at ancient MTBC sites
+### Workflow 3 : Paleo climate at ancient MTBC sites
 
 Goal: get LGM and Mid-Holocene bioclimatic values at ancient sample
 locations to contextualise the environment at time of infection.
@@ -300,14 +300,14 @@ climate <- climate_for_locations(
 )
 ```
 
-### Workflow 4 — Niche-model prediction for a lineage
+### Workflow 4 : Niche-model prediction for a lineage
 
 Goal: train a niche model on known *M. bovis* occurrences and
 predict its potential range under current and paleo climates.
 
 1. Assemble a presence dataset of *M. bovis* sampling sites from
    TBannotator.
-2. Assemble a background (pseudo-absence) sample — random points
+2. Assemble a background (pseudo-absence) sample, random points
    in the study region (e.g. Europe).
 3. Train a **MaxEnt** or **Random Forest** model with
    `dismo::maxent()` or `ENMeval` on the 19 bioclimatic variables.
@@ -317,7 +317,7 @@ predict its potential range under current and paleo climates.
 6. Compare with the modern observed distribution to identify
    refugia, colonisation fronts, or anthropogenic niche expansion.
 
-### Workflow 5 — Climate overlay for a Nextstrain map
+### Workflow 5 : Climate overlay for a Nextstrain map
 
 Goal: add a bioclimatic background layer to a phylogeographic map
 produced in Auspice or externally.
@@ -335,8 +335,8 @@ produced in Auspice or externally.
 ## Caveats
 
 - **Temperature encoding is version-dependent.** WorldClim **2.1** BIO1–BIO11
-  are float °C — do **not** divide. Only WorldClim **1.4** (int16) is °C×10.
-  Applying ×10 to 2.1 gives temperatures 10× too low — **the** recurring bug.
+  are float °C, do **not** divide. Only WorldClim **1.4** (int16) is °C×10.
+  Applying ×10 to 2.1 gives temperatures 10× too low, **the** recurring bug.
 - **Projection and coordinate system.** All WorldClim/CHELSA rasters
   are in EPSG:4326 (WGS84 geographic lat/lon). If you need a
   projected system for distance calculations, reproject with
@@ -363,12 +363,12 @@ produced in Auspice or externally.
 
 | Tool | Purpose |
 |---|---|
-| **`paleoclimate`** | Time-series reconstructions (PAGES 2k, Büntgen, ice cores) — complementary to WorldClim's spatial view |
-| **`d-place`** | Society-level bioclimatic summaries — WorldClim is the raster version |
+| **`paleoclimate`** | Time-series reconstructions (PAGES 2k, Büntgen, ice cores), complementary to WorldClim's spatial view |
+| **`d-place`** | Society-level bioclimatic summaries : WorldClim is the raster version |
 | **`p3k14c`** / **`neolithic-14c`** / **`card`** | Archaeological sites to extract paleo climate at |
-| **`aadr`** / **`amtdb`** | Ancient human sites — extract present + paleo climate |
+| **`aadr`** / **`amtdb`** | Ancient human sites, extract present + paleo climate |
 | **`spaam-ancient-metagenome-dir`** | Ancient pathogen sites for climate context |
-| **`beast2-phylogeography`** / **`pastml`** | Phylogeographic inference — climate as a covariate or background |
+| **`beast2-phylogeography`** / **`pastml`** | Phylogeographic inference, climate as a covariate or background |
 | **`pastclim`** (R) | Convenient interface to WorldClim + PaleoClim + Beyer2020 |
 | **`rasterio`** / **`xarray`** (Python) | Raster manipulation |
 | **`dismo`** / **`ENMeval`** / **`ecospat`** (R) | Niche modelling and niche overlap |

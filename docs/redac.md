@@ -6,25 +6,25 @@
 
 Rédaction et contrôle qualité du manuscrit M. tuberculosis : mise en forme LaTeX, vérification des affirmations et des références, nettoyage stylistique, réponse aux relecteurs, dépôt Zenodo et pont Overleaf.
 
-Skills propres (canoniques) : **29** ; skills partagés utilisés (symlinks) : **6**.
+Skills propres (canoniques) : **28** ; skills partagés utilisés (symlinks) : **4**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [beamer-slides](#beamer-slides) ; [bib-check](#bib-check) ; [biblatex](#biblatex) ; [claim-check](#claim-check) ; [cv](#cv) ; [deai-latex](#deai-latex) ; [docs-latex](#docs-latex) ; [fig-check](#fig-check) ; [grant-proposal](#grant-proposal) ; [humanizer](#humanizer) ; [latex-build](#latex-build) ; [latex-document](#latex-document) ; [latex-formatting](#latex-formatting) ; [latex-paper-en](#latex-paper-en) ; [latex-posters](#latex-posters) ; [latex-tables](#latex-tables) ; [latex-writing](#latex-writing) ; [lit-review](#lit-review) ; [manuscript-review](#manuscript-review) ; [overleaf-bridge](#overleaf-bridge) ; [pdf-to-latex](#pdf-to-latex) ; [plotly](#plotly) ; [reviewer-response](#reviewer-response) ; [slide-design](#slide-design) ; [slide-polish](#slide-polish) ; [supp-check](#supp-check) ; [synthesize-research](#synthesize-research) ; [theme-factory](#theme-factory) ; [zenodo-deposit](#zenodo-deposit)
+Sommaire : [beamer-slides](#beamer-slides) ; [bib-check](#bib-check) ; [biblatex](#biblatex) ; [claim-check](#claim-check) ; [cv](#cv) ; [deai-latex](#deai-latex) ; [docs-latex](#docs-latex) ; [fig-check](#fig-check) ; [grant-proposal](#grant-proposal) ; [humanizer](#humanizer) ; [latex-build](#latex-build) ; [latex-document](#latex-document) ; [latex-formatting](#latex-formatting) ; [latex-paper-en](#latex-paper-en) ; [latex-posters](#latex-posters) ; [latex-tables](#latex-tables) ; [latex-writing](#latex-writing) ; [lit-review](#lit-review) ; [manuscript-review](#manuscript-review) ; [overleaf-bridge](#overleaf-bridge) ; [pdf-to-latex](#pdf-to-latex) ; [reviewer-response](#reviewer-response) ; [slide-design](#slide-design) ; [slide-polish](#slide-polish) ; [supp-check](#supp-check) ; [synthesize-research](#synthesize-research) ; [theme-factory](#theme-factory) ; [zenodo-deposit](#zenodo-deposit)
 
 ### beamer-slides
 
-Génère des slides de présentation Beamer/LaTeX professionnelles à partir d'un travail de recherche. Analyse main.tex, les données et les figures pour bâtir une présentation scientifique autonome, guidée par la narration et pédagogique.
+Genere une presentation scientifique Beamer complete a partir de la matiere de recherche existante : lit main.tex, les donnees et les figures, puis construit un deck autonome, narratif et pedagogique. Pour une ou deux slides a partir d'une idee, utiliser slide-design ; pour retravailler une slide existante, slide-polish.
 
-Compétences : produire une présentation scientifique à partir d'un manuscrit et de ses figures ; préparer un exposé de séminaire ou de soutenance
+Compétences : l'utilisateur demande un expose, une presentation de seminaire ou de conference, un deck de soutenance, ou des slides couvrant tout un article ou tout un projet
 
 ### bib-check
 
-Vérification exhaustive des références BibTeX d'un article LaTeX. Vérifie l'existence réelle de chaque référence en ligne, la cohérence des métadonnées (auteurs, titre, année, journal), la pertinence des citations dans leur contexte, et détecte les doublons sémantiques. Outil anti-hallucinations. Pour les références TB/MTBC, tbmonitor-papers valide en SQL sub-seconde l'existence d'une référence contre le corpus PubMed TB pré-indexé avant de recourir à WebFetch/OpenAlex/CrossRef.
+Verification exhaustive des references BibTeX d'un article LaTeX. Verifie l'existence reelle de chaque reference en ligne (tbmonitor-papers pour la TB et le MTBC, puis CrossRef, WebFetch, WebSearch), la coherence des metadonnees (auteurs, titre, annee, journal), la pertinence des citations dans leur contexte, et detecte les doublons semantiques. Outil anti-hallucinations : marque chaque reference verifiee.
 
-Compétences : vérifier la bibliographie d'un manuscrit avant soumission ; détecter des références hallucinées ou des doublons ; confirmer les métadonnées d'un DOI
+Compétences : verifier la bibliographie ; controler que les references existent vraiment ; detecter des references inventees ou des doublons ; avant une soumission
 
 ### biblatex
 
@@ -34,9 +34,9 @@ Compétences : aider à citer des références ; gérer des fichiers .bib ; choi
 
 ### claim-check
 
-Extraction et vérification systématique des affirmations scientifiques d'un article. Classe les affirmations par priorité (structurantes puis annexes), les vérifie via bioinfo, base de données ou littérature. Pour la vérification littérature TB/MTBC, interroger d'abord tbmonitor (corpus PubMed TB pré-indexé, SQL sub-seconde) avant WebSearch/WebFetch. Maintient un registre claim_check.md avec dates de vérification, et ne revérifie que les affirmations non vérifiées ou anciennes.
+Extraction et verification systematique des affirmations scientifiques d'un article LaTeX. Classe les affirmations par priorite (structurantes vers annexes), audite la coherence numerique interne, verifie via bioinformatique, base de donnees ou litterature (tbmonitor prioritaire pour la TB et le MTBC, sinon WebSearch et WebFetch). Maintient un registre claim_check.md date et ne reverifie que les affirmations non verifiees ou perimees.
 
-Compétences : vérifier factuellement un manuscrit avant soumission ; établir ce qui est prouvé, à vérifier ou incertain ; tracer les vérifications dans le temps
+Compétences : verifier les affirmations d'un manuscrit ; controler que les chiffres du texte correspondent aux donnees ; recroiser un resultat avec la litterature ; avant une soumission
 
 ### cv
 
@@ -46,9 +46,9 @@ Compétences : rédiger un projet, un dossier de candidature, une lettre de moti
 
 ### deai-latex
 
-Applique les règles de style scientifique à un article LaTeX : supprime le gras abusif, convertit les listes à puces en prose, fusionne les micro-sections, vérifie les acronymes (définis une seule fois), met les noms d'espèces en italique, élimine les clichés rédactionnels et améliore la cohérence des temps verbaux. Produit un manuscrit conforme aux conventions des revues.
+Applique les regles de style scientifique a un article LaTeX : supprime le gras abusif, convertit les listes a puces en prose, fusionne les micro-sections, verifie les acronymes (definis une seule fois), met les noms d'especes en italique, elimine les cliches redactionnels et ameliore la coherence des temps verbaux.
 
-Compétences : nettoyer les marqueurs de texte généré par IA dans un manuscrit ; harmoniser le style avant soumission
+Compétences : nettoyer les marqueurs de texte genere par IA ; retirer les tirets cadratin ; degonfler un texte trop liste ; harmoniser le style d'un manuscrit ; avant une soumission
 
 ### docs-latex
 
@@ -82,9 +82,9 @@ Compétences : latexmk, compilation LaTeX, prévisualisation en direct
 
 ### latex-document
 
-Skill LaTeX universel : créer, compiler et convertir tout document en PDF professionnel avec aperçus PNG. Gère CV, rapports, lettres, factures, articles académiques, thèses, présentations Beamer, posters, examens, livres, aide-mémoires, formulaires PDF remplissables, fusion de courrier depuis CSV/JSON, diff de versions (latexdiff), graphiques (pgfplots + matplotlib), tableaux (booktabs), images (TikZ), diagrammes Mermaid, bibliographie (BibTeX/biblatex), multilingue/CJK (XeLaTeX auto), algorithmes, conversion Pandoc (Markdown/DOCX/HTML ↔ LaTeX) et conversion PDF-vers-LaTeX de documents manuscrits ou imprimés. Compilation pdflatex/xelatex/lualatex avec détection auto et filtrage de logs.
+Skill LaTeX universel : creer, compiler et convertir n'importe quel document en PDF professionnel avec apercus PNG. Couvre rapports, theses, livres, lettres, factures, CV academiques, examens, aide-memoires, formulaires PDF remplissables, contenu conditionnel, publipostage depuis CSV ou JSON, diffs de version latexdiff, graphiques pgfplots et matplotlib, tableaux booktabs, TikZ, diagrammes Mermaid, bibliographie, documents multilingues et CJK (XeLaTeX automatique), algorithmes, tcolorbox, siunitx, conversion Pandoc depuis et vers Markdown, DOCX et HTML, et conversion PDF vers LaTeX de documents imprimes ou manuscrits. Egalement des utilitaires PDF : fusion, decoupe, chiffrement, optimisation, filigrane, extraction de texte ou de tableaux, OCR, remplissage de formulaire. Pour les articles de revue preferer latex-paper-en, pour les slides beamer-slides, pour les posters latex-posters.
 
-Compétences : créer un CV ou une lettre ; écrire ou compiler un document LaTeX ; produire un PDF avec tableaux/graphiques/images ; faire un rapport, une facture, une présentation, une thèse, un poster, un examen, un livre ; convertir entre formats de documents ; convertir ou OCR un PDF en LaTeX ; déboguer une compilation LaTeX
+Compétences : ecrire, compiler, deboguer, convertir ou manipuler un document LaTeX ou un PDF
 
 ### latex-formatting
 
@@ -100,9 +100,9 @@ Compétences : compiler, linter, auditer ou améliorer un article LaTeX anglais 
 
 ### latex-posters
 
-Crée des posters de recherche professionnels en LaTeX avec beamerposter, tikzposter ou baposter. Gère mise en page, palettes, formats multi-colonnes, intégration de figures et bonnes pratiques propres aux posters.
+Cree des posters de recherche en LaTeX avec beamerposter, tikzposter ou baposter : mise en page et grilles de colonnes, palettes, integration des figures, et regles propres au poster sur la taille de police, la distance de lecture et la hierarchie visuelle. Pour des slides utiliser beamer-slides, pour les figures elles-memes sci-figure.
 
-Compétences : produire un poster scientifique pour une conférence ; concevoir une communication visuelle académique
+Compétences : l'utilisateur demande un poster de conference ; mentionne un format A0 ou A1, beamerposter, tikzposter ou baposter ; veut transformer un article en poster
 
 ### latex-tables
 
@@ -124,15 +124,15 @@ Compétences : construire une revue de littérature sur un sujet ; approfondir u
 
 ### manuscript-review
 
-Relecture par les pairs d'un manuscrit scientifique comme pour une revue à fort impact. Lit l'article complet (LaTeX ou texte), évalue structure, méthodologie, statistiques, terminologie, figures, références, et produit une revue structurée en français avec recommandations classées par sévérité. Pour les manuscrits TB/MTBC, valide l'état de l'art et la complétude des citations contre tbmonitor-papers.
+Revue par les pairs d'un manuscrit scientifique comme pour une revue a fort facteur d'impact. Lit l'article complet (LaTeX ou texte), evalue structure, methodologie, statistiques, terminologie, figures et references, et produit une revue structuree en francais avec des recommandations classees par severite. Pour les manuscrits TB et MTBC, valide l'etat de l'art et la completude des citations contre tbmonitor-papers (environ 190 000 resumes TB de PubMed).
 
-Compétences : relire un manuscrit avant soumission ou resoumission ; obtenir une critique structurée par sévérité ; détecter une publication récente majeure oubliée par les auteurs
+Compétences : obtenir une lecture critique d'un manuscrit ; savoir ce qu'un relecteur objecterait ; faire relire un article avant soumission ; demander un second avis sur un brouillon
 
 ### overleaf-bridge
 
-Synchronise un dépôt local article/ avec un projet Overleaf via l'intégration Git officielle d'Overleaf (git-bridge, git.overleaf.com). Dépose un nouveau manuscrit, récupère les dernières éditions des co-auteurs, montre le diff et collecte les commentaires laissés par les co-auteurs dans le .tex. Git standard sur le remote officiel, sans serveur MCP, sans API non officielle, sans scraping.
+Synchronise un depot local article/ avec un projet Overleaf via l'integration Git officielle d'Overleaf (git-bridge, git.overleaf.com). Git standard sur le depot officiel : pas de serveur MCP, pas d'API non officielle, pas de scraping.
 
-Compétences : déposer un manuscrit sur Overleaf ; récupérer les éditions des co-auteurs ; voir le diff ; collecter et traiter les commentaires laissés dans le .tex
+Compétences : pousser un manuscrit vers Overleaf ; recuperer les modifications des co-auteurs dans le depot local ; voir ce qui a change depuis la derniere synchronisation ; resoudre une divergence entre les deux ; collecter les commentaires laisses par les co-auteurs dans le .tex
 
 ### pdf-to-latex
 
@@ -140,29 +140,23 @@ Reconstruit un code source LaTeX compilable à partir d'un document PDF. Analyse
 
 Compétences : rétro-ingénierie d'un PDF vers LaTeX ; reproduire un gabarit d'article ; éditer un article sans les fichiers source ; reconstruire des documents institutionnels
 
-### plotly
-
-Bibliothèque de tracé interactif de haut niveau pour Python. Idéale pour les visualisations web, les tracés 3D et les tableaux de bord interactifs complexes. Bâtie sur plotly.js, elle permet de zoomer, déplacer et survoler les points de données dans le navigateur. Sert aux graphiques interactifs, applications web, notebooks Jupyter, cartes géographiques, animations, séries temporelles et tableaux de bord Dash.
-
-Compétences : produire des graphiques interactifs (survol, zoom) ; visualiser en 3D ; construire un tableau de bord web ; intégrer une figure dans un notebook Jupyter
-
 ### reviewer-response
 
-Réponse systématique point par point à une relecture de manuscrit. Décompose les commentaires du relecteur en tâches individuelles, évalue chacune de façon critique (accord/désaccord), planifie et exécute des analyses (bioinfo, littérature, statistiques) dans experiments/, améliore le manuscrit et produit une lettre de réponse horodatée dans review/. Quand un relecteur demande des citations TB/MTBC, utiliser d'abord tbmonitor-papers.
+Reponse point par point systematique a une revue de manuscrit. Decoupe les commentaires des relecteurs en taches individuelles, evalue chacune de facon critique (accord ou desaccord), planifie et execute les analyses (bioinformatique, litterature, statistiques) dans experiments/, ameliore le manuscrit et produit une lettre de reponse datee dans review/. S'invoque avec review/fichier.md pour demarrer, next pour avancer, status pour l'avancement, R05 pour sauter a une remarque.
 
-Compétences : répondre à une relecture point par point ; démarrer avec /reviewer-response review/fichier.md, avancer avec next, vérifier avec status, ou sauter à une remarque précise (R05)
+Compétences : des rapports de relecture sont arrives et il faut y repondre ; traiter une revision ; rediger une lettre de reponse
 
 ### slide-design
 
-Transforme une brève description de ce qu'on veut dire en une à quelques slides de qualité éditoriale. Impose un système de design (palette, typographie, grille), raisonne sur la narration, propose plusieurs options structurelles avec références éditoriales explicites (NYT Graphics, Bloomberg, Pudding, Tufte, Nature Methods), exige au moins une option à forte signature visuelle (schéma TikZ, big number, image plein cadre, sparkline), délègue les cartes à geo-map et les graphiques à create-viz/seaborn, et compile un aperçu qu'elle relit visuellement avant livraison.
+Transforme une courte description de ce que l'on veut dire en une a quelques slides de qualite editoriale. Impose un systeme graphique (palette, typographie, grille), raisonne sur la narration, propose plusieurs options structurelles avec des references editoriales explicites (NYT Graphics, Bloomberg, Pudding, Tufte, Nature Methods), exige au moins une option a signature visuelle forte, prefere schemas, frises et diagrammes au texte brut, reutilise les figures trouvees dans le projet, delegue les cartes a geo-map et les graphiques a sci-figure, s'aligne sur le style du deck hote, et compile systematiquement un apercu qu'il critique avant livraison.
 
-Compétences : l'utilisateur tape /slide-design ; demande « fais-moi une slide / deux slides » pour une idée ;  il me faut une slide qui dit ;  « conçois une slide sur X », « comment je présenterais X en une slide  ; convertir une idée verbale en slide soignée plutôt que générer une présentation entière
+Compétences : taper /slide-design ; demander une ou deux slides sur une idee ; dire j'ai besoin d'une slide qui dit ; ou fais-moi 2 slides sur Y ; transformer une idee verbale en matiere de slide plutot que generer une presentation entiere
 
 ### slide-polish
 
-Amélioration ciblée d'une slide Beamer existante, sur le fond et sur la forme, avec une étape obligatoire de reconstruction de la thèse pleine du projet pour éviter la moyennisation par polissage (rendre une slide moyenne plus joliment moyenne en sacrifiant spécificité, nuance et voix). Compile et relit visuellement les PNG, choisit une modalité (TikZ, Mermaid, frise, big number, carte), applique un deai-latex étendu, et score chaque version avec veto anti-moyennisation.
+Amelioration ciblee d'une slide Beamer existante, sur le fond et sur la forme, avec une etape obligatoire de brassage large : relire la matiere du projet (cahier de labo, manuscrit, JOURNAL, claim-check) pour reconstruire la these pleine et eviter la moyennisation par polissage, ce defaut classique qui rend une slide moyenne plus belle en sacrifiant specificite, nuance et voix. Compile et lit visuellement les PNG, choisit une modalite (TikZ, Mermaid, frise, big number, carte via geo-map), applique deai-latex etendu, score chaque version sur 16 points avec veto anti-moyennisation, itere tant que le score progresse, puis enchaine une boucle de proprete visuelle sur crops haute resolution et un test final de voix scientifique.
 
-Compétences : améliorer une slide précise d'un fichier .tex (titre, identifiant ou numéro) ; enrichir vers la singularité plutôt qu'alléger vers la généralité ; passer une boucle propreté visuelle (débordements, collisions, veuves, footer)
+Compétences : taper /slide-polish ; demander d'ameliorer, de retravailler ou de rendre meilleure une slide precise existante, plutot que d'en creer une nouvelle ou de generer un deck entier
 
 ### supp-check
 
@@ -172,15 +166,15 @@ Compétences : préparer une soumission ou resoumission ; après toute modificat
 
 ### synthesize-research
 
-Synthétise de la recherche utilisateur (entretiens, sondages, retours) en insights structurés.
+Synthetise un ensemble de materiaux qualitatifs en constats structures et hierarchises par force de preuve : analyse thematique, cartographie par affinites, triangulation entre sources, et integration du qualitatif avec le quantitatif. Distingue explicitement deux registres, scientifique et produit, qui partagent les methodes mais pas les livrables. N'est ni la verification des affirmations d'un manuscrit (claim-check) ni une recherche bibliographique ciblee (lit-review), qui partent de la question et non du corpus.
 
-Compétences : un tas de notes d'entretiens, réponses de sondage ou tickets de support à comprendre ; extraire des thèmes et classer les résultats par fréquence et impact ; transformer des retours bruts en recommandations de feuille de route
+Compétences : de nombreuses sources separees portent sur une meme question et il faut en degager les themes : articles lus pour une revue, notes d'entretiens d'experts ou de parties prenantes, reponses libres de questionnaire, commentaires de relecteurs sur plusieurs tours, retours de terrain
 
 ### theme-factory
 
-Boîte à outils pour appliquer un thème à des artefacts (slides, docs, reportings, pages web HTML). Propose 10 thèmes pré-réglés (couleurs/polices) applicables à un artefact existant, ou génère un nouveau thème à la volée.
+Applique un theme visuel coherent (couleurs, typographie, espacement) a un artefact : slides, documents, rapports, pages HTML. Dix themes preetablis sont disponibles et un nouveau theme peut etre genere a la volee. Pour le travail de slide scientifique utiliser slide-design, et pour les gabarits de figures de revue sci-figure.
 
-Compétences : styliser un artefact existant avec un thème cohérent ; générer une palette et une typographie sur mesure
+Compétences : restyler ou harmoniser un artefact existant ; obtenir une autre apparence pour un deck ou une page ; demander une palette et un appariement de polices sur mesure
 
 ### zenodo-deposit
 
@@ -194,10 +188,8 @@ Documentés sur la page de leur plugin d'origine.
 
 | Skill | Origine |
 |-------|---------|
-| [create-viz](ops.md#create-viz) | `ops` |
+| [create-viz](bio_population_genetics.md#create-viz) | `bio_population_genetics` |
 | [geo-map](bio_population_genetics.md#geo-map) | `bio_population_genetics` |
-| [matplotlib](ia.md#matplotlib) | `ia` |
-| [matplotlib-pro](ia.md#matplotlib-pro) | `ia` |
 | [read-scientific-pdf](bio_population_genetics.md#read-scientific-pdf) | `bio_population_genetics` |
-| [seaborn](bio_population_genetics.md#seaborn) | `bio_population_genetics` |
+| [sci-figure](bio_population_genetics.md#sci-figure) | `bio_population_genetics` |
 

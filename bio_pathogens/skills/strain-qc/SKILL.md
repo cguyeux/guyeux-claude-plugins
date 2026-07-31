@@ -1,24 +1,13 @@
 ---
 name: strain-qc
 description: >-
-  Controle qualite d'une souche MTBC avant integration dans la BDD ou
-  un arbre phylogenetique. Verifie 7 criteres : (1) chimere intra-MTBC
-  par classification multi-systeme, (2) taux GC, (3) couverture du
-  genome, (4) profondeur de sequencage, (5) nombre de SPDI vs
-  distribution de la lignee, (6) contamination inter-especes par
-  signature des genes housekeeping, (7) qualite de mapping (genes
-  manquants vs depth). Produit un verdict PASS/WARN/FAIL avec
-  justification. Fonctionne en mode souche unique ou lot.
-
-  Use when: importing new strains from SRA/ENA, filtering strains
-  before phylogenetic reconstruction, investigating a strain with
-  aberrant placement or long branch in a tree, screening a BDD for
-  problematic entries, or when get_phylo.py reports exclusions and
-  you want to understand why. When a WARN/FAIL verdict is produced on
-  a strain, check `tbmonitor-papers` for any published study mentioning
-  the same SRA / BioProject (could be a known problematic dataset
-  reported elsewhere, or conversely a strain validated in a previous
-  study despite borderline metrics).
+  Academic research toolkit for peer-reviewed MTBC phylogenomics (Guyeux group, FEMTO-ST).
+  Controle qualite d'un genome de recherche MTBC avant integration en base ou dans un arbre
+  phylogenetique : 7 criteres (chimere intra-MTBC, taux GC, couverture, profondeur, SPDI vs
+  lignee, melange inter-especes, qualite de mapping), verdict PASS/WARN/FAIL justifie,
+  genome unique ou lot. A utiliser lors d'un import depuis SRA ou ENA, pour filtrer avant
+  une reconstruction phylogenetique, face a un genome au placement aberrant ou a longue
+  branche, pour auditer la base, ou pour decider des exclusions de get_phylo.py.
 argument-hint: "<SRA|dir|spdi.txt> [--batch <list.txt>] [--strict]"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 user-invocable: true
@@ -33,6 +22,17 @@ WARN, FAIL), et le verdict global est le pire des 7.
 **Principe** : mieux vaut exclure une souche douteuse que contaminer
 un arbre phylogenetique. Un FAIL sur un seul critere suffit a
 recommander l'exclusion.
+
+## Quand utiliser ce skill
+
+- import de nouvelles souches depuis **SRA / ENA** (les accessions ERR
+  proviennent d'ENA, les SRR/DRR de SRA/DDBJ : le skill les traite
+  indifferemment) ;
+- filtrage des souches **avant reconstruction phylogenetique** ;
+- investigation d'une souche a **placement aberrant ou longue branche**
+  dans un arbre ;
+- **audit d'une BDD** pour en sortir les entrees problematiques ;
+- comprendre les **exclusions rapportees par `get_phylo.py`**.
 
 ---
 
@@ -98,14 +98,14 @@ souches MTBC differentes. Le signal : la souche porte les marqueurs
 definissant de deux lignees de base MTBC incompatibles.
 
 **Note** : ce critere ne detecte PAS une contamination par un
-organisme non-MTBC (NTM, bacterie environnementale) — pour cela,
+organisme non-MTBC (NTM, bacterie environnementale), pour cela,
 voir le Critere 6.
 
 #### Methode
 
 1. Lancer la classification multi-systeme via le script existant :
    ```bash
-   python3 ~/docs/codes/claude_plugins/bio_pathogens/skills/mtbc-lineages/scripts/lineages.py \
+   python3 ${CLAUDE_PLUGIN_ROOT}/skills/mtbc-lineages/scripts/lineages.py \
      classify <spdi.txt|snps.vcf|dir> --min-pct 50
    ```
 
@@ -127,8 +127,8 @@ voir le Critere 6.
 | Condition | Verdict |
 |-----------|---------|
 | 0-1 lignee de base dans tous les systemes | PASS |
-| 2+ lignees de base dans 1 seul systeme | WARN — chimere possible |
-| 2+ lignees de base dans 2+ systemes | FAIL — chimere probable |
+| 2+ lignees de base dans 1 seul systeme | WARN, chimere possible |
+| 2+ lignees de base dans 2+ systemes | FAIL, chimere probable |
 
 #### Sortie
 
@@ -166,8 +166,8 @@ metadonnees SRA via l'API NCBI (Entrez).
 | Taux GC | Verdict |
 |---------|---------|
 | 61% - 69% | PASS |
-| 59% - 61% ou 69% - 71% | WARN — GC marginal |
-| < 59% ou > 71% | FAIL — GC incompatible avec MTBC |
+| 59% - 61% ou 69% - 71% | WARN : GC marginal |
+| < 59% ou > 71% | FAIL : GC incompatible avec MTBC |
 
 En mode `--strict` : PASS = 63% - 68%.
 
@@ -197,8 +197,8 @@ coverage = report['mapping_stats']['covered_bases_percent']
 | Couverture | Verdict |
 |------------|---------|
 | >= 95% | PASS |
-| 90% - 95% | WARN — couverture faible |
-| < 90% | FAIL — couverture insuffisante |
+| 90% - 95% | WARN, couverture faible |
+| < 90% | FAIL, couverture insuffisante |
 
 En mode `--strict` : PASS = >= 98%.
 
@@ -226,8 +226,8 @@ depth = report['mapping_stats']['mean_depth']
 | Profondeur | Verdict |
 |------------|---------|
 | >= 30x | PASS |
-| 15x - 30x | WARN — profondeur moderee |
-| < 15x | FAIL — profondeur insuffisante |
+| 15x - 30x | WARN, profondeur moderee |
+| < 15x | FAIL, profondeur insuffisante |
 
 En mode `--strict` : PASS = >= 50x.
 
@@ -269,19 +269,19 @@ Valeurs calculees le 2026-04-12 sur l'ensemble de la BDD :
 |--------|---|-----|-----|---------|-----|
 | L1.2.1 | 154 | 1671 | 2007 | 2064 | 2233 |
 | L1.2.2 | 156 | 1766 | 2029 | 2069 | 2389 |
-| L2.2.2 | 2110 | 1311 | — | ~1400 | 1510 |
+| L2.2.2 | 2110 | 1311 |, | ~1400 | 1510 |
 | L4.1 | 11389 | 464 | 966 | 994 | 1119 |
 | L4.1.1 | 1006 | 681 | 966 | 1001 | 1111 |
 | L4.1.2 | 2011 | 591 | 966 | 994 | 1077 |
-| L4.8 | 4446 | 251 | — | 582 | 717 |
-| L4.9 | 815 | 181 | — | 347 | 509 |
-| L5.2 | 172 | 2001 | — | 2221 | 2354 |
+| L4.8 | 4446 | 251 |, | 582 | 717 |
+| L4.9 | 815 | 181 |, | 347 | 509 |
+| L5.2 | 172 | 2001 |, | 2221 | 2354 |
 | L6 (all) | 1645 | 1397 | 2280 | 2324 | 2475 |
-| L7 | 80 | 1945 | — | 2155 | 2352 |
+| L7 | 80 | 1945 |, | 2155 | 2352 |
 | Bovis | 159 | 2261 | 2430 | 2453 | 2549 |
-| Microti | ~50 | 2159 | — | — | 2214 |
-| Caprae | ~30 | 2467 | — | — | 2617 |
-| Orygis | ~20 | 2670 | — | — | 2740 |
+| Microti | ~50 | 2159 |, |, | 2214 |
+| Caprae | ~30 | 2467 |, |, | 2617 |
+| Orygis | ~20 | 2670 |, |, | 2740 |
 
 Pour les lignees absentes de cette table, calculer la distribution
 en direct :
@@ -302,7 +302,7 @@ Soient `min_l`, `max_l` les bornes observees pour la lignee.
 | SPDI < 0.9·min_l ou SPDI > 1.1·max_l | FAIL |
 
 **Exces important** (SPDI > 1.3·max_l) : forte suspicion de
-contamination inter-especes — declencher le Critere 6.
+contamination inter-especes, declencher le Critere 6.
 
 Si la lignee est inconnue : appliquer les seuils generiques
 (800-3000 PASS, <500 ou >4000 FAIL).
@@ -329,7 +329,7 @@ n'a pas les marqueurs MTBC.
 homologues chez toutes les bacteries. Les reads d'un contaminant
 trouvent ces homologues dans H37Rv et y mappent avec suffisamment
 d'identite pour passer les filtres de qualite, mais suffisamment de
-divergence pour produire des centaines de faux SNPs — souvent sous
+divergence pour produire des centaines de faux SNPs, souvent sous
 forme de MNP (multi-nucleotide polymorphisms).
 
 #### Methode
@@ -514,9 +514,9 @@ Critere 8 : Identification taxonomique
 
 | Pire critere | Verdict global |
 |-------------|----------------|
-| Tous PASS | PASS — souche de bonne qualite |
-| Au moins un WARN | WARN — souche acceptable avec reserve |
-| Au moins un FAIL | FAIL — souche a exclure |
+| Tous PASS | PASS, souche de bonne qualite |
+| Au moins un WARN | WARN, souche acceptable avec reserve |
+| Au moins un FAIL | FAIL, souche a exclure |
 
 ### Decision de routage (croise qualite + identite taxonomique)
 
@@ -610,6 +610,16 @@ Si execute dans un projet MTBC (`codes/mtbc/<projet>/`) :
 - **`/phylo-history`** : une souche qui echoue au QC devrait etre
   verifiee dans son historique phylogenetique (placement instable
   = signal complementaire).
+- **`tbmonitor-papers`** : **des qu'un verdict WARN ou FAIL est produit
+  sur une souche, interroger `tbmonitor-papers` pour toute etude publiee
+  mentionnant le meme accession SRA / le meme BioProject.** Deux issues
+  utiles et opposees : soit le jeu de donnees est un cas problematique
+  deja rapporte ailleurs (le WARN/FAIL est confirme par la litterature),
+  soit la souche a ete validee et utilisee dans une etude anterieure
+  malgre des metriques limites (le verdict merite alors d'etre nuance
+  plutot qu'applique mecaniquement). Ce controle evite a la fois de
+  reintroduire une souche connue comme defectueuse et d'exclure a tort
+  une souche de reference.
 
 ---
 
@@ -635,14 +645,14 @@ Si execute dans un projet MTBC (`codes/mtbc/<projet>/`) :
    dassie...). Utiliser les distributions mesurees du critere 5.
 6. **Mixed infection vs chimere** : une mixed infection (deux souches
    MTBC dans le meme patient) peut ressembler a une chimere. Le QC
-   ne distingue pas les deux — il signale le probleme, l'interpretation
+   ne distingue pas les deux, il signale le probleme, l'interpretation
    est humaine.
 7. **Seuils** : les seuils par defaut correspondent a ceux de
    `get_phylo.py`. Le mode `--strict` durcit les seuils pour les
    etudes ou la qualite est critique (datation moleculaire, etc.).
 8. **Cache report.json** : le report.json peut etre absent si la
    souche n'a pas encore ete annotee par TBannotator. Ne pas bloquer
-   — evaluer ce qui est possible et signaler les criteres manquants.
+, evaluer ce qui est possible et signaler les criteres manquants.
 9. **Ne pas supprimer** : le skill signale les souches problematiques
    mais ne les deplace pas. C'est `get_phylo.py` ou l'utilisateur
    qui decide de l'exclusion.
@@ -660,7 +670,7 @@ Exemples reels d'investigations passees qui ont calibre les seuils
 des criteres 5, 6 et 7. Ces cas sont documentes en detail dans
 `investigate_phylo/cahier_de_labo.md` et `data-quality/cahier_de_labo.md`.
 
-### Cas 1 — SRR28351342 (contamination inter-especes) — 2026-04-11
+### Cas 1 : SRR28351342 (contamination inter-especes),2026-04-11
 
 - **Contexte** : souche etiquetee L2.2.1, 2035 SPDI dans `bdd/a_ranger/`
 - **Classifications** : Thawornwattana/Napier L2.2.1 (concordant), RD105
@@ -678,7 +688,7 @@ des criteres 5, 6 et 7. Ces cas sont documentes en detail dans
 - **Action** : deplacee vers `bdd/ignore/`
 - **Calibre** : seuils du critere 6 (rpoB+rpoC >10, MNP >15%, ratio >3)
 
-### Cas 2 — ERR2513290 (paradoxe depth/mapping) — 2026-04-12
+### Cas 2 : ERR2513290 (paradoxe depth/mapping),2026-04-12
 
 - **Contexte** : souche L1.2.1, 1917 SPDI, dans `bdd/ignore/`
 - **Paradoxe** : depth excellent 185x MAIS 163 genes manquants
@@ -690,17 +700,17 @@ des criteres 5, 6 et 7. Ces cas sont documentes en detail dans
 - **Calibre** : seuil du critere 7 (>100 genes manquants = FAIL) et
   le "paradoxe depth/mapping" signale explicitement
 
-### Cas 3 — ERR9786341 (faux positif par distance phylogenetique) — 2026-04-12
+### Cas 3 : ERR9786341 (faux positif par distance phylogenetique),2026-04-12
 
 - **Contexte** : souche L4.9, 341 SPDI, exclue car longue branche
 - **Analyse** : L4.9 a une distribution SPDI de 181-509 (mediane 347)
-- **Diagnostic** : 341 est EXACTEMENT la mediane L4.9 — exclusion
+- **Diagnostic** : 341 est EXACTEMENT la mediane L4.9, exclusion
   injustifiee. La longue branche est structurelle : L4.9 est
   phylogenetiquement distante de L4 sensu stricto.
 - **Calibre** : critere 5 doit utiliser les distributions par lignee,
   pas un seuil generique
 
-### Cas 4 — 25 souches « longues branches » — 2026-04-12
+### Cas 4 : 25 souches « longues branches » (2026-04-12)
 
 Investigation en lot de 25 souches exclues pour long branch :
 - **0 contamination inter-especes** (Critere 6)
@@ -715,7 +725,7 @@ contaminations mais des problemes de profondeur ou de mapping.
 Le critere 6 ne doit etre invoque qu'en cas de signal specifique
 (rpoB/rpoC eleves).
 
-### Cas 5 — Campagne d'audit a_ranger (~1100 souches divergentes) — 2026-05-28/30
+### Cas 5 : Campagne d'audit a_ranger (~1100 souches divergentes),2026-05-28/30
 
 Tri systematique des souches divergentes (a_ranger + ignore + TBannotator
 >=2700 SPDI). Resultat : **0 nouvelle espece** sur ~1100 souches. Tout s'est

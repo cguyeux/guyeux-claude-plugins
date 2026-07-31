@@ -16,7 +16,7 @@ description: >-
   scientific data-access workflow for a publication.
 ---
 
-# Pathogens Portal — EMBL-EBI Gateway to Public Pathogen Data
+# Pathogens Portal : EMBL-EBI Gateway to Public Pathogen Data
 
 ## Overview
 
@@ -34,7 +34,7 @@ single search-and-retrieval interface.
 - **Launch**: July 2023
 - **Coverage** (as reported at launch): data spanning **200,000+** pathogen
   species and strains
-- **License**: ENA data follow the ENA/INSDC policy — public, no
+- **License**: ENA data follow the ENA/INSDC policy, public, no
   restrictions on reuse beyond attribution of the depositors
 
 ## Why it matters for MTBC × anthropology
@@ -58,7 +58,7 @@ cluster-focused). Its specific niche:
    you from running the pipeline yourself for quick sanity checks.
 
 For the MTBC ecosystem specifically, Pathogens Portal is a **lookup and
-retrieval layer**, not a typing database — use it in tandem with
+retrieval layer**, not a typing database, use it in tandem with
 EnteroBase (which does cgMLST/HierCC) and TBannotator (which does
 MTBC-specific typing).
 
@@ -101,7 +101,7 @@ The portal exposes the standard ENA schema for each record:
 
 ## Data access
 
-### Option A — Pathogens Portal web UI
+### Option A : Pathogens Portal web UI
 
 1. Go to `https://www.pathogensportal.org/`
 2. Search by species, host, collection date, country, or study
@@ -109,7 +109,7 @@ The portal exposes the standard ENA schema for each record:
 4. Export the filtered list as TSV / JSON
 5. Follow the ENA links for raw data retrieval
 
-### Option B — ENA Portal API (recommended for programmatic access)
+### Option B : ENA Portal API (recommended for programmatic access)
 
 Pathogens Portal is backed by the **ENA Discovery / Portal API** at
 `https://www.ebi.ac.uk/ena/portal/api/`. This is the reproducible path
@@ -139,7 +139,7 @@ Result types relevant to pathogens:
 | `taxon` | Taxonomic information |
 | `study` | Study-level metadata |
 
-### Option C — ENA Browser API (raw data retrieval by accession)
+### Option C : ENA Browser API (raw data retrieval by accession)
 
 For fast downloads of specific records by accession:
 
@@ -154,7 +154,7 @@ tool for search.
 
 ## Workflows
 
-### Workflow 1 — List all ENA samples for a species
+### Workflow 1 : List all ENA samples for a species
 
 Goal: enumerate every *Mycobacterium tuberculosis* sample in ENA with
 its minimal metadata.
@@ -181,7 +181,7 @@ print(len(df), "samples")
 Feed this list to TBannotator, or intersect with a country/date filter
 for a focused cohort.
 
-### Workflow 2 — Retrieve an ancient TB study by project accession
+### Workflow 2 : Retrieve an ancient TB study by project accession
 
 Given `Kay2015` (Vác mummies, ENA project `PRJEB7454`), list every run:
 
@@ -200,9 +200,9 @@ runs = pd.read_csv(io.StringIO(requests.get(url, params=params).text),
 ```
 
 The `fastq_ftp` field gives you the direct FTP URLs for each FASTQ
-file — ready to `wget`.
+file, ready to `wget`.
 
-### Workflow 3 — Cross-check `spaam-ancient-metagenome-dir` accessions
+### Workflow 3 : Cross-check `spaam-ancient-metagenome-dir` accessions
 
 For each SPAAM row with an ENA `archive_project`, verify that the
 project still exists and retrieve the current run list:
@@ -221,7 +221,7 @@ for proj in ena_projects:
     print(proj, r.text.count("\n") - 1, "runs")
 ```
 
-### Workflow 4 — Faceted exploration for lineage discovery
+### Workflow 4 : Faceted exploration for lineage discovery
 
 Goal: find countries with the most MTBC ENA samples in a given window,
 to identify under-sampled regions worth prospecting.
@@ -268,7 +268,7 @@ print(recent.country.value_counts().head(20))
 | Tool | Purpose |
 |---|---|
 | **`enterobase`** | cgMLST/HierCC typing of the same ENA samples |
-| **`ncbi-pathogen-detection`** | US counterpart — cluster-based surveillance |
+| **`ncbi-pathogen-detection`** | US counterpart, cluster-based surveillance |
 | **`spaam-ancient-metagenome-dir`** | Source of ancient pathogen ENA accessions |
 | **TBannotator MCP** | MTBC-specific typing of the retrieved samples |
 | **`bacdive`** | Phenotypic metadata for typed strains (complement to sequence data) |

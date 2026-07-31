@@ -1,44 +1,35 @@
 ---
 name: sitvitweb
 description: >-
-  Query the SITVIT spoligotype database (Institut Pasteur de Guadeloupe) for
-  MTBC spoligotype assignments, SIT lookups, clade names (Beijing, LAM, Haarlem,
-  T1...), and geographic distributions (country, city, patient origin, year,
-  strain holder). The online server (port 8081) is OFTEN DOWN: a full LOCAL COPY
-  of 62 996 isolates ships at ~/Documents/codes/MTBC/TB-tools/data/SIT.xls — use
-  it first. Also carries the recipe to compute IN SILICO spoligotypes from the mp
-  pipeline (136k strains, ESP* spacer entries), and the warning that SITVIT's
-  Clade column is spoligotype-derived: filter it by HAMMING DISTANCE to genome-confirmed
-  consensus profiles (~12% of AFRI labels are wrong), never by exact octal match.
-
-  Use when: converting spoligotype octal to SIT number, identifying clade for
-  a strain, finding the geographic/subnational distribution of a SIT, tracing
-  patient origin vs isolation country, or computing in-silico spoligotypes for
-  WGS strains. (NB: TBannotator has NO spoligotype in its database — no spol43,
-  no spol98, no DR entries. Compute them from mp.)
+  Query the SITVIT spoligotype database (Institut Pasteur de Guadeloupe): MTBC
+  spoligotype assignments, SIT lookups, clade names (Beijing, LAM, Haarlem, T1).
+  Server (port 8081) OFTEN DOWN: use the LOCAL COPY (62 996 isolates, SIT.xls).
+  Also IN SILICO spoligotypes from the mp pipeline (ESP* spacers); filter the
+  Clade by HAMMING DISTANCE, never exact octal. Use when: octal to SIT,
+  geography of a SIT, patient origin vs isolation country.
 argument-hint: "<SIT number, octal code, or clade name>"
 user-invocable: true
 ---
 
-# SITVITweb (SITVIT2) — Usage Guide
+# SITVITweb (SITVIT2) : Usage Guide
 
 ## Overview
 
-SITVIT2 is the international spoligotyping database maintained by the Institut Pasteur de Guadeloupe. It catalogues **Spoligo International Types (SITs)** — standardised patterns of spacer presence/absence in the CRISPR Direct Repeat (DR) locus of MTBC strains.
+SITVIT2 is the international spoligotyping database maintained by the Institut Pasteur de Guadeloupe. It catalogues **Spoligo International Types (SITs)**, standardised patterns of spacer presence/absence in the CRISPR Direct Repeat (DR) locus of MTBC strains.
 
 **Base URL**: `http://www.pasteur-guadeloupe.fr:8081/SITVIT2/`
 
 > [!CAUTION]
-> **LE SERVEUR EST SOUVENT INJOIGNABLE — commencer par la COPIE LOCALE, pas par le site.**
+> **LE SERVEUR EST SOUVENT INJOIGNABLE, commencer par la COPIE LOCALE, pas par le site.**
 > Vérifié 2026-07-11 : le domaine résout et le port 80 répond, mais le **port 8081 (la base) time-out
 > au niveau TCP** (il tourne sur une Freebox). N'y perdez pas 20 minutes.
 >
-> **✅ COPIE LOCALE COMPLÈTE — `~/Documents/codes/MTBC/TB-tools/data/SIT.xls`**
+> **✅ COPIE LOCALE COMPLÈTE, `~/Documents/codes/MTBC/TB-tools/data/SIT.xls`**
 > **62 996 isolats**, format `.xls` OLE (⚠ nécessite `xlrd` : `python3 -m venv /tmp/v && /tmp/v/bin/pip install
 > xlrd pandas`, car PEP 668 bloque `pip install` en global sur Arch).
 > Colonnes : `IsoNumber, Nb Strains, Spoligotype Binary, Spoligotype Octal, 12/15/24-loci MIRU, VNTR, SIT,
 > 12/15/24-MIT, VIT, Clade, Latitude, Longitude, Origin Country, Isolation Country, Year, Drug Resistance,
-> Sex, Age, HIV, Investigator, **City of Isolation**, Remarks`.
+> Sex, Age, HIV, Investigator (= *strain holder*), **City of Isolation**, Remarks`.
 > ⚠ **`Origin Country` ≠ `Isolation Country`** : le premier est le pays d'ORIGINE du patient (migrant ou non),
 > le second le lieu du diagnostic. C'est LA colonne qui distingue un cas autochtone d'une importation.
 > ⚠ **Piège pandas** : la colonne octal est lue en **int64** → les zéros de tête sautent
@@ -52,11 +43,11 @@ SITVIT2 is the international spoligotyping database maintained by the Institut P
 > [!IMPORTANT]
 > Si le site répond : SITVIT2 has **no REST API**. All queries require browser-based interaction
 > (AJAX forms). Use the `browser_subagent` tool to automate queries.
-> The server can be slow — always set generous timeouts.
+> The server can be slow, always set generous timeouts.
 
 ---
 
-## ⚠⚠ RÈGLE D'OR — VÉRIFIER LE `Clade` DE SITVIT, MAIS AVEC LE BON CRITÈRE
+## ⚠⚠ RÈGLE D'OR : VÉRIFIER LE `Clade` DE SITVIT, MAIS AVEC LE BON CRITÈRE
 
 Le `Clade` de SITVIT est déduit **du spoligotype seul**. Or les familles définies par des **absences de
 spacers** (AFRI, BOV) sont des **attracteurs de convergence** : une souche LAM/T/H qui perd les bons spacers
@@ -71,16 +62,16 @@ mais il faut le filtrer**.
 > taux d'erreur de 32 %). Les appels de spoligotype in silico ont **~10 % de dropout par spacer**, donc un vrai
 > profil Maf peut légitimement ne pas figurer dans le jeu d'octals observés. **Filtrer par DISTANCE.**
 
-### ✅ La bonne méthode — critère STRUCTURAL, pas lexical
+### ✅ La bonne méthode : critère STRUCTURAL, pas lexical
 
 1. Établir la lignée par **SNP/SPDI** (`bdd/actuelle/`), jamais par une étiquette texte.
-2. Calculer les **profils CONSENSUS** de sous-lignée (spoligo in silico + vote majoritaire — voir plus bas).
+2. Calculer les **profils CONSENSUS** de sous-lignée (spoligo in silico + vote majoritaire, voir plus bas).
 3. Classer chaque isolat SITVIT par **distance de Hamming** (sur les 43 bits) au consensus le plus proche :
    - **d ≤ 3 → CONFIRMÉ.** Spécificité mesurée : seuls **0,02 %** des 62 287 isolats **non-AFRI** de SITVIT
      sont à d≤3 (leur médiane est d = 10). Critère très discriminant.
    - d 4-6 → ambigu. d ≥ 7 → exclu.
 4. **VERROU STRUCTURAL, décisif** : ***M. africanum* CONSERVE les spacers 33-36**, que **L4 a perdus**.
-   Un isolat dont les spacers **33-36 sont TOUS absents est un profil L4** — exclure sans discussion,
+   Un isolat dont les spacers **33-36 sont TOUS absents est un profil L4**, exclure sans discussion,
    **quelle que soit** son étiquette SITVIT.
 
 **Faux positif documenté, qui aurait fait un beau résultat faux** : SIT 1476 (`736177607700171`), étiqueté
@@ -120,7 +111,7 @@ SIT 331**. Les profils in silico tombent exactement sur les SIT de SITVIT.
 Y chercher les **493 entrées `ESP*`** (*espaceurs*), numérotées 1-68 avec variants alléliques
 (`ESP21_1`, `ESP21_2`…).
 
-⚠ **Les 43 spacers standards ne sont PAS `ESP1..ESP43`** — ils sont un **sous-ensemble dispersé** des 68.
+⚠ **Les 43 spacers standards ne sont PAS `ESP1..ESP43`**, ils sont un **sous-ensemble dispersé** des 68.
 Correspondance établie par appariement de **séquences** avec
 `~/Documents/codes/MTBC/TB-tools/data/fastas/spoligo_old.fasta` (les 43) et `spoligo_new.fasta` (les 98) :
 
@@ -135,7 +126,7 @@ SPACER_TO_ESP = {1:2, 2:3, 3:4, 4:12, 5:13, 6:14, 7:15, 8:18, 9:19, 10:20, 11:21
 (prendre le `max` des `numreads` sur les variants). Puis binaire 43 bits → octal (14 triplets + 1 bit).
 
 **Calibration obligatoire sur Beijing** (octal canonique `000000000003771`) : sensibilité par spacer ≈ **90 %**,
-donc l'octal exact ne sort que dans **~40 %** des cas (0,90⁹ — Beijing n'a que 9 spacers présents).
+donc l'octal exact ne sort que dans **~40 %** des cas (0,90⁹ : Beijing n'a que 9 spacers présents).
 ⇒ **Le dropout est un biais de FAUSSE ABSENCE : il s'annule par VOTE MAJORITAIRE.** L'appel est fiable
 **en consensus de sous-lignée**, PAS souche par souche. Ne jamais tirer de conclusion d'un octal individuel.
 
@@ -145,7 +136,7 @@ donc l'octal exact ne sort que dans **~40 %** des cas (0,90⁹ — Beijing n'a q
 |---|---|---|
 | L5.2.2.2 | `774077607777071` | **331** |
 | L6.1.1 / L6.1.2 | `770777777777671` | **181** |
-| L6.2 | `670777707777671` | — |
+| L6.2 | `670777707777671` |, |
 
 Signatures : **L5 perd les spacers 8-12 et 21-24** ; **L6 perd 7-9** ; **les deux CONSERVENT 33-36**, que L4 a
 perdus (marqueur classique de *M. africanum*).
@@ -154,9 +145,9 @@ perdus (marqueur classique de *M. africanum*).
 
 | Term | Definition |
 |------|-----------|
-| **SIT** | Spoligo International Type — a unique numerical ID for each distinct 43-spacer pattern |
+| **SIT** | Spoligo International Type, a unique numerical ID for each distinct 43-spacer pattern |
 | **Spoligotype** | Binary (43 chars: ■/□ or 1/0) or octal (15 digits) representation of spacer presence/absence |
-| **MIT** | MIRU International Type — analogous to SIT but for MIRU-VNTR patterns |
+| **MIT** | MIRU International Type, analogous to SIT but for MIRU-VNTR patterns |
 | **VIT** | VNTR International Type |
 | **Clade** | Named phylogenetic family (Beijing, Haarlem, LAM, T, X, EAI, CAS, Bovis, etc.) |
 
@@ -173,7 +164,7 @@ Split binary into 14 groups of 3 + 1 final: each triplet → octal digit (0–7)
 
 ## Available Pages and Query Types
 
-### 1. SEARCH — Individual Queries
+### 1. SEARCH : Individual Queries
 **URL**: `http://www.pasteur-guadeloupe.fr:8081/SITVIT2/query`
 
 The main search form accepts multiple criteria simultaneously:
@@ -196,7 +187,7 @@ The main search form accepts multiple criteria simultaneously:
 4. Wait for AJAX response (table loads dynamically)
 5. Parse the results table or click "Export to Excel"
 
-### 2. ANALYSIS — Batch Queries
+### 2. ANALYSIS : Batch Queries
 **URL**: `http://www.pasteur-guadeloupe.fr:8081/SITVIT2/batch.jsp`
 
 Upload an Excel file with spoligotype patterns to get:
@@ -259,23 +250,23 @@ SIT → Clade mapping examples:
 > **FAUX (corrigé 2026-07-11) : la vue `mv_strain_metadata` ne contient AUCUN champ `spol43`/`spol98`.**
 > Vérifié sur `information_schema` : il n'existe **aucune** colonne contenant `spol`/`spacer`/`sit` dans la
 > base PostgreSQL de TBannotator, et le catalogue `tb_report_rd_catalog` ne contient **aucune** entrée `DR*`.
-> **Il n'y a pas de spoligotype en base** — il faut le calculer depuis `mp` (section ci-dessus).
+> **Il n'y a pas de spoligotype en base**, il faut le calculer depuis `mp` (section ci-dessus).
 
 Ce qui EXISTE en base et qui est utile :
-- **`tb_ncbi_biosample.genotype`** — le champ `genotype` déposé par les soumetteurs NCBI. Sur **247 753**
-  BioSamples, seuls **7 582** le renseignent et **80** portent un octal 15 chiffres — et ils viennent **tous
+- **`tb_ncbi_biosample.genotype`**, le champ `genotype` déposé par les soumetteurs NCBI. Sur **247 753**
+  BioSamples, seuls **7 582** le renseignent et **80** portent un octal 15 chiffres, et ils viennent **tous
   du même dépôt** (l'État de Hawaï : Manila 25, Beijing 23…). **Inutilisable pour un criblage global.**
-- ⚠ **Piège de sous-chaîne** : `WHERE genotype ILIKE '%AFRI%'` ramène 142 lignes dont **~140 faux positifs** —
+- ⚠ **Piège de sous-chaîne** : `WHERE genotype ILIKE '%AFRI%'` ramène 142 lignes dont **~140 faux positifs**,
   `East-African-Indian` (EAI) **contient** « AFRI ». Toujours ancrer le motif ou filtrer sur l'octal.
 
 ## Automation Tips
 
-1. **Always use browser_subagent** — no HTTP API available
-2. **Set long timeouts** — the server is on a Freebox, response can be slow (5–30s)
-3. **Watch for AJAX** — results load dynamically; wait for table rows to appear
-4. **Export to Excel** when available — structured data is easier to parse than HTML tables
-5. **Cache results** — avoid repeated queries; SIT assignments are stable
-6. **Handle errors gracefully** — the server may timeout or return 405 on direct HTTP requests
+1. **Always use browser_subagent**, no HTTP API available
+2. **Set long timeouts**, the server is on a Freebox, response can be slow (5–30s)
+3. **Watch for AJAX**, results load dynamically; wait for table rows to appear
+4. **Export to Excel** when available, structured data is easier to parse than HTML tables
+5. **Cache results**, avoid repeated queries; SIT assignments are stable
+6. **Handle errors gracefully**, the server may timeout or return 405 on direct HTTP requests
 
 ## Reference SIT Numbers for L4 Sub-Lineages
 
@@ -290,5 +281,5 @@ Ce qui EXISTE en base et qui est utile :
 | 47 | `777777777760771` | Haarlem1 | Same octal as SIT53 (MIRU distinguishes) |
 
 > [!NOTE]
-> Multiple SITs can share the same octal pattern — they are distinguished by MIRU-VNTR profiles.
+> Multiple SITs can share the same octal pattern, they are distinguished by MIRU-VNTR profiles.
 > Conversely, the same SIT can appear in multiple phylogenetic lineages (SNP-based classification ≠ spoligotype-based classification).

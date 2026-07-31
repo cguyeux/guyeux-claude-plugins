@@ -18,6 +18,12 @@ Statsmodels is the bridge between Python and the rigor of R-style statistical an
 - Survival analysis (Kaplan-Meier, Cox Proportional Hazards).
 - Estimating treatment effects and causal inference.
 - Non-parametric statistics (Kernel Density Estimation).
+- **Mixed-effects models (MixedLM) and GEE**, to control for the non-independence
+  created by shared ancestry: clonal lineages, structured populations, related
+  languages or cultures. See "Mixed Models" below; this is the standard answer
+  when a reviewer objects that the samples are not independent.
+- **Multiple-testing correction** (`statsmodels.stats.multitest`), Benjamini-Hochberg
+  FDR for genome-scale scans.
 
 ## Reference Documentation
 
@@ -65,7 +71,8 @@ import statsmodels.formula.api as smf
 
 # 1. Define model with R-style formula
 # 'y ~ x1 + x2' means: y = beta0 + beta1*x1 + beta2*x2
-model = smf.ols('tip ~ total_bill + size', data=df_tips)
+# One row per isolate; C(...) marks a categorical predictor.
+model = smf.ols('root_to_tip ~ collection_year + C(lineage)', data=df)
 
 # 2. Fit the model
 results = model.fit()
@@ -228,17 +235,119 @@ def analyze_experiment(df):
     return model.summary()
 ```
 
-### 2. Market Mix Modeling (Attribution)
+### 2. Mixed Models: Controlling for Lineage or Population Structure
+
+**This is the most important section of this skill for the group's work.** Isolates
+from the same clade, or individuals from the same population, are not independent
+observations. Fitting a plain GLM to them inflates every test statistic, and the
+inflation grows with sample size, so a bigger dataset makes the problem worse. The
+same issue is Galton's problem in the cross-cultural data behind the `wals` and
+`d-place` skills.
 
 ```python
-def estimate_attribution(df):
-    # Log-log model to calculate elasticities
-    # Coefficients will be % change in sales for 1% change in spend
-    model = smf.ols('np.log(sales) ~ np.log(tv_spend) + np.log(digital_spend)', data=df).fit()
-    return model.params
+from statsmodels.regression.mixed_linear_model import MixedLM
+
+# Continuous outcome, random intercept per lineage.
+# groups= is the clustering variable; it is NOT a fixed effect.
+md = MixedLM.from_formula('branch_length ~ gc_content + C(host)',
+                          groups='lineage', data=df)
+res = md.fit()
+print(res.summary())
+print("variance between lineages:", res.cov_re.iloc[0, 0])
 ```
 
-### 3. Survival Analysis
+Read `cov_re` first. If the between-group variance is close to zero the grouping
+carries no signal and a plain OLS was fine; if it is large relative to `res.scale`
+(the residual variance), the naive model was badly wrong and the mixed fit is the
+one to report. The ratio is the intraclass correlation:
+`icc = cov_re / (cov_re + scale)`.
+
+Random slopes, when the effect of a predictor itself varies by lineage:
+
+```python
+md = MixedLM.from_formula('phenotype ~ allele', groups='lineage',
+                          re_formula='~allele', data=df)
+res = md.fit()
+```
+
+For a **binary** outcome (resistant / susceptible, presence / absence) `MixedLM`
+does not apply. Use a GEE with an exchangeable working correlation, which gives
+population-averaged coefficients with cluster-robust standard errors:
+
+```python
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+gee = smf.gee('resistant ~ mutation + C(lineage_group)', groups='cluster_id',
+              data=df, family=sm.families.Binomial(),
+              cov_struct=sm.cov_struct.Exchangeable())
+res = gee.fit()
+print(res.summary())
+print(res.cov_struct.summary())   # estimated within-cluster correlation
+```
+
+The cheapest fallback, when the model must stay a plain GLM, is cluster-robust
+standard errors. It does not change the coefficients, only their uncertainty,
+which is usually where the damage is:
+
+```python
+res = smf.ols('y ~ x', data=df).fit(cov_type='cluster',
+                                    cov_kwds={'groups': df['lineage']})
+```
+
+Convergence notes: `MixedLM` is fragile with few groups (below roughly 5 to 10 the
+variance component is poorly identified, and a fixed effect for group is the more
+honest choice) and with unscaled predictors. If the fit warns about a singular
+random-effect covariance, drop the random slope and keep the random intercept.
+
+### 3. Multiple Testing Across Sites or Genes
+
+```python
+from statsmodels.stats.multitest import multipletests
+
+reject, qvals, _, _ = multipletests(pvals, alpha=0.05, method='fdr_bh')
+```
+
+Benjamini-Hochberg (`fdr_bh`) is the default for genome-scale scans: Bonferroni
+over millions of linked positions is both far too conservative and wrong in its
+independence assumption. Use `fdr_by` when tests may be negatively dependent, and
+`holm` only for a handful of pre-registered hypotheses. Always report the number
+of tests actually performed.
+
+### 4. Worked Example: Resistance Allele Association
+
+```python
+# One row per isolate. 'cluster' groups isolates within a transmission cluster.
+gee = smf.gee('resistant ~ C(allele) + year',
+              groups='cluster', data=iso,
+              family=sm.families.Binomial(),
+              cov_struct=sm.cov_struct.Exchangeable()).fit()
+
+# Odds ratios with confidence intervals, ready for a manuscript table
+import numpy as np
+or_table = np.exp(pd.concat([gee.params, gee.conf_int()], axis=1))
+or_table.columns = ['OR', 'CI_low', 'CI_high']
+```
+
+### 5. Worked Example: Counting SNPs per Branch
+
+SNP counts are counts, so Poisson, not OLS on a log. Check for overdispersion
+before trusting it, and switch to negative binomial if the Pearson chi-squared
+over the residual degrees of freedom is much above 1.
+
+```python
+pois = smf.glm('n_snp ~ np.log(branch_time) + C(lineage)', data=df,
+               family=sm.families.Poisson()).fit()
+dispersion = pois.pearson_chi2 / pois.df_resid
+if dispersion > 1.5:
+    nb = smf.glm('n_snp ~ np.log(branch_time) + C(lineage)', data=df,
+                 family=sm.families.NegativeBinomial()).fit()
+```
+
+Use an offset rather than a predictor when the exposure is known exactly, for
+instance callable genome length: `offset=np.log(df['callable_bp'])`.
+
+### 7. Survival Analysis
 
 ```python
 from statsmodels.duration.hazard_regression import PHReg

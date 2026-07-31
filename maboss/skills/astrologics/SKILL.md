@@ -11,10 +11,10 @@ description: >-
   "AstroLogics", "robust prediction across models", "which predictions hold for all models".
 ---
 
-# astrologics — reasoning over a family of Boolean models
+# astrologics : reasoning over a family of Boolean models
 
 When inference (see `model-inference`) returns an ENSEMBLE (dozens/hundreds of Boolean
-networks all consistent with the data), a single simulation is not enough — you want the
+networks all consistent with the data), a single simulation is not enough, you want the
 predictions that are ROBUST across the ensemble. AstroLogics (Python `astrologics`,
 sysbio-curie) is built for monotonous Boolean model ensembles.
 
@@ -35,11 +35,11 @@ ens.summary()                                   # which phenotypes are shared vs
 ## Why it matters for us
 
 - Turns "here is one model's answer" into "here is what is robust across all plausible
-  models" — the honest way to report a Boolean-model prediction under structural uncertainty.
+  models", the honest way to report a Boolean-model prediction under structural uncertainty.
 - Same group as pyMaBoSS/WebMaBoSS (Vincent Noel) and the CCT (Oscar Dufossez): a concrete
   collaboration surface, and a way to combine an ENSEMBLE with MaBoSS stochastic simulation
   and CCT assertion checking (mabossDemo coherency bench applied per-model).
 
 **Tie-in.** For each ensemble member, export to MaBoSS and run the coherency bench / CCT
-assertions (the `maboss-advanced` skill / mabossDemo) — an assertion "supported by 95% of
+assertions (the `maboss-advanced` skill / mabossDemo), an assertion "supported by 95% of
 the ensemble" is far stronger than "supported by one model".

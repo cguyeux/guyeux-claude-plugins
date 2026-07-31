@@ -2,20 +2,11 @@
 name: supp-check
 description: >-
   Verification d'alignement entre un manuscrit principal et ses supplementary
-  materials. Itere sur chaque table/figure/fichier supplementaire, comprend
-  son role, parcourt le cahier_de_labo.md pour reconstruire sa genese et ce
-  qui s'est passe depuis, puis detecte les divergences avec le main.tex et
-  avec la verite la plus recente. Les dernieres entrees du cahier font
-  autorite : si un supplementary est devenu obsolete (souche ecartee,
-  bioproject ajoute, bug corrige changeant les SPDI, nouvelle version
-  TBannotator), le skill propose de retravailler le supplementary, de
-  reecrire le main, de lancer une experience d'arbitrage, ou de remettre
-  en question l'ensemble.
-
-  Use when: preparation d'une soumission ou resoumission, apres toute
-  modification de la BDD ou des scripts d'analyse, apres correction d'un
-  bug influencant les chiffres, apres mise a jour d'une methode ou d'un
-  outil, avant envoi de revisions a un reviewer.
+  materials. Pour chaque table/figure/fichier : reconstruit sa genese via le
+  cahier_de_labo.md, detecte les divergences avec le main.tex. Le cahier fait
+  autorite : si un supplementary est obsolete, propose de le retravailler, de
+  reecrire le main, ou d'arbitrer par une experience. Use when: soumission,
+  resoumission, ou apres modification de la BDD ou des scripts.
 argument-hint: "<main.tex> [--force] [--stale-days 90] [--fix]"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 ---
@@ -35,6 +26,17 @@ autorite**. Le main et le supplementary sont des projections figees a
 des instants passes ; le cahier capture la verite en mouvement. Quand
 une divergence existe entre main, supp et cahier, c'est le cahier le
 plus recent qui tranche.
+
+---
+
+## Quand lancer ce skill
+
+- Preparation d'une **soumission** ou d'une **resoumission**.
+- Apres toute **modification de la BDD** ou des **scripts d'analyse**.
+- Apres **correction d'un bug influencant les chiffres**.
+- Apres **mise a jour d'une methode ou d'un outil** (nouvelle version
+  TBannotator, nouveau modele phylogenetique...).
+- **Avant envoi de revisions a un reviewer.**
 
 ---
 
@@ -276,11 +278,11 @@ Pour chaque supplementary, comparer trois sources :
 |-----|------|------|--------|----------------|
 | A | agree | agree | agree | OK |
 | B | agree | agree | diverge | main **et** supp obsoletes, cahier dit la verite → regenerer les deux |
-| C | agree | diverge | — | main incoherent avec son propre supp : lequel est la verite ? consulter cahier |
+| C | agree | diverge |, | main incoherent avec son propre supp : lequel est la verite ? consulter cahier |
 | D | diverge | agree | agree | le supp est obsolete, main deja mis a jour → regenerer le supp |
 | E | diverge | diverge | agree | main mis a jour, supp pas a jour → regenerer le supp |
-| F | — | — | silence | le cahier n'a rien sur le sujet → ne pas trancher, demander decision manuelle ou experimentation |
-| G | diverge-caption | — | — | le fichier supp ne correspond pas a sa propre caption → divergence interne, corriger l'un ou l'autre |
+| F |, |, | silence | le cahier n'a rien sur le sujet → ne pas trancher, demander decision manuelle ou experimentation |
+| G | diverge-caption |, |, | le fichier supp ne correspond pas a sa propre caption → divergence interne, corriger l'un ou l'autre |
 
 ### Chiffres a verifier systematiquement
 

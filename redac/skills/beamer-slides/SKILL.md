@@ -1,6 +1,11 @@
 ---
 name: beamer-slides
-description: Generate professional Beamer/LaTeX presentation slides from research work. Analyzes main.tex, data, and figures to build a self-contained, narrative-driven, pedagogical scientific presentation.
+description: >-
+  Generate a full Beamer/LaTeX scientific presentation from existing research material:
+  reads main.tex, data and figures, then builds a self-contained, narrative-driven,
+  pedagogical deck. Use when the user asks for a talk, a seminar or conference presentation,
+  a defence deck, or slides covering a whole paper or project. For one or two slides from a
+  verbal idea use slide-design, and to rework an existing slide use slide-polish.
 user_invocable: true
 invocation: /slides
 ---
@@ -119,7 +124,7 @@ Use the Metropolis theme by default (clean, modern, professional). Adapt if the 
 **Text:**
 - Maximum 6 bullet points per slide (fewer is better)
 - Maximum 8-10 words per bullet
-- No full sentences in bullets — use keywords and fragments
+- No full sentences in bullets, use keywords and fragments
 - Body text: `\small` or `\footnotesize` to fit more if needed
 - **Never** put a wall of text on a slide
 
@@ -255,9 +260,9 @@ Check:
 When updating slides after article modifications:
 
 1. **Read the article diff** (or understand what changed from context)
-2. **Identify which slides are affected** — don't blindly regenerate everything
+2. **Identify which slides are affected**, don't blindly regenerate everything
 3. **Update affected slides only**, preserving the existing style and structure
-4. **Check narrative coherence** — a change in one slide may require transition updates
+4. **Check narrative coherence**, a change in one slide may require transition updates
 5. **Recompile and verify**
 
 Common update scenarios:

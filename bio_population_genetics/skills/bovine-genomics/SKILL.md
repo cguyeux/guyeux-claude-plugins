@@ -14,7 +14,7 @@ description: >-
   domestication event.
 ---
 
-# Bovine Genomics — Cattle Genome Resources
+# Bovine Genomics : Cattle Genome Resources
 
 ## Overview
 
@@ -81,7 +81,7 @@ researchers:
 ### Breeds represented (subset)
 
 Holstein, Angus, Simmental, Limousin, Charolais, Hereford, Jersey,
-Brown Swiss, Brahman, Nelore (indicine), and many more — covering both
+Brown Swiss, Brahman, Nelore (indicine), and many more, covering both
 *Bos taurus* (taurine) and *Bos indicus* (indicine) lineages.
 
 ---
@@ -101,14 +101,14 @@ analogous to the human HapMap.
   **Science** 324(5926): 528–532 (2009). DOI: `10.1126/science.1167936`
 - **SNP data**: deposited in NCBI **dbSNP** (bovine entries)
 - **Complementary arrays**: BovineSNP50 (50K), BovineHD (770K) from
-  Illumina — widely used for downstream GWAS and imputation
+  Illumina, widely used for downstream GWAS and imputation
 
 ### Key finding
 
 > *"SNP diversity within taurine breeds was similar to that of humans,
 > but was significantly less than diversity within indicine breeds, which
 > suggested that the Indian subcontinent was a major site of cattle
-> domestication and predomestication diversity."* — The Bovine HapMap
+> domestication and predomestication diversity."* : The Bovine HapMap
 > Consortium, 2009
 
 ### 19 breeds analysed
@@ -134,7 +134,7 @@ compiled from 432 re-sequenced individuals worldwide.
   Bovine Sequencing Variations and Selective Signatures.* **Genomics,
   Proteomics & Bioinformatics** (2020). DOI: `10.1016/j.gpb.2019.03.006`
 - **Web portal**: `http://animal.omics.pro/code/index.php/BosVar`
-  (verify — the URL has changed over time)
+  (verify, the URL has changed over time)
 - **Content** (from the publication):
   - **~60.44 million SNPs**
   - **~6.86 million indels**
@@ -155,8 +155,8 @@ breed-resolved dataset.
 
 | Resource | Scope | URL |
 |---|---|---|
-| **DAD-IS** (FAO) | Domestic Animal Diversity Information System — breed distribution, conservation status | `https://www.fao.org/dad-is/` |
-| **Decker et al. 2014** | Worldwide cattle ancestry, divergence, and admixture (800K SNPs, 134 breeds) — key phylogeography paper | `10.1371/journal.pgen.1004254` |
+| **DAD-IS** (FAO) | Domestic Animal Diversity Information System, breed distribution, conservation status | `https://www.fao.org/dad-is/` |
+| **Decker et al. 2014** | Worldwide cattle ancestry, divergence, and admixture (800K SNPs, 134 breeds), key phylogeography paper | `10.1371/journal.pgen.1004254` |
 | **Cattle reference genome (ARS-UCD1.2)** | Current reference assembly for all bovine analyses | NCBI Assembly `GCF_002263795.1` |
 | **AnimalQTLdb** | Cattle QTL database for production and health traits | `https://www.animalgenome.org/cgi-bin/QTLdb/BT/` |
 
@@ -164,7 +164,7 @@ breed-resolved dataset.
 
 ## Workflows
 
-### Workflow 1 — Build a cattle breed phylogeographic map
+### Workflow 1 : Build a cattle breed phylogeographic map
 
 Goal: produce a regional ancestry composition map of modern cattle for
 use as a reference layer.
@@ -176,7 +176,7 @@ use as a reference layer.
 3. Save the resulting raster/vector for overlay with any external
    geocoded dataset.
 
-### Workflow 2 — Taurine / indicine diversity gradient
+### Workflow 2 : Taurine / indicine diversity gradient
 
 Goal: reproduce the HapMap diversity finding as a quantitative
 reference gradient.
@@ -186,7 +186,7 @@ reference gradient.
 3. Produce a diversity vs ancestry plot. The resulting curve serves as
    the host-side reference for any comparative diversity analysis.
 
-### Workflow 3 — Anchor the Neolithic bovine domestication with p3k14c
+### Workflow 3 : Anchor the Neolithic bovine domestication with p3k14c
 
 Goal: combine this skill with `p3k14c` to place the cattle
 domestication event in its archaeological context.
@@ -209,7 +209,7 @@ domestication event in its archaeological context.
   animals.
 - **Domestication is complex.** Recent work (Decker 2014, Verdugo 2019)
   shows that cattle domestication involved multiple centres,
-  back-crossing with aurochs, and secondary introgressions — it is not
+  back-crossing with aurochs, and secondary introgressions, it is not
   a clean single-origin story. Frame your narrative accordingly.
 - **No ancient cattle DNA in these resources.** They cover modern
   breeds. For ancient cattle genomes, the primary literature (Park et
@@ -224,9 +224,9 @@ domestication event in its archaeological context.
 | Tool | Purpose |
 |---|---|
 | **`p3k14c`** | Archaeological ¹⁴C dates for cattle domestication sites |
-| **`d-place`** | Subsistence mode (pastoralism vs agriculture) — cultural context |
+| **`d-place`** | Subsistence mode (pastoralism vs agriculture), cultural context |
 | **`owtrad`** | Transhumance routes for pastoralist cattle mobility |
-| **`aadr`** | Ancient human genomes — human side of the triad |
+| **`aadr`** | Ancient human genomes, human side of the triad |
 | **`spaam-ancient-metagenome-dir`** | Ancient livestock metagenomes |
 | **`seshat`** | Polity-level history of pastoralist states |
 | **`glottolog`** | Linguistic identifiers for the human populations associated with specific cattle breeds |

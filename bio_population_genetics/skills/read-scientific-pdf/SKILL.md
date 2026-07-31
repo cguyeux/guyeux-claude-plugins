@@ -1,28 +1,15 @@
 ---
 name: read-scientific-pdf
 description: >-
-  Extraction rapide du texte d'un PDF scientifique (articles, theses,
-  rapports) via pdftotext, markitdown ou pdfminer, puis relecture du
-  fichier texte intermediaire avec Read. Pipeline plus efficace que la
-  lecture multimodale native pour les documents longs (>10 pages), les
-  PDFs a colonnes multiples, les tableaux complexes, et la lecture en
-  lot pour revues de litterature.
+  Extrait le texte d'un PDF scientifique (pdftotext, markitdown, pdfminer)
+  puis relit le fichier texte avec Read.
 
-  Use when: PDF scientifique long AVEC couche texte, article avec
-  colonnes ou tableaux complexes, lecture sequentielle d'un corpus pour
-  une revue, ou lorsque la lecture native d'un PDF retourne un resultat
-  partiel ou inattendu.
+  Use when: PDF long (>10 pages) AVEC couche texte, colonnes ou tableaux
+  complexes, lecture en lot pour une revue de litterature, lecture native
+  partielle.
 
-  Sur un PDF SCANNE sans couche texte (archives numerisees, manuscrits,
-  vieux tirages), pdftotext/markitdown/pdfminer renvoient du VIDE en
-  SILENCE : le skill applique alors un garde-fou et bascule sur `Read`
-  multimodal, ou sur Mistral OCR 4 (`mistral-ocr-latest`, utilitaire
-  `mistral_ocr.py` livre avec le skill) quand il faut une couche texte
-  greppable, un traitement en lot, ou dechiffrer une ecriture difficile
-  (cursive ancienne, manuscrit). L'OCR est ensuite CORRIGE par le modele
-  lui-meme (`--audit`) : triage par score de confiance, puis controle
-  semantique sur la logique du texte, puis arbitrage multimodal des seuls
-  passages douteux — sans jamais normaliser la langue du scripteur.
+  PDF SCANNE (archives, manuscrits) : la chaine renvoie du VIDE en SILENCE ;
+  garde-fou, puis Read multimodal ou Mistral OCR 4 (mistral_ocr.py, --audit).
 argument-hint: "<chemin_pdf> [--mode text|markdown|pages|ocr] [--pages N-M] [--audit]"
 allowed-tools: Bash, Read
 user-invocable: true
@@ -33,7 +20,8 @@ user-invocable: true
 ## Quand utiliser ce skill
 
 **Cas typiques** :
-- PDF >10 pages a lire en entier ou par sections
+- PDF scientifique >10 pages (article, these, rapport) a lire en entier ou par
+  sections
 - Article scientifique avec colonnes multiples ou tableaux complexes
 - Lecture en lot pour une revue de litterature (`lit-review`,
   `claim-check`, `bib-check`)
@@ -165,8 +153,52 @@ python3 .../mistral_ocr.py 'corpus/*.pdf' --batch -o /tmp/ocr_out/              
 - Manuscrit de 1999 : restitution quasi parfaite, **y compris le francais
   fautif du redacteur**, ce qui compte quand la langue du demandeur est
   elle-meme l'objet d'etude.
-- **Cursive de chancellerie de 1790 : dechiffree**, supplique restituee en
-  entier. C'est la ou `tesseract` s'effondre.
+- Ecritures du XIXe-XXe : exploitables.
+- **Ecritures d'ANCIEN REGIME (XVIIe-XVIIIe) : ECHEC. Voir ci-dessous.**
+
+### Garde-fou d'effondrement : l'OCR NE PASSE PAS l'Ancien Regime
+
+**Ne jamais generaliser une validation d'OCR d'une ecriture a une ecriture plus
+ancienne.** Erreur reellement commise (13/07/2026) : ce SKILL affirmait
+« cursive de chancellerie de 1790 dechiffree, voie validee ». C'etait vrai sur
+UNE piece facile de 1790, et faux partout ailleurs. Mesure sur le fonds
+d'Ancien Regime des Archives nationales :
+
+| piece | l'encre dit | l'OCR rend |
+|---|---|---|
+| 1617, parchemin | « **Louis** par la grace de **Dieu** … de **Navarre** » | « *Conia* par la grace de *Jean* … de *Manasse* » |
+| 1789, cursive | « **naturalite / Vercruysse / Tournay / 1789** » | « *patinoles / Parcoutre / Lormay / 1785* » |
+| 1702, photo | un placet bordelais | « ayant ete **банée** comme Avangers » (**du cyrillique**) |
+
+Le faux **ressemble a la langue attendue** : « Conia par la grace de Jean Roy de
+France » a l'air d'etre du francais de 1617. Un `--batch` naif produirait N pages
+de faux credible : **pire que rien**, car cela ressemble a un livrable et sera cite.
+
+**Le script s'en protege desormais tout seul**, il n'y a rien a faire :
+- en mode simple, il **refuse d'ecrire** la transcription et explique pourquoi ;
+- en `--batch`, il **sonde UNE piece avant d'engager le lot** (la sonde coute
+  1 page et sauve le corpus) ;
+- `--force` passe outre, en connaissance de cause.
+
+**LA CONFIANCE DE L'OCR NE DETECTE PAS CE CAS, ne pas s'y fier.** Elle mesure la
+**nettete du trace**, pas la justesse de la lecture : sur une chancellerie
+calligraphiee, le moteur voit des traits nets, se declare **sur** (mediane **0,72**
+sur le parchemin de 1617) et assemble pourtant des mots faux. Le juge est la
+**francite** : la part des mots reconnus par le dictionnaire hunspell.
+
+Calibrage (82 dossiers modernes deja transcrits) : francite mediane **61 %**,
+p05 **55 %**. Ancien Regime : **28 %** (1617), **42 %** (1789), **53 %** (1702).
+Non-regression : sur 84 dossiers modernes, le garde-fou n'en bloque **qu'un seul**,
+BAGNALL, « anglais ne en 1762, naturalise en 1815 », **le plus ancien du lot**.
+Le signal a donc designe tout seul la seule ecriture ancienne qui s'y cachait.
+
+**Que faire a la place** : transcrire en **multimodal** (`Read` sur l'image). Sur
+les ecritures anciennes le rapport de force **s'inverse**, le multimodal bat
+nettement l'OCR, qui ne garde qu'une valeur d'**index grossier** (les noms propres
+et les toponymes passent souvent : « Leonor Rodriguez », « Evora », « la Rochelle »,
+meme quand le corps du texte est perdu). Pour un vrai passage a l'echelle, la voie
+metier est la **HTR** (Kraken/eScriptorium, modeles CATMuS ; Transkribus), pas l'OCR
+generaliste.
 
 **Piege de fiabilite, a ne jamais oublier** : l'OCR produit des erreurs
 **semantiquement plausibles**, pas du charabia. Sur le manuscrit de 1999, il a
@@ -189,7 +221,7 @@ l'echelle. **La bonne architecture les compose** : l'OCR degrossit, le
 raisonnement du modele localise le doute, la multimodalite tranche. Trois
 signaux, dont deux seulement sont des SIGNAUX et un seul est un JUGE.
 
-### Etape 1 — Triage statistique (`--audit`)
+### Etape 1 : Triage statistique (`--audit`)
 
 Mistral OCR renvoie une confiance par mot. `mistral_ocr.py <pdf> --audit`
 marque les mots douteux `⟦mot|0.20⟧` et liste les pages a arbitrer :
@@ -203,7 +235,7 @@ Seuils empiriques (archives manuscrites) : **< 0.50 = suspicion FORTE**,
 concentre l'attention sur ~3 % du texte (suspicion forte) au lieu de tout
 relire.
 
-### Etape 2 — Controle semantique (raisonnement sur la logique du texte)
+### Etape 2 : Controle semantique (raisonnement sur la logique du texte)
 
 Lire la transcription **sans l'image** et reperer ce qui ne tient pas : mot
 incoherent avec le contexte, rupture de sens, terme hors du champ lexical du
@@ -216,9 +248,9 @@ Ce signal est INDEPENDANT du precedent, ce qui fait sa valeur : quand la
 confiance basse et l'incoherence semantique designent le meme mot, l'erreur est
 quasi certaine. Exploiter aussi les **verites terrain externes** : un inventaire,
 des metadonnees, une fiche d'etat civil donnent gratuitement le nom, l'annee, la
-nationalite du sujet — si l'OCR les contredit, c'est l'OCR qui a tort.
+nationalite du sujet, si l'OCR les contredit, c'est l'OCR qui a tort.
 
-### Etape 3 — Arbitrage multimodal (le seul juge)
+### Etape 3 : Arbitrage multimodal (le seul juge)
 
 `Read` avec `pages` sur **les seules pages signalees**. C'est la seule instance
 qui voit l'encre, donc la seule qui tranche. Ni la confiance ni le raisonnement
@@ -232,9 +264,9 @@ sur un manuscrit de 1999 :
 
 | mot OCR | confiance | verdict apres arbitrage |
 |---|---|---|
-| `genre` | 0.20 | **erreur d'OCR** — l'encre dit « guerre ». A corriger. |
-| `socher` | 0.18 | **fidele** — le demandeur a bien ecrit ce mot informe. A PRESERVER. |
-| `monger` | 0.78 | **fidele** — le demandeur ecrit « monger » pour « manger ». A PRESERVER. |
+| `genre` | 0.20 | **erreur d'OCR**, l'encre dit « guerre ». A corriger. |
+| `socher` | 0.18 | **fidele**, le demandeur a bien ecrit ce mot informe. A PRESERVER. |
+| `monger` | 0.78 | **fidele**, le demandeur ecrit « monger » pour « manger ». A PRESERVER. |
 
 Deux mots de confiance jumelle (0.18 et 0.20) appellent des verdicts opposes.
 Le score hierarchise le soupcon ; il est **aveugle a la nature du defaut**.
@@ -255,11 +287,11 @@ est confiant, erudit, et il efface l'erreur de l'auteur.
 Cas mesure. Lettre d'un refugie armenien (1940), OCR : « j'ai toujours travaille
 sous le couvert d'un passeport **Hansen** » (confiance 0.55, suspicion seulement
 *faible*). Le raisonnement semantique est ecrasant : il ne peut s'agir que du
-**passeport Nansen**, le titre de voyage delivre aux apatrides — tout historien
+**passeport Nansen**, le titre de voyage delivre aux apatrides, tout historien
 « corrigerait ». Mais l'encre porte, selon toute apparence, un H. Deux lectures
 restent ouvertes : confusion N/H de l'OCR en cursive, **ou faute du requerant
 lui-meme, ecrivant de travers le nom du document qui definit son apatridie**.
-Cette seconde hypothese est une donnee de premier ordre — et la « correction »
+Cette seconde hypothese est une donnee de premier ordre, et la « correction »
 semantique l'aurait detruite sans laisser de trace.
 
 Regle : **quand le signal semantique et l'arbitrage multimodal ne concordent pas,
@@ -281,7 +313,7 @@ Sur un formulaire administratif (questions imprimees a gauche, reponses manuscri
 a droite), **l'OCR decolonne** : toutes les questions en un bloc, toutes les
 reponses en un autre, **sans appariement**, et avec un decalage **non constant**
 (une question sans reponse ne produit aucune ligne). **Aucun ancrage textuel ne
-rattrape cela** — ce n'est pas un probleme de segmentation mais d'ALIGNEMENT.
+rattrape cela**, ce n'est pas un probleme de segmentation mais d'ALIGNEMENT.
 
 **La solution est GEOMETRIQUE** : `include_blocks=True` renvoie les boites
 englobantes, et la reponse est tracee **a la meme hauteur** que sa question. On
@@ -293,7 +325,7 @@ python3 .../pair_form.py dossier.pdf --pages 6-10 --json
 ```
 
 Deux pieges, tous deux constates : les questions se terminent par des **points de
-conduite** (« Quelle est leur residence ? . . . ») — un `endswith("?")` naif les
+conduite** (« Quelle est leur residence ? . . . »), un `endswith("?")` naif les
 rejette et casse tout ; et **ne pas se fier a `x`** pour separer les colonnes,
 selon le scan elles peuvent se retrouver du meme cote.
 

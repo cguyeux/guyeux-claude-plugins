@@ -11,7 +11,7 @@ description: >-
   "trap spaces", "which steady states", "mpbn", "pyboolnet attractors".
 ---
 
-# boolean-attractors — from probabilities to named states
+# boolean-attractors : from probabilities to named states
 
 **Key idea.** MaBoSS gives P(node ON) at steady state (a mixture over attractors). To get
 the *discrete states themselves* (phenotypes), compute the network's attractors. mpbn is
@@ -40,7 +40,7 @@ mbn.attractors(reachable_from={"BMP":0, "TGFB_L":0, "GF":0})
 `'*'` = free/oscillating node. **Label each attractor** by its markers: epithelial =
 Ecad/miR200/TightJunc ON & ZEB/SNAI/VIM OFF; mesenchymal = the reverse; hybrid = mixed.
 
-## Trap spaces — ALSO mpbn, no PyBoolNet needed (installed)
+## Trap spaces : ALSO mpbn, no PyBoolNet needed (installed)
 
 mpbn computes trap spaces directly; do NOT reach for PyBoolNet (absent from the image) just
 for these:
@@ -52,14 +52,14 @@ mbn.principal_trapspace()    # the smallest trap space containing everything
 mbn.count_fixedpoints(); mbn.count_minimal_trapspaces()   # counts, instant even on 61 nodes
 ```
 Vécu (MET model, 61 nodes): 25 fixed points = 25 minimal trap spaces, so every attractor is a
-point fixe with no intermediate non-singleton trap space — trap-space structure only becomes
+point fixe with no intermediate non-singleton trap space, trap-space structure only becomes
 interesting on **mutated** models or with inputs percolated (`constraints={...}`).
 
 ## Options that need the CoLoMoTo image (only if mpbn falls short)
 
-- **PyBoolNet** — exact asynchronous attractors and prime-implicant trap spaces:
+- **PyBoolNet**, exact asynchronous attractors and prime-implicant trap spaces:
   `pyboolnet.trap_spaces.compute_trap_spaces(primes, "min")` (needs a `.bnet`, see biolqm-convert).
-- **pyStableMotifs** — attractors + the **stable motifs** that feed target control:
+- **pyStableMotifs**, attractors + the **stable motifs** that feed target control:
   `sm.AttractorRepertoire.from_primes(primes).summary()`. Use it when you specifically need the
   stable-motif decomposition; for plain reachability/control, AEON.py (see `bn-control`) is installed.
 

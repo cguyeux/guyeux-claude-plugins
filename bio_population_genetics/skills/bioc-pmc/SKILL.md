@@ -1,32 +1,24 @@
 ---
 name: bioc-pmc
 description: >-
-  Use BioC-PMC — the PubMed Central Open Access + Author Manuscript
-  subset in BioC format (NCBI/NLM). Provides ~3 million full-text
-  biomedical articles with structured sections (title, abstract,
-  body, figures, tables) in XML or JSON, optimised for NLP pipelines.
-  The reference bulk-access corpus for biomedical text mining and the
-  native substrate for "150k articles"-style MTBC text-mining workflows.
-
-  Use when: building a full-text corpus for MTBC or M. bovis text
-  mining, retrieving structured article sections for named-entity
-  recognition / relation extraction, bulk-downloading PMC OA
-  articles in a machine-readable format, feeding PubTator or a
-  custom NER model with consistent input, or reproducing the "150k
-  articles" TBannotator text-mining corpus from a public source. For
-  abstract-only (not full-text) TB workflows, prefer `tbmonitor-papers`:
-  ~190k pre-indexed PubMed TB abstracts with MeSH/keywords as JSON,
-  no bulk download needed. BioC-PMC remains the right tool when full
-  body text, figures, or tables are required.
+  Use BioC-PMC, the PubMed Central Open Access and Author Manuscript subset in BioC format
+  (NCBI/NLM): ~3 million full-text biomedical articles with structured sections (title,
+  abstract, body, figures, tables) in XML or JSON, optimised for NLP pipelines. Use when
+  building a full-text corpus for MTBC or M. bovis text mining, retrieving structured
+  sections for named-entity recognition or relation extraction, bulk-downloading PMC OA
+  articles in machine-readable form, or feeding PubTator or a custom NER model. For
+  abstract-only TB workflows prefer tbmonitor-papers (~190k pre-indexed PubMed TB abstracts,
+  sub-second SQL); BioC-PMC is the right tool when full body text, figures or tables are
+  required.
 ---
 
-# BioC-PMC — PMC Open Access in BioC Format
+# BioC-PMC : PMC Open Access in BioC Format
 
 ## Overview
 
 **BioC-PMC** is the PubMed Central Open Access (PMC OA) + Author
 Manuscript subset of biomedical literature converted into the **BioC
-format** — a community-driven minimalist data structure for
+format**, a community-driven minimalist data structure for
 biomedical text mining, published and maintained by the **NLM / NCBI
 BioNLP research group** (led by **Donald C Comeau** and colleagues).
 It provides **~3 million full-text articles** with structured sections
@@ -47,7 +39,7 @@ PMC-XML preprocessing pain.
 - **BioC-PMC landing page**: `https://www.ncbi.nlm.nih.gov/research/bionlp/APIs/BioC-PMC/`
 - **BulK FTP**: `https://ftp.ncbi.nlm.nih.gov/pub/wilbur/BioC-PMC/`
 - **BioC-PubMed (abstracts only)**: `https://www.ncbi.nlm.nih.gov/research/bionlp/APIs/BioC-PubMed/`
-- **License**: inherits from PMC OA — CC-BY or other permissive per
+- **License**: inherits from PMC OA : CC-BY or other permissive per
   article. Author Manuscript subset has specific NIH re-use terms;
   check per-article.
 - **Parsing libraries**: C++, Go, Java, **Python** (`pubtator-loader`,
@@ -56,7 +48,7 @@ PMC-XML preprocessing pain.
 > [!NOTE]
 > BioC-PMC is a **text-mining data source**, not an NER annotator.
 > For pre-annotated biomedical entities, use **PubTator Central**
-> (a sibling NCBI BioNLP resource — see `Related` section).
+> (a sibling NCBI BioNLP resource, see `Related` section).
 
 ## Why it matters for MTBC × anthropology
 
@@ -67,7 +59,7 @@ BioC-PMC is **the canonical substrate** that:
    ~3 million full-text biomedical articles. A filter on TB/MTBC topics
    easily yields 10⁴–10⁵ relevant articles. You can state in Methods
    *"starting from the BioC-PMC snapshot of [date], we retained articles
-   matching concept X…"* — reproducible and auditable.
+   matching concept X…"*, reproducible and auditable.
 2. **Gives you full text, not just abstracts.** OpenAlex's
    `abstract_inverted_index` gives you the abstract; BioC-PMC gives you
    the **full body, figures, tables**. This matters when you want to
@@ -79,7 +71,7 @@ BioC-PMC is **the canonical substrate** that:
    with explicit section labels. This is exactly what a named-entity
    recognition or relation-extraction pipeline wants as input.
 
-## BioC format — structure in one paragraph
+## BioC format : structure in one paragraph
 
 A BioC **collection** contains one or more **documents**. Each document
 contains **passages** (sections of text). Each passage has an **offset**
@@ -89,13 +81,13 @@ entities with spans). Passages may contain **sentences**, and both
 passages and sentences carry **infons** (key-value metadata) and
 **relations** (links between annotations).
 
-The design goals are minimalism and interoperability — any tool that
+The design goals are minimalism and interoperability, any tool that
 can read BioC can process any article in the collection without custom
 parsing.
 
 ## Data access
 
-### Option A — Bulk FTP (canonical bulk download)
+### Option A : Bulk FTP (canonical bulk download)
 
 ```bash
 mkdir -p ~/data/bioc-pmc && cd ~/data/bioc-pmc
@@ -110,7 +102,7 @@ tar xzf PMC-OA_<snapshot>.tar.gz
 Each article becomes one XML or JSON file. Plan for tens of GB if you
 download the full snapshot.
 
-### Option B — Web API (per-article or small batches)
+### Option B : Web API (per-article or small batches)
 
 ```bash
 # Fetch a single PMC article by PMCID in BioC-XML
@@ -126,7 +118,7 @@ Two encoding options: `unicode` (original UTF-8) and `ascii`
 (transliterated to 7-bit for legacy tools). Use `unicode` unless you
 have a specific downstream constraint.
 
-### Option C — `bioc` Python library
+### Option C : `bioc` Python library
 
 ```bash
 pip install bioc
@@ -145,10 +137,10 @@ for document in collection.documents:
 ```
 
 The library provides classes for `Collection`, `Document`, `Passage`,
-`Sentence`, `Annotation`, `Relation` — one-to-one with the BioC
+`Sentence`, `Annotation`, `Relation`, one-to-one with the BioC
 schema.
 
-### Option D — `pubtator-loader` / PubTator Central
+### Option D : `pubtator-loader` / PubTator Central
 
 For **pre-annotated** articles (gene, disease, chemical, mutation,
 species entities already tagged), use **PubTator Central** instead of
@@ -169,7 +161,7 @@ to all workflows below.
 
 ## Workflows
 
-### Workflow 1 — Build an MTBC full-text corpus from BioC-PMC
+### Workflow 1 : Build an MTBC full-text corpus from BioC-PMC
 
 Goal: reproduce a "150k articles" MTBC corpus from a public, citable
 source.
@@ -216,7 +208,7 @@ with open("mtbc_corpus.json", "w") as fp:
     json.dump(corpus, fp)
 ```
 
-### Workflow 2 — Extract Methods-section text only
+### Workflow 2 : Extract Methods-section text only
 
 Goal: restrict NER or LLM processing to Methods sections where
 *isolate counts*, *country of origin*, and *sampling dates* are
@@ -239,7 +231,7 @@ def methods_only(collection):
     return " ".join(out)
 ```
 
-### Workflow 3 — Cross-reference BioC-PMC with OpenAlex
+### Workflow 3 : Cross-reference BioC-PMC with OpenAlex
 
 Goal: use OpenAlex for topic discovery, then fetch full text from
 BioC-PMC for the articles that are in the PMC OA subset.
@@ -255,10 +247,10 @@ pmc_ids = [p for p in pmc_ids if p]
 # Then fetch each via BioC-PMC Web API (Workflow 1)
 ```
 
-Not every OpenAlex work has a PMC ID — only open-access PMC articles.
+Not every OpenAlex work has a PMC ID, only open-access PMC articles.
 For the rest, fall back to Europe PMC or the publisher's site.
 
-### Workflow 4 — Feed PubTator Central annotations into your pipeline
+### Workflow 4 : Feed PubTator Central annotations into your pipeline
 
 ```bash
 # Fetch a PubTator Central BioC-XML with pre-annotated entities
@@ -271,7 +263,7 @@ passage contains pre-tagged genes, diseases, chemicals, mutations, and
 species (including *Mycobacterium tuberculosis*). This saves you from
 training your own NER model for common biomedical entities.
 
-### Workflow 5 — BioC-PubMed for abstracts-only corpus
+### Workflow 5 : BioC-PubMed for abstracts-only corpus
 
 When you only need abstracts (much lighter than full text), BioC-PubMed
 is the sibling resource:
@@ -313,12 +305,12 @@ PMID → BioC-PubMed; PMCID → BioC-PMC. The two are parallel services.
 
 | Tool | Purpose |
 |---|---|
-| **`openalex`** | Bibliometric discovery — find PMC IDs for your topic, then fetch full text via BioC-PMC |
+| **`openalex`** | Bibliometric discovery, find PMC IDs for your topic, then fetch full text via BioC-PMC |
 | **`spaam-community`** | Pointers to ancient-metagenomics papers whose PMCIDs can be fetched in BioC |
 | **TBannotator MCP** | Consumes the text-mining corpus produced from BioC-PMC |
-| **`bib-check`** | Reference verification — cross-reference DOIs/PMIDs before building a corpus |
+| **`bib-check`** | Reference verification, cross-reference DOIs/PMIDs before building a corpus |
 | **Europe PMC** | Complementary full-text source (broader coverage, alternative API) |
-| **PubTator Central** | Pre-annotated BioC envelope — saves you from training your own NER |
+| **PubTator Central** | Pre-annotated BioC envelope, saves you from training your own NER |
 | **`bioc`** (Python) | Canonical BioC parser |
 | **spaCy / scispaCy / BioBERT / PubMedBERT** | Downstream NLP models that consume BioC text |
 

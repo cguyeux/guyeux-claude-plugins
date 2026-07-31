@@ -1,19 +1,20 @@
 ---
 name: coevolution
 description: >-
-  Academic research toolkit for the Guyeux group (FEMTO-ST, University of Franche-Comte). Statistical co-divergence tests on published-research MTBC data for peer-reviewed publications. Statistical tests for MTBC-human co-divergence and geographic structure.
-  Mantel test, partial Mantel, isolation by distance, PACo (Procrustean
-  Approach to Cophylogeny), FST (Weir & Cockerham), and AMOVA.
+  Academic research toolkit (Guyeux group, FEMTO-ST): statistical tests of
+  MTBC-human co-divergence and geographic structure for peer-reviewed
+  publications. Mantel, partial Mantel, isolation by distance, PACo, FST
+  (Weir & Cockerham), AMOVA.
 
-  Use when: testing whether MTBC genetic diversity correlates with geographic
-  distance, comparing bacterial and human population structure, quantifying
-  differentiation between MTBC populations from different countries or regions.
+  Use when: testing whether MTBC diversity correlates with geographic distance,
+  comparing bacterial and human population structure, quantifying
+  differentiation between MTBC populations by country.
 argument-hint: "<distances.csv> <geo_data.csv> [--test mantel|ibd|paco|fst|amova] [-o results.csv]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
 ---
 
-# Coevolution — Tests statistiques de co-divergence MTBC-humains
+# Coevolution : Tests statistiques de co-divergence MTBC-humains
 
 Tests statistiques pour evaluer si la diversite genetique MTBC est structuree geographiquement et si elle co-diverge avec les populations humaines.
 
@@ -26,7 +27,7 @@ Tests statistiques pour evaluer si la diversite genetique MTBC est structuree ge
    | **Mantel** | La diversite MTBC correle-t-elle avec la distance geographique ? | 2 matrices de distances |
    | **Mantel partiel** | Idem en controlant un cofacteur (taille d'echantillon, periode) | 3 matrices |
    | **IBD** | Y a-t-il isolation par la distance ? | Distances genetiques + coordonnees |
-   | **PACo** | MTBC co-diverge-t-il avec les populations humaines ? | Distances hote + parasite + liens |
+   | **PACo** (Procrustean Approach to Cophylogeny) | MTBC co-diverge-t-il avec les populations humaines ? | Distances hote + parasite + liens |
    | **FST** | Quelle differenciation entre populations MTBC ? | Genotypes + groupes |
    | **AMOVA** | Comment la variance se repartit-elle hierarchiquement ? | Genotypes + hierarchie |
 
@@ -42,12 +43,12 @@ Tests statistiques pour evaluer si la diversite genetique MTBC est structuree ge
 
 ```sql
 -- Coordonnees par souche (pays -> centroide)
-SELECT m.strain_id, m.country,
+SELECT m.strain_id, m.geo_country,
        c.lineage_code as lineage
 FROM mv_strain_metadata m
-JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-WHERE c.system = 'Senelle' AND c.lineage_code LIKE '4%'
-  AND m.country IS NOT NULL;
+JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '4%'
+  AND m.geo_country IS NOT NULL;
 ```
 
 ### Formats d'entree
@@ -139,7 +140,7 @@ python3 scripts/coevolution.py distances.csv geo_data.csv \
 | IBD pente > 0, p < 0.05 | Regression + permutation | 0.05 | Dispersion limitee, pas de panmixie globale |
 | PACo m² faible, p < 0.05 | Somme residus² de Procrustes | 0.05 | Co-divergence MTBC/humains significative |
 | FST > 0.05 | Weir & Cockerham | 0.05-0.15 moderee, >0.15 forte | Populations MTBC differenciees entre pays |
-| AMOVA % entre-regions > 20% | Partition de variance | — | Geographie explique une part majeure de la variance |
+| AMOVA % entre-regions > 20% | Partition de variance |, | Geographie explique une part majeure de la variance |
 
 ## Distances geographiques
 

@@ -1,25 +1,17 @@
 ---
 name: iqtree-lsd2
 description: >-
-  Use IQ-TREE 2 with its integrated LSD2 (Least-Squares Dating 2) for
-  fast Maximum-Likelihood phylogenetic inference plus molecular dating
-  — the pragmatic alternative to BEAST2 when you need a time-scaled
-  tree on 10^3–10^5 tips in minutes to hours rather than days. IQ-TREE
-  handles model selection (ModelFinder), ultrafast bootstrap (UFBoot2),
-  and tree search; LSD2 converts branch lengths to calendar time using
-  tip dates via a least-squares criterion. The reference pipeline for
-  large-scale bacterial / MTBC phylogenetics where BEAST2 does not
-  scale.
+  IQ-TREE 2 with integrated LSD2 (Least-Squares Dating 2): fast
+  Maximum-Likelihood inference plus molecular dating, the pragmatic alternative
+  to BEAST2 for a time-scaled tree on 10^3–10^5 tips. ModelFinder, UFBoot2,
+  tip-date calibration.
 
-  Use when: building a maximum-likelihood MTBC tree with full model
-  selection and bootstrap support, dating the tree via tip dates
-  (LSD2) as a fast alternative to BEAST2 tip-dating, scaling to
-  thousands of MTBC genomes, generating a starting tree for a later
-  BEAST2 refinement, or producing quick-turnaround time-scaled trees
-  for exploratory analysis.
+  Use when: building an ML MTBC tree with model selection and bootstrap
+  support, dating it from tip dates, scaling to thousands of genomes, or
+  making a starting tree for BEAST2.
 ---
 
-# IQ-TREE 2 + LSD2 — Fast ML Phylogenetics with Tip-Dating
+# IQ-TREE 2 + LSD2 : Fast ML Phylogenetics with Tip-Dating
 
 ## Overview
 
@@ -30,23 +22,25 @@ Woodhams**, **Arndt von Haeseler**, **Robert Lanfear** and
 contributors. It integrates three high-value steps in a single
 command-line tool:
 
-1. **ModelFinder** — ultrafast automated substitution model selection
+1. **ModelFinder**, ultrafast automated substitution model selection
    (10–100× faster than jModelTest / ProtTest)
-2. **Fast ML tree search** — parsimony + NJ starting trees optimised
+2. **Fast ML tree search**, parsimony + NJ starting trees optimised
    by hill-climbing NNI
-3. **UFBoot2** — ultrafast bootstrap approximation with unbiased
+3. **UFBoot2**, ultrafast bootstrap approximation with unbiased
    branch support values
 
 Recent versions also integrate **LSD2** (*Least-Squares Dating 2*) from
 **Thu-Hien To**, **Matthieu Jung**, **Stéphane Guindon** and **Olivier
-Gascuel** at the Institut Pasteur — a fast non-Bayesian dating method
+Gascuel** at the Institut Pasteur, a fast non-Bayesian dating method
 that converts ML branch lengths into a time-scaled tree via a
 least-squares criterion, orders of magnitude faster than BEAST2.
 
 The IQ-TREE + LSD2 combination is the **pragmatic workhorse** of the
 constellation's analytical layer: it does in minutes what BEAST2 does
 in days, at the cost of point estimates instead of posterior
-distributions.
+distributions. It is the reference pipeline for large-scale bacterial /
+MTBC phylogenetics where BEAST2 does not scale, and the natural choice for
+quick-turnaround time-scaled trees used in **exploratory analysis**.
 
 - **IQ-TREE 2 reference**: Minh B.Q., Schmidt H.A., Chernomor O.,
   Schrempf D., Woodhams M.D., von Haeseler A., Lanfear R. *IQ-TREE 2:
@@ -71,8 +65,8 @@ distributions.
 - **GitHub**: `https://github.com/iqtree/iqtree2`
 - **License**: **GPL**
 - **Current versions** (verified April 2026 via GitHub API):
-  - **`iqtree/iqtree2`** → **v2.4.0** (Feb 2025) — stable line
-  - **`iqtree/iqtree3`** → **v3.1.1** — parallel major line with
+  - **`iqtree/iqtree2`** → **v2.4.0** (Feb 2025), stable line
+  - **`iqtree/iqtree3`** → **v3.1.1**, parallel major line with
     expanded features
   - LSD2 is integrated into both as the `--date` option.
 
@@ -94,7 +88,7 @@ IQ-TREE + LSD2 fills the **"fast rigorous middle"** between Nextstrain
    MCMC convergence worries.
 4. **Starting tree for BEAST2.** The IQ-TREE ML tree + LSD2 dating
    is an excellent **starting tree** for a subsequent BEAST2 refinement
-   on a subset — it dramatically reduces BEAST2 burn-in time.
+   on a subset, it dramatically reduces BEAST2 burn-in time.
 
 ## Core pipeline in one command
 
@@ -114,10 +108,10 @@ iqtree2 \
 
 ### Inputs
 
-- **`alignment.fasta`** — aligned multi-FASTA (nucleotide or amino
+- **`alignment.fasta`**, aligned multi-FASTA (nucleotide or amino
   acid). For MTBC use a reference-based whole-genome alignment or a
   core-SNP alignment.
-- **`dates.tsv`** — two-column TSV: tip name and sampling year (or
+- **`dates.tsv`**, two-column TSV: tip name and sampling year (or
   `b(min,max)` for uncertain dates, e.g. `b(-1050,-950)` for an
   ancient tip with ±50 year uncertainty).
 
@@ -158,7 +152,7 @@ iqtree2 --version
 iqtree2 --help | head -30
 ```
 
-## ModelFinder — the substitution model layer
+## ModelFinder : the substitution model layer
 
 ModelFinder tests a library of models (GTR, HKY, TN, TIM, K3P, SYM, …
 × base frequencies × Γ or I rate variation × ±FreeRate) and selects
@@ -179,7 +173,7 @@ For MTBC whole-genome alignments, **GTR+I+G** is the near-universal
 best model per ModelFinder. Run ModelFinder once and cite the specific
 output in Methods.
 
-## UFBoot2 — the branch support layer
+## UFBoot2 : the branch support layer
 
 UFBoot2 replaces bootstrap replicates (~1000 independent tree searches)
 with an approximation that is orders of magnitude faster. Use
@@ -190,10 +184,10 @@ with an approximation that is orders of magnitude faster. Use
 catches many researchers off-guard.
 
 Complement with `-alrt 1000` (SH-aLRT branch test) for a second
-independent support measure — a branch with both SH-aLRT ≥ 80% **and**
+independent support measure, a branch with both SH-aLRT ≥ 80% **and**
 UFBoot2 ≥ 95% is considered strongly supported.
 
-## LSD2 — the tip-dating layer
+## LSD2 : the tip-dating layer
 
 LSD2 converts ML branch lengths (substitutions per site) into calendar
 time using tip dates and a least-squares criterion. It is:
@@ -247,7 +241,7 @@ removing.
 
 ## Workflows
 
-### Workflow 1 — Build a tip-dated MTBC L4 tree at scale
+### Workflow 1 : Build a tip-dated MTBC L4 tree at scale
 
 Goal: produce a time-scaled L4 tree of 2 000 MTBC isolates in an
 afternoon.
@@ -276,9 +270,9 @@ cat L4_timetree.lsd
 # 5. Visualise with FigTree / Icytree / TreeViewer
 ```
 
-A few hours on a workstation — two weeks of equivalent BEAST2 time.
+A few hours on a workstation, two weeks of equivalent BEAST2 time.
 
-### Workflow 2 — Ancient-tip anchored dating
+### Workflow 2 : Ancient-tip anchored dating
 
 Goal: use the 16 ancient MTBC genomes from SPAAM as tip calibration
 for the root date of a lineage.
@@ -294,7 +288,7 @@ for the root date of a lineage.
 5. Compare with independent BEAST2 runs on the same dataset for
    cross-validation.
 
-### Workflow 3 — Pre-process for BEAST2
+### Workflow 3 : Pre-process for BEAST2
 
 Goal: use IQ-TREE to generate a good starting tree for BEAST2
 refinement.
@@ -307,7 +301,7 @@ refinement.
 4. BEAST2 burn-in is typically 10× shorter starting from a good ML
    tree vs from random.
 
-### Workflow 4 — Model selection for MTBC whole genomes
+### Workflow 4 : Model selection for MTBC whole genomes
 
 Goal: formally justify the substitution model for a Methods section.
 
@@ -320,7 +314,7 @@ Open `model_selection.iqtree` and cite the BIC-best model in your
 Methods. For MTBC this is almost always **GTR+I+G** but the formal
 report is stronger than the default assumption.
 
-### Workflow 5 — Partition analysis
+### Workflow 5 : Partition analysis
 
 For whole-genome MTBC with coding and non-coding regions, you can
 partition the alignment and let each partition have its own model:
@@ -340,13 +334,13 @@ iqtree2 -s mtbc_aln.fasta -p mtbc.partitions.nex -m MFP+MERGE -B 1000
 - **UFBoot2 thresholds differ from standard bootstrap.** Use ≥ 95%,
   not ≥ 70%.
 - **Tip-date outliers must be investigated.** Do not remove flagged
-  outliers automatically — they are often signal, not noise.
+  outliers automatically, they are often signal, not noise.
 - **Alignment quality matters.** IQ-TREE is only as good as the input
   alignment. For MTBC, use a reference-based pipeline (snippy, MTBseq,
   nf-core/bactmap) to generate the alignment, not *de novo* assembly
   + MSA.
 - **Clock rate is a single estimate.** LSD2 returns one rate (or a
-  relaxed rate per branch) — not a prior-posterior comparison. Report
+  relaxed rate per branch), not a prior-posterior comparison. Report
   it as a point estimate.
 - **No structured coalescent.** IQ-TREE + LSD2 is not a substitute
   for MASCOT / BASTA when you need rigorous structured-coalescent
@@ -358,7 +352,7 @@ iqtree2 -s mtbc_aln.fasta -p mtbc.partitions.nex -m MFP+MERGE -B 1000
 
 | Tool | Purpose |
 |---|---|
-| **`nextstrain`** | Augur internally wraps IQ-TREE / FastTree / RAxML — this skill documents IQ-TREE standalone |
+| **`nextstrain`** | Augur internally wraps IQ-TREE / FastTree / RAxML, this skill documents IQ-TREE standalone |
 | **`pastml`** | Takes an IQ-TREE+LSD2 time-scaled tree as input for ancestral state reconstruction |
 | **`beast2-phylogeography`** | Use IQ-TREE tree as starting tree for BEAST2 refinement |
 | **`bayesian-skyline`** | Use IQ-TREE tree as starting tree for BEAST2 skyline analysis |

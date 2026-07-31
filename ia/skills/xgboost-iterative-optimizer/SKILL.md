@@ -65,7 +65,7 @@ Plot: distribution, residuals vs predicted, residuals over time, reliability cur
 
 ### 2.3 SHAP analysis
 
-Focus on HIGH ERROR samples — compare mean |SHAP| between high-error and low-error to find features driving errors.
+Focus on HIGH ERROR samples, compare mean |SHAP| between high-error and low-error to find features driving errors.
 
 ## 3. Hypothesis generation
 

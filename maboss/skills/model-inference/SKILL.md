@@ -11,11 +11,11 @@ description: >-
   network", "BoNesis", "Caspo", "scBoolSeq", "binarize scRNA-seq", "fit model to observations".
 ---
 
-# model-inference — data -> Boolean model
+# model-inference : data -> Boolean model
 
 Needs the CoLoMoTo image or a clingo-enabled env (see `colomoto-run`; BoNesis/Caspo use ASP).
 
-## BoNesis — synthesis from architecture + dynamics
+## BoNesis : synthesis from architecture + dynamics
 
 ```python
 import bonesis
@@ -27,7 +27,7 @@ models = list(bo.boolean_networks(limit=10))                # enumerate consiste
 Enumerate ALL Boolean networks whose attractors/reachability match your constraints -> then
 export each to MaBoSS and simulate.
 
-## Caspo — learn logic models from signalling data
+## Caspo : learn logic models from signalling data
 
 ```python
 # CASPO: given a PKN (prior knowledge network) + phospho time/dose data, learn the family
@@ -35,7 +35,7 @@ export each to MaBoSS and simulate.
 ```
 Good when you have perturbation-readout signalling data and a prior network.
 
-## scBoolSeq — single-cell binarisation
+## scBoolSeq : single-cell binarisation
 
 ```python
 import scboolseq

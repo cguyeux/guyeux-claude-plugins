@@ -4,8 +4,8 @@ description: >-
   Aggregate and format historical Indian Ocean maritime voyage data for
   comparison with M. tuberculosis L1 (Indo-Oceanic) phylogeography.
   Wraps four open-data sources : ESTA (Exploring Slave Trade in Asia,
-  IISG Amsterdam — ~5 300 voyages, ~440 000 enslaved persons, 16th–19th c.),
-  GLOBALISE (Huygens/KNAW — 5 million pages of VOC archives, commodity and
+  IISG Amsterdam, ~5 300 voyages, ~440 000 enslaved persons, 16th–19th c.),
+  GLOBALISE (Huygens/KNAW,5 million pages of VOC archives, commodity and
   route metadata, 1602–1799), CLIWOC (287 114 European logbooks, 1750–1854,
   daily geocoded ship positions), and SlaveVoyages Indian Ocean subset
   (~1 000 voyages stopping in East Africa / Indian Ocean).
@@ -21,7 +21,7 @@ user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebFetch
 ---
 
-# Indian Ocean Voyages — Données maritimes historiques pour études MTBC L1
+# Indian Ocean Voyages : Données maritimes historiques pour études MTBC L1
 
 Skill complémentaire à `migration-data` (qui couvre la traite atlantique et les
 événements généraux). Ici on cible exclusivement l'océan Indien et la mer de
@@ -36,12 +36,12 @@ Chine pour l'étude phylogéographique de la lignée L1 (Indo-Oceanic / EAI) de
 |--------|---------|---------|-------------|----------|
 | **ESTA** | ~5 300 voyages traite, ~440 000 individus | 1500-1900 | O-D, dates, individus | Routes Madagascar, Mozambique, Inde → îles, Cap, Batavia |
 | **GLOBALISE** | 5M pages archives VOC, commodities, événements | 1602-1799 | Escales, cargaisons, lieux | Routes commerciales VOC : Cap → Mascareignes → Inde → Batavia → Chine |
-| **CLIWOC** | 287 k journaux de bord, positions quotidiennes | 1750-1854 | Trajectoires jour par jour, géocodées | Routes réelles (vs O-D agrégées) — validation des chemins de dispersion |
+| **CLIWOC** | 287 k journaux de bord, positions quotidiennes | 1750-1854 | Trajectoires jour par jour, géocodées | Routes réelles (vs O-D agrégées), validation des chemins de dispersion |
 | **SlaveVoyages-IO** | ~1 000 voyages atlantique avec escale océan Indien | 1514-1866 | O-D, dates, volumes | Lien Brésil-Mozambique, Madagascar-Caraïbes |
 
 ### 2. Quelle période ?
 
-- **Pré-européenne** (avant 1500) : commerce arabo-swahili, indo-malais — **non couverte par les bases**, à compléter par littérature
+- **Pré-européenne** (avant 1500) : commerce arabo-swahili, indo-malais, **non couverte par les bases**, à compléter par littérature
 - **VOC + portugaise** (1500-1799) : GLOBALISE + ESTA + SlaveVoyages-IO
 - **Britannique + française + traite tardive** (1800-1900) : ESTA + CLIWOC + SlaveVoyages-IO
 - **Engagisme indien** (1834-1920) : non couvert directement, voir `migration-data ancient`

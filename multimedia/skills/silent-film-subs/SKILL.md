@@ -18,7 +18,7 @@ Pipeline de sous-titrage pour films muets : détection des intertitres → OCR �
 3. **Extraction** de 3 frames candidates par segment (début / milieu / fin).
 4. **OCR** des 3 candidates avec Tesseract, on garde celle avec le plus de mots ≥ 3 lettres dans le script cible.
 5. **Filtrage** post-OCR (ratio script + nombre de "vrais" mots).
-6. **Timing centré** sur la frame qui a donné le meilleur OCR (start = best_t − 1.5 s, end = best_t + 2.5 s) — robuste aux fusions résiduelles.
+6. **Timing centré** sur la frame qui a donné le meilleur OCR (start = best_t − 1.5 s, end = best_t + 2.5 s), robuste aux fusions résiduelles.
 7. **Production** d'un fichier `.<lang>.auto.srt` brut.
 8. **Nettoyage IA** : Claude relit chaque entrée et corrige les erreurs OCR en s'appuyant sur le contexte du film (synopsis, références internet, .srt existant éventuel).
 9. **Traduction** : Claude traduit en français en bloc, soignée, en respectant le ton.
@@ -26,7 +26,7 @@ Pipeline de sous-titrage pour films muets : détection des intertitres → OCR �
 
 ## Dépendances
 
-Vérifier la présence des outils — installer ce qui manque avant de lancer :
+Vérifier la présence des outils, installer ce qui manque avant de lancer :
 
 ```bash
 which ffmpeg ffprobe tesseract mkvmerge python3
@@ -66,9 +66,9 @@ Le script `scripts/extract_intertitles.py` fait tout le travail jusqu'à l'étap
 ```
 
 Sorties :
-- `FILM.ru.auto.srt` — sous-titres bruts (avec beaucoup de bruit que Claude triera ensuite).
-- `cache/frames/segNNN_{a,b,c}.png` + `_prep.png` — 3 frames candidates par segment (audit visuel).
-- `cache/segments.json` — timestamps des segments (réutilisable via `--skip-detect`).
+- `FILM.ru.auto.srt`, sous-titres bruts (avec beaucoup de bruit que Claude triera ensuite).
+- `cache/frames/segNNN_{a,b,c}.png` + `_prep.png`,3 frames candidates par segment (audit visuel).
+- `cache/segments.json`, timestamps des segments (réutilisable via `--skip-detect`).
 
 ### Calibration de la détection
 
@@ -92,7 +92,7 @@ Le paramètre clé est `--sim-thr` (corrélation entre frames flaggées consécu
 - Plus bas (0.70) : autorise des intertitres qui changent légèrement (animations, fade).
 - Plus haut (0.92) : split plus agressif, risque de couper un intertitre en deux.
 
-`--gap-factor 1.34` avec `--sample-fps 8` donne un seuil temporel de ~5 frames (200 ms) — il faut au moins 200 ms d'écran noir entre deux intertitres pour qu'ils soient séparés par le critère temporel seul. La similarité visuelle attrape les cas plus courts.
+`--gap-factor 1.34` avec `--sample-fps 8` donne un seuil temporel de ~5 frames (200 ms), il faut au moins 200 ms d'écran noir entre deux intertitres pour qu'ils soient séparés par le critère temporel seul. La similarité visuelle attrape les cas plus courts.
 
 ## Étape de nettoyage par Claude
 

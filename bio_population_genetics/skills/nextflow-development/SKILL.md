@@ -1,13 +1,13 @@
 ---
 name: nextflow-development
-description: Run nf-core bioinformatics pipelines (rnaseq, sarek, atacseq) on sequencing data. Use when analyzing RNA-seq, WGS/WES, or ATAC-seq data—either local FASTQs or public datasets from GEO/SRA. Triggers on nf-core, Nextflow, FASTQ analysis, variant calling, gene expression, differential expression, GEO reanalysis, GSE/GSM/SRR accessions, or samplesheet creation.
+description: Run nf-core bioinformatics pipelines (rnaseq, sarek, atacseq) on sequencing data. Use when analyzing RNA-seq, WGS/WES, or ATAC-seq data, either local FASTQs or public datasets from GEO/SRA. Triggers on nf-core, Nextflow, FASTQ analysis, variant calling, gene expression, differential expression, GEO reanalysis, GSE/GSM/SRR accessions, or samplesheet creation.
 ---
 
 # nf-core Pipeline Deployment
 
 Run nf-core bioinformatics pipelines on local or public sequencing data.
 
-**Target users:** Bench scientists and researchers without specialized bioinformatics training who need to run large-scale omics analyses—differential expression, variant calling, or chromatin accessibility analysis.
+**Target users:** Bench scientists and researchers without specialized bioinformatics training who need to run large-scale omics analyses, differential expression, variant calling, or chromatin accessibility analysis.
 
 ## Workflow Checklist
 
@@ -79,9 +79,24 @@ All critical checks must pass. If any fail, provide fix instructions:
 
 | Problem | Fix |
 |---------|-----|
-| Not installed / < 11 | `sudo apt install openjdk-11-jdk` |
+| Not installed, or too old | `sudo apt install openjdk-21-jdk` (or any LTS >= 17) |
+| `UnsupportedClassVersionError` after `self-update` | The JDK is older than the Nextflow build requires. Install a newer JDK and point `JAVA_HOME` at it. |
 
-**Do not proceed until all checks pass.** For HPC/Singularity, see [references/troubleshooting.md](references/troubleshooting.md).
+**Java 11 is no longer a safe floor.** Nextflow raised its minimum JDK several
+times, and `nextflow self-update` above pulls the *latest* release: a machine left
+on Java 11 gets a runtime that refuses to start, with an
+`UnsupportedClassVersionError` that names a class-file version rather than a Java
+version. Install an LTS JDK of 17 or above (21 is the safe default at the time of
+writing) and verify the pairing rather than trusting either number:
+
+```bash
+java -version          # must satisfy what the installed Nextflow requires
+nextflow info          # prints the JVM Nextflow actually picked up
+```
+
+If the two disagree, `JAVA_HOME` is pointing at a different JDK from the `java` on
+`PATH`. Check the current minimum at https://www.nextflow.io/docs/latest/install.html
+before pinning anything in a shared environment.
 
 ---
 
@@ -89,11 +104,26 @@ All critical checks must pass. If any fail, provide fix instructions:
 
 **DECISION POINT: Confirm with user before proceeding.**
 
-| Data Type | Pipeline | Version | Goal |
+| Data Type | Pipeline | Version pinned here | Goal |
 |-----------|----------|---------|------|
 | RNA-seq | `rnaseq` | 3.22.2 | Gene expression |
 | WGS/WES | `sarek` | 3.7.1 | Variant calling |
 | ATAC-seq | `atacseq` | 2.1.2 | Chromatin accessibility |
+
+These pins are a snapshot, not a recommendation to freeze. Check the current
+release before starting a new analysis, and keep the pin for the duration of that
+analysis so results stay reproducible:
+
+```bash
+# releases available for a pipeline
+nextflow info nf-core/rnaseq | head -20
+# or, without running nextflow
+curl -s https://api.github.com/repos/nf-core/rnaseq/releases/latest | grep '"tag_name"'
+```
+
+Always pass `-r <version>` explicitly. A run without `-r` takes whatever the
+default branch happens to be that day, which is the fastest way to make two runs
+of "the same pipeline" disagree.
 
 Auto-detect from data:
 ```bash

@@ -19,7 +19,7 @@ description: >-
   for a given region and period.
 ---
 
-# Paleoclimate — Open Climate Reconstructions for Eco-Anthropology
+# Paleoclimate : Open Climate Reconstructions for Eco-Anthropology
 
 ## Client (resilient, tool-first)
 
@@ -104,7 +104,7 @@ Three concrete hooks for the seminar:
 
 ## Main resources
 
-### 1. PAGES 2k — the reference Common Era temperature reconstruction
+### 1. PAGES 2k : the reference Common Era temperature reconstruction
 
 - **Reference**: PAGES 2k Consortium / Neukom R., Steiger N.,
   Gómez-Navarro J.J., Wang J., Werner J.P. *Consistent multidecadal
@@ -133,7 +133,7 @@ is visible in the data, the **Medieval Climate Anomaly (~950–1250 CE)**
 shows warming, and the **Little Ice Age (~1300–1850 CE)** shows
 sustained cooling.
 
-### 2. Büntgen et al. 2016 — the Late Antique Little Ice Age
+### 2. Büntgen et al. 2016 : the Late Antique Little Ice Age
 
 - **Reference**: Büntgen U., Myglan V.S., Ljungqvist F.C., McCormick M.,
   Di Cosmo N., Sigl M., Jungclaus J., Wagner S., Krusic P.J.,
@@ -150,7 +150,7 @@ sustained cooling.
 This single paper is the **essential citation** for a seminar
 connecting climate to the Justinian plague.
 
-### 3. Ice core records — Greenland and Antarctica
+### 3. Ice core records : Greenland and Antarctica
 
 The longest continuous high-resolution climate records available.
 
@@ -167,19 +167,19 @@ All archived at **NOAA WDS Paleoclimatology** or the **PANGAEA**
 data repository.
 
 Reference for GISP2 and Holocene temperature: **Alley R.B. 2000
-*Quaternary Science Reviews* 19: 213–226 — *The Younger Dryas cold
+*Quaternary Science Reviews* 19: 213–226, *The Younger Dryas cold
 interval as viewed from central Greenland.* DOI:
 `10.1016/S0277-3791(99)00062-1`**
 
-### 4. WorldClim and CHELSA — bioclimatic rasters including paleo
+### 4. WorldClim and CHELSA : bioclimatic rasters including paleo
 
 - **WorldClim 2.1** (Fick & Hijmans 2017 *International Journal of
-  Climatology* 37: 4302–4315, DOI: `10.1002/joc.5086`) — 19
+  Climatology* 37: 4302–4315, DOI: `10.1002/joc.5086`),19
   bioclimatic variables (BIO1–BIO19) at up to 30 arcsec resolution,
   with paleo versions for the **Last Glacial Maximum (LGM, ~22 ka)**
   and **Mid-Holocene (~6 ka)** via CMIP5/CMIP6 model downscaling
 - **CHELSA 2.1** (Karger et al. 2017 *Scientific Data* 4: 170122,
-  DOI: `10.1038/sdata.2017.122`) — competing high-resolution
+  DOI: `10.1038/sdata.2017.122`), competing high-resolution
   bioclimatic product with better handling of orographic
   precipitation
 - **Access**: `https://www.worldclim.org/` and `https://chelsa-climate.org/`
@@ -188,19 +188,19 @@ interval as viewed from central Greenland.* DOI:
 
 See the separate `worldclim-bioclim` skill for detailed workflows.
 
-### 5. Speleothem archives — SISAL database
+### 5. Speleothem archives : SISAL database
 
 - **SISAL**: Speleothem Isotopes Synthesis and AnaLysis Working Group
   of PAGES
 - **Database**: `https://www.ncei.noaa.gov/access/paleo-search/?dataTypeId=4`
   (SISAL entries) or the SISAL GitHub repository
 - **Content**: global compilation of speleothem (stalagmite, stalactite)
-  δ¹⁸O and δ¹³C records — the best archive for hydroclimate
+  δ¹⁸O and δ¹³C records, the best archive for hydroclimate
   (precipitation) over the Holocene and beyond
 - **Reference**: Comas-Bru L. et al. 2020 *Earth System Science Data*
   12: 2579–2606. DOI: `10.5194/essd-12-2579-2020`
 
-### 6. NOAA Paleoclimatology — the archive umbrella
+### 6. NOAA Paleoclimatology : the archive umbrella
 
 - **Portal**: `https://www.ncei.noaa.gov/products/paleoclimatology`
 - **Search**: `https://www.ncei.noaa.gov/access/paleo-search/`
@@ -210,9 +210,9 @@ See the separate `worldclim-bioclim` skill for detailed workflows.
 - **License**: public domain (US government data)
 
 Use NOAA as the **first stop** for finding any published paleoclimate
-dataset — most authors deposit here.
+dataset, most authors deposit here.
 
-### 7. PANGAEA — the European counterpart
+### 7. PANGAEA : the European counterpart
 
 - **Portal**: `https://www.pangaea.de/`
 - **Host**: AWI Bremen / MARUM Bremen
@@ -222,7 +222,7 @@ dataset — most authors deposit here.
 
 ## Data access
 
-### Option A — NOAA Paleo Search
+### Option A : NOAA Paleo Search
 
 ```bash
 # Find a dataset by study ID
@@ -235,7 +235,7 @@ curl -sL "https://www.ncei.noaa.gov/access/paleo-search/study/search.json?NOAASt
 Each study page has direct links to the data files (typically
 tab-delimited text with metadata headers).
 
-### Option B — R packages for paleoclimate
+### Option B : R packages for paleoclimate
 
 | Package | Purpose |
 |---|---|
@@ -245,7 +245,7 @@ tab-delimited text with metadata headers).
 | **`sisal`** | SISAL speleothem database interface |
 | **`treeclim`** | Tree-ring based climate reconstructions |
 
-### Option C — Python tools
+### Option C : Python tools
 
 ```bash
 pip install xarray rasterio netcdf4
@@ -265,7 +265,7 @@ For proxy records in tabular format, use pandas as usual.
 
 ## Workflows
 
-### Workflow 1 — Overlay PAGES 2k with an MTBC lineage expansion
+### Workflow 1 : Overlay PAGES 2k with an MTBC lineage expansion
 
 Goal: plot the PAGES 2k global temperature reconstruction as a
 background for a BEAST2 skyline (Ne(t)) of an MTBC lineage.
@@ -296,7 +296,7 @@ ax2.set_ylabel("Ne (MTBC lineage)", color="red")
 plt.title("MTBC lineage demography vs Common Era climate")
 ```
 
-### Workflow 2 — Büntgen LALIA vs Justinian plague
+### Workflow 2 : Büntgen LALIA vs Justinian plague
 
 Goal: demonstrate the temporal coincidence of the 536–660 CE cooling
 with the Justinian plague (541 CE onwards).
@@ -308,25 +308,25 @@ with the Justinian plague (541 CE onwards).
 3. Plot both on the same time axis: temperature reconstruction (blue)
    and plague-sample age distribution (red points).
 4. The first cooling step (536 CE) precedes the first recorded plague
-   outbreak (541 CE) by 5 years — a short enough gap to argue for a
+   outbreak (541 CE) by 5 years, a short enough gap to argue for a
    climate-plague coupling hypothesis.
 5. Cite Büntgen 2016 + the plague genome papers + Harper 2017 *The
    Fate of Rome* for the historical narrative.
 
-### Workflow 3 — Holocene Climatic Optimum vs Neolithic expansion
+### Workflow 3 : Holocene Climatic Optimum vs Neolithic expansion
 
 Goal: frame the EUROEVOL demographic boom-bust in the context of the
 Holocene climate.
 
 1. Load the EUROEVOL SPD from `neolithic-14c` workflow 1.
 2. Load a Holocene reconstruction (e.g. Marcott et al. 2013 *Science*
-   339: 1198 — DOI `10.1126/science.1228026`).
+   339: 1198 : DOI `10.1126/science.1228026`).
 3. Plot both on the same 12 000 BP → present axis.
 4. Discuss whether the Neolithic expansion aligns with the warmer
    Early Holocene, and whether the boom-bust pattern (Shennan 2013)
    correlates with climate oscillations.
 
-### Workflow 4 — Climate at specific sampling sites
+### Workflow 4 : Climate at specific sampling sites
 
 Goal: extract climate time-series at the locations of ancient MTBC
 samples.
@@ -335,16 +335,16 @@ samples.
 2. Use PAGES 2k regional reconstructions for Common Era temperature
    at the same region (e.g. PAGES 2k Europe regional average).
 3. Plot the temperature history at each ancient sampling site (Vác
-   Hungary, Lund Sweden, Peru) — useful contextual panels for a
+   Hungary, Lund Sweden, Peru), useful contextual panels for a
    paper.
 
-### Workflow 5 — Volcanic forcing events
+### Workflow 5 : Volcanic forcing events
 
 Goal: identify volcanic eruptions in the ice-core record that may
 have triggered epidemics.
 
 - **Sigl M. et al. 2015 *Nature* 523: 543–549. DOI:
-  `10.1038/nature14565`** — "Timing and climate forcing of volcanic
+  `10.1038/nature14565`**, "Timing and climate forcing of volcanic
   eruptions for the past 2,500 years". The reference eruption
   chronology from Greenland and Antarctic ice cores.
 - Key events: **536 CE** (Büntgen-triggered LALIA), 540 CE, 547 CE,
@@ -363,7 +363,7 @@ climate-event coincidences.
   uncertainty is typical. Always plot the confidence envelope.
 - **Regional heterogeneity.** Global-mean reconstructions can hide
   large regional differences. PAGES 2k provides continental-scale
-  reconstructions — use those when possible.
+  reconstructions, use those when possible.
 - **Proxy sampling is biased.** Tree rings dominate the Northern
   Hemisphere extratropics; corals dominate the tropics. Precipitation
   proxies are sparser than temperature proxies.
@@ -385,7 +385,7 @@ climate-event coincidences.
 | Tool | Purpose |
 |---|---|
 | **`p3k14c`** / **`neolithic-14c`** / **`card`** | Archaeological chronologies to overlay on climate curves |
-| **`seshat`** | Quantitative history of polities — pair with climate for societal collapse narratives |
+| **`seshat`** | Quantitative history of polities, pair with climate for societal collapse narratives |
 | **`aadr`** / **`amtdb`** | Ancient human demography to compare with climate |
 | **`spaam-ancient-metagenome-dir`** | Ancient pathogens with their dates → direct overlay with LALIA, MCA, LIA |
 | **`bayesian-skyline`** | Ne(t) trajectories to overlay on climate |

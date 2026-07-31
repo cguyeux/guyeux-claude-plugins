@@ -19,21 +19,21 @@ Retrieve `report.json` and generate `spdi.txt` for MTBC strains from the TBannot
 
 ## Arguments
 
-- `$0`: Lineage directory path (relative to BDD/, e.g. `Pinipedii`, `L6.1.1`, or absolute path) — OR a clade PREFIX (e.g. `Bovis`) when combined with `--all-missing`.
+- `$0`: Lineage directory path (relative to BDD/, e.g. `Pinipedii`, `L6.1.1`, or absolute path) : OR a clade PREFIX (e.g. `Bovis`) when combined with `--all-missing`.
 - `$1...`: Either specific strain accessions (SRR/ERR/DRR), or `--all-empty` to auto-detect empty directories in ONE lineage dir, or `--all-missing` to scan a whole clade tree recursively (see below).
 
 > **Two distinct "missing" cases.** `--all-empty` targets subdirs missing `spdi.txt` (never populated). But a
 > subdir can have `spdi.txt` (valid placement) yet lack `report.json` (annotation gap). `--all-missing` catches
-> BOTH, recursively across all sub-clades under a prefix — the right mode when an audit reports strains scattered
+> BOTH, recursively across all sub-clades under a prefix, the right mode when an audit reports strains scattered
 > across many clades (don't invoke the per-lineage mode N times).
 
-## Access routes — primary vs fallback
+## Access routes : primary vs fallback
 
 TBannotator data lives in **two equivalent locations**. Always try the primary (SSH) route first; fall back to HTTP only if SSH is unavailable.
 
 ### Primary: SSH/scp on `mp` (canonical pipeline)
 
-The TBannotator Snakemake pipeline by Guillaume Senelle (`gsenelle`) runs on **`mp`** (SSH alias for `mesoprivate1.univ-fcomte.fr`, defined in `~/.ssh/config`, reached via ProxyCommand bilbo). All annotated strains live as filesystem directories at:
+The TBannotator Snakemake pipeline by Gaëtan Senelle (`gsenelle`) runs on **`mp`** (SSH alias for `mesoprivate1.univ-fcomte.fr`, defined in `~/.ssh/config`, reached via ProxyCommand bilbo). All annotated strains live as filesystem directories at:
 
 ```
 mp:/data/current/run/results/<SRA>/
@@ -42,7 +42,7 @@ mp:/data/current/run/results/<SRA>/
     (other intermediate files)
 ```
 
-As of 2026-05, this filesystem contains **~136 000 annotated MTBC strains**. The HTTP server below exposes the same data but is hosted on a personal Freebox and may go down — SSH is the canonical route.
+As of 2026-05, this filesystem contains **~136 000 annotated MTBC strains**. The HTTP server below exposes the same data but is hosted on a personal Freebox and may go down : SSH is the canonical route.
 
 Existence check:
 ```bash
@@ -70,7 +70,7 @@ dirs), scan the whole tree once instead of invoking the per-lineage mode N times
 SSH probe + per-FOUND scp): collect every `<BDD>/<prefix>*/<SRA>/NC_000962.3/` that has `spdi.txt` but no
 `report.json`, probe `mp` for all of them in a single round-trip, `scp` the FOUND, list the MISS. A ready-made,
 read-only implementation of exactly this lives at `mtbc/Bovis_emergence/analyses/fetch_missing_reports.py`
-(`--dry-run`/`--prefix`, idempotent) — reuse or adapt it rather than hand-looping.
+(`--dry-run`/`--prefix`, idempotent), reuse or adapt it rather than hand-looping.
 
 > **Rolling-window caveat (verified 2026-06-30).** The ~136k figure is a SNAPSHOT: `mp:/data/current/run/results`
 > is a rolling window, so a strain annotated in the past can have its `report.json` PURGED from the server. Such a
@@ -81,7 +81,7 @@ read-only implementation of exactly this lives at `mtbc/Bovis_emergence/analyses
 
 ### Fallback: HTTP server (TBannotator v2 MCP)
 
-- report.json: `https://darthos.freeboxos.fr/mcp/download/report/{strain}`
+- report.json: `https://tblearn.tbannotator.ideev.universite-paris-saclay.fr/mcp/download/report/{strain}`
 - spdi.txt: extracted from the downloaded report.json (snp[].spdi field)
 
 When the HTTP server returns 503 or times out, switch to SSH mp.
@@ -103,12 +103,12 @@ ssh mp '
 '
 ```
 
-Launch (only if `script.sh` is not already running — check `ps aux | grep snakemake` first):
+Launch (only if `script.sh` is not already running, check `ps aux | grep snakemake` first):
 ```bash
 ssh mp 'cd /data/current/run && nohup ./script.sh > /tmp/snakemake_$(date +%Y%m%d).log 2>&1 & disown'
 ```
 
-**Do not** use `~/integrate_new_sras.py` on mp for an append workflow — that helper opens `samples.tsv` in mode `'w'` and would wipe existing in-flight candidates. Manual append is safer.
+**Do not** use `~/integrate_new_sras.py` on mp for an append workflow, that helper opens `samples.tsv` in mode `'w'` and would wipe existing in-flight candidates. Manual append is safer.
 
 ## Directory structure expected (local)
 
@@ -147,7 +147,7 @@ BDD/{lineage}/{strain}/NC_000962.3/
    - If only a few: try the HTTP fallback before declaring absence.
    - If many: prepare a `new_sras.txt` and follow the ingestion procedure above.
 
-6. **Verify** by listing each strain with report status and SPDI count. Compare counts against the per-lineage median (typical MTBC range: ~1200–2400 SPDI on H37Rv). Counts <500 signal a mapping failure — flag for `strain-qc`.
+6. **Verify** by listing each strain with report status and SPDI count. Compare counts against the per-lineage median (typical MTBC range: ~1200–2400 SPDI on H37Rv). Counts <500 signal a mapping failure, flag for `strain-qc`.
 
 ### Validation
 After completion, optionally verify a sample strain against the DB:

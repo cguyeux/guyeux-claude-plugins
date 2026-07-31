@@ -1,23 +1,24 @@
 ---
 name: molecular-clock
 description: >-
-  Molecular dating for MTBC phylogenies under weak temporal signal.
-  Root-to-tip regression, TempEst analysis, BEAST XML generation,
-  multi-constraint calibration for MTBC-specific clock challenges.
-
-  Use when: estimating divergence times for MTBC lineages, evaluating
-  temporal signal in a phylogeny, preparing BEAST/BEAST2 analyses,
-  dating emergence of sub-lineages or drug resistance.
+  Academic research toolkit for peer-reviewed MTBC evolutionary genomics (Guyeux group,
+  FEMTO-ST). Molecular dating of Mycobacterium tuberculosis complex phylogenies under weak
+  temporal signal: root-to-tip regression, TempEst analysis, BEAST XML generation, multi-
+  constraint calibration for the MTBC-specific clock challenges, and date-randomisation
+  controls. Use when estimating divergence times for MTBC lineages in a research study,
+  evaluating temporal signal in a published phylogeny, preparing BEAST or BEAST2 analyses,
+  or dating the emergence of a sub-lineage or of an antimicrobial-resistance allele for a
+  scientific publication.
 argument-hint: "<tree.nwk> <dates.csv> [--method root-to-tip|beast] [--rate 0.5]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
 ---
 
-# Molecular Clock — Datation moléculaire MTBC
+# Molecular Clock : Datation moléculaire MTBC
 
 Estimation des temps de divergence pour les phylogénies MTBC. Gère spécifiquement le problème du signal temporel faible (R² < 0.01) inhérent à MTBC, avec des stratégies de calibration multi-contraintes.
 
-## Phase 0 — Cadre épistémique : les TMRCA dépendent de la fenêtre de calibration
+## Phase 0 : Cadre épistémique : les TMRCA dépendent de la fenêtre de calibration
 
 **Avant tout calcul**, comprendre que le taux de substitution MTBC n'est pas une constante universelle mais une quantité qui varie avec l'échelle temporelle de mesure. Menardo et al. 2019 (*PLoS Pathog*) documentent une plage de $10^{-8}$ à $5 \times 10^{-7}$ subs/site/an selon le clade et la fenêtre de sampling. Cette variance est **structurelle**, pas statistique : elle reflète le *time-dependent rate phenomenon* (TDRP), une loi empirique négative entre taux inféré et timescale de mesure documentée massivement chez les virus (Ho 2011/2015, Duchêne 2014, Aiewsakun 2015, Membrebe 2019) et émergente chez les bactéries clonales (Rieux & Balloux 2016, Rasmussen 2015 *Yersinia*).
 
@@ -33,14 +34,14 @@ Les trois estimations sont mutuellement incompatibles si lues comme des mesures 
 
 ### Quatre mécanismes candidats du TDRP
 
-1. **Sélection purifiante** — dominant chez MTBC. Les substitutions délétères sont éliminées avec le temps ; l'échantillonnage moderne voit du polymorphisme transitoire que la trace fossile a déjà filtré. Soubrier et al. 2012 démontrent que l'hétérogénéité de taux parmi sites amplifie la dépendance temporelle.
-2. **Saturation de séquence** — négligeable chez MTBC sur 10⁴ ans (génome 4.4 Mb, ~0.4 SNP/an → double hit rare).
-3. **Erreurs de calibration** — biais asymétriques des dates ¹⁴C et BioSample.
-4. **Mauvaise spécification du modèle** — horloge stricte là où elle ne s'applique pas, priors démographiques incorrects.
+1. **Sélection purifiante**, dominant chez MTBC. Les substitutions délétères sont éliminées avec le temps ; l'échantillonnage moderne voit du polymorphisme transitoire que la trace fossile a déjà filtré. Soubrier et al. 2012 démontrent que l'hétérogénéité de taux parmi sites amplifie la dépendance temporelle.
+2. **Saturation de séquence**, négligeable chez MTBC sur 10⁴ ans (génome 4.4 Mb, ~0.4 SNP/an → double hit rare).
+3. **Erreurs de calibration**, biais asymétriques des dates ¹⁴C et BioSample.
+4. **Mauvaise spécification du modèle**, horloge stricte là où elle ne s'applique pas, priors démographiques incorrects.
 
 **Conséquence opérationnelle** : le filtrage synonymes-only que ce skill applique par défaut n'est pas une astuce pragmatique. C'est une **correction mécanistique** du facteur dominant du TDRP mycobactérien : on retire les sites soumis à la sélection purifiante différentielle, qui est précisément ce que Soubrier 2012 identifie comme amplificateur du phénomène.
 
-### Règle d'or — redondance à timescale plutôt qu'à timescales variés
+### Règle d'or : redondance à timescale plutôt qu'à timescales variés
 
 Intuition empirique contre-intuitive vérifiée par bootstrap 1000 sur le fit TDRP joint MTBC+leprae (cf. `complex_datation/` 2026-04-19) : **deux anchors indépendants à même timescale valent plus que deux anchors à timescales différents** pour contraindre l'envelope TMRCA. L'ajout d'un unique anchor indépendant à $t = 2\,000$ ans a contracté le bootstrap upper tail de $\sim\!65\,000$ BP à $\sim\!29\,600$ BP, exclusion formelle du long-clock Comas 2013 qui n'était pas possible avec trois anchors à trois époques distinctes (50 y, 1 000 y, 2 000 y).
 
@@ -52,27 +53,27 @@ Intuition empirique contre-intuitive vérifiée par bootstrap 1000 sur le fit TD
 
 Rothschild et al. 2001 (*Clin Infect Dis*) ont extrait du DNA MTBC d'un métacarpe de *Bison antiquus* du Natural Trap Cave (Wyoming), radiocarbone-daté à **17 870 ± 230 ans BP**. Deux laboratoires indépendants ont confirmé par PCR et spoligotypage avec précautions anti-contamination strictes ; le spoligotype est plus proche de *M. africanum* (82.3) que de *M. bovis* (72.7). Lee et al. 2012 ont indépendamment confirmé par GC-MS des biomarqueurs lipidiques spécifiques du MTBC (mycocerosates C29–C32, mycolipenates C27) sur le même spécimen. L'authentification pré-date les standards MapDamage/PMDtools, donc le statut reste ouvert jusqu'à un re-séquençage shotgun 2025.
 
-**Si authentifié, ce spécimen impose TMRCA MTBC > 17 870 BP**, ce qui invalide mécaniquement toute estimation aDNA-calibrée en dessous de ce seuil — y compris la nôtre à 3932 BP (facteur 4.5). Utiliser comme **sanity-check qualitatif** : un TMRCA MTBC global calculé < 18 000 BP doit être reporté avec une clause TDRP explicite (cf. section "Scope" ci-dessous).
+**Si authentifié, ce spécimen impose TMRCA MTBC > 17 870 BP**, ce qui invalide mécaniquement toute estimation aDNA-calibrée en dessous de ce seuil, y compris la nôtre à 3932 BP (facteur 4.5). Utiliser comme **sanity-check qualitatif** : un TMRCA MTBC global calculé < 18 000 BP doit être reporté avec une clause TDRP explicite (cf. section "Scope" ci-dessous).
 
 ### Scope et limites explicites du skill
 
 | Cas d'usage | Adapté ? |
 |-------------|----------|
-| Émergence d'une sous-lignée (L4.6.2, L2.2.1 Beijing, L4.15) — fenêtre 100–2 000 ans | **Oui, directement** |
-| TMRCA d'une lignée entière (L4, L2) — fenêtre 1 000–5 000 ans | Oui, **avec warning TDRP explicite** |
-| TMRCA MTBC global, divergence animales paraphylétiques — fenêtre > 10 000 ans | **Non** — sortir vers Membrebe 2019 / BEAST2 TDRP-aware / fit loi de puissance Aiewsakun 2015 |
+| Émergence d'une sous-lignée (L4.6.2, L2.2.1 Beijing, L4.15), fenêtre 100–2 000 ans | **Oui, directement** |
+| TMRCA d'une lignée entière (L4, L2), fenêtre 1 000–5 000 ans | Oui, **avec warning TDRP explicite** |
+| TMRCA MTBC global, divergence animales paraphylétiques, fenêtre > 10 000 ans | **Non**, sortir vers Membrebe 2019 / BEAST2 TDRP-aware / fit loi de puissance Aiewsakun 2015 |
 | Datation événement historique intra-lignée (résistance, expansion coloniale) | **Oui** |
-| Host–pathogen co-dating (TYK2, HLA) | Pas couvert — voir Kerner 2021, Romeyer d'Herbey 2026 |
+| Host–pathogen co-dating (TYK2, HLA) | Pas couvert, voir Kerner 2021, Romeyer d'Herbey 2026 |
 
 **Règle de sécurité** : le pipeline v5 calibre un taux sur la fenêtre 100–2 200 BP. Les TMRCA extrapolés à partir de ce taux sont des **TMRCA calibrés aDNA**, systématiquement plus récents que le vrai TMRCA sous TDRP. Toujours reporter les résultats avec cette qualification.
 
 ### Références externes inter-projet
 
-- `complex_datation/article/main.tex` — perspective piece TDRP-centrée (16 pages, 40 citations, 3 figures, 3 appendix empiriques).
-- `complex_datation/litterature_review/time_dependent_rate_phenomenon.md` — revue TDRP (9 articles clés, cadre théorique complet).
-- `complex_datation/litterature_review/mycobacterium_leprae_ancient_dating.md` — corpus aDNA *M. leprae* (>50 génomes, 4 continents, benchmark méthodologique).
-- `complex_datation/litterature_review/ancient_dna_mtbc_dating.md` — revue aDNA MTBC exhaustive.
-- `complex_datation/data/adna_mtbc_corpus.csv` — corpus consolidé 23 aDNA MTBC + 1 Bison.
+- `complex_datation/article/main.tex`, perspective piece TDRP-centrée (16 pages, 40 citations, 3 figures, 3 appendix empiriques).
+- `complex_datation/litterature_review/time_dependent_rate_phenomenon.md`, revue TDRP (9 articles clés, cadre théorique complet).
+- `complex_datation/litterature_review/mycobacterium_leprae_ancient_dating.md`, corpus aDNA *M. leprae* (>50 génomes, 4 continents, benchmark méthodologique).
+- `complex_datation/litterature_review/ancient_dna_mtbc_dating.md`, revue aDNA MTBC exhaustive.
+- `complex_datation/data/adna_mtbc_corpus.csv`, corpus consolidé 23 aDNA MTBC + 1 Bison.
 
 ## Le problème MTBC
 
@@ -89,7 +90,7 @@ MTBC a un taux de mutation très faible (~0.3-0.5 SNP/génome/an) et des temps d
 ## Phase 1 : Découverte (OBLIGATOIRE)
 
 1. **Quel arbre ?** (Newick, sortie RAxML-NG)
-2. **Dates de collection ?** (CSV : strain_id, date — format YYYY ou YYYY-MM-DD)
+2. **Dates de collection ?** (CSV : strain_id, date, format YYYY ou YYYY-MM-DD)
 3. **Objectif ?**
    - Dater l'émergence d'une lignée/sous-lignée
    - Estimer le taux de mutation
@@ -117,8 +118,8 @@ MTBC a un taux de mutation très faible (~0.3-0.5 SNP/génome/an) et des temps d
 ```sql
 SELECT m.strain_id, m.collection_date
 FROM mv_strain_metadata m
-JOIN mv_strain_classification c ON m.strain_id = c.sra_id
-WHERE c.system = 'Senelle' AND c.lineage_code LIKE '4.15%'
+JOIN mv_strain_classification c ON m.strain_id = c.strain_id
+WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '4.15%'
   AND m.collection_date IS NOT NULL;
 ```
 
@@ -144,12 +145,12 @@ python3 scripts/molecular_clock.py root-to-tip tree.nwk dates.csv \
 | 0.01-0.1 | Signal faible (typique MTBC) | BEAST obligatoire, priors informatifs |
 | < 0.01 | Pas de signal détectable | **Tip-dating MORT** → passer à la Phase 2c (ancres internes + datation bracketée). Ne PAS lancer BEAST. |
 
-### Test de randomisation des dates (DRT) — garde-fou AVANT BEAST
+### Test de randomisation des dates (DRT) : garde-fou AVANT BEAST
 
 Le R² seul ne dit pas si un signal faible est **réel** ou fortuit. Le DRT
 permute les dates entre souches et recompte la pente : s'il y a un vrai signal,
 la pente observée sort du nuage des pentes permutées. **À faire avant de lancer
-une chaîne BEAST de 30-50 M** — évite de dater dans le vide.
+une chaîne BEAST de 30-50 M**, évite de dater dans le vide.
 
 ```bash
 python3 scripts/molecular_clock.py date-randomization tree.nwk dates.csv \
@@ -161,12 +162,12 @@ obs > permutées), `temporal_signal` (bool), et le nuage permuté (médiane, IC9
 Verdict `temporal_signal=true` ssi `drt_p_value < 0.05` **et** pente > 0.
 
 **Lecture** : un `drt_p_value` proche de 0.05 = signal marginal, souvent porté par
-les seuls points aDNA — dater reste hasardeux. Validé sur un jeu Pinnipedii+L4
+les seuls points aDNA, dater reste hasardeux. Validé sur un jeu Pinnipedii+L4
 (36 taxa) : R²=0.078, DRT p=0.038 → signal *présent mais fragile*, cohérent avec
 une lignée de niche récente et peu diverse. Sur une grande lignée diverse
 (Bovis, L2…) on attend R² et marge DRT nettement plus francs.
 
-## Phase 2c — Que faire quand le DRT dit NON : la taxonomie des ANCRES CALENDAIRES INTERNES
+## Phase 2c : Que faire quand le DRT dit NON : la taxonomie des ANCRES CALENDAIRES INTERNES
 
 C'est le cas le plus **fréquent** sur MTBC (fenêtre de sampling ~25 ans, taux ~0,3 SNP/an) et le skill ne doit pas
 s'arrêter là. Quand `temporal_signal=false`, il reste deux voies, et **une seule loi** pour choisir entre elles.
@@ -183,7 +184,7 @@ s'arrêter là. Quand `temporal_signal=false`, il reste deux voies, et **une seu
 - **Masquer avant de compter** : homoplasie / résistance / répétitions (`traces_mask`) sinon la profondeur est
   gonflée d'un facteur 1,3-2.
 
-### ★ THÉORÈME D'ASYMÉTRIE DES ANCRES — à appliquer AVANT de chercher une ancre
+### ★ THÉORÈME D'ASYMÉTRIE DES ANCRES : à appliquer AVANT de chercher une ancre
 
 > Un événement qui **OUVRE** un corridor (migration, colonisation, mise en contact) borne l'âge d'un foyer de
 > destination **PAR LE HAUT** (on ne transmet pas avant d'être arrivé) → **borne INFÉRIEURE sur le taux** → borne
@@ -198,9 +199,9 @@ sait presque toujours dire « ce clade n'est pas PLUS VIEUX que X », presque ja
 
 **Réflexe** : avant d'investir dans une ancre, demander **ouvre-t-elle ou ferme-t-elle ?** Si elle ouvre, elle ne
 tranchera jamais un « ancien vs récent » par le côté récent. Une question du type « médiéval ou colonial ? » peut
-être **structurellement indécidable** — ce n'est alors pas un défaut d'effort mais un **défaut de données**, et
+être **structurellement indécidable**, ce n'est alors pas un défaut d'effort mais un **défaut de données**, et
 cela se rapporte comme tel, assorti d'un appel à données (aDNA de la région ; ou séquençage des **collections
-historiques de culture**, qui étendent la fenêtre d'échantillonnage de ~25 à ~60 ans — c'est exactement ce dont le
+historiques de culture**, qui étendent la fenêtre d'échantillonnage de ~25 à ~60 ans, c'est exactement ce dont le
 signal temporel a besoin).
 
 ### Ancre « OUVERTURE » qui MARCHE : le foyer de corridor migratoire
@@ -210,20 +211,20 @@ qui s'est diversifié À DESTINATION** : `MRCA ≥ date d'ouverture` → `profon
 / durée**. Validé sur L6 (foyer italien, 7 souches, prof. 6,3 SNP → **taux ≥ 0,17-0,24**).
 
 **DEUX CONTRÔLES OBLIGATOIRES**, sans lesquels l'ancre est fausse :
-1. **Aucune souche du pays SOURCE dans le rayon SNP du cluster** — sinon le « foyer » n'est qu'un clone déjà
+1. **Aucune souche du pays SOURCE dans le rayon SNP du cluster**, sinon le « foyer » n'est qu'un clone déjà
    diversifié en Afrique, importé plusieurs fois, et son MRCA est **pré-migration** (a tué l'ancre Allemagne :
    souche africaine à **0 SNP**).
-2. **Multi-BioProject** — un cluster mono-BioProject est indistinguable d'un artefact de batch (a tué l'ancre
+2. **Multi-BioProject**, un cluster mono-BioProject est indistinguable d'un artefact de batch (a tué l'ancre
    Royaume-Uni : 17 souches, un seul PRJEB).
 
-### ⛔ Ancres qui NE MARCHENT PAS (testées et fermées — ne pas les re-tenter)
+### ⛔ Ancres qui NE MARCHENT PAS (testées et fermées : ne pas les re-tenter)
 
 | Ancre | Pourquoi elle échoue |
 |-------|----------------------|
-| **Mutation de résistance fixée dans un clade** | `tMRCA ≥ date d'introduction du médicament` — mais falsifiée par le test « diversité vs date du médicament » : le clade est bien plus divers que ne l'autorise la date. Attention aussi aux faux positifs : **gyrA 7584 (S95T) est un marqueur PHYLOGÉNÉTIQUE**, pas une résistance aux fluoroquinolones (codons 90/94). |
+| **Mutation de résistance fixée dans un clade** | `tMRCA ≥ date d'introduction du médicament`, mais falsifiée par le test « diversité vs date du médicament » : le clade est bien plus divers que ne l'autorise la date. Attention aussi aux faux positifs : **gyrA 7584 (S95T) est un marqueur PHYLOGÉNÉTIQUE**, pas une résistance aux fluoroquinolones (codons 90/94). |
 | **Traite atlantique / diaspora ancienne** | Le signal de diaspora observé est de la **migration MODERNE**, pas de la traite (aucune préservation type Gullah, absence des groupes attendus). |
-| **Régression sur PAIRES SÉRIELLES (close-pairs)** | ⚠ **LE PIÈGE LE PLUS SÉDUISANT.** Théorie correcte (`E[d] = taux × (Δt + 2·t_coal)` → en restreignant aux paires proches, la pente de d sur Δt estime le taux ; test LOCAL, donc censé survivre à la mort du root-to-tip). **MAIS `d` et `Δt` sont corrélés par la STRUCTURE D'ÉCHANTILLONNAGE** (les prélèvements anciens viennent d'études/pays/sous-clades différents des récents) → la pente mesure le confond. **DIAGNOSTIC OBLIGATOIRE : lancer AUSSI la régression NON restreinte.** Si la pente y devient biologiquement absurde (mesuré : **3,69 SNP/génome/an**, p=1e-43, contre 0,1-0,5 attendu), le confond est prouvé et les seuils intermédiaires « significatifs » sont des artefacts. Une pente qui **dérive avec le seuil de proximité** est le signe du confond ; seul le régime le plus serré (d≤20, t_coal≈0) est interprétable — et s'il n'y a pas de signal là (mesuré : p=0,19), il n'y en a nulle part. |
-| **Spoligotype ancien (Dollo)** | Deux blocages : (a) un spoligotype aDNA dégradé **mime toujours** *africanum*/*bovis* (cf. l'encadré CAUTION plus bas) ; (b) TBannotator ne donne **PAS** de spoligotype — `report.json` expose `known_coverage/DR0..DR48` mais le locus DR est à profondeur médiane **~2x** quand le génome est à 100-190x (le mapping jette les reads du DR, répétitif → filtre mapq). Vérifiable en 30 s : deux Beijing (spoligotype quasi invariant) y donnent des motifs **opposés**. Il faudrait SpoTyping/SpolPred sur les **FASTQ bruts**. |
+| **Régression sur PAIRES SÉRIELLES (close-pairs)** | ⚠ **LE PIÈGE LE PLUS SÉDUISANT.** Théorie correcte (`E[d] = taux × (Δt + 2·t_coal)` → en restreignant aux paires proches, la pente de d sur Δt estime le taux ; test LOCAL, donc censé survivre à la mort du root-to-tip). **MAIS `d` et `Δt` sont corrélés par la STRUCTURE D'ÉCHANTILLONNAGE** (les prélèvements anciens viennent d'études/pays/sous-clades différents des récents) → la pente mesure le confond. **DIAGNOSTIC OBLIGATOIRE : lancer AUSSI la régression NON restreinte.** Si la pente y devient biologiquement absurde (mesuré : **3,69 SNP/génome/an**, p=1e-43, contre 0,1-0,5 attendu), le confond est prouvé et les seuils intermédiaires « significatifs » sont des artefacts. Une pente qui **dérive avec le seuil de proximité** est le signe du confond ; seul le régime le plus serré (d≤20, t_coal≈0) est interprétable, et s'il n'y a pas de signal là (mesuré : p=0,19), il n'y en a nulle part. |
+| **Spoligotype ancien (Dollo)** | Deux blocages : (a) un spoligotype aDNA dégradé **mime toujours** *africanum*/*bovis* (cf. l'encadré CAUTION plus bas) ; (b) TBannotator ne donne **PAS** de spoligotype, `report.json` expose `known_coverage/DR0..DR48` mais le locus DR est à profondeur médiane **~2x** quand le génome est à 100-190x (le mapping jette les reads du DR, répétitif → filtre mapq). Vérifiable en 30 s : deux Beijing (spoligotype quasi invariant) y donnent des motifs **opposés**. Il faudrait SpoTyping/SpolPred sur les **FASTQ bruts**. |
 
 ### Borne triviale, à mentionner pour mémoire
 
@@ -231,7 +232,7 @@ qui s'est diversifié À DESTINATION** : `MRCA ≥ date d'ouverture` → `profon
 cela plafonne à 20-60 ans : **sans effet** pour trancher une question historique. Le vérifier quand même coûte une
 ligne de code et évite de croire qu'on a une borne.
 
-## Phase 2b : IQ-TREE/LSD2 (tip-dating rapide — RECOMMANDÉ en premier)
+## Phase 2b : IQ-TREE/LSD2 (tip-dating rapide : RECOMMANDÉ en premier)
 
 Avant BEAST, tester systématiquement IQ-TREE/LSD2 qui est 10-100× plus rapide et donne
 des résultats comparables pour les analyses mono-lignée. IQ-TREE 2.3.6+ intègre LSD2.
@@ -261,8 +262,8 @@ iqtree2 -s alignment.phy -m GTR2+G \
 | Taux | 1.62 × 10⁻⁴ subst/site/an (sur 3421 sites informatifs) | [8.9 × 10⁻⁵ ; 2.6 × 10⁻⁴] |
 | En SNP/génome/an | **0.55** | [0.30 ; 0.90] |
 | tMRCA pinnipedii+Bovis | 153 CE | [-622 ; 672] |
-| R² root-to-tip | 0.80 | — |
-| Échantillon | 6 anciens (~1154-1545 CE) + 16 modernes + 3 outgroup Bovis | — |
+| R² root-to-tip | 0.80 |, |
+| Échantillon | 6 anciens (~1154-1545 CE) + 16 modernes + 3 outgroup Bovis |, |
 
 Ce résultat sert de **référence interne** pour valider les futures datations.
 
@@ -296,7 +297,7 @@ Ce résultat sert de **référence interne** pour valider les futures datations.
 | Molnár 2015 | 8ᵉ CE Hungary | Spoligotypage | Placement |
 | Losch 2015 Guadeloupe | 18ᵉ-19ᵉ CE | Spoligotypage esclaves africains | Placement |
 | Nelson 2020 | Pre-contact Andes | Spoligotypage | Placement |
-| ~~Zink 2003 / Gad 2021 momies égyptiennes~~ | ~~Antiquité~~ | ~~Spoligotypage~~ | ⛔ **NE PAS UTILISER** — artefact, voir l'encadré ci-dessous |
+| ~~Zink 2003 / Gad 2021 momies égyptiennes~~ | ~~Antiquité~~ | ~~Spoligotypage~~ | ⛔ **NE PAS UTILISER**, artefact, voir l'encadré ci-dessous |
 
 > [!CAUTION]
 > **Un spoligotype ancien DÉGRADÉ mime TOUJOURS une lignée à délétions (*africanum* / *bovis*). Ne jamais
@@ -312,15 +313,15 @@ Ce résultat sert de **référence interne** pour valider les futures datations.
 > *M. tuberculosis* dériverait d'un précurseur proche de *M. africanum*. **Réfuté par van Soolingen lui-même**
 > (l'inventeur du spoligotypage) : Parwati, van Crevel, van Soolingen & van der Zanden, *J Clin Microbiol*
 > 2003;41(11):5350-1, « Application of spoligotyping to noncultured *M. tuberculosis* bacteria requires an
-> optimized approach » — Zink a appliqué le protocole **non optimisé** de Kamerbeek, d'où « **no hybridization
+> optimized approach » : Zink a appliqué le protocole **non optimisé** de Kamerbeek, d'où « **no hybridization
 > with spacers 2, 14, and 39** ». Le protocole optimisé (van der Zanden 2002 : MgCl₂ 3,0 mM au lieu de 0,7 mM,
 > Tris-HCl 15 mM au lieu de 5 mM, 20-50 pmol d'amorce) restaure le motif complet.
 >
 > **Conséquence : il n'existe AUCUN spécimen ancien authentifié de *M. africanum*.** La « lacune africaine » du
-> corpus aDNA MTBC (23 génomes, 100 % Europe + Amérique du Sud) est **entière** — les momies égyptiennes ne la
+> corpus aDNA MTBC (23 génomes, 100 % Europe + Amérique du Sud) est **entière**, les momies égyptiennes ne la
 > comblent pas. Toute lignée africaine (L5, L6, L7-L10) est donc **non calibrable en interne par aDNA** en l'état.
 
-### Specimen qualitatif — Bison antiquus (upper bound MTBC > 17 870 BP)
+### Specimen qualitatif : Bison antiquus (upper bound MTBC > 17 870 BP)
 
 | Source | Date | Preuve | Implication |
 |--------|------|--------|-------------|
@@ -445,8 +446,8 @@ Taux publiés (SNP/site/an) :
 | Étude | Lignée | Taux | IC95 |
 |-------|--------|------|------|
 | Ford et al. 2011 | L4 | 4.6e-8 | 3.3-6.0e-8 |
-| Menardo et al. 2019 | MTBC global | 3.0-5.0e-8 | — |
-| Bos et al. 2014 | Ancien MTBC | ~2.0e-8 | — |
+| Menardo et al. 2019 | MTBC global | 3.0-5.0e-8 |, |
+| Bos et al. 2014 | Ancien MTBC | ~2.0e-8 |, |
 | Comas et al. 2013 | MTBC global | 4.3e-8 | 2.9-5.7e-8 |
 
 **Conversion** : 1 SNP/génome/an ≈ 2.3e-7 SNP/site/an (génome MTBC ~4.4 Mb).
@@ -548,9 +549,9 @@ python3 scripts/molecular_clock_pipeline.py \
 
 **Résolution automatique du binaire iqtree2** : si `--iqtree` n'est pas fourni, le script cherche dans l'ordre (1) `<script>/../../investigate_phylo/iqtree2` (contexte projet MTBC), (2) `~/docs/codes/mtbc/investigate_phylo/iqtree2`, (3) `iqtree2` ou `iqtree` dans `$PATH`.
 
-**Défauts mis à jour (2026-05-31)** : `--lineages L4.1,L4.3.3,L4.8,L4.2.1,L4.7.1,L4.7.2` (L4.7 a été divisée en L4.7.1 et L4.7.2 dans `bdd/actuelle/`), `--outgroup-lineage Bovis` (racine *M. bovis* réelle, ~1417 souches ; les anciens noms `Bovis_La1`/`Bovis2_La1` n'existent plus dans `bdd/actuelle/` — toujours vérifier le nom de dossier contre `bdd/actuelle/`, cf. `SOURCES_OF_TRUTH.md`).
+**Défauts mis à jour (2026-05-31)** : `--lineages L4.1,L4.3.3,L4.8,L4.2.1,L4.7.1,L4.7.2` (L4.7 a été divisée en L4.7.1 et L4.7.2 dans `bdd/actuelle/`), `--outgroup-lineage Bovis` (racine *M. bovis* réelle, ~1417 souches ; les anciens noms `Bovis_La1`/`Bovis2_La1` n'existent plus dans `bdd/actuelle/`, toujours vérifier le nom de dossier contre `bdd/actuelle/`, cf. `SOURCES_OF_TRUTH.md`).
 
-**Taille minimale recommandée** : `--n-per-lineage 5 --n-h37rv 50`. Sur un échantillon plus réduit (ex. 3 par lignée, 20 H37Rv), les tMRCA sortent souvent hors plage plausible (>8000 BP) à cause d'un sampling insuffisant — CV inter-seed peut dépasser 40%.
+**Taille minimale recommandée** : `--n-per-lineage 5 --n-h37rv 50`. Sur un échantillon plus réduit (ex. 3 par lignée, 20 H37Rv), les tMRCA sortent souvent hors plage plausible (>8000 BP) à cause d'un sampling insuffisant, CV inter-seed peut dépasser 40%.
 
 **Phases du pipeline** :
 1. Collect 9 anciens pré-curés depuis `bdd/ancien/`
@@ -579,16 +580,16 @@ Meilleur run sur 10 seeds aléatoires (seed retenu : 927067) :
 | Paramètre | Valeur | IC 95% |
 |-----------|--------|--------|
 | Taux synonyme | 7.40 × 10⁻⁵ subst/site/an (1654 sites) | [5.01 × 10⁻⁵ ; 9.16 × 10⁻⁵] |
-| **Taux génome complet** | **2.82 × 10⁻⁸ subst/site/an** | — |
+| **Taux génome complet** | **2.82 × 10⁻⁸ subst/site/an** |, |
 | **tMRCA (Pinni+L4)** | **3932 BP** | [3115 ; 6024 BP] |
-| Objective function | **0.508** (meilleur fit de toutes les versions) | — |
-| Échantillon | 102 souches (9 anciens + 50 H37Rv + 25 L4 mod. + 16 Pinni mod. + 3 Bovis OG) | — |
+| Objective function | **0.508** (meilleur fit de toutes les versions) |, |
+| Échantillon | 102 souches (9 anciens + 50 H37Rv + 25 L4 mod. + 16 Pinni mod. + 3 Bovis OG) |, |
 
 **Historique des versions de référence** (cohérentes entre elles) :
 - v5 manuel (dataset figé, 2026-04-12) : 2.61 × 10⁻⁸, 4219 BP, obj=0.512
 - v5 multi-seed pipeline (2026-04-12) : **2.82 × 10⁻⁸, 3932 BP, obj=0.508** ⭐
 
-**Robustesse leave-one-out v5** : CV taux = 13.6%, dépendance max à un seul ancien = +21.7% (Bos58). **Aucun calibrateur ne domine** — c'est le signe d'un dataset vraiment robuste, contrairement à v2 où Winstrup dominait (+71%).
+**Robustesse leave-one-out v5** : CV taux = 13.6%, dépendance max à un seul ancien = +21.7% (Bos58). **Aucun calibrateur ne domine**, c'est le signe d'un dataset vraiment robuste, contrairement à v2 où Winstrup dominait (+71%).
 
 **Vs littérature** :
 - Bos 2014 : ~2.0 × 10⁻⁸ → notre 2.61 × 10⁻⁸ (+30%)
@@ -604,7 +605,7 @@ Meilleur run sur 10 seeds aléatoires (seed retenu : 927067) :
 - **v5 (Body 68 CLEAN, L4-validé)** : **2.61 × 10⁻⁸, 4219 BP** ⭐
 
 **Filtrage Body 68 mixed infection** (clé de v5) :
-Kay 2015 a documenté que body 68 contient 2 génotypes (B68-1 L4.1.2.1 à 332x + B68-2 L4.7 à 253x). Fusionner les 3 runs donne un profil SPDI chimérique. Solution : filtrer les SNP de body 68 par **cohérence inter-L4** — ne garder que ceux partagés avec Winstrup ou Body 92 (qui sont L4 propres). Approche alternative à la déconvolution par allele frequency de Kay 2015 quand le BAM n'est pas disponible.
+Kay 2015 a documenté que body 68 contient 2 génotypes (B68-1 L4.1.2.1 à 332x + B68-2 L4.7 à 253x). Fusionner les 3 runs donne un profil SPDI chimérique. Solution : filtrer les SNP de body 68 par **cohérence inter-L4**, ne garder que ceux partagés avec Winstrup ou Body 92 (qui sont L4 propres). Approche alternative à la déconvolution par allele frequency de Kay 2015 quand le BAM n'est pas disponible.
 
 Compatible avec Sabin 2020, Bos 2014, Menardo 2019. Exclut Comas 2013 (70 000 BP).
 
@@ -622,22 +623,22 @@ Compatible avec Sabin 2020, Bos 2014, Menardo 2019. Exclut Comas 2013 (70 000 BP
 | **BCG sub-souches** | **Tip dates historiques** | dates individuelles | Russia 1924, Tokyo 1924, Sweden 1926, Moreau 1925, Phipps 1928, Birkhaug 1929, Danish 1931, Frappier 1937, Connaught 1948, Glaxo 1954 (Behr&Small 1999, Brosch 2007) |
 | Modernes datés | Tip date BioSample | variable | Ancrage récent |
 
-### Ancres de résistance — borne supérieure datée, multipliable par lignée
+### Ancres de résistance : borne supérieure datée, multipliable par lignée
 
 **Principe.** Une mutation de résistance **fixée** dans un clade monophylétique implique `tMRCA(clade défini par R) ≥ date d'introduction clinique de l'antibiotique` → **BORNE SUPÉRIEURE sur l'âge du nœud** (le clade « n'est pas plus vieux que » le médicament), posée sur le MRCA de la nouveauté (pas sur la divergence avec la sœur sensible, qui est antérieure). Levier décisif : **chaque lignée humaine a ses propres clones MDR/XDR récents** → ancres récentes INDÉPENDANTES par lignée, qui contraignent le taux RÉCENT lignée par lignée (le haut de la courbe TDRP) ; combinées aux ancres aDNA profondes, elles tiennent les deux bouts → lèvent l'identifiabilité taux↔temps.
 
-| Antibiotique | Intro. clinique TB | Gène(s) — mutation causale | Borne |
+| Antibiotique | Intro. clinique TB | Gène(s), mutation causale | Borne |
 |---|---|---|---|
 | streptomycine | 1944 | rpsL, rrs, gid | tMRCA ≥ 1944 |
 | isoniazide | 1952 | katG (S315T), fabG1/inhA | ≥ 1952 |
 | éthambutol | 1961 | embB (M306) | ≥ 1961 |
-| **rifampicine** | **1968** | **rpoB (RRDR)** | **≥ 1968 — l'ancre reine (MDR)** |
+| **rifampicine** | **1968** | **rpoB (RRDR)** | **≥ 1968, l'ancre reine (MDR)** |
 | fluoroquinolones | ~1985 | gyrA (A90V, D94G), gyrB | ≥ 1985 (pré-XDR/XDR) |
 | bédaquiline | 2012 | Rv0678, atpE, pepQ | ≥ 2012 (calibre le taux moderne) |
 
 **Garde-fous obligatoires.** (1) **Monophylie vérifiée par ACR/PastML** : les loci de résistance sont les plus homoplastiques du génome (katG S315T, rpoB S450L = des centaines d'origines indépendantes) → sans origine unique dans le sous-arbre, PAS d'ancre. (2) Borne **molle** (standing variation possible). (3) Mutation **causale** seule (pas compensatoire rpoC/rpoA ni co-résistance MDR co-transmise). (4) **Masquer** ces positions du calcul de longueur de branche (homoplasie) même quand on les utilise comme ancre topologique.
 
-**PIÈGE résistance intrinsèque (*M. bovis*).** La résistance au pyrazinamide de *M. bovis* (`pncA` H57D, marqueur d'espèce) est **ANCESTRALE** — la traiter comme ancre daterait le MRCA bovis à ≥1952 (absurde). Plus largement, les ancres de résistance marchent **mal** pour *M. bovis* (réservoir abattu, non traité → peu de résistance acquise) ; bovis est ancré par l'HÔTE (BCG, spillovers, criollo). **Les deux familles d'ancres se relaient selon le clade** : résistance ↔ lignées humaines traitées, événements-hôte ↔ bovis/animal.
+**PIÈGE résistance intrinsèque (*M. bovis*).** La résistance au pyrazinamide de *M. bovis* (`pncA` H57D, marqueur d'espèce) est **ANCESTRALE**, la traiter comme ancre daterait le MRCA bovis à ≥1952 (absurde). Plus largement, les ancres de résistance marchent **mal** pour *M. bovis* (réservoir abattu, non traité → peu de résistance acquise) ; bovis est ancré par l'HÔTE (BCG, spillovers, criollo). **Les deux familles d'ancres se relaient selon le clade** : résistance ↔ lignées humaines traitées, événements-hôte ↔ bovis/animal.
 
 Catalogue : `MTBC-constrained-node-dating/data/antibiotic_introduction_anchors.tsv` (18 antibiotiques). Skill `resistance-profiler` pour annoter les profils de résistance des souches avant l'ACR.
 
@@ -646,7 +647,7 @@ Catalogue : `MTBC-constrained-node-dating/data/antibiotic_introduction_anchors.t
 Le complexe BCG constitue un **système modèle exceptionnel** pour la calibration phylogénétique MTBC parce que :
 
 1. **Le MRCA est daté avec quasi-certitude historique** (1908-1921) : les sous-souches mondiales sont toutes issues d'une lignée propagée par Calmette-Guérin à l'Institut Pasteur de Lille à partir de 1908, et distribuée internationalement à partir de 1921 (Pasteur strain). Pas d'analyse phylogénétique nécessaire pour ce nœud, c'est de l'histoire des sciences documentée.
-2. **Chaque sous-souche vaccinale a une date d'isolement publiée** (cf. table ci-dessus) — donc tip dates fiables.
+2. **Chaque sous-souche vaccinale a une date d'isolement publiée** (cf. table ci-dessus), donc tip dates fiables.
 3. **Une population sauvage parente est disponible** à la base du clade `Bovis1.2.1.BCG` (souches françaises Bos taurus 1999-2009, RD1 intact, basales aux sous-souches vaccinales RD1-délétées ; l'ancien nom de dossier `Bovis1.2.1.proto-BCG` a été fusionné dans `Bovis1.2.1.BCG`), qui donne le deuxième nœud calibré.
 4. **Sur l'arbre Bovis1, ces deux nœuds sont *enchâssés***, ce qui contraint très fortement le taux de substitution local et permet une **validation en aveugle de l'horloge moléculaire** : si l'algorithme retrouve 1921 ± qq années pour le MRCA des sous-souches BCG en utilisant uniquement les tips datés du reste de l'arbre, c'est une démonstration spectaculaire de la précision de la méthode.
 
@@ -704,7 +705,7 @@ M. canettii (outgroup)
 **Conséquence directe** : les calibrateurs pinnipedii anciens (Bos 2014, Vågene 2022)
 calibrent des nœuds *dans* le grand clade. Ils sont donc :
 - **Très utiles** pour dater L5, L6, L9, L10 (même grand clade, distance phylogénétique courte)
-- **Peu utiles** pour dater L4, L1, L2, L3 (clade humain strict séparé — calibration traverserait la
+- **Peu utiles** pour dater L4, L1, L2, L3 (clade humain strict séparé, calibration traverserait la
   divergence profonde entre les deux grands clades, propageant une incertitude massive)
 
 ### Principe : un calibrateur contraint un taux, pas un nœud cible
@@ -715,7 +716,7 @@ phylogénétique. Sous horloge stricte, ce taux s'applique à toutes les branche
 Sous horloge relaxée, il informe la distribution de taux à laquelle les branches sœurs sont
 soumises. **Il est donc presque toujours préférable d'inclure les anciens disponibles dans
 le clade cible plutôt que de retomber sur un prior MTBC global**, qui mélange clade humain
-strict et grand clade — deux dynamiques évolutives distinctes.
+strict et grand clade, deux dynamiques évolutives distinctes.
 
 ### Stratégie de calibration par lignée
 
@@ -723,17 +724,17 @@ strict et grand clade — deux dynamiques évolutives distinctes.
 |--------|:---:|--------------------------|-----------|
 | **Toute lignée L4 (L4.1 → L4.10, y compris sous-lignées comme L4.6.2)** | Non | **Winstrup 1679 + body_68 ~1797 + H37Rv MRCA 1905** | Tip-dating L4 + node H37Rv. Les anciens n'ont **pas besoin d'être sur la branche cible** : ils calibrent le taux L4, qui s'applique à toute sous-lignée L4 sous horloge relaxée. Inclure quelques L4 représentatifs pour ancrer la position des anciens dans l'arbre. |
 | L5 | Oui (basal) | Pinnipedii anciens (Bos 2014 ×3, Vågene 2022 ×3) + bovis/caprae contexte | Tip-dating dans grand clade |
-| L6 | Oui (imbriquée) | Pinnipedii anciens — calibration quasi-directe si L6 sœur d'un clade proche | Tip-dating dans grand clade |
+| L6 | Oui (imbriquée) | Pinnipedii anciens, calibration quasi-directe si L6 sœur d'un clade proche | Tip-dating dans grand clade |
 | L9, L10 | Oui (imbriquées) | Pinnipedii anciens + bovis/caprae contexte | Tip-dating dans grand clade |
 | L1, L2, L3, L7 | Non | Aucun ancien disponible dans le clade humain strict | Prior Menardo OU node calibration historique (ex. expansion L2 Beijing ~200-400 ans) |
-| **Fallback ultime (toutes lignées)** | — | Prior Menardo seul + outgroup biologique | Uniquement si l'inclusion des anciens du clade est impossible (échantillon trop restreint, contrainte computationnelle, topologie incompatible). À documenter explicitement comme limitation. |
+| **Fallback ultime (toutes lignées)** |, | Prior Menardo seul + outgroup biologique | Uniquement si l'inclusion des anciens du clade est impossible (échantillon trop restreint, contrainte computationnelle, topologie incompatible). À documenter explicitement comme limitation. |
 
 **Caveat pour L5/L6/L9/L10** : les écotypes animaux ont potentiellement des taux de substitution
 différents des lignées humaines (dynamique de transmission, hôte, pression sélective). Utiliser
 une horloge relaxée (LSD2 multi-rate ou BEAST2 UCLD) et valider par leave-one-out en vérifiant
 que les branches animales ne sont pas aberrantes.
 
-**Cas L4.6.2 — version actuelle vs version améliorée recommandée (2026-04-13)** :
+**Cas L4.6.2, version actuelle vs version améliorée recommandée (2026-04-13)** :
 
 | Setup | Composition | Calibration | Résultat |
 |-------|-------------|-------------|----------|
@@ -750,7 +751,7 @@ Couverture des calibrateurs disponibles, par grand clade :
 
 - **Clade humain strict (L1, L2, L3, L4, L7)** : calibrateurs uniquement pour L4 (Winstrup 1679,
   body_68 ~1797, H37Rv MRCA 1900-1910). Le taux estimé depuis ces L4 anciens s'applique à
-  toute sous-lignée L4 sous horloge relaxée — y compris L4.6, L4.11, L4.15, etc. — moyennant
+  toute sous-lignée L4 sous horloge relaxée, y compris L4.6, L4.11, L4.15, etc., moyennant
   l'ajout de quelques L4 représentatifs pour ancrer leur position dans l'arbre. Pour L1, L2, L3,
   L7 : aucun ancien disponible, fallback prior Menardo ou node calibration historique.
 - **Grand clade (L5, L6, L9, L10 + écotypes animaux + pinnipedii)** : 6 pinnipedii anciens
@@ -804,9 +805,9 @@ Le script retire chaque ancien un par un, relance IQ-TREE/LSD2, et produit un ta
 
 | Critère | Seuil | Interprétation |
 |---------|-------|----------------|
-| Δ taux par ancien | < 15% | ✓ Robuste — signal distribué |
-| Δ taux par ancien | 15-50% | ⚠ Ancien influent — documenter |
-| Δ taux par ancien | > 50% | ✗ Fragile — calibration insuffisante sur cette branche |
+| Δ taux par ancien | < 15% | ✓ Robuste, signal distribué |
+| Δ taux par ancien | 15-50% | ⚠ Ancien influent, documenter |
+| Δ taux par ancien | > 50% | ✗ Fragile, calibration insuffisante sur cette branche |
 | Toutes les analyses convergent | taux > 1e-9 | ✓ Le modèle tient sans chaque ancien |
 
 ### Résultat de référence v5 (2026-04-12, dataset final)
@@ -826,7 +827,7 @@ Leave-one-out sur les 9 anciens de v5 :
 | Body92_Kay2015 | +15.7% | +531 ans |
 
 - **CV taux inter-LOO** : 13.6%
-- **Δ taux max** : +21.7% (Bos58) — bien sous le seuil critique 50%.
+- **Δ taux max** : +21.7% (Bos58), bien sous le seuil critique 50%.
 - **Distribution uniforme** : aucun calibrateur ne domine (contrairement à v2 où Winstrup dominait à +71%).
 - **Conclusion** : dataset **robuste**, publiable.
 
@@ -872,7 +873,7 @@ Avec 4 anchors MTBC (Menardo 50y, Bos 1000y, Sabin 2000y, v5 2000y) + 3 anchors 
 
 ### Script réutilisable
 
-- `complex_datation/analyses/phase3_tdrp_joint_fit.py` — fit loi de puissance joint MTBC+leprae, bootstrap 1000, extrapolation TMRCA, figure 600 DPI. Script auto-contenu (dépendances : numpy, scipy, matplotlib).
+- `complex_datation/analyses/phase3_tdrp_joint_fit.py`, fit loi de puissance joint MTBC+leprae, bootstrap 1000, extrapolation TMRCA, figure 600 DPI. Script auto-contenu (dépendances : numpy, scipy, matplotlib).
 
 ## Phase 5 : Post-analyse
 
@@ -946,49 +947,49 @@ Le pipeline `molecular_clock_pipeline.py` encapsule v5 et donne des résultats p
 
 ### Cadre TDRP (lire avant toute datation MTBC profonde)
 
-- **Ho SYW & Larson G. 2006**, *Trends Genet* 22:79 — introduction du concept "time-dependent rates".
-- **Ho SYW et al. 2011**, *Mol Ecol* 20:3087 — revue fondatrice : taux courts excèdent taux longs d'un ordre de grandeur ou plus.
-- **Ho SYW et al. 2015**, *Proc Natl Acad Sci* 112:3100 — mise à jour, mécanismes, réponse aux critiques.
-- **Duchêne S et al. 2014**, *Proc Biol Sci* 281:20140732 — démonstration TDRP massif chez virus.
-- **Aiewsakun P & Katzourakis A. 2015**, *BMC Evol Biol* 15:119 — formalisation loi de puissance vs exponentielle, rejet empirique de l'exponentielle chez foamy viruses.
-- **Membrebe JV et al. 2019**, *Mol Biol Evol* 36:1793 — cadre bayésien formel pour histoires évolutives sous TDRP ; à utiliser pour les TMRCA MTBC profonds.
-- **Soubrier J et al. 2012**, *Mol Biol Evol* 29:3345 — rôle de l'hétérogénéité de taux entre sites, amplification TDRP par sélection purifiante.
-- **Duchêne S et al. 2020**, *Virus Evol* 6:veaa061 — guide pratique tip-dating/damage-patterns sur aDNA.
-- **Rieux A & Balloux F. 2016**, *Mol Ecol* 25:1911 — tip-calibration : critère "timespan doit couvrir fraction du temps de coalescence".
+- **Ho SYW & Larson G. 2006**, *Trends Genet* 22:79, introduction du concept "time-dependent rates".
+- **Ho SYW et al. 2011**, *Mol Ecol* 20:3087, revue fondatrice : taux courts excèdent taux longs d'un ordre de grandeur ou plus.
+- **Ho SYW et al. 2015**, *Proc Natl Acad Sci* 112:3100, mise à jour, mécanismes, réponse aux critiques.
+- **Duchêne S et al. 2014**, *Proc Biol Sci* 281:20140732, démonstration TDRP massif chez virus.
+- **Aiewsakun P & Katzourakis A. 2015**, *BMC Evol Biol* 15:119, formalisation loi de puissance vs exponentielle, rejet empirique de l'exponentielle chez foamy viruses.
+- **Membrebe JV et al. 2019**, *Mol Biol Evol* 36:1793, cadre bayésien formel pour histoires évolutives sous TDRP ; à utiliser pour les TMRCA MTBC profonds.
+- **Soubrier J et al. 2012**, *Mol Biol Evol* 29:3345, rôle de l'hétérogénéité de taux entre sites, amplification TDRP par sélection purifiante.
+- **Duchêne S et al. 2020**, *Virus Evol* 6:veaa061, guide pratique tip-dating/damage-patterns sur aDNA.
+- **Rieux A & Balloux F. 2016**, *Mol Ecol* 25:1911, tip-calibration : critère "timespan doit couvrir fraction du temps de coalescence".
 
 ### Taux MTBC et aDNA
 
-- **Menardo F et al. 2019**, *PLoS Pathog* 15:e1008067 — plage $10^{-8}$–$5 \times 10^{-7}$ sur 6 285 souches, horloge relâchée requise. Point d'entrée obligatoire.
-- **Bos KI et al. 2014**, *Nature* 514:494 — premier aDNA MTBC, TMRCA < 6 000 BP, *M. pinnipedii* pré-Columbien.
-- **Sabin S et al. 2020**, *Genome Biol* 21:201 — Winstrup 1679, TMRCA 2 190–4 501 BP, anchor clé.
-- **Kay GL et al. 2015**, *Nat Commun* 6:6717 — 14 génomes Vác 18ᵉ CE, documentation mixed infections.
-- **Vågene AJ et al. 2022**, *Nat Commun* 13:1195 — étend pinnipedii américain.
-- **Rothschild BM et al. 2001**, *Clin Infect Dis* 33:305 + **Lee OYC et al. 2012**, *PLoS ONE* 7:e41923 — *Bison antiquus* 17 870 BP (upper bound).
-- **Hershkovitz I et al. 2015**, *Tuberculosis* 95:S122 — Atlit-Yam PPNC 9 250–8 160 BP, humain + bovin.
-- **Comas I et al. 2013**, *Nat Genet* 45:1176 — TMRCA 70 000 BP, modern-only (long-clock).
-- **Wirth T et al. 2008**, *PLoS Pathog* 4:e1000160 — TMRCA 40 000 BP via tandem repeats.
-- **O'Neill MB et al. 2019**, *Mol Biol Evol* 36:1751 — tip-dating 552 génomes + anciens.
+- **Menardo F et al. 2019**, *PLoS Pathog* 15:e1008067, plage $10^{-8}$–$5 \times 10^{-7}$ sur 6 285 souches, horloge relâchée requise. Point d'entrée obligatoire.
+- **Bos KI et al. 2014**, *Nature* 514:494, premier aDNA MTBC, TMRCA < 6 000 BP, *M. pinnipedii* pré-Columbien.
+- **Sabin S et al. 2020**, *Genome Biol* 21:201 : Winstrup 1679, TMRCA 2 190–4 501 BP, anchor clé.
+- **Kay GL et al. 2015**, *Nat Commun* 6:6717. 14 génomes Vác 18ᵉ CE, documentation mixed infections.
+- **Vågene AJ et al. 2022**, *Nat Commun* 13:1195, étend pinnipedii américain.
+- **Rothschild BM et al. 2001**, *Clin Infect Dis* 33:305 + **Lee OYC et al. 2012**, *PLoS ONE* 7:e41923, *Bison antiquus* 17 870 BP (upper bound).
+- **Hershkovitz I et al. 2015**, *Tuberculosis* 95:S122 : Atlit-Yam PPNC 9 250–8 160 BP, humain + bovin.
+- **Comas I et al. 2013**, *Nat Genet* 45:1176 : TMRCA 70 000 BP, modern-only (long-clock).
+- **Wirth T et al. 2008**, *PLoS Pathog* 4:e1000160 : TMRCA 40 000 BP via tandem repeats.
+- **O'Neill MB et al. 2019**, *Mol Biol Evol* 36:1751, tip-dating 552 génomes + anciens.
 
 ### *M. leprae* comme benchmark méthodologique
 
-- **Schuenemann VJ et al. 2018**, *Nat Commun* 9:3163 — 4 branches médiévales coexistantes, seuil critique franchi.
-- **Pfrengle S et al. 2021**, *BMC Biol* 19:220 — doublement du corpus, diversité ibérique.
-- **Neukamm J et al. 2020**, *BMC Biol* 18:108 — 2 200 BP Ptolémaïque, plus ancien mycobactérien aDNA authentifié.
-- **Urban C et al. 2024**, *Curr Biol* 34:2221 — écureuil médiéval séquencé, feasibility animal host.
-- **Lopopolo M et al. 2025**, *Science* — *M. lepromatosis* pré-européen aux Amériques.
+- **Schuenemann VJ et al. 2018**, *Nat Commun* 9:3163. 4 branches médiévales coexistantes, seuil critique franchi.
+- **Pfrengle S et al. 2021**, *BMC Biol* 19:220, doublement du corpus, diversité ibérique.
+- **Neukamm J et al. 2020**, *BMC Biol* 18:108. 2 200 BP Ptolémaïque, plus ancien mycobactérien aDNA authentifié.
+- **Urban C et al. 2024**, *Curr Biol* 34:2221, écureuil médiéval séquencé, feasibility animal host.
+- **Lopopolo M et al. 2025**, *Science*, *M. lepromatosis* pré-européen aux Amériques.
 
 ### Host–pathogen co-dating
 
-- **Kerner G et al. 2021**, *Am J Hum Genet* 108:517 — TYK2 P1104A sélection négative depuis ~2 000 BP.
-- **Romeyer d'Herbey F et al. 2026** — HLA leprosy-driven selection médiévale.
+- **Kerner G et al. 2021**, *Am J Hum Genet* 108:517 : TYK2 P1104A sélection négative depuis ~2 000 BP.
+- **Romeyer d'Herbey F et al. 2026** : HLA leprosy-driven selection médiévale.
 
 ### Références internes projet
 
-- `complex_datation/article/main.tex` — perspective piece TDRP MTBC (v1.0, 28 pages, 41 refs, 3 figures, 3 appendix empiriques, §2.3 calibration short-timescale).
-- `complex_datation/data/adna_mtbc_corpus.csv` — corpus consolidé source.
-- `complex_datation/analyses/phase3_tdrp_joint_fit.py` — fit loi de puissance joint MTBC+leprae, bootstrap 1000, critère de rejet long-clock. Utilisé par Phase 4c.
-- `complex_datation/litterature_review/time_dependent_rate_phenomenon.md` — revue TDRP exhaustive (9 articles-clés).
-- `molecular_clock/analyses/molecular_clock_pipeline.py` — pipeline v5 multi-seed, produit l'anchor courte-échelle à injecter dans Phase 4c.
+- `complex_datation/article/main.tex`, perspective piece TDRP MTBC (v1.0, 28 pages, 41 refs, 3 figures, 3 appendix empiriques, §2.3 calibration short-timescale).
+- `complex_datation/data/adna_mtbc_corpus.csv`, corpus consolidé source.
+- `complex_datation/analyses/phase3_tdrp_joint_fit.py`, fit loi de puissance joint MTBC+leprae, bootstrap 1000, critère de rejet long-clock. Utilisé par Phase 4c.
+- `complex_datation/litterature_review/time_dependent_rate_phenomenon.md`, revue TDRP exhaustive (9 articles-clés).
+- `molecular_clock/analyses/molecular_clock_pipeline.py`, pipeline v5 multi-seed, produit l'anchor courte-échelle à injecter dans Phase 4c.
 
 ## Dépendances
 

@@ -13,7 +13,7 @@ user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
 ---
 
-# Pangenome Enrichment — Analyse du pangénome MTBC
+# Pangenome Enrichment : Analyse du pangénome MTBC
 
 Classification des gènes en core/soft-core/shell/cloud par lignée MTBC, enrichissement fonctionnel KEGG, et comparaison du contenu génique entre lignées.
 
@@ -55,59 +55,142 @@ Le MTBC a un pangénome très fermé (peu de transfert horizontal). Les variatio
 
 ## Phase 2 : Extraction des données
 
-> **Source de vérité (cf. `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`)** : dans TBannotator, `system='Senelle'` EST le système maison (= moi/Guyeux), mais c'est un **snapshot** susceptible d'être en retard sur la taxonomie vivante. Pour tout clade récent du cycle multi-signal (L1.\*, Bovis1.\*, BCG.\*, L6 profond), recouper le label avec `bdd/actuelle/` + `barcoding_v2/barcode_complete.tsv`. Ne jamais lire `snp_barcoding.csv` (v1 obsolète) ni `strain_lineages.csv` (périmé) comme référence taxonomique.
+> **Source de vérité (cf. `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`)** : dans TBannotator, `system_name='guyeux'` EST le système maison (= moi/Guyeux), mais c'est un **snapshot** susceptible d'être en retard sur la taxonomie vivante. Pour tout clade récent du cycle multi-signal (L1.\*, Bovis1.\*, BCG.\*, L6 profond), recouper le label avec `bdd/actuelle/` + `barcoding_v2/barcode_complete.tsv`. Ne jamais lire `snp_barcoding.csv` (v1 obsolète) ni `strain_lineages.csv` (périmé) comme référence taxonomique.
 
 ### Gènes altérés (frameshifts/stops) par lignée depuis TBannotator
 
+> ⚠ **`mv_protein_position_mutations` n'est PAS peuplée** côté serveur (vérifié 2026-07-31) et elle est
+> agrégée (pas de `strain_id`). Route valide : `tb_report_spdi_annotations` → `tb_report_spdi` →
+> `tb_report_strain_spdi`. Colonnes réelles : `locus_tag` (Rv####), `annotation_type`
+> (`frameshift_variant`, `stop_gained`, `missense_variant`…), `impact` (LOW/MODERATE/HIGH), `hgvs_p`.
+> **Alternative bien plus rapide pour la perte de gène** : `tb_report_strain_missing_gene`
+> (souche × gène absent, 17,4M lignes, indexée), c'est la vraie table de délétion.
+
 ```sql
--- Gènes avec frameshifts lignée-spécifiques
-SELECT p.gene, p.effect, c.lineage_code,
-       COUNT(DISTINCT p.sra_id) as n_strains,
-       (SELECT COUNT(DISTINCT sra_id) FROM mv_strain_classification
-        WHERE system = 'Senelle' AND lineage_code = c.lineage_code) as n_total
-FROM mv_protein_position_mutations p
-JOIN mv_strain_classification c ON p.sra_id = c.sra_id
-WHERE c.system = 'Senelle'
-  AND p.effect IN ('frameshift_variant', 'stop_gained')
-GROUP BY p.gene, p.effect, c.lineage_code
-HAVING COUNT(DISTINCT p.sra_id) >= 10
+-- Gènes disruptés (frameshift/stop) par lignée
+-- Coût élevé : restreindre par lignée ou par liste de locus_tag.
+SELECT a.locus_tag, a.annotation_type, c.lineage_code,
+       COUNT(DISTINCT ss.strain_id) AS n_strains
+FROM tb_report_spdi_annotations a
+JOIN tb_report_spdi s           ON s.spdi_variant_name = a.spdi_variant_name
+JOIN tb_report_strain_spdi ss   ON ss.spdi_id = s.spdi_id
+JOIN mv_strain_classification c ON c.strain_id = ss.strain_id
+WHERE c.system_name = 'guyeux'
+  AND c.lineage_code LIKE '4.15%'                       -- filtrer !
+  AND a.annotation_type IN ('frameshift_variant', 'stop_gained')
+GROUP BY a.locus_tag, a.annotation_type, c.lineage_code
+HAVING COUNT(DISTINCT ss.strain_id) >= 10
 ORDER BY n_strains DESC;
 ```
 
-### Fréquence de pseudogénisation par gène
+### Gènes absents (délétion) par lignée : route rapide
 
 ```sql
--- Proportion de souches avec gène pseudogénisé, par lignée
-SELECT p.gene,
+-- Proportion de souches d'une lignée où le gène est ABSENT (délétion réelle, pas disruption ponctuelle)
+SELECT g.locus_tag,
        c.lineage_code,
-       COUNT(DISTINCT p.sra_id) as n_pseudogenized,
-       ROUND(100.0 * COUNT(DISTINCT p.sra_id) /
-         (SELECT COUNT(DISTINCT sra_id) FROM mv_strain_classification
-          WHERE system = 'Senelle' AND lineage_code = c.lineage_code), 2) as pct
-FROM mv_protein_position_mutations p
-JOIN mv_strain_classification c ON p.sra_id = c.sra_id
-WHERE c.system = 'Senelle'
-  AND p.effect IN ('frameshift_variant', 'stop_gained')
-GROUP BY p.gene, c.lineage_code
-HAVING COUNT(DISTINCT p.sra_id) >=
-  0.5 * (SELECT COUNT(DISTINCT sra_id) FROM mv_strain_classification
-         WHERE system = 'Senelle' AND lineage_code = c.lineage_code)
-ORDER BY p.gene, c.lineage_code;
+       COUNT(DISTINCT mg.strain_id) AS n_missing,
+       ROUND(100.0 * COUNT(DISTINCT mg.strain_id) /
+         NULLIF((SELECT COUNT(DISTINCT strain_id) FROM mv_strain_classification
+                 WHERE system_name = 'guyeux' AND lineage_code = c.lineage_code), 0), 2) AS pct
+FROM tb_report_strain_missing_gene mg
+JOIN tb_report_gene g           ON g.gene_id = mg.gene_id
+JOIN mv_strain_classification c ON c.strain_id = mg.strain_id
+WHERE c.system_name = 'guyeux' AND c.lineage_code LIKE '4.15%'
+GROUP BY g.locus_tag, c.lineage_code
+ORDER BY n_missing DESC
+LIMIT 50;
 ```
 
 ### Diversité fonctionnelle par gène
 
+> ⚠ **`mv_protein_effect_diversity` n'est PAS peuplée** côté serveur (vérifié 2026-07-31) : la requête
+> échoue (`has not been populated`). Si l'équipe TBannotator la rafraîchit, ses colonnes réelles sont
+> `locus_tag`, `annotation_type`, `mutation_count`, `total_strains`, `shannon_diversity`,
+> `simpson_diversity` (**pas** `gene`, ni `n_variants`, ni `n_strains`). En attendant, calculer la
+> diversité soi-même depuis les tables.
+
 ```sql
--- Shannon/Simpson diversity of mutations per gene
-SELECT gene, shannon_diversity, simpson_diversity,
-       n_variants, n_strains
-FROM mv_protein_effect_diversity
-WHERE n_variants >= 5
-ORDER BY shannon_diversity DESC
-LIMIT 50;
+-- Diversité des mutations par gène, calculée depuis les tables (route qui fonctionne)
+-- Coût élevé : restreindre la liste de locus_tag.
+SELECT a.locus_tag,
+       COUNT(DISTINCT a.hgvs_p)        AS n_distinct_mutations,
+       COUNT(DISTINCT ss.strain_id)    AS n_strains
+FROM tb_report_spdi_annotations a
+JOIN tb_report_spdi s         ON s.spdi_variant_name = a.spdi_variant_name
+JOIN tb_report_strain_spdi ss ON ss.spdi_id = s.spdi_id
+WHERE a.locus_tag IN ('Rv1908c', 'Rv0667')
+  AND a.annotation_type = 'missense_variant'
+GROUP BY a.locus_tag
+ORDER BY n_distinct_mutations DESC;
 ```
 
 ## Phase 3 : Classification pangenome
+
+### D'où vient `gene_presence.csv` (entrée obligatoire)
+
+Le script attend une matrice **souche × gène** à valeurs 0/1, une ligne par
+souche, plus une colonne de groupe (`lineage`). Ce fichier n'existe pas dans la
+base : il faut le construire, et de quelle façon on le construit change le
+résultat. Deux routes, qui ne mesurent pas la même chose.
+
+**Route A : pangénome calculé depuis les annotations (la vraie route).**
+Annoter les génomes avec Prokka ou Bakta, puis grouper les gènes en familles
+orthologues :
+
+```bash
+# Panaroo, plus strict sur les erreurs d'annotation, recommandé pour MTBC
+panaroo -i annotations/*.gff -o panaroo_out --clean-mode strict -t 8
+# -> panaroo_out/gene_presence_absence.Rtab : matrice gène × souche, 0/1
+
+# Alternative : PPanGGOLiN, plus rapide sur des milliers de génomes,
+# et qui produit directement sa propre partition persistent/shell/cloud
+ppanggolin workflow --anno annotations.list -o ppanggolin_out
+```
+
+La matrice de Panaroo est **transposée** par rapport à ce qu'attend le script
+(gènes en lignes) et n'a pas de colonne de lignée :
+
+```python
+import pandas as pd
+
+rtab = pd.read_csv("panaroo_out/gene_presence_absence.Rtab", sep="\t", index_col=0)
+mat = rtab.T                                   # souches en lignes
+mat.index.name = "strain_id"
+lineages = pd.read_csv("lineages.tsv", sep="\t", index_col="strain_id")["lineage"]
+mat.insert(0, "lineage", lineages.reindex(mat.index))
+mat.dropna(subset=["lineage"]).to_csv("gene_presence.csv")
+```
+
+Note sur PPanGGOLiN : sa partition `persistent / shell / cloud` est estimée par
+un modèle statistique, pas par les seuils de fréquence de ce skill. Ne pas
+mélanger les deux nomenclatures dans un même tableau.
+
+**Route B : présence fonctionnelle dérivée de TBannotator (le raccourci).**
+Partir de H37Rv et marquer 0 les gènes pseudogénisés (frameshift, stop gagné) ou
+supprimés par une RD connue, via les requêtes de la Phase 2.
+
+**Ces deux routes ne mesurent pas la même chose, et les confondre casse
+l'interprétation.** La route A mesure la **présence du gène** dans l'assemblage.
+La route B mesure l'**intégrité du cadre de lecture** d'un gène qui, physiquement,
+est toujours là. Un gène pseudogénisé dans toute une lignée est absent au sens B
+et présent au sens A. Concrètement :
+
+- Si le fichier vient de la route B, ne pas l'appeler un pangénome : c'est une
+  matrice de pseudogénisation. Les catégories restent utilisables, mais la
+  lecture correcte est « gène fonctionnel dans x % des souches », pas « gène
+  présent ».
+- Le MTBC ayant un pangénome quasi fermé (transfert horizontal négligeable), la
+  route A produit un core énorme et un cloud presque vide : le signal biologique
+  intéressant est concentré dans les RD et les familles PE/PPE. C'est justement
+  là que la route A est la moins fiable, les PE/PPE étant riches en répétitions
+  et donc mal assemblés depuis des lectures courtes.
+- Un « gène absent » qui n'apparaît que sur les assemblages à faible couverture
+  est un artefact d'assemblage. Contrôler la corrélation entre le nombre de gènes
+  absents par souche et sa profondeur de couverture avant toute conclusion : une
+  corrélation nette invalide l'analyse, et `strain-qc` sert à filtrer en amont.
+- Ne jamais mélanger dans une même matrice des génomes assemblés de novo et des
+  génomes mappés sur H37Rv.
 
 ### Script
 
@@ -151,7 +234,7 @@ Test de Fisher exact. Correction FDR Benjamini-Hochberg sur l'ensemble des pathw
 | Pathway | ID KEGG | Pertinence MTBC |
 |---------|---------|-----------------|
 | Fatty acid metabolism | mtu00071 | Lipides de paroi, virulence |
-| Biosynthesis of PDIM/PGL | — | Virulence, spécifique mycobactéries |
+| Biosynthesis of PDIM/PGL |, | Virulence, spécifique mycobactéries |
 | Two-component systems | mtu02020 | Régulation adaptation environnement |
 | ABC transporters | mtu02010 | Import/export, résistance |
 | Beta-oxidation | mtu00071 | Source de carbone in vivo |
@@ -201,7 +284,7 @@ Matrice gènes différentiels (lignes) × lignées (colonnes), colorée par fré
 | RD7 | L5, L6 | Rv1572-1587 | Marqueur M. africanum |
 | RD9 | L5, L6, animales | Rv2073-2083 | Marqueur grand clade |
 | RD10 | M. bovis, M. caprae | Rv3478-3487 | Spécifique animal clade 1 |
-| RD12 | M. canettii absent | — | Marqueur MTBC vs canettii |
+| RD12 | M. canettii absent |, | Marqueur MTBC vs canettii |
 | TbD1 | L2, L3, L4 | mmpS6, mmpL6 | "Modern" lineages |
 
 ## Intégration
@@ -211,7 +294,7 @@ Matrice gènes différentiels (lignes) × lignées (colonnes), colorée par fré
 | `tbannotator-mcp` | Source des mutations, classifications |
 | `convergent-evolution` | Identifier la convergence dans les gènes du pangénome |
 | `lineage-comparison` | Tests statistiques pour les gènes différentiels |
-| `create-viz` | Heatmaps et figures personnalisées |
+| `sci-figure` | Heatmaps et figures personnalisées |
 
 ## Dépendances
 

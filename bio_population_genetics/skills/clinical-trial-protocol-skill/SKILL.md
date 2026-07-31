@@ -5,7 +5,7 @@ description: Generate clinical trial protocols for medical devices or drugs. Thi
 
 # Clinical Trial Protocol Skill
 
-## ⚠️ EXECUTION CONTROL - READ THIS FIRST
+## ️ EXECUTION CONTROL - READ THIS FIRST
 
 **CRITICAL: This orchestrator follows a SIMPLE START approach:**
 
@@ -21,18 +21,18 @@ description: Generate clinical trial protocols for medical devices or drugs. Thi
 
 ## Overview
 
-This skill generates clinical trial protocols for **medical devices or drugs** using a **modular, waypoint-based architecture** 
+This skill generates clinical trial protocols for **medical devices or drugs** using a **modular, waypoint-based architecture**
 
 ## What This Skill Does
 
 Starting with an intervention idea (device or drug), this orchestrated workflow offers two modes:
 
-**🔬 Research Only Mode (Steps 0-1):**
+**Research Only Mode (Steps 0-1):**
 0. **Initialize Intervention** - Collect device or drug information
 1. **Research Similar Protocols** - Find similar trials, FDA guidance, and published protocols
    - **Deliverable:** Comprehensive research summary as formatted .md artifact
 
-**📄 Full Protocol Mode (Steps 0-5):**
+**Full Protocol Mode (Steps 0-5):**
 0. **Initialize Intervention** - Collect device or drug information
 1. **Research Similar Protocols** - Find similar trials, FDA guidance, and published protocols
 2. **Protocol Foundation** - Generate protocol sections 1-6 (foundation, design, population)
@@ -72,7 +72,7 @@ references/
 ├── 02-protocol-foundation.md        # Protocol sections 1-6 (foundation, design, population)
 ├── 03-protocol-intervention.md      # Protocol sections 7-8 (intervention details)
 ├── 04-protocol-operations.md        # Protocol sections 9-12 (assessments, statistics, operations)
-└── 05-generate-document.md          # NIH Protocol generation
+└── 05-concatenate-protocol.md       # NIH Protocol assembly and final document
 ```
 
 ### Utility Scripts
@@ -137,13 +137,13 @@ pip install -r requirements.txt
 
 Simply invoke the skill and select your desired mode:
 
-**🔬 Research Only Mode:**
+**Research Only Mode:**
 1. Select "Research Only" from the main menu
 2. Provide intervention information
 3. Receive comprehensive research summary as formatted .md artifact
 4. Option to continue with full protocol generation or exit
 
-**📄 Full Protocol Mode:**
+**Full Protocol Mode:**
 1. Select "Full Protocol" from the main menu
 2. Guide you through all steps sequentially (Steps 0-5)
 3. Pause after Step 4 to review the draft protocol
@@ -158,7 +158,7 @@ Simply invoke the skill and select your desired mode:
 When skill is invoked, display the following message:
 
 ```
-🧬 CLINICAL TRIAL PROTOCOL
+CLINICAL TRIAL PROTOCOL
 
 Welcome! This skill generates clinical trial protocols for medical devices or drugs.
 
@@ -168,25 +168,25 @@ Welcome! This skill generates clinical trial protocols for medical devices or dr
   Completed: [List of completed steps]
   Next: [Next step to execute]
 
-📋 SELECT MODE:
+SELECT MODE:
 
-1. 🔬 Research Only - Run clinical research analysis (Steps 0-1)
+1. Research Only - Run clinical research analysis (Steps 0-1)
    • Collect intervention information
    • Research similar clinical trials
    • Find FDA guidance and regulatory pathways
    • Generate comprehensive research summary as .md artifact
 
-2. 📄 Full Protocol - Generate complete clinical trial protocol (Steps 0-5)
+2. Full Protocol - Generate complete clinical trial protocol (Steps 0-5)
    • Everything in Research Only, plus:
    • Generate all protocol sections
    • Create professional protocol document
 
-3. ❌ Exit
+3. Exit
 
 Please select an option (1, 2, or 3):
 ```
 
-**🛑 STOP and WAIT for user selection (1, 2, or 3)**
+**STOP and WAIT for user selection (1, 2, or 3)**
 
 - If **1 (Research Only)**: Set `execution_mode = "research_only"` and proceed to Research Only Workflow Logic
 - If **2 (Full Protocol)**: Set `execution_mode = "full_protocol"` and proceed to Full Workflow Logic
@@ -272,17 +272,17 @@ After Step 1 completes successfully:
 4. **Display completion message:**
 
 ```
-✅ RESEARCH COMPLETE
+RESEARCH COMPLETE
 
 Research Summary Generated: waypoints/research_summary.md
 
-📊 Key Findings:
+Key Findings:
   • Similar Trials Found: [X trials]
   • Recommended Pathway: [Pathway name]
   • FDA Guidance Documents: [X documents identified]
   • Study Design: [Recommended design]
 
-📄 The research summary has been saved as a formatted markdown artifact.
+The research summary has been saved as a formatted markdown artifact.
 
 Would you like to:
 1. Continue with full protocol generation (steps 2-5)
@@ -334,7 +334,7 @@ For each step (0, 1, 2, 3, 4, 5):
 After Step 4 completes successfully, display the EXACT menu below (do not improvise or create alternative options):
 
 ```
-✅ PROTOCOL COMPLETE: Protocol Draft Generated
+PROTOCOL COMPLETE: Protocol Draft Generated
 
 Protocol Details:
   • Study Design: [Design from metadata]
@@ -345,11 +345,11 @@ Protocol Details:
 Protocol file: waypoints/02_protocol_draft.md
 File size: [Size in KB]
 
-📋 WHAT WOULD YOU LIKE TO DO NEXT?
+WHAT WOULD YOU LIKE TO DO NEXT?
 
-1. 📄 Review Protocol in Artifact - click on the .md file above
+1. Review Protocol in Artifact - click on the .md file above
 
-2. 📄 Concatenate Final Protocol (Step 5)
+2. Concatenate Final Protocol (Step 5)
 
 3. ⏸️  Exit and Review Later
 
@@ -436,7 +436,7 @@ Each subskill is designed to:
 
 ## Disclaimers
 
-⚠️ **IMPORTANT:** This protocol generation tool provides preliminary clinical study protocol based on NIH/FDA guidelines and similar trials. It does NOT constitute:
+️ **IMPORTANT:** This protocol generation tool provides preliminary clinical study protocol based on NIH/FDA guidelines and similar trials. It does NOT constitute:
 - Official FDA or IRB determination or approval
 - Medical, legal, or regulatory advice
 - Substitute for professional biostatistician review

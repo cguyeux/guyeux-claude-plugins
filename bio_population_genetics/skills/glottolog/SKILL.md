@@ -15,7 +15,7 @@ description: >-
   workflow with authoritative language identifiers.
 ---
 
-# Glottolog — Catalogue of the World's Languages
+# Glottolog : Catalogue of the World's Languages
 
 ## Client (resilient, tool-first)
 
@@ -41,14 +41,14 @@ language families, and dialects, maintained at the Max Planck Institute for
 Evolutionary Anthropology (Leipzig) by Harald Hammarström, Robert Forkel,
 Martin Haspelmath and Sebastian Bank. It assigns a **stable, persistent
 identifier** (the *Glottocode*) to every language, family, and dialect and
-provides a bibliographically backed genealogical classification — the
+provides a bibliographically backed genealogical classification, the
 foundation on which most cross-linguistic databases (including **D-PLACE**,
 **WALS**, **Phoible**, **Lexibank**) now stand.
 
 - **Canonical citation**: Hammarström H., Forkel R., Haspelmath M. & Bank S.
   *Glottolog* [current version]. Max Planck Institute for Evolutionary
   Anthropology, Leipzig.
-- **Current release**: **Glottolog 5.3** (March 2026) — confirm current
+- **Current release**: **Glottolog 5.3** (March 2026), confirm current
   version on `https://glottolog.org/` before citing
 - **Web interface**: `https://glottolog.org/`
 - **GitHub (raw)**: `https://github.com/glottolog/glottolog`
@@ -91,7 +91,7 @@ Concrete uses for your research:
 1. **Stable join keys.** When cross-referencing ancient-human populations
    (AADR), cultural variables (D-PLACE), or pathogen sampling metadata,
    **Glottocode** is the only stable identifier that survives renaming.
-   ISO 639-3 codes are not enough — many languages lack one, and dialects
+   ISO 639-3 codes are not enough, many languages lack one, and dialects
    are not covered by ISO.
 2. **Language-family control.** Many comparative analyses in
    eco-anthropology require controlling for descent from a common linguistic
@@ -105,7 +105,7 @@ Concrete uses for your research:
    Australia, North America, South America) are a standard coarse-scale
    grouping used in comparative linguistics and useful as a control covariate.
 5. **Endangerment status (AES).** Endangered-language speakers often live
-   in under-sampled, under-surveilled regions — useful context when
+   in under-sampled, under-surveilled regions, useful context when
    discussing TB surveillance gaps in a narrative framing.
 
 ## Data model
@@ -145,12 +145,12 @@ redirects.
 | `macroarea` | Africa / Eurasia / Papunesia / Australia / N America / S America |
 | `latitude`, `longitude` | Decimal degrees (WGS84), geographic or historical |
 | `aes` | Agglomerated Endangerment Status (scale from Not Endangered → Extinct) |
-| `med` | Most Extensive Description — the best descriptive reference |
+| `med` | Most Extensive Description, the best descriptive reference |
 | `bibliography` | All references keyed to this languoid |
 
 ## Data access
 
-### Option A — Web lookup (browse, single-language)
+### Option A : Web lookup (browse, single-language)
 
 Every languoid has a stable URL:
 `https://glottolog.org/resource/languoid/id/<glottocode>`
@@ -160,7 +160,7 @@ Example: `https://glottolog.org/resource/languoid/id/stan1293`
 The page exposes classification, coordinates, references, ISO code, and
 descendants. Useful for a quick manual check.
 
-### Option B — CLDF distribution (recommended for analysis)
+### Option B : CLDF distribution (recommended for analysis)
 
 ```bash
 git clone https://github.com/glottolog/glottolog-cldf.git
@@ -182,7 +182,7 @@ The CLDF StructureDataset ships with these parameters encoded in
 `ParametersTable`: `level`, `category`, `classification`, `subclassification`,
 `med`, `medovertime`, `aes`, `bib`.
 
-### Option C — `pyglottolog` (native Python API)
+### Option C : `pyglottolog` (native Python API)
 
 ```bash
 pip install pyglottolog
@@ -205,7 +205,7 @@ for lang in g.languoid("indo1319").descendants:
         print(lang.id, lang.name)
 ```
 
-### Option D — Flat CSV exports
+### Option D : Flat CSV exports
 
 The raw Glottolog repo ships a `languoids.csv` under its distribution format,
 and each CLDF release ships a versioned CSV dump. Both are easy to read
@@ -213,7 +213,7 @@ with pandas for ad-hoc joins.
 
 ## Workflows
 
-### Workflow 1 — Resolve a population name to a Glottocode
+### Workflow 1 : Resolve a population name to a Glottocode
 
 You want to join a TB metadata row with `country = "Ghana"` and
 `population = "Akan"` to Glottolog.
@@ -229,10 +229,10 @@ for l in matches:
     print(l.id, l.name, l.macroareas, (l.latitude, l.longitude))
 ```
 
-Always verify with the classification path — many names collide across
+Always verify with the classification path, many names collide across
 families.
 
-### Workflow 2 — Build a family-level control covariate
+### Workflow 2 : Build a family-level control covariate
 
 For a set of TB samples with coordinates, tag each with the family of the
 closest Glottolog language within a radius.
@@ -255,7 +255,7 @@ tb_samples["family"] = lang.iloc[idx]["Family_ID"].values
 Then use `family` as a random effect / block factor in downstream models
 to control for linguistic non-independence.
 
-### Workflow 3 — Geographic spread of a language family vs TB lineage
+### Workflow 3 : Geographic spread of a language family vs TB lineage
 
 Goal: test whether the geographic footprint of an Indo-European (say) branch
 coincides with the range of a TB sublineage.
@@ -268,7 +268,7 @@ coincides with the range of a TB sublineage.
 5. Cross-reference with D-PLACE Bantu / Austronesian / Indo-European
    Bayesian phylogenies for a time-calibrated narrative.
 
-### Workflow 4 — Link to D-PLACE societies
+### Workflow 4 : Link to D-PLACE societies
 
 Glottolog is the **join table** between D-PLACE societies and language
 classification.
@@ -283,7 +283,7 @@ joined = soc.merge(lang, left_on="glottocode", right_on="ID", how="left")
 Now `joined` has both the cultural/subsistence variables (D-PLACE) and the
 linguistic classification (Glottolog), ready for coevolution tests.
 
-### Workflow 5 — Historical / extinct languages for ancient contexts
+### Workflow 5 : Historical / extinct languages for ancient contexts
 
 When discussing ancient TB contexts, Glottolog is the only catalogue that
 systematically includes **extinct** and **historically attested** languages
@@ -297,10 +297,10 @@ framing pre-modern or ancient-DNA narratives.
 - **Dialect coverage is uneven.** Dialects are catalogued where authors
   have contributed data; absence does not mean non-existence.
 - **Coordinates are centroids or attestation points.** They do not represent
-  the full extent of a language's range — for range data, use WGS
+  the full extent of a language's range, for range data, use WGS
   (Ethnologue) or WALS, or compute a convex hull over multiple dialect points.
 - **No speaker counts in Glottolog itself.** Use Ethnologue or UNESCO Atlas
-  if you need speaker numbers — but beware licensing.
+  if you need speaker numbers, but beware licensing.
 - **AES endangerment scale ≠ Ethnologue EGIDS.** They are correlated but
   not identical; cite the scale used.
 - **Not a lexical database.** For vocabulary/phonology, chain to Phoible,

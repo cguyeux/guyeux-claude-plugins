@@ -17,7 +17,7 @@ user-invocable: true
 allowed-tools: Bash, Read, Glob
 ---
 
-# /phylo-history — Narration phylogénétique d'une souche pour manuscrit
+# /phylo-history : Narration phylogénétique d'une souche pour manuscrit
 
 Produit un paragraphe prêt à coller dans un manuscrit (Results,
 Supplementary Material, ou rebuttal à un reviewer) décrivant la position
@@ -41,13 +41,13 @@ reconstruits et archivés dans `investigate_phylo/experiments/`.
 
 ## Étapes
 
-### Phase 0 — Localiser investigate_phylo/
+### Phase 0 : Localiser investigate_phylo/
 
 Remonter depuis le cwd pour trouver `investigate_phylo/`. Depuis un
 sous-projet article typique (`L4.15/article/`, `methodology/article/`…),
 c'est `../../investigate_phylo/`.
 
-### Phase 1 — Produire la narration brute
+### Phase 1 : Produire la narration brute
 
 ```bash
 cd <chemin vers investigate_phylo>
@@ -61,7 +61,7 @@ Le script renvoie un paragraphe anglais structuré selon ces éléments :
 - Indice de Jaccard du voisinage entre reconstructions
 - Composition de la sister clade immédiate
 
-### Phase 2 — Enrichir la narration avec des chiffres
+### Phase 2 : Enrichir la narration avec des chiffres
 
 Relancer en mode `--format json` pour récupérer les valeurs exactes à
 injecter comme arguments précis dans la prose :
@@ -71,16 +71,16 @@ python analyze_strain_phylo.py <SRA> --k <N> --format json
 ```
 
 Utiliser les champs suivants pour enrichir le paragraphe :
-- `summary.assigned_lineages` — lister toutes les lignées historiques
-- `summary.neighbor_jaccard` — citer l'indice exact (2 décimales)
-- `trees[i].nearest_neighbors[*].patristic_distance` — citer la distance
+- `summary.assigned_lineages`, lister toutes les lignées historiques
+- `summary.neighbor_jaccard`, citer l'indice exact (2 décimales)
+- `trees[i].nearest_neighbors[*].patristic_distance`, citer la distance
   au plus proche voisin pour quantifier la proximité
-- `trees[i].sister_clade.size` et `lineage_composition` — décrire
+- `trees[i].sister_clade.size` et `lineage_composition`, décrire
   précisément la sister clade
 - `strain_entry.lineage_timeline` (depuis `query_history.py <SRA>` si
-  nécessaire) — documenter les déplacements manuels avec leur date
+  nécessaire), documenter les déplacements manuels avec leur date
 
-### Phase 3 — Adapter au contexte du manuscrit
+### Phase 3 : Adapter au contexte du manuscrit
 
 Relire la prose du script et l'adapter au ton et au contexte :
 
@@ -94,7 +94,7 @@ Relire la prose du script et l'adapter au ton et au contexte :
   reviewer, we examined the phylogenetic position of strain X… » puis
   enchaîner avec la narration du script.
 
-### Phase 4 — Vérifier la cohérence avec le manuscrit
+### Phase 4 : Vérifier la cohérence avec le manuscrit
 
 Avant de proposer le paragraphe :
 1. Vérifier que la lignée affirmée dans la prose est bien celle utilisée

@@ -1,32 +1,25 @@
 ---
 name: maboss-ecosystem
 description: >-
-  Map of the MaBoSS / CoLoMoTo ecosystem and where a new tool fits: the MaBoSS C++
-  engine (2.6.6, Gillespie, ≤64 nodes; Stoll 2012 & 2017), pyMaBoSS bindings, the CCT
-  temporal-logic assertion evaluator (Oscar Dufossez), WebMaBoSS (web interface,
-  FIRST author Vincent Noel 2021; Docker+MariaDB; imports models from BioModels and
-  CellCollective; SBML-qual/GINsim/BNet; live at maboss.curie.fr/WebMaBoSS),
-  PopMaBoSS/UPMaBoSS/PhysiBoSS, and the model repositories (BioModels, Cell Collective
-  by disease, GINsim, PhysiBoSS Boolean-models). Also the reference tutorials (p53
-  DNA-damage; Montagud 2022 prostate cancer; Cohen 2015 tumour invasion/EMT = the
-  32-node ginsimout_export model in mabossDemo) and the prior-art positioning of a
-  literature→model-coherency tool against INDRA (Sorger; NLP→statements→ModelChecker)
-  and WebMaBoSS.
-
-  Use when: deciding whether to build vs reuse (a model library, an assertion
-  evaluator, a coherency checker already exist), positioning a project's novelty,
-  citing the right paper/author, choosing where models come from, or identifying who
-  to contact (Vincent Noel for WebMaBoSS/pyMaBoSS/server; Oscar Dufossez for CCT).
-  Companion to `pymaboss` (API) and `maboss-model` (file format).
+  Map of the MaBoSS / CoLoMoTo ecosystem and where a new tool fits: the MaBoSS C++ engine
+  (2.6.6, Gillespie, up to 64 nodes; Stoll 2012 and 2017), pyMaBoSS bindings, the CCT
+  temporal-logic assertion evaluator (Oscar Dufossez), WebMaBoSS (Vincent Noel 2021, Docker
+  and MariaDB, imports from BioModels and Cell Collective, maboss.curie.fr/WebMaBoSS),
+  PopMaBoSS, UPMaBoSS, PhysiBoSS, and the model repositories. Also the reference tutorials
+  (p53 DNA damage, Montagud 2022 prostate cancer, Cohen 2015 tumour invasion) and prior-art
+  positioning against INDRA and WebMaBoSS. Use when deciding whether to build or reuse,
+  positioning a project's novelty, citing the right paper or author, choosing where models
+  come from, or identifying who to contact. Companion to pymaboss (API) and maboss-model
+  (file format).
 argument-hint: "[question]   # e.g. 'is there a curated cancer model library?' / 'novelty vs INDRA?'"
 allowed-tools: Read, WebSearch, WebFetch, Bash
 user-invocable: true
 ---
 
-# /maboss-ecosystem — who does what, and what already exists
+# /maboss-ecosystem : who does what, and what already exists
 
 Captured by navigating the official sites/repos (July 2026). The recurring lesson: **most
-"obvious extensions" already exist in the CoLoMoTo ecosystem — reuse and position, do not reinvent.**
+"obvious extensions" already exist in the CoLoMoTo ecosystem, reuse and position, do not reinvent.**
 
 ## The tools
 
@@ -49,7 +42,7 @@ Captured by navigating the official sites/repos (July 2026). The recurring lesso
 
 ## Where models come from (the "model library" question)
 
-There is no need to invent a cancer-model library — browse/import from:
+There is no need to invent a cancer-model library, browse/import from:
 - **Cell Collective** (`cellcollective.org`): logical models by biological process incl. cancer
   (breast, prostate, blood).
 - **BioModels**: ~800 curated models, Boolean ones in SBML-qual.
@@ -58,10 +51,10 @@ There is no need to invent a cancer-model library — browse/import from:
 - **WebMaBoSS** already wires BioModels + CellCollective import. pyMaBoSS can `loadSBML`/`loadBNet`.
 
 Reference cancer models to know: **Cohen 2015** (tumour cell invasion/migration, EMT/metastasis, 32
-nodes — this is `models/demo/ginsimout_export.bnd` in mabossDemo), **Montagud 2022** (prostate, LNCaP),
+nodes, this is `models/demo/ginsimout_export.bnd` in mabossDemo), **Montagud 2022** (prostate, LNCaP),
 Fumia (pan-cancer signalling), Flobak (gastric), Beal (breast personalisation).
 
-## Positioning a literature→coherency tool (prior art — argue the delta before building)
+## Positioning a literature→coherency tool (prior art : argue the delta before building)
 
 - **INDRA** (Sorger/Gyori/Bachman, Harvard): NLP → mechanistic "Statements" → assemble into executable
   models, WITH a `ModelChecker` that checks a model against statements. So "literature→assertion→model
@@ -72,10 +65,10 @@ Fumia (pan-cancer signalling), Flobak (gastric), Beal (breast personalisation).
   threshold) and the evaluator (Oscar). WebMaBoSS provides the models.
 - **The remaining defensible niche of an LLM+MaBoSS tool** = automating *literature → CCT query* with an
   LLM (extraction + strict grounding: drug/antibody/ligand ≠ node; separated confidences), feeding the
-  EXISTING evaluator and models — a front-end layer, not a new evaluator or repository. Any novelty
+  EXISTING evaluator and models, a front-end layer, not a new evaluator or repository. Any novelty
   claim must be benchmarked against INDRA (extraction) and shown to add over WebMaBoSS+CCT.
 
 ## Contacts
 
-Vincent Noel — WebMaBoSS, pyMaBoSS, MaBoSS server. Oscar Dufossez — CCT / temporal_logic evaluator.
+Vincent Noel : WebMaBoSS, pyMaBoSS, MaBoSS server. Oscar Dufossez, CCT / temporal_logic evaluator.
 Curie/CoLoMoTo team: Laurence Calzone, Gautier Stoll, Emmanuel Barillot, Andrei Zinovyev, Aurelien Naldi.

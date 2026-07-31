@@ -1,17 +1,13 @@
 ---
 name: reviewer-response
 description: >-
-  Systematic point-by-point response to a manuscript review. Parses reviewer
-  comments into individual tasks, critically evaluates each (agree/disagree),
-  plans and executes analyses (bioinfo, literature, statistics) in experiments/,
-  improves the manuscript, and produces a timestamped rebuttal letter in review/.
-  When a reviewer asks for additional citations on a TB / MTBC topic, use
-  the `tbmonitor-papers` skill first (~190 000 PubMed TB papers, sub-second
-  SQL access with MeSH / authors / keywords as JSON) before falling back
-  to lit-review or WebSearch.
-  Use /reviewer-response review/file.md to start, /reviewer-response next to
-  advance, /reviewer-response status to check progress, /reviewer-response R05
-  to jump to a specific remark.
+  Systematic point-by-point response to a manuscript review. Parses reviewer comments into
+  individual tasks, critically evaluates each (agree or disagree), plans and executes
+  analyses (bioinfo, literature, statistics) in experiments/, improves the manuscript, and
+  produces a timestamped rebuttal letter in review/. Use when the user has received referee
+  reports and wants to answer them, asks to handle a revision, or mentions a rebuttal or
+  response letter. Invoke with review/file.md to start, next to advance, status for
+  progress, R05 to jump to a specific remark.
 argument-hint: "<review_file.md | next | status | R01..R99>"
 ---
 
@@ -353,7 +349,11 @@ Executer le plan valide :
 1. Ecrire les scripts dans `review/{review_dir}/experiments/R{ID}/scripts/`
 2. Lancer les analyses :
    - **Bioinfo** : TBannotator MCP, Python (pandas, scipy, matplotlib, ete3...)
-   - **Litterature** : WebSearch + WebFetch pour les abstracts
+   - **Litterature** : WebSearch + WebFetch pour les abstracts. **Regle de
+     priorite** : quand un reviewer reclame des citations supplementaires sur
+     un sujet TB / MTBC, passer d'abord par le skill `tbmonitor-papers`
+     (~190 000 papiers PubMed TB, acces SQL sub-seconde avec MeSH / auteurs /
+     mots-cles en JSON) AVANT de retomber sur `lit-review` ou WebSearch.
    - **Statistiques** : scripts Python avec tests adaptes
    - **Donnees** : telechargements, requetes BDD, compilations
 3. Sauvegarder tous les resultats dans `review/{review_dir}/experiments/R{ID}/results/`
@@ -486,7 +486,7 @@ Cette review a ete integralement traitee.
 Generation du bilan de cloture...
 ```
 
-L'utilisateur n'a jamais besoin de taper `finalize` manuellement —
+L'utilisateur n'a jamais besoin de taper `finalize` manuellement,
 le workflow `next` → `next` → ... → finalize → bilan se deroule naturellement.
 
 ---
@@ -694,7 +694,7 @@ et la date de cloture.
 
 ### Ce que le skill DOIT faire
 
-- Traiter **une seule remarque a la fois** — chaque remarque est une tache
+- Traiter **une seule remarque a la fois**, chaque remarque est une tache
   complete et independante (sauf si l'utilisateur demande un batch)
 - **Afficher le verdict** et attendre confirmation avant toute action
 - **Afficher le plan d'experience** et attendre confirmation avant de lancer
@@ -707,7 +707,7 @@ et la date de cloture.
 - Etre **diplomatique mais ferme** dans les reponses : ne pas s'ecraser devant
   le reviewer, mais ne pas etre arrogant non plus
 - Pour les verdicts REFUTE : toujours **renforcer l'article** (ajouter une phrase,
-  une reference, une nuance) meme si le reviewer a tort — cela previent qu'un
+  une reference, une nuance) meme si le reviewer a tort, cela previent qu'un
   prochain reviewer souleve la meme question
 
 ### Ce que le skill NE DOIT PAS faire
@@ -719,7 +719,7 @@ et la date de cloture.
 - Lancer des analyses sans plan valide par l'utilisateur
 - Ignorer des resultats inattendus ou derangeants
 - Produire des reponses serviles ("We fully agree with the reviewer's excellent
-  suggestion") — etre professionnel, pas obsequieux
+  suggestion"), etre professionnel, pas obsequieux
 - Oublier de mettre a jour le registre apres chaque action
 - Laisser l'utilisateur dans le flou sur l'etat d'avancement
 

@@ -16,11 +16,11 @@ description: >-
   pipeline that would otherwise require training BioBERT / PubMedBERT
   on your own corpus. For TB-only corpora, build the abstract list with
   `tbmonitor-papers` (PubMed TB pre-filtered, ~190k papers, MeSH/keywords
-  as JSON) before passing PMIDs to PubTator — this is faster than
+  as JSON) before passing PMIDs to PubTator, this is faster than
   re-querying PubMed directly.
 ---
 
-# PubTator 3.0 — Pre-Computed Biomedical Entity Annotations
+# PubTator 3.0 : Pre-Computed Biomedical Entity Annotations
 
 ## Overview
 
@@ -31,8 +31,8 @@ articles. It is maintained by **Zhiyong Lu**'s group at the
 **U.S. National Library of Medicine (NLM)**, synchronised daily with
 PubMed and PMC, and freely accessible without registration.
 
-Version 3.0 (released 2024) uses **AIONER** — a state-of-the-art
-unified NER model — to tag six entity types across the full biomedical
+Version 3.0 (released 2024) uses **AIONER**, a state-of-the-art
+unified NER model, to tag six entity types across the full biomedical
 corpus. Crucially, v3 also provides **relation extraction** between
 entities, enabling semantic search beyond simple entity mentions.
 
@@ -49,7 +49,7 @@ entities, enabling semantic search beyond simple entity mentions.
 - **v2 portal (still active)**: `https://www.ncbi.nlm.nih.gov/research/pubtator/`
 - **v3 API**: `https://www.ncbi.nlm.nih.gov/research/pubtator3-api/`
 - **v2 API**: `https://www.ncbi.nlm.nih.gov/research/pubtator/api/`
-- **License**: public domain — NCBI/NLM standard re-use terms
+- **License**: public domain : NCBI/NLM standard re-use terms
 - **No API key required**; be polite with email in `User-Agent`
 
 > [!NOTE]
@@ -67,24 +67,24 @@ entities, enabling semantic search beyond simple entity mentions.
 | **Chemical** | Drugs, metabolites, reagents, normalised to MeSH / ChEBI | TaggerOne → AIONER |
 | **Species** | Organisms, normalised to NCBI Taxonomy IDs (incl. ***Mycobacterium tuberculosis*** tax ID 1773) | SR4GN → AIONER |
 | **Mutation / Variant** | Genetic variants in multiple formats (HGVS, rs#, protein mutation) | tmVar → AIONER |
-| **CellLine** | Cell lines, normalised to Cellosaurus / ATCC | — |
+| **CellLine** | Cell lines, normalised to Cellosaurus / ATCC |, |
 
 All annotations carry **span offsets** into the original text, so you
 can highlight them in the original abstract/article or feed them to
 downstream tools.
 
-## v3 novelty — Relation Extraction
+## v3 novelty : Relation Extraction
 
 PubTator 3 adds **relation triples** between entities, e.g.:
 
-- **Gene–Disease**: `katG` — *treats / resistance to* — *tuberculosis*
-- **Chemical–Disease**: `isoniazid` — *treats* — *tuberculosis*
-- **Chemical–Gene**: `rifampicin` — *interacts with* — `rpoB`
-- **Gene–Gene**: `katG` — *regulates* — `inhA`
-- **Variant–Disease**: `rpoB S450L` — *associated with* — *tuberculosis*
+- **Gene–Disease**: `katG`, *treats / resistance to*, *tuberculosis*
+- **Chemical–Disease**: `isoniazid`, *treats*, *tuberculosis*
+- **Chemical–Gene**: `rifampicin`, *interacts with*, `rpoB`
+- **Gene–Gene**: `katG`, *regulates*, `inhA`
+- **Variant–Disease**: `rpoB S450L`, *associated with*, *tuberculosis*
 
 This turns PubTator from a tagging service into a **knowledge graph
-builder** — with semantic queries directly available over the output.
+builder**, with semantic queries directly available over the output.
 
 ## Why it matters for MTBC × anthropology
 
@@ -94,7 +94,7 @@ builder** — with semantic queries directly available over the output.
    and species annotations for free.
 2. **Filter by species.** For a global NER pipeline, filtering to
    articles where *Mycobacterium tuberculosis* (tax ID 1773) is a
-   tagged entity gives you a clean cohort — no false positives from
+   tagged entity gives you a clean cohort, no false positives from
    "tuberculosis" as a lay term.
 3. **Resistance mutation extraction.** Variant mentions in PubTator
    are already normalised. Filtering for `rpoB`, `katG`, `inhA`, etc.
@@ -102,12 +102,12 @@ builder** — with semantic queries directly available over the output.
    TB literature.
 4. **Relation extraction for resistance scenarios.** v3's Gene–Disease
    and Variant–Disease relations let you build a **resistance
-   knowledge graph** directly from papers — a compelling slide for
+   knowledge graph** directly from papers, a compelling slide for
    a seminar on AI-augmented literature mining.
 
 ## Data access
 
-### Option A — PubTator 3 Web API (recommended)
+### Option A : PubTator 3 Web API (recommended)
 
 Base URL: `https://www.ncbi.nlm.nih.gov/research/pubtator3-api/`
 
@@ -151,14 +151,14 @@ type. Available scopes: `@GENE_`, `@DISEASE_`, `@CHEMICAL_`,
 curl -sL "https://www.ncbi.nlm.nih.gov/research/pubtator3-api/relations?e1=@GENE_katG"
 ```
 
-### Option B — PubTator Central v2 Web API
+### Option B : PubTator Central v2 Web API
 
 Base URL: `https://www.ncbi.nlm.nih.gov/research/pubtator/api/v1/`
 
 Still useful for reproducibility of pre-2024 analyses. Endpoints
 roughly parallel to v3 but without relation extraction.
 
-### Option C — Bulk FTP dumps
+### Option C : Bulk FTP dumps
 
 PubTator ships periodic bulk dumps of the entire corpus:
 
@@ -169,7 +169,7 @@ PubTator ships periodic bulk dumps of the entire corpus:
 Plan for several GB to tens of GB depending on which dumps you
 download.
 
-### Option D — Python wrappers
+### Option D : Python wrappers
 
 ```bash
 pip install pubtator-loader   # lightweight parser
@@ -207,7 +207,7 @@ speedup.
 
 ## Workflows
 
-### Workflow 1 — Extract all MTBC resistance mutations from the TB literature
+### Workflow 1 : Extract all MTBC resistance mutations from the TB literature
 
 Goal: build a table of reported resistance mutations in MTBC across
 all of PubMed.
@@ -253,11 +253,11 @@ for mut, count in mutation_counts.most_common(30):
 Expected top hits for TB: *rpoB S450L*, *katG S315T*, *inhA C-15T*,
 *embB M306V*, etc.
 
-### Workflow 2 — Species-filtered corpus for MTBC text mining
+### Workflow 2 : Species-filtered corpus for MTBC text mining
 
 Goal: restrict your mining to papers that explicitly mention
 *Mycobacterium tuberculosis* (tax ID 1773) as an annotated entity
-— avoiding noise from papers that use "tuberculosis" as a lay term.
+, avoiding noise from papers that use "tuberculosis" as a lay term.
 
 ```python
 # Filter via PubTator search with @SPECIES scope
@@ -268,7 +268,7 @@ This is cleaner than a free-text PubMed search because PubTator has
 already normalised the entity and will not return papers that mention
 "TB patients" without referencing the pathogen species specifically.
 
-### Workflow 3 — Resistance knowledge graph from Gene–Disease relations
+### Workflow 3 : Resistance knowledge graph from Gene–Disease relations
 
 Goal: build a directed graph `Gene → Disease / Drug Resistance` from
 PubTator 3 relations.
@@ -297,7 +297,7 @@ for gene in ["katG", "rpoB", "inhA", "pncA", "embB", "gyrA"]:
 print(G.number_of_nodes(), "nodes,", G.number_of_edges(), "edges")
 ```
 
-### Workflow 4 — Combined with BioC-PMC and OpenAlex
+### Workflow 4 : Combined with BioC-PMC and OpenAlex
 
 Full text-mining chain for the 150k-article corpus:
 
@@ -309,7 +309,7 @@ Full text-mining chain for the 150k-article corpus:
    and relations (PubTator 3)
 5. Feed the merged corpus to your TBannotator-style LLM pipeline
 
-### Workflow 5 — PubTator annotations for a single-paper deep dive
+### Workflow 5 : PubTator annotations for a single-paper deep dive
 
 When you want to extract everything from one specific paper (e.g.
 Bos et al. 2014 on ancient *M. pinnipedii*):
@@ -353,15 +353,15 @@ Parse and tabulate the entities to populate a fact-extraction table
 
 | Tool | Purpose |
 |---|---|
-| **`bioc-pmc`** | PubTator outputs are in BioC format — same parser applies |
-| **`openalex`** | Bibliometric discovery — find PMCIDs to feed to PubTator |
+| **`bioc-pmc`** | PubTator outputs are in BioC format, same parser applies |
+| **`openalex`** | Bibliometric discovery, find PMCIDs to feed to PubTator |
 | **TBannotator MCP** | Consumes the pre-annotated corpus produced by PubTator |
 | **Europe PMC** | Alternative source of full text for papers not in PMC OA |
 | **NCBI Gene / Taxonomy / MeSH / ChEBI / Cellosaurus** | Reference databases for PubTator's normalisation targets |
-| **BERN2** | Independent neural biomedical NER — use for cross-validation |
+| **BERN2** | Independent neural biomedical NER, use for cross-validation |
 | **scispaCy / BioBERT / PubMedBERT** | Downstream NLP models that can consume PubTator tags as features |
 | **`bioc`** (Python) | Canonical parser |
-| **AIONER** | The underlying NER model in v3 — same group |
+| **AIONER** | The underlying NER model in v3, same group |
 
 ## Citations
 

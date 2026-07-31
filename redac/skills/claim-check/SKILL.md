@@ -1,14 +1,13 @@
 ---
 name: claim-check
 description: >-
-  Extraction et verification systematique des affirmations scientifiques
-  d'un article. Classe les claims par priorite (structurants -> annexes),
-  verifie via bioinfo, BDD, ou litterature. Pour la verification
-  litterature TB / MTBC : interroger en priorite tbmonitor (corpus
-  pre-indexe de ~190 000 papiers PubMed TB, requetable en SQL
-  sub-seconde) avant de tomber sur WebSearch / WebFetch. Maintient un
-  registre claim_check.md avec dates de verification. Re-verifie
-  uniquement les claims non verifies ou anciens.
+  Extraction et verification systematique des affirmations scientifiques d'un article LaTeX.
+  Classe les claims par priorite (structurants vers annexes), audite la coherence numerique
+  interne, verifie via bioinfo, BDD ou litterature (tbmonitor prioritaire pour TB / MTBC,
+  sinon WebSearch / WebFetch). Maintient un registre claim_check.md date ; ne re-verifie que
+  les claims non verifies ou perimes. A utiliser quand l'utilisateur demande de verifier les
+  affirmations d'un manuscrit, de controler que les chiffres du texte correspondent aux
+  donnees, de recroiser un resultat avec la litterature, ou avant une soumission.
 argument-hint: "<main.tex> [--force] [--stale-days 90]"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebSearch, WebFetch, mcp__tbannotator__tool_query_postgres, mcp__tbannotator__tool_get_schema, mcp__tbmonitor__execute_sql, mcp__tbmonitor__show_schema
 ---
@@ -323,6 +322,27 @@ Pour chaque claim a verifier, determiner la **strategie de verification** :
 | Claim attribue a une reference (TOUTE `\citep`/`\citet`) | **Resoudre la CLE vers le VRAI papier** (lire l'entree .bib : titre, revue, annee, DOI/PMID), puis verifier que ce papier soutient bien l'enonce. Voir le garde-fou « cles quasi-dupliquees » ci-dessous |
 | Donnee chiffree ("42% des souches...", "n=342") | Requete BDD si les donnees sont accessibles, sinon verification dans la source citee |
 | Claim de selection sur un codon (invariance / conservation / dN-dS d'un residu catalytique ou de site actif) | **Re-requeter `mv_spdi_mutations` aux 3 positions du codon ET re-traduire chaque variant** (syn vs NS) avant de faire confiance a un label ; voir le garde-fou ci-dessous |
+
+### Priorite des sources pour la verification litterature (regle operationnelle)
+
+**Pour tout claim de litterature portant sur la TB / le MTBC, interroger
+`tbmonitor` AVANT `WebSearch` / `WebFetch`.** C'est un corpus pre-indexe
+d'environ **190 000 papiers PubMed TB**, requetable en **SQL sub-seconde**
+via `mcp__tbmonitor__show_schema` puis `mcp__tbmonitor__execute_sql`. Il
+permet en une requete de confirmer l'existence d'un papier (DOI, titre,
+PMID), de retrouver l'abstract qui soutient (ou contredit) l'enonce, et de
+verifier qu'aucune publication majeure recente n'invalide le claim.
+
+Ordre a respecter :
+
+1. `tbmonitor` (claims de litterature TB / MTBC) ;
+2. `TBannotator` (`tool_query_postgres`) pour les claims bioinfo / BDD ;
+3. `WebSearch` / `WebFetch` pour tout le reste : sujets hors TB, papiers
+   trop recents pour l'index, rapports institutionnels (WHO, ECDC),
+   preprints.
+
+Tomber directement sur `WebSearch` pour un claim TB est le mode d'echec
+courant : plus lent, et couverture inferieure a celle de l'index.
 
 ### Garde-fou -- CLES QUASI-DUPLIQUEES : le claim attribue au MAUVAIS papier
 

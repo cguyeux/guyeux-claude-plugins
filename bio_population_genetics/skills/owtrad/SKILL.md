@@ -2,7 +2,7 @@
 name: owtrad
 description: >-
   Query OWTRAD (Old World Trade Routes Project, T.M. Ciolek, Australian
-  National University, 1999–present) — the reference community-curated
+  National University, 1999–present), the reference community-curated
   GIS archive of land, river and maritime trade, pilgrimage, military, and
   postal routes of Eurasia and Africa from ~10,000 BCE to ~1820 CE.
   Includes the Silk Road, Spice Route, Amber Route, Salt Route, and a
@@ -17,7 +17,7 @@ description: >-
   for a seminar slide.
 ---
 
-# OWTRAD — Old World Trade Routes Project
+# OWTRAD : Old World Trade Routes Project
 
 ## Client (resilient, tool-first)
 
@@ -55,9 +55,9 @@ longest-running open historical-transport GIS resource of its kind.
   Trade Routes: An Experimental Notation System.* Proceedings of the
   Pacific Neighborhood Consortium, Berkeley.
 - **Main URL**: `http://www.ciolek.com/owtrad.html`
-- **Hosted at**: `www.ciolek.com` — Asia Pacific Research Online
+- **Hosted at**: `www.ciolek.com` : Asia Pacific Research Online
 - **License**: **Creative Commons Attribution-NonCommercial 2.5**
-  (unusual — CC BY-NC 2.5, not the more common 4.0)
+  (unusual : CC BY-NC 2.5, not the more common 4.0)
 - **Coverage scope**: Eurasia + Africa; 10,000 BCE → ~1820 CE
 
 > [!WARNING]
@@ -73,7 +73,7 @@ longest-running open historical-transport GIS resource of its kind.
 > plain `http://` works. When scripting fetches, use `curl -k` (skip
 > verification) or pre-validate the TLS chain against the expected
 > hostname. Be cautious: downgrading to HTTP defeats man-in-the-middle
-> protection — consider asking the user to verify the file hash
+> protection, consider asking the user to verify the file hash
 > out-of-band if the data will drive a published argument.
 
 ## Contents
@@ -101,30 +101,30 @@ for that dataset.
 
 ### Route-type taxonomy (Ciolek's classification)
 
-OWTRAD explicitly distinguishes these network types — useful when
+OWTRAD explicitly distinguishes these network types, useful when
 framing a TB dispersal hypothesis:
 
 | Type | Relevance for pathogen dispersal |
 |---|---|
-| **Trade routes** | Merchant caravans, commercial transport — persistent mixing |
-| **Pilgrimage routes** | Hajj, Buddhist pilgrimages, medieval European shrines — long-distance low-frequency |
-| **Military routes** | Troop supply, campaigns — rapid long-distance dispersal |
+| **Trade routes** | Merchant caravans, commercial transport, persistent mixing |
+| **Pilgrimage routes** | Hajj, Buddhist pilgrimages, medieval European shrines, long-distance low-frequency |
+| **Military routes** | Troop supply, campaigns, rapid long-distance dispersal |
 | **Caravan routes** | Specific variant: desert and steppe caravans (camel, horse) |
 | **Postal routes** | Horse relay, courier networks |
-| **Pilgrim migration routes** | Settler movement — demographic transfer |
-| **Nomadic transhumance routes** | Seasonal pastoralist movement — key for *M. bovis* reservoirs |
+| **Pilgrim migration routes** | Settler movement, demographic transfer |
+| **Nomadic transhumance routes** | Seasonal pastoralist movement, key for *M. bovis* reservoirs |
 | **Tribute routes** | Imperial politics, periodic mass movement |
-| **Signals routes** | Beacon, pigeon, semaphore — people don't physically traverse (irrelevant for pathogens) |
+| **Signals routes** | Beacon, pigeon, semaphore, people don't physically traverse (irrelevant for pathogens) |
 
 ### Named corridors covered
 
 | English | Also |
 |---|---|
 | **Silk Road** | Seidenstrasse, Route de la Soie, Ruta de la Seda |
-| **Spice Route** | — |
+| **Spice Route** |, |
 | **Amber Route** | Bernsteinstrasse |
-| **Salt Route** | — |
-| **Tin Route** | — |
+| **Salt Route** |, |
+| **Tin Route** |, |
 | **Incense Route** | (Arabian peninsula) |
 
 ## File formats
@@ -136,7 +136,7 @@ Each dataset is typically provided in several parallel formats:
 | **MapInfo Interchange** (`.mif` + `.mid`) | Native MapInfo® format; importable into ArcGIS, QGIS, GeoPandas via GDAL/OGR |
 | **KML** | Google Earth; loadable in any modern GIS / Python (e.g. `fiona`, `geopandas.read_file`) |
 | **CSV** | Plain-text node lists and waypoint tables |
-| **HTML tracks chart** | Narrative description of the route with annotations — often more detailed than the geometry alone |
+| **HTML tracks chart** | Narrative description of the route with annotations, often more detailed than the geometry alone |
 
 ## Why it matters for MTBC × anthropology
 
@@ -156,7 +156,7 @@ Three concrete uses for a TB / ancient-pathogen narrative:
    trips. Nothing equivalent exists in `orbis` or `slavevoyages`.
 3. **Nomadic transhumance & domestication.** OWTRAD explicitly codes
    transhumance routes, which is the closest geospatial proxy you will
-   find for pastoralist mobility in the pre-modern Old World —
+   find for pastoralist mobility in the pre-modern Old World,
    directly relevant to the *M. bovis* / *M. caprae* domestication
    argument.
 
@@ -167,7 +167,7 @@ touches.
 
 ## Data access
 
-### Option A — Browse and download individual datasets
+### Option A : Browse and download individual datasets
 
 1. Go to `http://www.ciolek.com/owtrad.html`
 2. Follow *Free Online Data Sets* → the index lists datasets by region
@@ -175,7 +175,7 @@ touches.
 3. Each dataset page offers MIF/MID, KML, CSV, and a tracks chart.
 4. Record the **dataset ID + access date** in your Methods.
 
-### Option B — Fetch a specific dataset with curl
+### Option B : Fetch a specific dataset with curl
 
 ```bash
 # Example: Ancient Silk Road segment (Kyrgyzstan ~100 CE)
@@ -190,7 +190,7 @@ curl -kLO http://www.ciolek.com/OWTRAD/DATA/tmcKGa0100d.html
 > individually. If you need many datasets, script it and **mirror
 > locally** to a versioned folder you control.
 
-### Option C — Load a KML file in Python
+### Option C : Load a KML file in Python
 
 Once you have a KML file locally:
 
@@ -209,7 +209,7 @@ Or for MapInfo:
 mif_routes = gpd.read_file("tmcKGa0100d.mif")
 ```
 
-### Option D — Load the gazetteer as a CSV
+### Option D : Load the gazetteer as a CSV
 
 The OWTRAD Gazetteer (3,130 nodes) is the most reusable cross-cutting
 table: a simple lat/lon/name list you can spatially join against TB
@@ -223,7 +223,7 @@ print(gaz.columns, len(gaz))
 
 ## Workflows
 
-### Workflow 1 — Snap TB samples to Silk Road corridor nodes
+### Workflow 1 : Snap TB samples to Silk Road corridor nodes
 
 Goal: assess how close modern L2 Beijing / L3 CAS sampling locations are
 to historical Silk Road waypoints.
@@ -243,10 +243,10 @@ tb["km_to_silk_road"] = d * 111  # rough deg → km
 ```
 
 Then compare the distance distribution between L2/L3 samples and
-other lineages — if L2/L3 are systematically closer, that is a
+other lineages, if L2/L3 are systematically closer, that is a
 quantitative hint of corridor-mediated dispersal.
 
-### Workflow 2 — Caravanserais as mixing nodes for *M. bovis*
+### Workflow 2 : Caravanserais as mixing nodes for *M. bovis*
 
 Goal: test whether modern *M. bovis* isolates cluster geographically
 around ancient caravanserai positions.
@@ -261,7 +261,7 @@ around ancient caravanserai positions.
    under uniform sampling, consistent with long-standing
    herder-merchant mixing nodes."*
 
-### Workflow 3 — Overlaying on the ORBIS network
+### Workflow 3 : Overlaying on the ORBIS network
 
 Goal: use OWTRAD for the non-Roman parts of the pre-modern world that
 `orbis` does not cover (Central Asia, Arabia, East Africa, India, China)
@@ -274,7 +274,7 @@ a slide.
 4. Plot in GeoPandas / Folium / Kepler.gl, differentiating by source
    and route type.
 
-### Workflow 4 — Pilgrimage routes and historical outbreaks
+### Workflow 4 : Pilgrimage routes and historical outbreaks
 
 Goal: test whether ancient Hajj pilgrimage routes correlate with
 cholera pandemic dispersal (pair with `enterobase` *V. cholerae* 7PET
@@ -298,7 +298,7 @@ analysis).
   and types** of routes, not distances-in-days or costs. For quantitative
   modelling use `orbis` (for the Roman window) or compute network
   distances yourself on the OWTRAD geometries.
-- **License is CC BY-NC 2.5.** Old-version CC licence — attribution
+- **License is CC BY-NC 2.5.** Old-version CC licence, attribution
   required, no commercial use, no explicit share-alike. Cite the
   dataset ID, Ciolek, and the access date.
 - **Single-author project** → editorial choices are not peer-reviewed
@@ -316,7 +316,7 @@ analysis).
 
 | Tool | Purpose |
 |---|---|
-| **`orbis`** | Roman-world quantitative network — combine for pre-modern connectivity |
+| **`orbis`** | Roman-world quantitative network, combine for pre-modern connectivity |
 | **`slavevoyages`** | Trans-Atlantic routes (post-1500), complementary geography |
 | **`seshat`** | Quantitative polity history for the states along OWTRAD corridors |
 | **`d-place`** | Cultural variables of the populations living along the routes |
@@ -324,7 +324,7 @@ analysis).
 | **`p3k14c`** | Archaeological ¹⁴C for pre-literate periods of the routes |
 | **`aadr`** | Ancient human genomes from Silk Road cemeteries |
 | **`spaam-ancient-metagenome-dir`** | Ancient pathogen samples to overlay on corridors |
-| **`enterobase`** | *Y. pestis* phylogeny — essential partner for any Silk Road / Black Death argument |
+| **`enterobase`** | *Y. pestis* phylogeny, essential partner for any Silk Road / Black Death argument |
 | **GeoPandas / Folium / Kepler.gl** | Mapping the routes for publication and slides |
 
 ## Citation

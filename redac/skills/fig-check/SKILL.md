@@ -1,17 +1,14 @@
 ---
 name: fig-check
 description: >-
-  Verification visuelle systematique des figures d'un article scientifique
-  via les capacites multimodales. Pour chaque \includegraphics du manuscrit :
-  lit l'image, evalue lisibilite, resolution, chevauchements, taille des
-  textes, clarte des fleches, coherence de palette, correspondance
-  figure/legende. Maintient un registre fig_check.md avec statut par figure.
-  Propose (et applique en mode --fix) des corrections via regeneration du
-  script source quand il est detectable.
+  Verification visuelle systematique des figures d'un article scientifique via
+  les capacites multimodales. Pour chaque \includegraphics : lisibilite,
+  resolution, chevauchements, taille des textes, fleches, palette,
+  correspondance figure/legende. Registre fig_check.md ; corrections
+  appliquees avec --fix.
 
-  Use when: preparation d'une soumission ou d'une resoumission, apres
-  modification de figures, verification avant impression d'un poster,
-  debogage d'une figure illisible en PDF final.
+  Use when: soumission ou resoumission, figures modifiees, poster, figure
+  illisible en PDF final.
 argument-hint: "<main.tex> [--force] [--stale-days 90] [--fix]"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 ---
@@ -126,12 +123,50 @@ Pour chaque figure extraite :
    - Si trouve : noter le chemin du script dans le registre (utile en
      mode `--fix`).
 
+### 2bis -- Rendu des formats que `Read` ne sait pas ouvrir
+
+`Read` n'affiche que les formats matriciels. Un SVG ou un EPS reste donc
+`UNREVIEWABLE` alors que c'est precisement le format d'export d'iTOL, de
+ggtree et de la plupart des cartes : dans un groupe de phylo, laisser ces
+figures non inspectees revient a ne pas inspecter les figures principales.
+**Avant de classer une figure `UNREVIEWABLE`, la convertir en PNG.**
+
+Convertir vers un fichier temporaire (`/tmp/figcheck_<basename>.png`), ne
+jamais ecraser l'original. Essayer les outils dans cet ordre, prendre le
+premier disponible :
+
+```bash
+# SVG -> PNG (echelle 2 pour que le texte reste lisible a l'inspection)
+rsvg-convert -z 2 -o /tmp/figcheck_fig3.png figures/fig3.svg
+python3 -c "import cairosvg; cairosvg.svg2png(url='figures/fig3.svg', write_to='/tmp/figcheck_fig3.png', scale=2)"
+inkscape figures/fig3.svg --export-type=png --export-dpi=200 --export-filename=/tmp/figcheck_fig3.png
+
+# EPS / PS -> PNG
+pdftocairo -png -r 200 -singlefile figures/fig3.eps /tmp/figcheck_fig3
+gs -dNOPAUSE -dBATCH -sDEVICE=png16m -r200 -sOutputFile=/tmp/figcheck_fig3.png figures/fig3.eps
+convert -density 200 figures/fig3.eps /tmp/figcheck_fig3.png   # ImageMagick
+
+# PDF multipage ou figure PDF que Read rend mal
+pdftocairo -png -r 200 -singlefile figures/fig3.pdf /tmp/figcheck_fig3
+```
+
+Puis lire le PNG obtenu et poursuivre la Phase 3 normalement, en notant
+dans le registre que l'inspection s'est faite sur un rendu converti (la
+conversion peut substituer une police manquante, ce qui est une issue en
+soi : si le rendu montre une police de remplacement evidente, c'est un
+WARN critere H, pas un artefact a ignorer).
+
+`UNREVIEWABLE` ne subsiste que si **aucun** convertisseur n'est installe.
+Dans ce cas, noter explicitement lequel manque et la commande
+d'installation (`apt install librsvg2-bin poppler-utils`), pour que le
+prochain passage puisse inspecter la figure.
+
 ---
 
 ## Phase 3 -- Inspection visuelle multimodale
 
 **Coeur du skill.** Pour chaque figure localisee, utiliser `Read` sur le
-fichier image (PDF, PNG, JPG — l'outil supporte nativement ces formats).
+fichier image (PDF, PNG, JPG, l'outil supporte nativement ces formats).
 
 Pour un PDF multi-pages, lire toutes les pages pertinentes (generalement
 une seule par figure). Pour des figures tres lourdes, demander
@@ -216,7 +251,7 @@ systematiquement les criteres suivants et attribuer a chaque figure un
 | `MAJOR` | Au moins 1 FAIL, figure publiable mais doit etre corrigee |
 | `BLOCKING` | Figure illisible, decor manquant, ou fondamentalement erronee |
 | `MISSING` | Fichier introuvable |
-| `UNREVIEWABLE` | Format non supporte (SVG, EPS si Read ne peut pas le lire) -- noter la raison |
+| `UNREVIEWABLE` | Aucun convertisseur disponible pour rendre le format en PNG (voir Phase 2bis) -- noter l'outil manquant. Ce statut ne doit **pas** etre attribue a un SVG ou un EPS tant que la conversion n'a pas ete tentee. |
 
 ### Ce qu'il faut documenter pour chaque issue
 

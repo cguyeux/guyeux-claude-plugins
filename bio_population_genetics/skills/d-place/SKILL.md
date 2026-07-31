@@ -1,7 +1,7 @@
 ---
 name: d-place
 description: >-
-  Query D-PLACE (Database of Places, Language, Culture and Environment) —
+  Query D-PLACE (Database of Places, Language, Culture and Environment),
   the reference open database of cultural, linguistic, and environmental
   traits for 1,400+ pre-industrial human societies. Provides cross-cultural
   variables from the Ethnographic Atlas, Binford Hunter-Gatherer dataset,
@@ -15,7 +15,7 @@ description: >-
   eco-anthropology / bio-culture section in an article or seminar.
 ---
 
-# D-PLACE — Cultural, Linguistic and Environmental Diversity of Human Societies
+# D-PLACE : Cultural, Linguistic and Environmental Diversity of Human Societies
 
 ## Client (resilient, tool-first)
 
@@ -52,9 +52,9 @@ Bayesian language phylogenies for several major families.
 - **Data repository**: `https://github.com/D-PLACE/dplace-data`
 - **Host institution**: Max Planck Institute for Evolutionary Anthropology
   (Linguistic & Cultural Evolution department)
-- **License** (web portal): **CC BY-NC 4.0** — **non-commercial**
+- **License** (web portal): **CC BY-NC 4.0**, **non-commercial**
 - **License** (GitHub code repository): CC BY 4.0 (but the aggregated data
-  inherit the more restrictive NC terms from several source datasets — check
+  inherit the more restrictive NC terms from several source datasets, check
   per-variable metadata)
 - **Citation requirement**: cite **both** Kirby et al. 2016 **and** each
   source dataset you use (EA, Binford, etc.), plus pin the data version.
@@ -80,7 +80,7 @@ eco-anthropology framing of UMR 7206. Three concrete uses:
 3. **Phylogenetic control in comparative analyses.** D-PLACE ships
    time-calibrated language phylogenies (Bantu, Austronesian, Indo-European,
    Pama-Nyungan, etc.). Using these to control for non-independence is the
-   standard eco-anthropology / comparative method — and directly aligned
+   standard eco-anthropology / comparative method, and directly aligned
    with Paul Verdu's toolkit.
 
 ## Data sources (aggregated into D-PLACE)
@@ -97,7 +97,7 @@ Linguistic classification: every society is linked to **Glottolog**
 (`https://glottolog.org/`) for language family, subgroup, and ISO codes.
 
 Phylogenies (select families): Bantu, Austronesian, Indo-European,
-Pama-Nyungan, Uto-Aztecan, Sino-Tibetan — time-calibrated Bayesian trees
+Pama-Nyungan, Uto-Aztecan, Sino-Tibetan, time-calibrated Bayesian trees
 derived from published dated phylolinguistic analyses.
 
 ## Variable categories (thematic)
@@ -119,7 +119,7 @@ human-readable labels, and the `values.csv` table holds per-society values.
 
 ## Data access
 
-### Option A — Web UI (recommended for exploration)
+### Option A : Web UI (recommended for exploration)
 
 1. Go to `https://d-place.org/`.
 2. Use the **Societies / Variables** browsers to filter.
@@ -128,7 +128,7 @@ human-readable labels, and the `values.csv` table holds per-society values.
 4. Download as CSV / GeoJSON; also downloadable as a visualization on a
    world map or on a language tree.
 
-### Option B — GitHub repository (recommended for analysis)
+### Option B : GitHub repository (recommended for analysis)
 
 Clone the full data repository:
 
@@ -148,17 +148,17 @@ Relevant directories:
 
 Key cross-join tables (unified export, in `csv/`):
 
-- `societies.csv` — one row per society (Glottocode, coordinates, source dataset)
-- `variables.csv` — one row per cultural/environmental variable (ID, name, category)
-- `codes.csv` — value code lookup (integer → label)
-- `values.csv` — long-format: `(society, variable, code, source)`
+- `societies.csv`, one row per society (Glottocode, coordinates, source dataset)
+- `variables.csv`, one row per cultural/environmental variable (ID, name, category)
+- `codes.csv`, value code lookup (integer → label)
+- `values.csv`, long-format: `(society, variable, code, source)`
 
-### Option C — Python / R helper packages
+### Option C : Python / R helper packages
 
-- **`pydplace`** (Python) — `pip install pydplace` — lightweight loader for
+- **`pydplace`** (Python), `pip install pydplace`, lightweight loader for
   the GitHub repo (check PyPI for current maintenance status).
-- **`dplace`** R package — see CRAN or GitHub.
-- **`pycldf`** (Python) — if a CLDF-compliant release is published under
+- **`dplace`** R package, see CRAN or GitHub.
+- **`pycldf`** (Python), if a CLDF-compliant release is published under
   `datasets/`, pycldf can load it directly (D-PLACE releases sometimes ship
   as CLDF StructureDataset).
 
@@ -166,7 +166,7 @@ Pin the version or commit hash in your Methods section.
 
 ## Workflows
 
-### Workflow 1 — Pastoralism ↔ *M. bovis* lineage distribution
+### Workflow 1 : Pastoralism ↔ *M. bovis* lineage distribution
 
 Goal: test whether an *M. bovis* (or *M. caprae*) sublineage is enriched in
 regions inhabited historically by pastoralist societies.
@@ -206,7 +206,7 @@ gdf_soc = gpd.GeoDataFrame(
 # then spatial join to TB sample locations from TBannotator
 ```
 
-### Workflow 2 — Settlement pattern ↔ human-adapted TB persistence
+### Workflow 2 : Settlement pattern ↔ human-adapted TB persistence
 
 Goal: correlate human-adapted L4 sublineage presence with societies coded as
 sedentary vs nomadic.
@@ -216,7 +216,7 @@ sedentary vs nomadic.
 2. Build a per-region "density proxy" from D-PLACE societies.
 3. Compare with TMRCA/expansion times of the TB sublineage.
 
-### Workflow 3 — Phylogenetic-comparative control
+### Workflow 3 : Phylogenetic-comparative control
 
 Goal: avoid Galton's problem when comparing cultural traits across
 language-related societies.
@@ -225,10 +225,10 @@ language-related societies.
    `phylogenies/bantu_grollemund_et_al2015/`).
 2. Map the cultural/environmental variable of interest onto the tree tips.
 3. Use `phytools` (R) or `dendropy`/`ete3` (Python) for PGLS / Blomberg's K
-   / ancestral state reconstruction — the same methods the éco-anthropologie
+   / ancestral state reconstruction, the same methods the éco-anthropologie
    community uses routinely.
 
-### Workflow 4 — Ecological niche of a lineage
+### Workflow 4 : Ecological niche of a lineage
 
 Goal: characterize the bioclimatic envelope where a TB lineage is found.
 
@@ -237,7 +237,7 @@ Goal: characterize the bioclimatic envelope where a TB lineage is found.
 2. Compare distributions of temperature / precipitation / NPP across
    lineages.
 3. Complement with direct WorldClim raster queries when higher spatial
-   resolution is needed — D-PLACE environmental values are society-level,
+   resolution is needed : D-PLACE environmental values are society-level,
    not pixel-level.
 
 ## Caveats
@@ -245,7 +245,7 @@ Goal: characterize the bioclimatic envelope where a TB lineage is found.
 - **Ethnographic present ≠ pre-contact.** Most EA coding reflects 19th- /
   early 20th-century ethnography, not pre-contact conditions. Use with
   caution for deep-time inferences.
-- **Galton's problem.** Societies are not independent observations — always
+- **Galton's problem.** Societies are not independent observations, always
   control for phylogenetic and spatial autocorrelation.
 - **License heterogeneity.** Individual source datasets may impose
   non-commercial (NC) terms. Check `datasets/<source>/LICENSE.md`.
@@ -253,10 +253,10 @@ Goal: characterize the bioclimatic envelope where a TB lineage is found.
   parts of Asia for hunter-gatherers; conversely EA is weak on industrial
   societies (by design).
 - **Variable codings are interpretive.** EA codes are categorizations made
-  by 20th-century anthropologists and inherit their biases — cite Murdock's
+  by 20th-century anthropologists and inherit their biases, cite Murdock's
   original work and discuss limitations.
 - **Not a genetic database.** D-PLACE is cultural + linguistic +
-  environmental — for genetic data you still need AADR and the primary
+  environmental, for genetic data you still need AADR and the primary
   literature.
 
 ## Integration with Other Skills
@@ -294,6 +294,6 @@ Goal: characterize the bioclimatic envelope where a TB lineage is found.
 }
 ```
 
-**Remember**: also cite the underlying source dataset(s) — Murdock 1967
+**Remember**: also cite the underlying source dataset(s) : Murdock 1967
 (Ethnographic Atlas), Binford 2001 (Hunter-Gatherer), Murdock & White 1969
-(SCCS), etc. — and pin the data version (commit hash or release tag).
+(SCCS), etc., and pin the data version (commit hash or release tag).

@@ -6,7 +6,7 @@
 
 Phase hybride analyse et rédaction. Agrège par symlink les skills des autres plugins pour le moment où l'on passe des résultats phylogénomiques M. tuberculosis (arbre daté, profils de résistance, figures) au manuscrit.
 
-Skills propres (canoniques) : **1** ; skills partagés utilisés (symlinks) : **124**.
+Skills propres (canoniques) : **1** ; skills partagés utilisés (symlinks) : **117**.
 
 [Retour à l'index de la documentation](README.md)
 
@@ -41,14 +41,14 @@ Documentés sur la page de leur plugin d'origine.
 | [bioc-pmc](bio_population_genetics.md#bioc-pmc) | `bio_population_genetics` |
 | [biopython](bio_population_genetics.md#biopython) | `bio_population_genetics` |
 | [bioskills](bio_population_genetics.md#bioskills) | `bio_population_genetics` |
+| [boltz](bio_population_genetics.md#boltz) | `bio_population_genetics` |
 | [bovine-genomics](bio_population_genetics.md#bovine-genomics) | `bio_population_genetics` |
 | [card](bio_population_genetics.md#card) | `bio_population_genetics` |
-| [clade-finder](bio_pathogens.md#clade-finder) | `bio_pathogens` |
 | [claim-check](redac.md#claim-check) | `redac` |
 | [clinical-trial-protocol-skill](bio_population_genetics.md#clinical-trial-protocol-skill) | `bio_population_genetics` |
 | [coevolution](bio_pathogens.md#coevolution) | `bio_pathogens` |
 | [convergent-evolution](bio_pathogens.md#convergent-evolution) | `bio_pathogens` |
-| [create-viz](ops.md#create-viz) | `ops` |
+| [create-viz](bio_population_genetics.md#create-viz) | `bio_population_genetics` |
 | [cv](redac.md#cv) | `redac` |
 | [d-place](bio_population_genetics.md#d-place) | `bio_population_genetics` |
 | [deai-latex](redac.md#deai-latex) | `redac` |
@@ -74,21 +74,18 @@ Documentés sur la page de leur plugin d'origine.
 | [latex-tables](redac.md#latex-tables) | `redac` |
 | [latex-writing](redac.md#latex-writing) | `redac` |
 | [lineage-comparison](bio_pathogens.md#lineage-comparison) | `bio_pathogens` |
+| [lineage-subdivision](bio_pathogens.md#lineage-subdivision) | `bio_pathogens` |
 | [lit-review](redac.md#lit-review) | `redac` |
 | [manuscript-review](redac.md#manuscript-review) | `redac` |
-| [matplotlib](ia.md#matplotlib) | `ia` |
-| [matplotlib-pro](ia.md#matplotlib-pro) | `ia` |
 | [mbovis](bio_pathogens.md#mbovis) | `bio_pathogens` |
 | [migration-data](bio_population_genetics.md#migration-data) | `bio_population_genetics` |
 | [mk-ascertainment](bio_pathogens.md#mk-ascertainment) | `bio_pathogens` |
 | [modern-human-reference-panels](bio_population_genetics.md#modern-human-reference-panels) | `bio_population_genetics` |
 | [molecular-clock](bio_pathogens.md#molecular-clock) | `bio_pathogens` |
 | [mtbc-bilan](bio_pathogens.md#mtbc-bilan) | `bio_pathogens` |
-| [mtbc-deepen](bio_pathogens.md#mtbc-deepen) | `bio_pathogens` |
-| [mtbc-gene-function](bio_pathogens.md#mtbc-gene-function) | `bio_pathogens` |
+| [mtbc-epistasis](bio_pathogens.md#mtbc-epistasis) | `bio_pathogens` |
 | [mtbc-lineages](bio_pathogens.md#mtbc-lineages) | `bio_pathogens` |
-| [mtbc-mutation-impact](bio_pathogens.md#mtbc-mutation-impact) | `bio_pathogens` |
-| [mtbc-pathway-explain](bio_pathogens.md#mtbc-pathway-explain) | `bio_pathogens` |
+| [mtbc-prospect](bio_pathogens.md#mtbc-prospect) | `bio_pathogens` |
 | [mtbc-reboot](bio_pathogens.md#mtbc-reboot) | `bio_pathogens` |
 | [mycobacterium-leprae](bio_pathogens.md#mycobacterium-leprae) | `bio_pathogens` |
 | [ncbi-pathogen-detection](bio_pathogens.md#ncbi-pathogen-detection) | `bio_pathogens` |
@@ -107,7 +104,6 @@ Documentés sur la page de leur plugin d'origine.
 | [pdf-to-latex](redac.md#pdf-to-latex) | `redac` |
 | [phylogeography](bio_pathogens.md#phylogeography) | `bio_pathogens` |
 | [pleiades](bio_population_genetics.md#pleiades) | `bio_population_genetics` |
-| [plotly](redac.md#plotly) | `redac` |
 | [pubmed-database](bio_population_genetics.md#pubmed-database) | `bio_population_genetics` |
 | [pubtator](bio_population_genetics.md#pubtator) | `bio_population_genetics` |
 | [pysam](bio_population_genetics.md#pysam) | `bio_population_genetics` |
@@ -115,16 +111,13 @@ Documentés sur la page de leur plugin d'origine.
 | [rdkit](bio_population_genetics.md#rdkit) | `bio_population_genetics` |
 | [read-scientific-pdf](bio_population_genetics.md#read-scientific-pdf) | `bio_population_genetics` |
 | [resistance-catalogue](bio_pathogens.md#resistance-catalogue) | `bio_pathogens` |
-| [resistance-discovery](bio_pathogens.md#resistance-discovery) | `bio_pathogens` |
-| [resistance-explain](bio_pathogens.md#resistance-explain) | `bio_pathogens` |
-| [resistance-predict](bio_pathogens.md#resistance-predict) | `bio_pathogens` |
 | [resistance-profiler](bio_pathogens.md#resistance-profiler) | `bio_pathogens` |
 | [reviewer-response](redac.md#reviewer-response) | `redac` |
 | [scanpy](bio_population_genetics.md#scanpy) | `bio_population_genetics` |
-| [scientific-problem-selection](ia.md#scientific-problem-selection) | `ia` |
+| [sci-figure](bio_population_genetics.md#sci-figure) | `bio_population_genetics` |
+| [scientific-problem-selection](bio_population_genetics.md#scientific-problem-selection) | `bio_population_genetics` |
 | [scikit-bio](bio_population_genetics.md#scikit-bio) | `bio_population_genetics` |
-| [scikit-learn](ia.md#scikit-learn) | `ia` |
-| [seaborn](bio_population_genetics.md#seaborn) | `bio_population_genetics` |
+| [scikit-learn](bio_population_genetics.md#scikit-learn) | `bio_population_genetics` |
 | [seshat](bio_population_genetics.md#seshat) | `bio_population_genetics` |
 | [sitvitweb](bio_pathogens.md#sitvitweb) | `bio_pathogens` |
 | [slavevoyages](bio_population_genetics.md#slavevoyages) | `bio_population_genetics` |
@@ -136,7 +129,7 @@ Documentés sur la page de leur plugin d'origine.
 | [spdi-annotation](bio_pathogens.md#spdi-annotation) | `bio_pathogens` |
 | [species-id](bio_pathogens.md#species-id) | `bio_pathogens` |
 | [sra-geolocate](bio_pathogens.md#sra-geolocate) | `bio_pathogens` |
-| [statsmodels](ia.md#statsmodels) | `ia` |
+| [statsmodels](bio_population_genetics.md#statsmodels) | `bio_population_genetics` |
 | [strain-qc](bio_pathogens.md#strain-qc) | `bio_pathogens` |
 | [supp-check](redac.md#supp-check) | `redac` |
 | [synthesize-research](redac.md#synthesize-research) | `redac` |

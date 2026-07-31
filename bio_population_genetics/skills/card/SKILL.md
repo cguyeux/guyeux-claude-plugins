@@ -3,7 +3,7 @@ name: card
 description: >-
   Query CARD 2.0 (Canadian Archaeological Radiocarbon Database), the
   reference compilation of archaeological radiocarbon dates for North
-  America — ~50,000 dates plus an additional ~104,000 dates from the
+  America, ~50,000 dates plus an additional ~104,000 dates from the
   lower 48 US states, covering archaeological, paleontological, and
   geological contexts, with expanding coverage into Central and South
   America. Operated jointly by the Canadian Museum of History and the
@@ -19,7 +19,7 @@ description: >-
   regional chronology.
 ---
 
-# CARD 2.0 — Canadian Archaeological Radiocarbon Database
+# CARD 2.0 : Canadian Archaeological Radiocarbon Database
 
 ## Overview
 
@@ -46,20 +46,20 @@ constellation.
   Archaeology)
 - **Maintainer**: Andrew Martindale (UBC)
 - **Size**: **~50,000 original CARD dates** + **~104,000 additional
-  dates** from the lower 48 US states (recent expansion — an
+  dates** from the lower 48 US states (recent expansion, an
   order-of-magnitude increase for that region)
 - **Coverage**: Canada, contiguous US, Alaska, with growing
   Central / South American records
 
 > [!WARNING]
-> **Ethical notice — ancestral remains.** CARD has publicly stated that
+> **Ethical notice, ancestral remains.** CARD has publicly stated that
 > several Indigenous communities in North America informed the
 > maintainers that the database contained data from ancestors and their
 > burials collected **without permission** and in **violation of
 > community policies**. In response, **all 1,702 dates associated with
 > ancestral remains have been removed**. This is a first-class
 > consideration for anyone working with North American archaeological
-> datasets — respect the decision, do not attempt to reconstruct
+> datasets, respect the decision, do not attempt to reconstruct
 > removed entries from older published sources, and consult the
 > relevant Indigenous community / regulatory body if your work touches
 > human remains. This is an ethical baseline, not a technical nicety.
@@ -67,7 +67,7 @@ constellation.
 > [!NOTE]
 > **Two-tier access model.**
 > - **Public access**: location data are **fuzzed to 1:2,000,000
->   scale** — useful for regional/continental visualisation but not for
+>   scale**, useful for regional/continental visualisation but not for
 >   precise spatial joins.
 > - **Researcher access**: requires a **security account** at an
 >   accredited institution; grants access to precise coordinates and
@@ -99,7 +99,7 @@ the Americas. Specific uses:
 3. **Post-contact transition chronology.** The 16th–17th century
    epidemiological catastrophe in the Americas (smallpox, measles,
    *Salmonella* paratyphi C via Vågene 2018) is bounded by the
-   pre-contact baseline + the colonial archaeological record — both
+   pre-contact baseline + the colonial archaeological record, both
    visible in CARD.
 
 CARD is **the Americas counterpart** to EUROEVOL (Europe) and NERD
@@ -108,7 +108,7 @@ with higher regional resolution in North America.
 
 ## Data access
 
-### Option A — Public web interface (fuzzed locations)
+### Option A : Public web interface (fuzzed locations)
 
 1. Go to `https://www.canadianarchaeology.ca/`
 2. Use the search UI: filter by country, province/state, date range,
@@ -126,7 +126,7 @@ It is **not** sufficient for:
 - Nearest-neighbour queries
 - Publication-grade maps with precise locations
 
-### Option B — Researcher access (precise locations)
+### Option B : Researcher access (precise locations)
 
 Full access requires a **security account** granted to researchers at
 accredited institutions. Contact:
@@ -140,13 +140,13 @@ This tier grants:
 - Dynamic search with advanced filters
 - Spatial-join quality data
 
-### Option C — Pandora Data dataset (partial)
+### Option C : Pandora Data dataset (partial)
 
 The Pandora Data platform (`pandoradata.earth/dataset/card-2-0`) offers
-a static snapshot of CARD 2.0 — useful for reproducibility-pinning a
+a static snapshot of CARD 2.0, useful for reproducibility-pinning a
 historical state of the database.
 
-### Option D — Indirect via p3k14c
+### Option D : Indirect via p3k14c
 
 CARD is one of the source databases integrated into `p3k14c`. For
 rough global-scale analyses that include the Americas, `p3k14c` is a
@@ -155,7 +155,7 @@ state, query CARD directly.
 
 ## Workflows
 
-### Workflow 1 — Pre-Columbian chronological backdrop for *M. pinnipedii*
+### Workflow 1 : Pre-Columbian chronological backdrop for *M. pinnipedii*
 
 Goal: build a regional ¹⁴C density map around the Andean *M. pinnipedii*
 sites.
@@ -163,14 +163,14 @@ sites.
 1. In the CARD public UI, filter by country = Peru / Chile and date
    range 500–2 000 BP.
 2. Export the CSV.
-3. Count dates per 500-year bin — this is your "population activity"
+3. Count dates per 500-year bin, this is your "population activity"
    proxy for the region at the time of the host-jump.
 4. Overlay the 6 Bos2014 + Vagene2022 samples (from
    `spaam-ancient-metagenome-dir`).
 5. If coverage is sparse (researcher tier unavailable), fall back to
    `p3k14c` for the same region.
 
-### Workflow 2 — North American population SPD
+### Workflow 2 : North American population SPD
 
 Goal: compute a summed probability distribution for pre-contact North
 America, analogous to the Shennan/Timpson European SPD, to discuss
@@ -193,7 +193,7 @@ spd_out <- spd(dates, timeRange = c(13000, 500))
 plot(spd_out)
 ```
 
-### Workflow 3 — Post-contact archaeological chronology
+### Workflow 3 : Post-contact archaeological chronology
 
 Goal: use CARD to quantify the colonial-era archaeological footprint
 (16th–18th c.) for overlay with Vagene 2018 (*Salmonella enterica*
@@ -206,7 +206,7 @@ Paratyphi C, Mexican cocoliztli 1545 CE).
 4. Discuss the correspondence (or lack thereof) between CARD's site
    density and documented epidemic outbreaks.
 
-### Workflow 4 — Gap analysis vs p3k14c
+### Workflow 4 : Gap analysis vs p3k14c
 
 Goal: identify regions where CARD has substantially more dates than
 `p3k14c`, i.e. where CARD is worth querying directly.
@@ -256,12 +256,12 @@ CARD for focused regional work.
 
 | Tool | Purpose |
 |---|---|
-| **`p3k14c`** | Global counterpart — partially integrates CARD |
+| **`p3k14c`** | Global counterpart, partially integrates CARD |
 | **`neolithic-14c`** | Eurasian regional counterparts (EUROEVOL + NERD + RADON + NeoNet) |
 | **`aadr`** | Ancient human genomes from North/South America |
 | **`amtdb`** | Ancient human mtDNA from the same regions |
-| **`spaam-ancient-metagenome-dir`** | Ancient pathogen samples — Bos2014 and Vagene2022 (*M. pinnipedii*) and Vagene 2018 (*Salmonella*) |
-| **`pleiades`** | Not relevant (Pleiades is Mediterranean/Classical) — complementary by exclusion |
+| **`spaam-ancient-metagenome-dir`** | Ancient pathogen samples : Bos2014 and Vagene2022 (*M. pinnipedii*) and Vagene 2018 (*Salmonella*) |
+| **`pleiades`** | Not relevant (Pleiades is Mediterranean/Classical), complementary by exclusion |
 | **`seshat`** | Polity-level history for pre-contact and colonial Americas (limited coverage) |
 | **`d-place`** | Cultural variables of North American ethnographic-present populations |
 | **`glottolog`** | Language classification for North American populations |

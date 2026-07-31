@@ -1,21 +1,14 @@
 ---
 name: mtbc-reboot
 description: >-
-  Reboot complet d'un projet MTBC. Archive toute la connaissance
-  accumulee (decouvertes, claims, scripts, donnees) dans
-  archives/YYYY-MM-DD_reboot/ avec tags de confiance
-  (VERIFIE/A VERIFIER/INCERTAIN/REFUTE). Reinitialise le projet
-  en structure propre. Scanne les projets voisins pour convergences.
-  Reanalyse claim par claim avec revue critique du code source ; pour
-  les claims qui necessitent un appui litterature, interroge tbmonitor
-  (corpus PubMed TB pre-indexe ~190k papiers) avant WebSearch.
-  Bloque la redaction tant que la reanalyse n'est pas complete.
+  REPART a zero sur un projet MTBC : archive l'acquis dans
+  archives/YYYY-MM-DD_reboot/ avec tags (VERIFIE / A VERIFIER / INCERTAIN /
+  REFUTE), repart d'une structure propre, scanne les projets voisins,
+  reanalyse claim par claim, bloque la redaction jusqu'au bout.
 
-  Use when: a project has accumulated too much drift, stale results,
-  or unverified claims to continue incrementally; when restarting a
-  study after a long pause with uncertain legacy; when claim-check
-  reveals too many unverified claims to patch individually; when pivoting a
-  project's direction while preserving prior knowledge.
+  Use when: derive, resultats perimes ou claims non verifies trop nombreux
+  pour un correctif incremental ; reprise apres une longue pause ; pivot en
+  preservant l'acquis.
 argument-hint: "<sous-commande> [archive | survey | plan | claim N | status | article]"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebSearch, WebFetch, mcp__tbannotator__tool_query_postgres, mcp__tbannotator__tool_get_schema, mcp__tbmonitor__execute_sql, mcp__tbmonitor__show_schema
 user-invocable: true
@@ -34,13 +27,13 @@ re-verification independante avec les donnees et outils actuels.
 
 
 > [!NOTE]
-> **Frontiere bilan / deepen / reboot (3 skills voisins, ne pas confondre).**
-> `mtbc-bilan` PHOTOGRAPHIE l'etat su (lecture seule) ; `mtbc-deepen` EXPLORE de
-> nouvelles pistes quand un projet stagne ; `mtbc-reboot` (ce skill) REPART a zero
+> **Frontiere bilan / reboot (2 skills voisins, ne pas confondre).**
+> `mtbc-bilan` PHOTOGRAPHIE l'etat su (lecture seule) et, sous `--deepen`, EXPLORE
+> de nouvelles pistes quand un projet stagne ; `mtbc-reboot` (ce skill) REPART a zero
 > proprement quand la derive est trop forte -- archive taggee VERIFIE / A VERIFIER /
 > REFUTE + re-analyse claim par claim, **operation destructrice** qui bloque la redaction
 > tant qu'elle n'est pas finie. Regle : photographier -> explorer -> repartir. Ne pas
-> rebooter ce qu'un simple bilan ou un deepen suffirait a traiter.
+> rebooter ce qu'un simple bilan ou un `mtbc-bilan --deepen` suffirait a traiter.
 
 ## Prealable -- Consultation memoire projet
 
@@ -146,7 +139,7 @@ tout en preservant les artefacts reutilisables (data, scripts, resultats).
    - Detecter les gaps de phases (phase1 + phase3 sans phase2).
 
 6. **Inventaire des donnees** :
-   - `Glob data/*` — lister avec tailles.
+   - `Glob data/*`, lister avec tailles.
    - Identifier la lignee BDD : `ls bdd/actuelle/<lignee>/` si accessible.
    - Compter les souches actuellement dans la BDD.
 
@@ -161,7 +154,7 @@ tout en preservant les artefacts reutilisables (data, scripts, resultats).
    - Lister les fiches thematiques.
 
 9. **Bilans** :
-   - `Glob bilans/*.md` — lire les verdicts et pistes.
+   - `Glob bilans/*.md`, lire les verdicts et pistes.
 
 10. **Reviews** :
     - Lire `article/review/INDEX.md` si present.
@@ -330,29 +323,29 @@ reinserees au fur et a mesure de la reanalyse.
 **Precaution** : cette etape est irreversible au niveau de la base de
 connaissances. C'est pourquoi l'etape 3 a deja archive les contenus.
 En cas de doute sur l'attribution d'une entree, **la garder** plutot
-que la retirer — faux negatif preferable a faux positif.
+que la retirer, faux negatif preferable a faux positif.
 
 ### Etape 5 : Reset du projet (copie selective)
 
 **Conserve en place** (artefacts reutilisables) :
-- `data/` — donnees intactes
-- `analyses/` — scripts reutilisables (seront audites en Phase 3)
-- `resultats/` — outputs conserves pour comparaison avant/apres
-- `experiments/` — experiences passees
-- `litterature_review/` — capital de connaissance reutilisable
-- `bilans/` — historique
-- `archives/` — l'archive qu'on vient de creer
+- `data/`, donnees intactes
+- `analyses/`, scripts reutilisables (seront audites en Phase 3)
+- `resultats/`, outputs conserves pour comparaison avant/apres
+- `experiments/`, experiences passees
+- `litterature_review/`, capital de connaissance reutilisable
+- `bilans/`, historique
+- `archives/`, l'archive qu'on vient de creer
 
 **Reinitialise** :
 
-1. **CLAUDE.md** — reecrire avec :
+1. **CLAUDE.md**, reecrire avec :
    - Mention du reboot et lien vers `archives/YYYY-MM-DD_reboot/`
    - Titre et lignee du projet (conserves depuis l'ancien CLAUDE.md)
    - Structure de repertoire standard
    - Note : "Projet en cours de reanalyse. Consulter knowledge_legacy.md
      pour l'historique des decouvertes anterieures."
 
-2. **cahier_de_labo.md** — reinitialiser avec en-tete standard
+2. **cahier_de_labo.md**, reinitialiser avec en-tete standard
    (format `/cahier-de-labo init`) et entree de migration :
 
    ```markdown
@@ -373,7 +366,7 @@ que la retirer — faux negatif preferable a faux positif.
    ---
    ```
 
-3. **article/claim_check.md** — vider le contenu (sera reconstruit par
+3. **article/claim_check.md**, vider le contenu (sera reconstruit par
    la reanalyse). Ecrire un placeholder :
 
    ```markdown
@@ -386,7 +379,7 @@ que la retirer — faux negatif preferable a faux positif.
    Voir archives/YYYY-MM-DD_reboot/claim_check_legacy.md pour l'ancien registre.
    ```
 
-4. **article/main.tex** — remplacer par le template vierge standard
+4. **article/main.tex**, remplacer par le template vierge standard
    (meme template que `init_project.py`). Conserver le titre et le nom
    de lignee du projet dans le \title{} et les \lignee{}.
 
@@ -430,7 +423,7 @@ MTBC voisins pour enrichir la reanalyse du projet courant.
 
 ### Etape 1 : Identification des projets voisins
 
-1. `ls /home/christophe/docs/codes/mtbc/` — lister les repertoires.
+1. `ls /home/christophe/docs/codes/mtbc/`, lister les repertoires.
 2. Exclure : le projet courant, `bdd/`, `global_supplementary/`,
    `investigate_phylo/`, `init_project.py`, `__pycache__/`.
 3. Pour chaque repertoire restant :
@@ -530,7 +523,7 @@ Prochaine etape : /mtbc-reboot plan
    - Convergences inter-projets qui meritent verification
 3. Pour chaque claim :
    - Assigner une **priorite P1-P4** (taxonomie de `/claim-check`,
-     voir `bio/skills/claim-check/references/CLAIM_TAXONOMY.md`).
+     voir `${CLAUDE_PLUGIN_ROOT}/skills/claim-check/references/CLAIM_TAXONOMY.md`).
    - Assigner une **strategie de verification** (table de `/claim-check`
      Phase 3 : bioinfo→TBannotator, epidemio→WHO, gene→NCBI, etc.).
    - **Identifier le script source** : quel script dans analyses/ a produit
@@ -613,18 +606,18 @@ Si un script est associe au claim :
    - **Edge cases** : gestion des souches manquantes, donnees partielles,
      valeurs nulles ? Que se passe-t-il si une souche n'a pas de SPDI ?
    - **Biais de reference H37Rv** : le script traite-t-il H37Rv comme une
-     souche "normale" ? (piege recurrent documente dans knowledge base —
+     souche "normale" ? (piege recurrent documente dans knowledge base,
      H37Rv est L4.9, utiliser comme reference cree un biais pour L4.9)
    - **Reproductibilite** : chemins en dur ? Dependances non-standard ?
      Seeds aleatoires fixees ?
    - **Qualite du code** : lisibilite, documentation, noms de variables.
 3. **Verdict Revue code** :
-   - `SOLIDE` — code revu, methodologie correcte, pas de red flag.
-   - `FRAGILE` — problemes identifies. Detailler dans Notes :
+   - `SOLIDE`, code revu, methodologie correcte, pas de red flag.
+   - `FRAGILE`, problemes identifies. Detailler dans Notes :
      - Quel probleme ?
      - Quel impact sur le resultat ?
      - Correction suggeree ?
-   - `REECRIT` — si l'utilisateur a accepte la reecriture et qu'elle a ete
+   - `REECRIT`, si l'utilisateur a accepte la reecriture et qu'elle a ete
      faite. **Le skill NE reecrit PAS automatiquement** : il signale et
      suggere, l'utilisateur decide.
 
@@ -633,6 +626,9 @@ Si un script est associe au claim :
 1. **Executer la strategie** definie dans le plan de reanalyse :
    - Meme logique que `/claim-check` Phase 4 (requetes TBannotator,
      WebSearch, recalcul, consultation sources primaires).
+   - **Pour tout claim qui necessite un appui litterature** : interroger
+     d'abord `tbmonitor-papers` (corpus PubMed TB pre-indexe, ~190k papiers,
+     reponse SQL sub-seconde) avant de tomber sur WebSearch.
    - **Si nouvelles donnees disponibles** : re-executer avec le dataset
      actuel. Comparer l'ancien resultat vs le nouveau.
    - **Si le script est FRAGILE** : re-executer apres correction, ou
@@ -790,7 +786,7 @@ Prochaines etapes suggerees :
 
 ## Sous-commande STATUS (`/mtbc-reboot status`)
 
-**Pas de gate** — accessible a tout moment.
+**Pas de gate**, accessible a tout moment.
 
 Lire `reboot_state.md` et `reanalysis_registry.md` (si existe).
 Afficher :
@@ -817,11 +813,11 @@ Prochaine action : /mtbc-reboot [sous-commande suggeree]
 ## Consignes generales
 
 ### Ce que le skill DOIT faire
-- Lire TOUT avant d'archiver — ne rien laisser de cote
+- Lire TOUT avant d'archiver, ne rien laisser de cote
 - Etre exhaustif dans l'extraction des claims et decouvertes
 - Porter un regard critique severe sur le code source des scripts
 - Utiliser les outils reels pour chaque re-verification (TBannotator,
-  WebSearch, recalcul — jamais se fier a la memoire)
+  WebSearch, recalcul, jamais se fier a la memoire)
 - Documenter chaque verification dans le cahier
 - Notifier en priorite les claims P1 non confirmes
 - Preserver les artefacts (data, scripts, resultats) pour reutilisation
@@ -861,7 +857,7 @@ Prochaine action : /mtbc-reboot [sous-commande suggeree]
   projet reinitialise pour evaluer l'avancement de la reanalyse.
 - **`/lit-review`** : la litterature_review/ est conservee et peut etre
   approfondie pendant la reanalyse.
-- **`/mtbc-deepen`** : une fois le reboot termine, mtbc-deepen peut
+- **`/mtbc-bilan --deepen`** : une fois le reboot termine, le mode deepen peut
   proposer de nouvelles pistes sur les bases solides du reboot.
 
 ---

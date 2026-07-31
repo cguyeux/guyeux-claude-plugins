@@ -343,4 +343,4 @@ polys = [g for g in collection.geoms if g.geom_type == 'Polygon']
 9. Handle GeometryCollections properly - filter by geometry type when needed
 10. Use representative_point() for guaranteed interior points in complex polygons
 
-Shapely is a specialized, sharp tool. It doesn't care about your coordinate system or your file format — it only cares about the pure, mathematical relationship between shapes. Mastering it is the key to building advanced spatial algorithms.
+Shapely is a specialized, sharp tool. It doesn't care about your coordinate system or your file format, it only cares about the pure, mathematical relationship between shapes. Mastering it is the key to building advanced spatial algorithms.
