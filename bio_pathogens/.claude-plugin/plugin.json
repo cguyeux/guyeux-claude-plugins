@@ -1,7 +1,7 @@
 {
   "name": "bio_pathogens",
   "description": "Academic research toolkit for computational genomic studies of bacterial pathogens, focused on Mycobacterium tuberculosis complex (MTBC) phylogenomics, comparative genomics, and public-health surveillance literature. Used by the Guyeux group (FEMTO-ST, University of Franche-Comte) for peer-reviewed scientific publications on pathogen evolution and host-pathogen co-evolution.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Christophe Guyeux"
   }
