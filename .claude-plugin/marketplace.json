@@ -15,6 +15,11 @@
       "description": "Academic research toolkit for computational genomic studies of bacterial pathogens (MTBC phylogenomics, comparative genomics, published-research surveillance literature)."
     },
     {
+      "name": "bio_bacteria",
+      "source": "./bio_bacteria",
+      "description": "Academic research toolkit for comparative genomics of bacteria BEYOND the Mycobacterium tuberculosis complex stricto sensu: non-tuberculous mycobacteria (M. abscessus, M. avium, M. ulcerans...) and other genera. Genome assembly and characterisation, core-genome MLST clonality, ab initio mobile-element detection, antimicrobial-resistance allele frequencies from published research isolates."
+    },
+    {
       "name": "bio_population_genetics",
       "source": "./bio_population_genetics",
       "description": "Academic research toolkit for ancient and modern human population genetics, archaeology, paleoclimate, migration corpora, plus general phylogenetics, statistics and literature-mining tools."
