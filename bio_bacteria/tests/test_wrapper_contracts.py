@@ -32,7 +32,7 @@ class WrapperContractTests(unittest.TestCase):
         ]
 
         self.assertEqual(manifest["name"], "bio_bacteria")
-        self.assertEqual(manifest["version"], "1.0.0")
+        self.assertEqual(manifest["version"], "1.0.1")
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0]["source"], "./bio_bacteria")
 
