@@ -1,0 +1,10 @@
+{
+  "name": "droit",
+  "description": "Academic research toolkit for French legal scholarship (droit public, droit constitutionnel, droit pénal, droit de la nationalité et de la citoyenneté). Bundles the writing conventions, citation norms and verification workflows used for peer-reviewed publications in law: detailed references in footnotes following the conventions of Camille Aynes' doctoral thesis (Dalloz, 2022), verification of case-law and statutory citations against official sources before publication. Use when drafting or reviewing a legal manuscript, an article, a communication or a thesis chapter in law.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  },
+  "homepage": "https://github.com/cguyeux",
+  "keywords": ["droit", "legal-scholarship", "citation", "footnotes", "france"]
+}
