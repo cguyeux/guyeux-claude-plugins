@@ -58,9 +58,12 @@ synchroniseur crée des liens vers leurs répertoires réels :
 ```
 python3 _audit/tools/sync_codex_skills.py --apply
 python3 _audit/tools/sync_codex_skills.py
+python3 _audit/tools/sync_codex_skills.py --inventory --detail
 ```
 
 La seconde commande doit indiquer zéro skill manquant et zéro conflit. Le
+troisième produit l'écart entre le registre canonique et la sélection Codex,
+groupé par plugin source, sans modifier le profil.
 synchroniseur ne remplace jamais un fichier, un répertoire ou un lien divergent
 déjà présent dans `~/.codex/skills`.
 

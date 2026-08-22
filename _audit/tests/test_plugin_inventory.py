@@ -103,6 +103,18 @@ class PluginInventoryTests(unittest.TestCase):
         for path in desired.values():
             self.assertTrue((path / "SKILL.md").is_file())
 
+    def test_codex_inventory_is_a_partition_of_the_canonical_registry(self):
+        desired, omitted = self.codex_sync.inventory()
+        omitted_names = {name for names in omitted.values() for name in names}
+        registry = self.codex_sync.load_registry()
+        self.assertEqual(188, len(registry))
+        self.assertEqual(53, len(desired))
+        self.assertEqual(135, len(omitted_names))
+        self.assertEqual(set(registry), set(desired) | omitted_names)
+        self.assertTrue(set(desired).isdisjoint(omitted_names))
+        self.assertIn("tbmonitor-papers", omitted_names)
+        self.assertIn("remote-compute", desired)
+
     def test_codex_sync_classifies_without_overwriting(self):
         import tempfile
 

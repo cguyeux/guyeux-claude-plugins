@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from collections import defaultdict
 from pathlib import Path
 
 
@@ -21,13 +22,25 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_TARGET = Path.home() / ".codex" / "skills"
 
 
-def desired_links(root: Path = ROOT) -> dict[str, Path]:
+def load_registry(root: Path = ROOT) -> dict[str, str]:
     registry = json.loads((root / "canon_skills.json").read_text(encoding="utf-8"))
+    if not isinstance(registry, dict):
+        raise ValueError("registre canonique invalide")
+    return registry
+
+
+def load_exports(root: Path = ROOT) -> list[str]:
     exports = json.loads((root / "codex_skills.json").read_text(encoding="utf-8"))
-    if not isinstance(registry, dict) or not isinstance(exports, list):
-        raise ValueError("registres Codex invalides")
+    if not isinstance(exports, list):
+        raise ValueError("registre Codex invalide")
     if len(exports) != len(set(exports)) or exports != sorted(exports):
         raise ValueError("codex_skills.json doit etre trie et sans doublon")
+    return exports
+
+
+def desired_links(root: Path = ROOT) -> dict[str, Path]:
+    registry = load_registry(root)
+    exports = load_exports(root)
 
     desired: dict[str, Path] = {}
     for name in exports:
@@ -38,6 +51,17 @@ def desired_links(root: Path = ROOT) -> dict[str, Path]:
             raise ValueError(f"canonique inutilisable pour {name}: {target}")
         desired[name] = target
     return desired
+
+
+def inventory(root: Path = ROOT) -> tuple[dict[str, Path], dict[str, list[str]]]:
+    """Classer les canoniques non exportes Codex par plugin d'origine."""
+    registry = load_registry(root)
+    desired = desired_links(root)
+    omitted: dict[str, list[str]] = defaultdict(list)
+    for name, relative in registry.items():
+        if name not in desired:
+            omitted[Path(relative).parts[0]].append(name)
+    return desired, {plugin: sorted(names) for plugin, names in sorted(omitted.items())}
 
 
 def classify(target: Path, desired: dict[str, Path]) -> tuple[list[str], list[str], list[str]]:
@@ -59,7 +83,20 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--target", type=Path, default=DEFAULT_TARGET)
     parser.add_argument("--apply", action="store_true", help="creer uniquement les liens manquants")
+    parser.add_argument("--inventory", action="store_true", help="lister les canoniques non exportes Codex")
+    parser.add_argument("--detail", action="store_true", help="afficher les noms avec --inventory")
     args = parser.parse_args()
+
+    if args.inventory:
+        desired, omitted = inventory()
+        total_omitted = sum(len(names) for names in omitted.values())
+        print(f"Canonique : {len(desired) + total_omitted} ; exportes Codex : {len(desired)} ; non exportes : {total_omitted}")
+        for plugin, names in omitted.items():
+            print(f"  {plugin:26s} {len(names):3d}")
+            if args.detail:
+                for name in names:
+                    print(f"    - {name}")
+        return 0
 
     desired = desired_links()
     target = args.target.expanduser()
