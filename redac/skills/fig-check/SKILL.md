@@ -84,8 +84,12 @@ Parcourir le manuscrit et extraire **toutes** les figures :
      `wrapfigure`, `minipage`
    - **Caption** associee : `\caption{...}` du meme environnement
    - **Label** : `\label{fig:xxx}`
-   - **Referencement** dans le texte : `Grep '\\ref{fig:xxx}'` → liste
-     des endroits ou la figure est citee (Results, Discussion, etc.)
+   - **Referencement** dans le texte : `Grep '\\ref{fig:xxx}'`, en excluant
+     l'occurrence dans la propre caption/legende de la figure → liste des
+     endroits ou la figure est citee depuis la prose (Results, Discussion,
+     etc.). Une liste vide est une trouvaille a part entiere, traitee en
+     Phase 5 (regle imperative ci-dessous) : une figure incluse mais jamais
+     appelee depuis le texte n'a pas sa place dans l'article.
    - **Numero d'apparition** dans l'ordre du PDF (ordre sequentiel dans
      le source .tex)
 3. Separer les figures principales des figures de supplementary (detecter
@@ -216,7 +220,7 @@ systematiquement les criteres suivants et attribuer a chaque figure un
 - Pas de jaune clair sur fond blanc (invisible)
 - Pas de >8 categories avec des couleurs similaires indistinguables
 
-**F. Correspondance figure/caption**
+**F. Correspondance et autosuffisance de la legende**
 - Chaque element mentionne dans la caption est-il reellement visible
   (panneaux A/B/C cites et presents, couleurs citees et appliquees,
   gene/souche cite et etiquete) ?
@@ -224,6 +228,19 @@ systematiquement les criteres suivants et attribuer a chaque figure un
   mais caption pas mise a jour) ?
 - Les unites et echelles citees en caption correspondent-elles a ce qui
   est affiche ?
+- **Autosuffisance (regle imperative, non negociable)** : la legende
+  doit se comprendre **sans lire le corps du texte**. Un lecteur qui
+  feuillette directement les figures doit pouvoir l'interpreter seul.
+  Concretement, verifier que la caption definit ou rend inutile la
+  consultation du texte principal pour : chaque abreviation/acronyme
+  utilise dans les elements de la figure (axes, legende interne,
+  annotations de panneaux) et non deja standard du domaine ; chaque
+  panneau (A/B/C...) ; chaque couleur, symbole ou style de trait utilise
+  pour coder une categorie ; l'effectif (N) et le test statistique
+  quand un seuil de significativite ou une barre d'erreur est affiche ;
+  l'unite de chaque axe ou echelle. Une caption qui renvoie implicitement
+  a « voir Methodes » ou « voir section X » pour comprendre ce qui est
+  affiche est une issue F-FAIL, pas un simple style a ameliorer.
 
 **G. Elements scientifiques specifiques (MTBC)**
 - Sur un arbre phylogenetique : presence d'une echelle (substitutions
@@ -269,6 +286,19 @@ suggeree ("deplacer la legende hors du panneau principal",
   ecart caption/image est une issue critere F.
 - **Comparer entre figures** : apres avoir inspecte toutes les figures,
   evaluer la coherence inter-figures (palette, police, style).
+- **Deux regles absolues, valables pour tout article verifie par ce
+  skill, sans exception** :
+  1. **Chaque legende doit se suffire a elle-meme** (critere F). Une
+     figure comprehensible seulement en repartant lire le texte principal
+     est une figure a corriger, meme si le rendu visuel est par ailleurs
+     irreprochable.
+  2. **Chaque figure incluse dans le manuscrit doit etre appelee au
+     moins une fois par un `\ref{}` depuis la prose du corps du texte**
+     (hors caption). Une figure presente dans le PDF mais jamais citee
+     dans le recit (Results/Discussion) est une issue bloquante : soit
+     l'appel manque et doit etre ajoute au bon endroit du texte, soit la
+     figure est superflue et doit etre retiree ou deplacee en
+     supplementary. Voir Phase 5 pour la detection systematique.
 
 ---
 
@@ -309,6 +339,14 @@ Une fois toutes les figures inspectees :
    reference dans le `.tex` → signaler (menage a faire).
 6. **Refs cassees** : un `\ref{fig:xxx}` sans `\label{fig:xxx}`
    correspondant → signaler.
+7. **Figures jamais citees (regle imperative, symetrique du point 6)** :
+   pour chaque figure avec un `\label{fig:xxx}`, verifier qu'au moins un
+   `\ref{fig:xxx}` existe **dans le corps du texte** (Introduction,
+   Results, Discussion...), en excluant l'occurrence dans sa propre
+   caption. Une figure sans aucun appel depuis la prose est une issue
+   bloquante, listee explicitement dans le rapport (Phase 6) meme si
+   toutes ses autres criteres visuels sont OK — le statut global de
+   cette figure ne peut pas etre `OK` tant qu'elle n'est pas citee.
 
 ---
 
@@ -379,6 +417,8 @@ Issues inter-figures
   Palette incoherente : oui/non (detail)
   Figures orphelines  : K (liste)
   Refs cassees        : L (liste)
+  Figures jamais citees dans le texte : M (liste)  ⚠ bloquant
+  Legendes non autosuffisantes        : N (liste)  ⚠ bloquant
 
 Figures a corriger en priorite
   1. Figure 2 (fig:ml_tree) — MAJOR
@@ -438,6 +478,11 @@ applicable automatiquement :
 - Lire visuellement CHAQUE figure via les capacites multimodales
 - Appliquer la grille de criteres A-H systematiquement
 - Comparer chaque figure a sa caption LaTeX
+- **Verifier que chaque legende est autosuffisante** (comprehensible
+  sans lire le texte principal — critere F, regle imperative)
+- **Verifier que chaque figure legendee est appelee par au moins un
+  `\ref{}` depuis la prose du corps du texte** (regle imperative,
+  Phase 5 point 7) — pas seulement l'inverse (refs cassees)
 - Maintenir `fig_check.md` a jour, tri par numero d'apparition
 - Reperer les figures orphelines et les refs cassees
 - Proposer des corrections concretes et actionnables (pas de "ameliorer

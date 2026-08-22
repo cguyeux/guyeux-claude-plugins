@@ -125,6 +125,39 @@ avec la meme valeur partout, et les decompositions doivent additionner.
 Voir [references/NUMBER_CONSISTENCY.md](references/NUMBER_CONSISTENCY.md) pour
 le detail des regex, des classes de chiffres et des recettes d'audit.
 
+### 0bis. PASSE DE COLLISION -- le meme nombre avec deux referents differents (OBLIGATOIRE)
+
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/claim-check/scripts/collision_pass.py main.tex
+```
+
+**Cette passe attrape une classe de defauts qu'AUCUNE autre etape ne peut voir.** La
+Phase 4 verifie chaque valeur contre sa source, une par une : elle passe donc a cote,
+par construction, des cas ou chaque chiffre est EXACT, chaque phrase est CORRECTE, et
+c'est leur MISE EN VOISINAGE qui induit une conclusion fausse. Deux cas vecus le meme
+jour sur un meme manuscrit (Rv2438A, 2026-07-31) :
+
+- « 3 sites polymorphes » (introduction) contre « 121 variants » (resultats) pour la
+  meme region : deux seuils de frequence, aucun explicite, les deux chiffres verifies ;
+- deux « 34 % » a vingt-six lignes d'ecart : taux de detection AU-DESSUS d'un seuil, et
+  proportion de genes essentiels EN DESSOUS du meme seuil. Coincidence pure, deux exacts.
+
+Le script regroupe les occurrences de chaque valeur et affiche leurs contextes. Il ne
+juge pas : **pour chaque valeur repetee, poser la seule question qui compte, le REFERENT
+est-il le meme partout ?** Une valeur repetee dix fois avec le meme sens est normale et
+souhaitable (c'est la coherence interne de la Phase 1bis) ; c'est la repetition a SENS
+DIFFERENT qui est le defaut.
+
+Correctif type quand une collision est reelle : reformuler l'une des occurrences en
+effectifs bruts (« 12 of the 35 tested » plutot que « 34 % »), ou en fraction verbale
+(« one in three »), et ajouter une clause qui distingue explicitement les deux quantites.
+Un pourcentage calcule sur un petit effectif doit de toute facon porter son denominateur.
+
+> **Ne pas reecrire ce script a la main avec un regex naif.** `(\d{1,3})\\%` capture les
+> decimales des nombres a virgule : « 74.6\% » remonte comme une occurrence de « 6 % » et
+> noie les vrais doublons. Mesure : version naive 10 valeurs repetees dont 6 fausses ;
+> version corrigee 5, dont 1 vraie collision, trouvee du premier coup.
+
 ### 0. Outil : recroisement mecanique tex <-> donnees sources (OBLIGATOIRE si des chiffres viennent de calculs)
 
 ```bash
@@ -343,6 +376,49 @@ Ordre a respecter :
 
 Tomber directement sur `WebSearch` pour un claim TB est le mode d'echec
 courant : plus lent, et couverture inferieure a celle de l'index.
+
+### Verifier dans les METHODES, pas dans le resume (Europe PMC plein texte)
+
+`tbmonitor` indexe des **resumes**. Or beaucoup de claims portent sur ce
+qu'un papier a REELLEMENT fait : taille d'echantillon, modele de base,
+logiciel et version, seuil applique, jeu de donnees, limite reconnue par
+les auteurs. Rien de cela n'est dans l'abstract. Des que le claim est de
+cette nature, monter d'un cran et lire le plein texte, gratuitement et sans
+quota :
+
+```bash
+S=${CLAUDE_PLUGIN_ROOT}/skills/claim-check/scripts/europepmc_fulltext.py
+python3 $S resolve 10.3390/biom12030376              # DOI -> PMCID + drapeau open access
+python3 $S sections 10.3390/biom12030376             # table des matieres, pour viser
+python3 $S fulltext 10.3390/biom12030376 --section "materials and methods"
+python3 $S fulltext 10.3390/biom12030376 --grep "iEK1011"   # phrases contenant le motif
+```
+
+**Un claim du type « X n'apparait dans aucune litterature » se refute par le
+CORPS du texte, pas le resume** (sous-commande `search`). Avant d'ecrire
+qu'un gene, un locus tag ou une methode est absent de la litterature, lancer
+un `search` plein texte : mesure 2026-08-10, `Rv1363c` = **0** article en
+resume contre 8 en plein texte. Un decompte tbmonitor a zero ne prouve
+l'absence que dans les RESUMES.
+
+```bash
+python3 $S search "Rv1363c AND tuberculosis" --grep "Rv1363c"   # mentions reelles dans le corps
+```
+
+Regles d'emploi :
+
+- **Portee** : open access uniquement (mesure 2026-08 : 35 264 papiers TB en
+  OA). `resolve` affiche `fullTextAvailable` ; si c'est `False`, le claim se
+  verifie sur le resume, et le registre doit dire que la preuve est un resume.
+- **Ne jamais deviner un PMCID.** L'API repond `200` avec un AUTRE article
+  quand le PMCID est faux (verifie : `PMC8945347` au lieu de `PMC8945471`
+  rend un article de revue differente sans lever la moindre erreur). Passer
+  le DOI et laisser le script resoudre puis recouper.
+- Viser Europe PMC AVANT le site de l'editeur : MDPI et plusieurs autres
+  repondent `403` a `WebFetch` alors que la version PMC passe.
+- Un claim verifie sur le plein texte se note comme tel dans le registre
+  (source `europepmc:PMCxxxxxxx` + section citee) : niveau de preuve
+  superieur au resume, et la lecture n'est pas a refaire au run suivant.
 
 ### Garde-fou -- CLES QUASI-DUPLIQUEES : le claim attribue au MAUVAIS papier
 

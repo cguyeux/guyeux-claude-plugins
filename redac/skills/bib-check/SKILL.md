@@ -4,10 +4,14 @@ description: >-
   Verification exhaustive des references BibTeX d'un article LaTeX. Verifie l'existence
   reelle de chaque reference en ligne (tbmonitor-papers pour la TB / MTBC, puis CrossRef /
   WebFetch / WebSearch), la coherence des metadonnees (auteurs, titre, annee, journal), la
-  pertinence des citations dans leur contexte, et detecte les doublons semantiques. Outil
-  anti-hallucinations : marque chaque reference verifiee. A utiliser quand l'utilisateur
-  demande de verifier la bibliographie, de controler que les references existent vraiment,
-  de detecter des references inventees ou des doublons, ou avant une soumission.
+  pertinence des citations dans leur contexte, et detecte les doublons semantiques. Audite
+  aussi les AUTO-CITATIONS dans les deux sens : les travaux anterieurs de l'equipe qui
+  auraient du etre cites et ne le sont pas (provenance des donnees, du pipeline, de la
+  nomenclature, article precedent de la serie), et l'exces ou l'auto-citation gratuite.
+  Outil anti-hallucinations : marque chaque reference verifiee. A utiliser quand
+  l'utilisateur demande de verifier la bibliographie, de controler que les references
+  existent vraiment, de detecter des references inventees ou des doublons, de verifier
+  qu'on cite bien ses propres travaux pertinents, ou avant une soumission.
 argument-hint: "<chemin vers main.tex>"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebSearch, WebFetch, mcp__tbmonitor__execute_sql, mcp__tbmonitor__show_schema
 ---
@@ -138,6 +142,25 @@ de titres, donc tout journal absent de la liste devenait un faux positif (15 ale
 La v2 part d'une **liste blanche de journaux a editeur certain** et n'alerte QUE sur ceux-la : un
 journal inconnu n'est pas verifie, et c'est voulu, **mieux vaut ne rien dire que dire faux**.
 
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/bib-check/scripts/author_format.py references.bib
+```
+
+Un champ `author` moissonne (NCBI E-utilities, PubMed) au format `Nom INITIALES and Nom
+INITIALES ...`, **sans virgule**, fait echanger nom et prenom par BibTeX (regle « First von
+Last » : le dernier mot devient le nom de famille). Vu 2026-08-03 (Rv2438A) : `Choe D` affiche
+« D et al. » au lieu de « Choe et al. ». **Le defaut est invisible dans la bibliographie
+complete** (le style d'impression usuel reconstitue par coincidence le texte tel que tape) et
+n'apparait que sous `\citet`/`\citeauthor` — donc potentiellement des mois apres l'import,
+a l'ajout d'une premiere citation nommee. Decidable sans reseau, comme la coherence DOI
+ci-dessus. Si des entrees sont signalees, corriger **tout le fichier `.bib` en une seule
+passe** (pas seulement les entrees citees par nom) : corriger un sous-ensemble cree une
+bibliographie ou certaines entrees s'affichent « Prenom. Nom » et d'autres « Nom Prenom »,
+une incoherence de presentation pire que le defaut d'origine. Deux formats particuliers a
+respecter : suffixe generationnel (`Barry CE 3rd` -> `Barry, 3rd, C.E.`, format BibTeX
+« von Last, Jr, First », jamais `Barry, C.E., 3rd`) et nom de famille compose a plusieurs mots
+(`Nae Rin Lee B` -> `Nae Rin Lee, B.`).
+
 ## Phase 2 -- Detection de doublons semantiques
 
 Comparer **toutes les paires d'entrees** pour detecter le meme article sous des cles
@@ -174,14 +197,31 @@ recent non encore ingere).
 
 Pour toute entree portant un `doi`, la source primaire la plus fiable et la plus
 rapide est l'API CrossRef (`https://api.crossref.org/works/<doi>`), qui rend les
-metadonnees officielles de l'editeur (title exact, auteurs, annee print/online,
-container-title, volume, pages). Preferer ce diff direct au diff sur des snippets
-WebSearch (moins fiables). Recette :
-1. Recuperer chaque DOI puis **diff au champ `.bib`** : title (tolerer casse,
-   diacritiques ET balises HTML `<i>...</i>` que CrossRef inclut parfois dans le
-   titre), annee (accepter print OU online), journal, volume, 1er auteur.
+metadonnees officielles de l'editeur (title exact, annee print/online,
+container-title). Un script canonique fait ce travail mecaniquement :
+
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/bib-check/scripts/crossref_verify.py references.bib
+# une fois les DIFF corriges (voir sortie) :
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/bib-check/scripts/crossref_verify.py references.bib --mark-verified
+```
+
+Il saute les entrees deja `verified`, signale `NO_DOI` pour les theses/rapports/preprints
+(a verifier par une autre voie, jamais improviser une comparaison sans source), et
+`DIFF` avec le detail titre/annee/revue cote a cote quand une entree diverge de CrossRef.
+Nait d'un besoin reel (tissue_tropism_mtbc, 2026-08-03), avec deux pieges corriges dans
+le script pour qu'ils ne se reproduisent pas a chaque invocation :
+1. **Accolades imbriquees dans un titre** (`{Mycobacterium}`, `{HIV}`) : une extraction de
+   champ par regex non-greedy `[^}]*` tronque le titre au premier mot protege. Le script
+   utilise un compteur de profondeur d'accolades (meme correctif que `doi_coherence.py` et
+   `author_format.py`, voir Phase 1bis).
+2. **Balises HTML de CrossRef collees sans espace** (`<i>tuberculosis</i>Invasion`) : les
+   retirer sans re-inserer d'espace fabrique un mot fantome et un faux ecart de titre.
+
+Si le script est indisponible ou echoue reseau, recette manuelle en secours :
+1. Recuperer chaque DOI puis diffuser au champ `.bib` (title, annee print OU online, journal).
 2. Un DOI qui **resout en HTTP 200** prouve l'existence ; un titre qui diffe (hors
-   casse/HTML) = titre a corriger meme si auteurs/annee/journal collent.
+   casse/HTML) = titre a corriger meme si annee/journal collent.
 3. **Piege d'environnement sandboxe** : `urllib`/`requests` en Python et un `curl`
    lance via `subprocess` peuvent etre **sans reseau** (reponse vide, champs `None`
    trompeurs, pas d'exception). Si un diff pur-Python rend tous les champs vides
@@ -290,6 +330,30 @@ Pour chaque `\cite{key}` (ou `\citep`, `\citet`, `\parencite`, `\textcite`,
    - Le claim est-il coherent avec ce que le papier traite reellement ?
    - Le papier supporte-t-il l'affirmation faite ?
 
+   **Quand l'abstract ne tranche pas, lire le plein texte** (open access,
+   gratuit, sans clef ni quota). C'est le cas typique d'une citation qui
+   attribue au papier une METHODE, un CHIFFRE ou un jeu de donnees : le
+   resume n'en parle pas, et on ne peut ni confirmer ni infirmer.
+
+   ```bash
+   S=${CLAUDE_PLUGIN_ROOT}/skills/bib-check/scripts/europepmc_fulltext.py
+   python3 $S resolve <DOI>                      # fullTextAvailable : True / False
+   python3 $S fulltext <DOI> --grep "<terme du claim>"
+   python3 $S search "<gene|terme>" --grep "<gene|terme>"   # trouver quel article le CORPS mentionne
+   ```
+
+   La sous-commande `search` cherche dans le CORPS des articles, pas le
+   resume : utile pour retrouver l'article reellement pertinent quand une
+   entree BibTeX est douteuse ou pour verifier qu'un terme cite comme
+   « absent de la litterature » l'est vraiment (mesure : `Rv1363c` = 0 en
+   resume, 8 en plein texte).
+
+   Trois regles : la couverture est limitee a l'open access (si
+   `fullTextAvailable` est `False`, le dire dans le rapport plutot que de
+   conclure) ; ne jamais deviner un PMCID, car l'API rend `200` avec un
+   autre article quand il est faux, donc passer le DOI ; viser Europe PMC
+   avant le site de l'editeur, qui repond souvent `403` (MDPI notamment).
+
 4. **Signaler les decalages** :
    ```
    CITATION DOUTEUSE (L.142) :
@@ -301,6 +365,124 @@ Pour chaque `\cite{key}` (ou `\citep`, `\citet`, `\parencite`, `\textcite`,
 
 5. **Ne PAS signaler** les cas triviaux ou la correspondance est evidente
    (ex: citation d'un outil avec le bon nom)
+
+---
+
+## Phase 4bis -- Auto-citations raisonnees
+
+Deux defauts symetriques, et **celui qu'on rencontre le plus souvent est le
+premier** :
+
+- **SOUS-citation.** La `.bib` a ete construite depuis la litterature externe, et
+  les travaux anterieurs de l'equipe n'y sont jamais entres. Le lecteur ne peut
+  alors plus remonter a la **provenance** de la donnee, du pipeline ou de la
+  nomenclature employes, alors meme qu'elle est publiee et citable. C'est un defaut
+  de tracabilite, du meme ordre qu'une reference fausse.
+- **SUR-citation.** Auto-citations empilees, hors sujet, ou posees pour la
+  visibilite. Risque reputationnel reel : un editeur regarde ce ratio, et une
+  auto-citation gratuite est visible immediatement.
+
+Mesurer les deux d'un coup :
+
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/bib-check/scripts/self_citation.py article/main.tex
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/bib-check/scripts/self_citation.py article/main.tex --coauthor Sola
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/bib-check/scripts/self_citation.py article/main.tex --emit <cle>
+```
+
+Corpus par defaut : `~/docs/cv/references/journals.bib` et `conferences.bib`
+(~280 entrees **avec resume**, ce qui permet un appariement thematique et pas
+seulement par titre). Le script rend le taux d'auto-citation courant et classe les
+travaux non cites par cosinus TF-IDF contre le texte du manuscrit. **Le score
+classe, il ne recommande pas** : le tri se fait aux etapes 2 et 3 ci-dessous.
+
+### Etape 1 -- Lire le taux courant
+
+| Taux | Lecture |
+|---|---|
+| 0 % | **Suspect en soi** si le manuscrit s'appuie sur une ressource de l'equipe. Passer l'etape 2 en entier. |
+| <= 15 % | Usage courant, rien a signaler |
+| 15-25 % | Eleve : chaque entree doit passer le test du tiers (etape 3) |
+| > 25 % | Tres eleve : un editeur le remarquera. Ne garder que les DUES. |
+
+Ces bornes sont une heuristique de travail, pas une regle editoriale publiee : les
+citer comme telles si la question se pose.
+
+### Etape 2 -- Les auto-citations DUES (la priorite)
+
+Balayer cette liste **poste par poste** ; a chaque poste ou le manuscrit s'appuie
+sur un travail anterieur de l'equipe, l'absence de citation est un **defaut**, pas
+une abstention vertueuse :
+
+1. **Provenance des donnees** : base, plateforme, pipeline d'ou viennent les
+   genomes, les variants, les annotations (TB-Annotator, l'atlas, CRISPRbuilder-TB…).
+   Un lecteur doit pouvoir aller voir d'ou sort la donnee.
+2. **Classification ou nomenclature employee** : schema de lignees, barcoding,
+   taxonomie utilisee pour nommer les souches.
+3. **Methode reutilisee** : algorithme, extraction de marqueurs, adaptation d'une
+   mesure, protocole in silico publie anterieurement.
+4. **Article precedent de la meme serie** : celui que ce manuscrit continue, et
+   celui qui a pose la question. Sans lui, le lecteur ne reconstruit pas la serie et
+   l'article parait sortir de nulle part.
+5. **Observation qui motive la question**, quand elle est de nous.
+6. **Negatif ou borne etabli precedemment** et sur lequel le manuscrit s'appuie.
+7. **Ressource deposee** (Zenodo, base publique) accompagnant un travail anterieur.
+
+Pour chacune, la citation va **la ou le fait est utilise** (Methodes le plus
+souvent), pas dans une phrase d'introduction ajoutee pour l'accueillir.
+
+### Etape 3 -- Le test du tiers
+
+Pour chaque candidat, y compris ceux remontes par le score :
+
+> **Citerais-je ce papier, a cet endroit precis, s'il etait de quelqu'un d'autre ?**
+
+Si la reponse est non, ne pas citer. Corollaires operatoires :
+
+- **Point d'ancrage obligatoire** : nommer la phrase exacte que la citation soutient.
+  S'il faut **ecrire une phrase** pour heberger la citation, elle n'est pas due.
+- **Jamais de tapis de citations** (`\citep{moi2019,moi2021,moi2023}`) sauf si chaque
+  entree soutient un point distinct ; sinon garder la plus specifique.
+- **Jamais dans l'abstract** (R13.4 de `/deai-latex` interdit toute citation).
+- **Jamais comme appui unique** d'une affirmation generale du domaine : apparier
+  avec une reference externe.
+- **La reference canonique d'abord** : si le travail de reference sur ce point est
+  celui d'un tiers, il se cite en premier ; le notre ensuite, et seulement s'il
+  ajoute quelque chose.
+- **Preprint / en preparation** : ne pas citer comme publie. Si c'est indispensable,
+  l'annoncer explicitement comme tel.
+- **Proximite thematique n'est pas pertinence** : un score eleve peut venir d'un
+  vocabulaire partage (meme organisme, meme famille de methodes) sans que le papier
+  dise quoi que ce soit sur le point traite. Verifier le resume avant d'inserer.
+- Quand le resume ne tranche pas, remonter au texte de l'article
+  (`~/docs/publis/`, ou le skill `researcher`) plutot que de deviner.
+
+### Etape 4 -- Inserer proprement
+
+1. Recuperer l'entree avec `--emit <cle>` : la retaper a la main reintroduit
+   exactement les erreurs que ce skill existe pour attraper. Le script normalise au
+   passage le DOI (le corpus CV le stocke en URL complete) et `page` -> `pages`.
+2. **Le corpus CV n'est PAS une source verifiee** : il peut porter une annee de
+   « in press », un lieu de publication devenu autre, une pagination provisoire.
+   Passer les entrees ajoutees a `crossref_verify.py`, puis poser `verified`.
+3. Verifier le rendu sous `\citet` (piege du champ `author` sans virgule, Phase 1bis).
+4. Re-mesurer le taux apres insertion : les ajouts de cette phase ne doivent pas
+   faire franchir la bande « eleve ». Si c'est le cas, ne garder que les DUES.
+
+### Etape 5 -- Bloc de rapport
+
+```
+Auto-citations :
+  Avant        : N / R references (X %)
+  Dues manquantes identifiees : M
+    - [poste 1..7] : @cle — ancre : "phrase du manuscrit" (section)
+  Ajoutees     : K  (toutes verifiees CrossRef)
+  Ecartees     : L  (echec du test du tiers : raison en une ligne)
+  Apres        : N+K / R+K (Y %) — bande : [usage courant / eleve / …]
+```
+
+Signaler les ecartees autant que les ajoutees : la trace evite qu'un coauteur, ou
+une passe ulterieure, reintroduise de bonne foi ce qui a ete examine et refuse.
 
 ---
 
@@ -347,6 +529,13 @@ Generer un rapport structure en markdown :
 
 - \cite{key} utilise dans le .tex mais absent du .bib
 
+## Auto-citations
+
+- Taux : N/R (X %) avant → N+K/R+K (Y %) apres
+- Dues manquantes ajoutees : @key — poste [provenance / nomenclature / methode / serie],
+  ancre : "phrase du manuscrit"
+- Candidats ecartes : @key — [raison, une ligne]
+
 ---
 
 ## Resume
@@ -360,6 +549,9 @@ Generer un rapport structure en markdown :
 | Doublons | N |
 | Citations douteuses | N |
 | Orphelines | N |
+| Auto-citations dues ajoutees | N |
+| Auto-citations ecartees | N |
+| Taux d'auto-citation final | X % |
 ```
 
 Afficher le rapport a l'utilisateur. Si des problemes critiques existent,
@@ -376,6 +568,8 @@ les mettre en evidence en premier.
 - Lire le texte complet de l'article pour comprendre le contexte des citations
 - Privilegier la precision : un faux positif (faussement signale comme suspect)
   est moins grave qu'un faux negatif (hallucination non detectee)
+- Auditer les auto-citations **dans les deux sens** (Phase 4bis) : celles qui
+  manquent comptent autant que celles qui sont en trop
 
 ### Ce que le skill NE DOIT PAS faire
 - Se fier a sa memoire pour confirmer l'existence d'un papier
@@ -383,6 +577,13 @@ les mettre en evidence en premier.
 - Corriger silencieusement sans signaler dans le rapport
 - Ignorer les entrees orphelines ou les doublons
 - Bacle la Phase 4 (verification contextuelle) : c'est la valeur principale
+- **Inserer une auto-citation sans point d'ancrage**, ni ecrire une phrase pour
+  heberger une citation : le texte commande la citation, jamais l'inverse
+- **Empiler les auto-citations** d'un meme auteur sur un meme point
+- **Traiter le corpus CV comme verifie** : les entrees qui en sortent passent par
+  CrossRef comme les autres
+- Passer sous silence une auto-citation DUE au motif qu'elle est de nous : ne pas
+  citer la provenance de sa propre donnee est un defaut de tracabilite
 
 
 ---

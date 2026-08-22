@@ -4,10 +4,14 @@ description: >-
   Applique les regles de style scientifique a un article LaTeX : supprime le gras abusif,
   convertit les listes a puces en prose, fusionne les micro-sections, verifie les acronymes
   (definis une seule fois), met les noms d'especes en italique, elimine les cliches
-  redactionnels et ameliore la coherence des temps verbaux. A utiliser quand l'utilisateur
-  demande de nettoyer les marqueurs de texte genere par IA, de retirer les tirets cadratin,
-  de depuceliser un texte trop liste, d'harmoniser le style d'un manuscrit, ou avant une
-  soumission.
+  redactionnels et ameliore la coherence des temps verbaux. Fait aussi l'ECONOMIE DU TEXTE :
+  coupe le narratif des essais infructueux qui n'apprennent rien, elimine les redites entre
+  sections, mesure la longueur face a la limite de la revue cible et bascule le materiel de
+  moindre impact vers les supplementary materials. A utiliser quand l'utilisateur demande de
+  nettoyer les marqueurs de texte genere par IA, de retirer les tirets cadratin, de
+  depuceliser un texte trop liste, de raccourcir un manuscrit trop long, de supprimer les
+  repetitions, d'alleger le recit des pistes qui n'ont mene nulle part, d'harmoniser le style
+  d'un manuscrit, ou avant une soumission.
 argument-hint: "<chemin vers main.tex>"
 ---
 
@@ -63,17 +67,53 @@ Avant de modifier quoi que ce soit, produire un diagnostic quantitatif.
 
 **Deux des mesures ne se font PAS a la main** (elles ont chacune un piege qui rend
 un chiffre faux mais credible, cf. R13.1 et R12) : la longueur de l'abstract et la
-detection de cuisine locale. Les obtenir via le script du skill :
+detection de cuisine locale. Le script du skill les rend, **et couvre aussi R1,
+R2, R8 et R9 en un seul passage** (ajoute le 2026-08-01 : ces quatre comptages
+etaient auparavant improvises au grep a chaque invocation) :
 
 ```bash
 python3 ${CLAUDE_PLUGIN_ROOT}/skills/deai-latex/scripts/latex_metrics.py main.tex --pdf main.pdf
 ```
 
 Il rend la longueur de l'abstract (comptee sur le texte REELLEMENT rendu) avec sa
-plage de conformite, et les occurrences de cuisine locale visibles dans le PDF.
-Passer `--pdf` suppose le manuscrit compile ; sans PDF, le scan R12 est saute et il
-faut le signaler comme non fait (ne PAS le remplacer par un grep sur le source :
-voir R12, "Test final").
+plage de conformite, le nombre de `\textbf` dans le corps (R1), d'environnements
+`itemize`/`enumerate` (R2), les paragraphes trop longs (R7, voir ci-dessous), de
+tirets cadratins (R8), les labels jamais reference (R9, orphelins de
+`\ref`/`\cref`/`\Cref`/`\autoref`/`\eqref`), et les occurrences de cuisine locale
+visibles dans le PDF (R12). Ce sont des SIGNAUX a examiner avec le contexte sous
+les yeux, pas des verdicts automatiques : un `\textbf` en legende, en en-tete de
+tableau ou en label de `description` reste legitime (voir R1 ci-dessous), et un
+paragraphe FLAG peut etre une description de protocole ou une table transposee
+en prose qui a legitimement besoin de place ; le script ne fait que remonter le
+compte pour eviter de le re-derive a la main (R7) ou a l'oeil (R1/R2/R8/R9) a
+chaque manuscrit. Passer `--pdf` suppose le manuscrit compile ; sans PDF, seul
+le scan R12 est saute et il faut le signaler comme non fait (ne PAS le remplacer
+par un grep sur le source : voir R12, "Test final").
+R3 a R6, R10, R11 et R13.2-R13.8 restent une lecture attentive, pas un script :
+ce sont des jugements de style/coherence, pas des comptages structurels surs.
+
+**Economie du texte (R14, R15, R16)** -- trois mesures qui exigent de comparer des
+passages DISTANTS, chacun correct isolement, ce qu'une relecture lineaire ne fait
+jamais. Second script, meme repertoire :
+
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/deai-latex/scripts/content_economy.py main.tex
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/deai-latex/scripts/content_economy.py main.tex --limit 6500
+```
+
+Il resout les `\input`/`\include`, rend la longueur DECOMPOSEE (texte seul / resume
+inclus / legendes incluses -- une limite de revue porte sur l'un de ces perimetres
+et presque jamais sur le meme), la masse par section, les n-grammes partages entre
+sections (redite quasi verbatim), la carte des jetons numeriques presents dans
+plusieurs sections du corps (un chiffre redonne trois fois = raisonnement refait au
+lieu d'etre synthetise), les passages a marqueur d'essai infructueux, et
+l'inventaire du supplementaire existant. `--limit` prend la limite de la revue cible
+**apres l'avoir lue dans le guide auteurs**, jamais de memoire.
+
+Comme pour R1/R2/R8/R9, ce sont des SIGNAUX : un chiffre partage entre trois
+sections peut etre la longueur de la proteine (legitime), un marqueur de negatif
+peut annoncer un resultat publiable. Le script remonte les passages, le tri se fait
+avec le contexte sous les yeux.
 
 ```
 Diagnostic deai-latex :
@@ -83,9 +123,15 @@ Diagnostic deai-latex :
   \textbf dans le corps : N occurrences
   Environnements itemize : N
   Environnements enumerate : N
+  Paragraphes trop longs (R7) : N (mise en page : deux/une colonne, seuils WARN/FLAG)
   Acronymes trouves : N (dont M non definis, P definis plusieurs fois)
   Noms d'especes non italiques : N
   Cliches rédactionnels detectes : N (details en Phase 2)
+  Longueur totale     : N mots texte seul / M resume inclus  [vs limite revue : ...]
+  Masse par section   : Results N (X %), Discussion M, Methods P
+  Redites             : N n-grammes partages, M chiffres dans >= 3 sections
+  Narratif d'echec    : N passages a trier (informatif vs impasse de chantier)
+  Supplementaire      : N fichiers, M renvois depuis le corps
 ```
 
 Ne pas commencer les corrections avant que le diagnostic soit affiche.
@@ -288,14 +334,55 @@ deux phrases ou de supprimer un paragraphe entier qui ne dit rien.
 Il ne commence pas systematiquement par une phrase-sujet suivie de
 trois arguments puis d'une conclusion.
 
+**Ne pas juger la longueur sur les lignes du SOURCE .tex, ni a l'oeil** *(piege
+vecu, Rv3222c 2026-08-12, defaut vecu)*. Le retour a la ligne dans le fichier
+`.tex` est arbitraire (~100 caracteres, choix de l'editeur) et n'a **aucun**
+rapport fiable avec l'occupation reelle dans un PDF a deux colonnes : un
+paragraphe de 759 mots, largement sous la vigilance d'un seuil pense en
+"lignes source", s'est etale sur **PRESQUE DEUX COLONNES PLEINES** d'un article
+en relisant le PDF compile -- c'est exactement le meme piege que R13.1 (compter
+a la main un abstract donne un chiffre faux mais credible). Utiliser :
+
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/deai-latex/scripts/latex_metrics.py main.tex
+```
+
+Le script (i) detecte la mise en page (deux colonnes : `twocolumn`, elsarticle
+`3p`/`5p`, IEEEtran ; une colonne : `1p`/`onecolumn` ; sinon hypothese prudente
+deux colonnes), (ii) compte les mots RENDUS de chaque paragraphe de prose
+(memes regles de rendu que R13.1 : `\emph`/`\textit`/... gardent leur
+contenu, `\cite`/`\label`/... sont retires, une formule `$...$` compte pour un
+mot), en excluant les blocs qui contiennent un flottant, une liste, un titre de
+section ou un `\begin{...}` (pas des paragraphes de texte courant). Seuils,
+calibres sur l'incident ci-dessus (un decoupage en 5 paragraphes de 140 a 215
+mots donnait, sur ce meme document en deux colonnes, des paragraphes de 1/3 a
+1/2 colonne chacun, visuellement normaux) :
+
+| Mise en page | WARN (a surveiller) | FLAG (a scinder) |
+|---|---|---|
+| Deux colonnes (`3p`/`5p`/`twocolumn`/IEEEtran) | >= 300 mots | >= 450 mots |
+| Une colonne (`1p`/`onecolumn`/classe generique) | >= 500 mots | >= 750 mots |
+
 **Actions** :
 - **Paragraphes d'une seule phrase** : fusionner avec le paragraphe
   precedent ou suivant
 - **Paragraphes identiquement structures** (tous commencent par
   "Regarding X, ...", ou tous suivent le pattern claim-evidence-conclusion) :
   varier les structures
-- **Paragraphes > 20 lignes** : envisager de scinder si deux idees
-  distinctes sont presentes
+- **Paragraphe FLAG ou WARN par le script** : chercher une frontiere de sens
+  DEJA marquee dans le texte lui-meme avant d'en inventer une -- un paragraphe
+  qui accumule plusieurs preuves independantes le dit souvent explicitement
+  ("A second, paired control...", "A third, orthogonal control...",
+  "What the data reveal instead is...") ; scinder a ces frontieres est un
+  simple ajout de ligne vide, **jamais une reecriture** (ne pas reformuler
+  les phrases adjacentes pour "lisser" la coupe, cf. R14/R15/R16 : la forme
+  change, pas le fond). Si aucune frontiere naturelle n'existe et que le
+  paragraphe traite reellement une seule idee indivisible, un FLAG isole peut
+  rester (signal a relire, pas un verdict automatique) -- mais le cas est rare
+  au-dela de 450 mots.
+- Un paragraphe FLAG sur une section a forte densite tabulaire (description
+  organisme-par-organisme, protocole etape par etape) est un candidat naturel
+  a la bascule en supplementaire (R16), pas seulement a la scission.
 
 ### R8. Tirets cadratins et ponctuation
 
@@ -619,11 +706,204 @@ du manuscrit.
 
 ---
 
+## Phase 2bis -- Economie du texte (R14 a R16)
+
+Les trois regles qui suivent ne portent ni sur la typographie ni sur le style de
+phrase : elles portent sur **ce qui a le droit d'occuper de la place**. Elles
+s'appliquent dans l'ordre R14 -> R15 -> R16, parce que chacune reduit la matiere
+sur laquelle travaille la suivante.
+
+**Quand les passer.** Si une contrainte de longueur existe (limite de la revue
+cible, ou manuscrit visiblement long), les passer **AVANT** R1-R13 : polir la
+typographie d'un paragraphe qu'on va supprimer est du travail perdu. Sinon, les
+passer apres, en fin de session.
+
+### R14. Le narratif des essais infructueux
+
+**Regle.** Un article rapporte un **etat de connaissance**, pas la **chronologie du
+chantier**. Le cahier de laboratoire garde l'histoire des tentatives : c'est sa
+fonction, et c'est la seule trace dont le projet a besoin. Un echec n'entre dans le
+manuscrit que s'il **apprend quelque chose a un lecteur qui n'a jamais su qu'on
+avait essaye**.
+
+**Test a appliquer passage par passage (test du lecteur ignorant)** : un lecteur qui
+ignore totalement cette tentative tire-t-il une conclusion differente, ou refait-il
+la meme erreur ? Si non aux deux, le passage sort.
+
+**Les quatre cas ou un negatif MERITE sa place** :
+
+1. **Il refute ou borne un claim que le lecteur porterait sinon** : affirmation
+   publiee, attente standard du domaine, cadrage initial du projet s'il a circule.
+   (Ex. la vulnerabilite CRISPRi de Rv3222c : le retrait est un resultat, parce que
+   le chiffre est dans une base que d'autres liront.)
+2. **Il sert de controle** : modele nul, controle positif, controle negatif. Sans
+   lui le positif voisin n'est pas credible. Il n'est alors pas un echec, c'est la
+   moitie de la mesure.
+3. **Il borne l'espace de recherche** : « cherche dans A, B et C au seuil S, rien
+   trouve » est un resultat d'exhaustivite, qui contraint l'interpretation.
+4. **C'est un piege methodologique qu'un tiers reproduirait a ses frais.** Il va
+   alors en Methodes ou en note supplementaire, en **une phrase impersonnelle**
+   (« la mesure sur assemblage complet fabrique un faux signal de proximite »), pas
+   en recit.
+
+**Ce qui n'a aucune place, quelle que soit la reussite finale** :
+
+- la chronologie des tentatives (« nous avons d'abord essaye X, puis bascule sur Y ») ;
+- un outil ecarte sans que la raison n'apprenne rien au lecteur ;
+- les **peripeties d'acces a une ressource** : telechargement bloque, page editeur
+  en 403, route de repli, quota d'API, fichier recupere a la main. Le lecteur veut
+  la **provenance** de la donnee, pas l'itineraire pour y arriver ;
+- un negatif sur une hypothese que personne n'avait (refuter ce que nul n'a suppose
+  n'informe pas) ;
+- un negatif deja implique par un autre negatif rapporte : n'en garder que le plus
+  informatif ;
+- la mention d'un calcul lance puis juge non concluant, quand rien n'en depend.
+
+**Reecriture** :
+
+| Avant (recit) | Apres (etat de connaissance) |
+|---|---|
+| « We first attempted a BLAST search, which returned no usable homolog, and therefore turned to profile-based methods. » | « No homolog is detectable by profile-based methods (HHpred, top hit E = 1300). » |
+| « The Europe PMC supplementary route and the PMC HTML page were both blocked, so the table was obtained directly from the publisher. » | « Data from the supplementary tables of [ref]. » |
+| « Our first co-folding run used the wrong stoichiometry and was discarded. » | (supprimer) |
+| « Docking was attempted but the pocket predictions were unstable, so this line was abandoned. » | (supprimer, ou -> note supplementaire si le lecteur risque de refaire l'essai) |
+
+**Regle de puissance, non negociable pour tout negatif conserve.** Un negatif sans
+sa **puissance de detection** n'est pas interpretable et se retourne contre l'auteur
+en review : dire ce qui a ete cherche, **avec quoi**, **a quel seuil**, **dans quelle
+version de quelle base**. C'est ce qui transforme une absence en resultat. Un
+negatif qu'on ne sait pas doter de sa puissance est un negatif a supprimer, pas a
+nuancer.
+
+**Ce qu'il ne faut PAS faire** : supprimer un negatif informatif pour faire propre.
+Un resultat negatif citable est un actif du manuscrit (et la discipline en manque) ;
+c'est le **recit** des impasses qui est du remplissage, pas le negatif lui-meme.
+
+### R15. Redites
+
+**Regle.** Une information est enoncee **une fois** a sa place, et **rappelee** au
+plus une fois ailleurs, sous forme de conclusion et non de demonstration. Le lecteur
+qui lit trois fois le meme chiffre ne le retient pas mieux : il en deduit que
+l'article n'est pas tenu.
+
+**Trois formes de redite, de la plus facile a la plus dangereuse** :
+
+1. **Quasi verbatim** : la Discussion recopie les phrases des Resultats. Detectee
+   par les n-grammes partages du script. Symptome type de l'edition par accretion.
+2. **Numerique** : le meme chiffre reapparait dans trois sections, avec son
+   raisonnement refait a chaque fois. Detectee par la carte des jetons numeriques.
+3. **Thetique** : la meme these est affirmee en Introduction, en Resultats, en
+   Discussion et en Conclusion, chaque fois avec d'autres mots. **Aucun script ne la
+   voit** : elle se lit en mettant cote a cote les sections de synthese.
+
+**Repetitions LEGITIMES, a ne pas toucher** : l'abstract redit (il est autonome) ;
+la Conclusion redit en une phrase ; un chiffre rappele **une** fois en Discussion
+pour ouvrir une interpretation. La frontiere est simple : **les Resultats etablissent,
+la Discussion interprete.** Un paragraphe de Discussion qu'on peut supprimer sans
+perdre une interpretation etait un doublon.
+
+**Reecriture** : remplacer la redite par une conclusion et un renvoi.
+
+> « Rv3222c's essentiality is supported by four independent lines: seven TA sites all
+> uniquely mappable, six genomes across five lineages, an empirical anti-polarity
+> control, and p ~ 1e-7 under H0 » (Discussion, chiffres redonnes en entier)
+>
+> devient
+>
+> « Essentiality is robust to the mappability and polarity objections (\cref{sec:essentiality}). »
+
+**Gain mesure** sur un manuscrit reel (dark_enzymes, FEMS) : **~630 mots** sur ce
+seul levier, sans perdre un chiffre ni une citation.
+
+**Controle de coherence a passer dans la foulee** (defaut jumeau de la redite,
+introduit par les memes ajouts successifs) : relire abstract, Discussion et
+Conclusion **contre** le corps. Traquer les compteurs figes (« trois elements »,
+« deux raisons ») qu'un ajout au corps a rendus faux, les resultats ajoutes que
+la Discussion ne reprend nulle part, et le diff conceptuel Introduction <-> Conclusion
+(si l'intro dit « ce n'est pas X mais Y » et que la conclusion s'ouvre sur X, c'est
+casse). Deux minutes, et c'est le defaut le plus grave que ce skill puisse attraper.
+
+### R16. Longueur totale, limite de la revue, et bascule en supplementaire
+
+**Regle.** La longueur n'est pas une question cosmetique : **elle decide de la liste
+des revues auxquelles l'article peut etre soumis**. Un manuscrit qui grossit sans
+surveillance se ferme des cibles, et l'auteur ne s'en apercoit qu'au moment de
+choisir, quand tout est ecrit.
+
+**Mesure**. Le perimetre sur lequel une revue exprime sa limite varie (texte seul ;
+resume inclus ; legendes et references exclues presque toujours). Le script rend les
+trois. **Verifier la limite et son perimetre dans le guide auteurs de la revue
+(WebFetch), ne jamais les supposer.**
+
+**Ordre des leviers -- il n'est pas interchangeable** (verifie sur dark_enzymes,
+7779 -> 6500 mots) :
+
+1. **Epuiser les redites (R15) d'abord.** Rendement le plus eleve, perte nulle.
+2. **Migrer, jamais reecrire, vers le supplementaire.** Le materiel supplementaire
+   ne compte pas dans la limite de mots de la plupart des revues (le **verifier** :
+   FEMS l'ecrit explicitement, d'autres non).
+3. **Polir phrase par phrase en dernier.** Rendement marginal faible ; ne s'applique
+   proprement qu'a la prose connective qui reste une fois les deux leviers
+   structurels epuises. Le faire en premier revient a sacrifier du contenu qui
+   n'avait pas besoin de l'etre.
+
+**Ce qui migre** (materiel de moindre impact, forte valeur de reproductibilite) :
+protocoles de controle detailles, tableaux organisme-par-organisme ou
+souche-par-souche, balayages de parametres, geometries completes, versions et
+parametres d'outils, negatifs secondaires conserves au titre de R14, methodes
+etendues, jeux de donnees derives.
+
+**Ce qui ne migre JAMAIS** : le chiffre qui soutient une conclusion enoncee dans le
+corps, et la conclusion elle-meme. **Le corps reste autonome pour ses conclusions ;
+le supplementaire n'ajoute que la reproductibilite.** Garder « p = 0,36 » dans le
+texte, migrer le detail organisme-par-organisme qui y mene.
+
+**Comment migrer** :
+- **verbatim** : la migration est un copier-coller, pas une paraphrase (une valeur
+  reecrite en chemin est une valeur qui derive) ;
+- **pointeur bidirectionnel** : le corps dit ou regarder (« full geometry in
+  Supplementary Note S6 »), le supplementaire dit a quoi il repond ;
+- **numerotation** : `Supplementary Table S1`, `Supplementary Note S1`... chaque
+  item supplementaire est **cite au moins une fois** dans le corps (meme exigence
+  qu'en R9 pour les flottants) ;
+- **captions** : un item supplementaire porte une legende autonome, il sera lu hors
+  du corps ;
+- ne pas laisser de chemin local dans les renvois (`\texttt{supplementary_materials/
+  table_S1.csv}` -> « Supplementary Table S1 ») : la revue renomme les fichiers a la
+  publication, et c'est une violation de R12.
+
+**Signaux structurels de sous-utilisation du supplementaire**, a signaler meme sans
+contrainte de longueur :
+- Resultats > ~50 % du corps ;
+- une sous-section de plus de ~800 mots faite de procedure pure ;
+- **zero fichier supplementaire** pour un manuscrit de plus de ~8000 mots : c'est
+  presque toujours que du materiel de reproductibilite est reste dans le corps ;
+- des flottants dans le corps qui ne sont jamais commentes au-dela de leur legende.
+
+**Si le manuscrit est bilingue** : la coupe ne vaut que pour la langue soumise ; la
+version parallele est mise en miroir **contenu par contenu** (memes migrations,
+memes pointeurs vers les memes notes supplementaires), **sans viser le meme compte
+de mots**. Verification de parite : comparer les jetons numeriques entre les deux
+versions, pas leur longueur.
+
+---
+
 ## Phase 3 -- Application des corrections
 
-1. **Traiter l'abstract en premier** : appliquer R13 (longueur, structure, contenu
+0. **Passe d'economie du texte (R14 -> R15 -> R16), en PREMIER des qu'une contrainte
+   de longueur existe** ou que le diagnostic signale une masse anormale (Resultats
+   > 50 %, zero supplementaire au-dela de 8000 mots, redites nombreuses). Elle
+   travaille sur des blocs entiers : la passer apres le polish typographique revient
+   a polir du texte destine a partir. Sans contrainte de longueur, la reporter en
+   fin de session.
+   - Soumettre les coupes de R14 et les migrations de R16 **avant** de les
+     appliquer : supprimer un negatif informatif ou migrer une conclusion sont des
+     erreurs couteuses, et le tri demande le jugement de l'auteur.
+1. **Traiter l'abstract** : appliquer R13 (longueur, structure, contenu
    interdit, citations, renvois, methods detailles, acronymes, meta-references).
-   L'abstract est un cas special qui justifie un passage dedie.
+   L'abstract est un cas special qui justifie un passage dedie. Si la passe 0 a
+   coupe ou migre du contenu, verifier que l'abstract ne resume plus un corps qui
+   n'existe plus.
 2. Appliquer ensuite les corrections **section par section**, en commencant par
    l'introduction
 3. Pour chaque section (hors abstract) :
@@ -668,13 +948,29 @@ du manuscrit.
 | R4. Acronymes | N corriges | tous definis 1x |
 | R5. Noms d'especes | N mis en italique | — |
 | R6. Cliches | N reformules | — |
-| R7. Paragraphes | N restructures | — |
+| R7. Paragraphes | N FLAG + M WARN detectes (script) | K scindes aux frontieres de sens, P laisses (justifies) |
 | R8. Em-dashes | N remplaces | — |
 | R9. References | N corrigees | — |
 | R10. Temps verbaux | N ajustes | — |
 | R11. Divers | N corrections | — |
 | R12. Cuisine locale | N references retirees (scripts, repertoires, API internes, classifications privees) | — |
 | R13. Abstract | N mots → M mots (cible 150-250), K violations corrigees (citations, renvois, structure, methods detailles) | — |
+| R14. Narratif d'echec | N passages examines | M coupes, P conserves comme negatifs informatifs (avec leur puissance de detection) |
+| R15. Redites | N n-grammes partages, M chiffres multi-sections | K passages remplaces par conclusion + renvoi, −W mots |
+| R16. Longueur | N mots (texte seul) | M mots — limite revue L : conforme / depassement de D |
+| R16b. Supplementaire | N items avant | M items apres (S1…S{M}), −W mots migres verbatim |
+
+## Economie du texte -- detail
+
+**Negatifs conserves** (et pourquoi) :
+- [passage] — refute [claim publie] / controle de [resultat] / borne l'espace de recherche
+  → puissance declaree : [outil, seuil, base, version]
+
+**Negatifs supprimes** : [liste courte, une ligne chacun]
+
+**Migre vers le supplementaire** : [S1 : quoi, depuis quelle section, combien de mots]
+Verification : chaque conclusion du corps reste soutenue par un chiffre du corps ;
+chaque item S est cite au moins une fois.
 
 ## Points d'attention restants
 
@@ -700,6 +996,14 @@ du manuscrit.
 - Reecrire des phrases correctes juste pour "faire different"
 - Appliquer les regles aveuglément : une liste peut etre justifiee,
   un \textbf peut etre voulu, un "Furthermore" peut etre le bon mot
+- **Supprimer un resultat negatif informatif** sous pretexte de R14 : ce qui se
+  coupe est le RECIT des impasses, pas le negatif qui borne une conclusion, refute
+  un claim publie ou sert de controle
+- **Migrer une conclusion, ou le chiffre qui la soutient, vers le supplementaire**
+  (R16) : le corps doit rester autonome pour ce qu'il affirme
+- **Reecrire une valeur en la migrant** : une migration est un copier-coller verbatim
+- Couper phrase par phrase avant d'avoir epuise les redites (R15) et les migrations
+  (R16) : c'est l'ordre qui sacrifie du contenu pour rien
 
 
 ---

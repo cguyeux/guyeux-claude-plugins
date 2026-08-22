@@ -108,12 +108,37 @@ def _norm(j: str) -> str:
     return re.sub(r"\s+", " ", j)
 
 
-ENTRY = re.compile(r"@(\w+)\s*\{\s*([^,]+),(.*?)\n\}", re.S)
+ENTRY = re.compile(r"@(\w+)\s*\{\s*([^,]+),(.*?)\}\s*(?=\s*(?:%[^\n]*(?:\n\s*)?)*(?:@|\Z))", re.S)
 
 
 def field(body: str, name: str) -> str | None:
-    m = re.search(rf"\b{name}\s*=\s*[{{\"]([^}}\"]*)", body, re.I)
-    return m.group(1).strip() if m else None
+    """Extrait un champ .bib délimité par `{}` ou `"..."`, en respectant les accolades
+    IMBRIQUÉES pour le premier cas.
+
+    Un titre protège ses mots à casse fixe dans leurs propres accolades (`{Mycobacterium}`,
+    `{HIV}`, `{SNP}`...) : `[^}"]*` s'arrête à la PREMIÈRE fermante rencontrée, donc tronque
+    le titre après le premier mot protégé au lieu de sa fin réelle. Bug réel constaté le
+    2026-08-03 : 17/26 titres d'un manuscrit réel tronqués par ce motif (ce script ne s'en
+    servait alors que pour `journal`/`booktitle`, jamais accolade-imbriqués en pratique, d'où
+    l'absence de symptôme observé jusqu'ici — mais toute extension future à `title` aurait
+    hérité du même défaut silencieusement).
+    """
+    m = re.search(rf"\b{name}\s*=\s*([{{\"])", body, re.I)
+    if not m:
+        return None
+    opener = m.group(1)
+    start = m.end()
+    if opener == '"':
+        end = body.find('"', start)
+        return body[start:end].strip() if end != -1 else None
+    depth, i = 1, start
+    while depth > 0 and i < len(body):
+        if body[i] == "{":
+            depth += 1
+        elif body[i] == "}":
+            depth -= 1
+        i += 1
+    return body[start:i - 1].strip()
 
 
 def main() -> int:

@@ -47,7 +47,58 @@ from pathlib import Path
 IGNORE_CONTEXT = re.compile(
     r"\\(cite|citep|citet|ref|cref|label|section|subsection|includegraphics|"
     r"documentclass|usepackage|newcommand|pageref|footnote)", re.I)
-NUM = re.compile(r"(?<![\w.])(\d+(?:[.,]\d+)?)(?![\w])")
+# Un nombre, avec son signe optionnel et ses eventuels separateurs de milliers.
+# Les separateurs admis sont ceux qu'on rencontre reellement dans un .tex : la virgule
+# anglaise (2,618), l'espace fine LaTeX (2\,618) et l'insecable (2~618) -- ces trois
+# conventions sont celles que la doc du skill demande d'auditer, il faut donc les LIRE.
+NUM = re.compile(r"(?<![\w.])(-|−)?(\d{1,3}(?:(?:,|\\,|~)\d{3})+|\d+)([.,]\d+)?(?![\w])")
+
+
+def _parse_number(sign: str | None, integer: str, frac: str | None, decimal_comma: bool):
+    """Reconstruit la valeur d'un nombre ecrit en LaTeX. Renvoie None si non interpretable.
+
+    Le piege corrige ici (vecu le 2026-08-03, tissue_tropism_mtbc) : l'ancienne version
+    faisait `raw.replace(",", ".")`, si bien qu'un « 2,618 » anglais devenait 2.618. Ce
+    n'est pas qu'un faux positif de couverture : c'est une VALEUR FAUSSE, donc un ecart
+    reel pouvait etre manque ou invente. Une virgule suivie d'exactement trois chiffres
+    (repetable) est un separateur de milliers ; suivie d'un autre compte, elle est
+    decimale. En francais (`\\usepackage[french]`), la convention decimale `0{,}89` prime,
+    d'ou le drapeau `decimal_comma`.
+    """
+    whole = re.sub(r"(,|\\,|~)", "", integer)
+    if frac:
+        # `frac` commence par . ou , : en anglais une virgule ici reste decimale
+        # (cas « 0,89 » d'un document francophone mal converti), on l'accepte.
+        whole += "." + frac[1:]
+    elif decimal_comma and re.fullmatch(r"\d{1,3},\d{3}", integer):
+        # Document francais : « 1,234 » se lit 1.234, pas 1234.
+        whole = integer.replace(",", ".")
+    try:
+        v = float(whole)
+    except ValueError:
+        return None
+    return -v if sign else v
+
+
+def resolve_inputs(path: Path, seen: set[Path] | None = None, depth: int = 0) -> str:
+    """Concatene le .tex et ses \\input/\\include -- sans ca, un manuscrit decoupe
+    en squelette + sections fait manquer tout nombre cite hors du squelette."""
+    seen = seen if seen is not None else set()
+    path = path.resolve()
+    if path in seen or depth > 6 or not path.exists():
+        return ""
+    seen.add(path)
+    text = path.read_text(encoding="utf-8", errors="replace")
+
+    def sub(m: re.Match) -> str:
+        target = m.group(2).strip()
+        cand = path.parent / target
+        for c in (cand, cand.with_suffix(".tex"), Path(str(cand) + ".tex")):
+            if c.exists() and c.is_file():
+                return "\n" + resolve_inputs(c, seen, depth + 1) + "\n"
+        return ""
+
+    return re.sub(r"\\(input|include)\{([^}]*)\}", sub, text)
 
 
 def flatten(obj, prefix=""):
@@ -98,14 +149,15 @@ def tex_numbers(tex: str) -> list[tuple[int, float, str]]:
     start = tex.find("\\begin{document}")
     offset = tex[:start].count("\n") if start > 0 else 0
     body = tex[start:] if start > 0 else tex
+    # La convention decimale depend de la langue du document : c'est le preambule qui la
+    # donne, donc on le lit meme si on ne compte pas ses nombres.
+    decimal_comma = bool(re.search(r"\\usepackage\[[^]]*\b(french|francais)\b", tex, re.I))
     for lineno, line in enumerate(body.split("\n"), 1 + offset):
         if line.lstrip().startswith("%") or IGNORE_CONTEXT.search(line):
             continue
         for m in NUM.finditer(line):
-            raw = m.group(1).replace(",", ".")
-            try:
-                val = float(raw)
-            except ValueError:
+            val = _parse_number(m.group(1), m.group(2), m.group(3), decimal_comma)
+            if val is None:
                 continue
             out.append((lineno, val, line.strip()[:100]))
     return out
@@ -144,8 +196,8 @@ def main() -> int:
         # DERIVER du .tex : on corrige un chiffre dans le manuscrit, on oublie la declaration,
         # et l'outil reste au vert en comparant une valeur que le manuscrit ne contient plus.
         # Vecu le 2026-07-11 : une fourchette changee dans le .tex, « tous concordent » quand meme.
-        tex_vals = {round(v, 4) for _, v, _ in
-                    tex_numbers(Path(a.tex).read_text(encoding="utf-8"))}
+        tex_raw = resolve_inputs(Path(a.tex))
+        tex_vals = {round(v, 4) for _, v, _ in tex_numbers(tex_raw)}
         bad = 0
         for c in claims:
             src = lut.get(c["path"])
@@ -162,8 +214,21 @@ def main() -> int:
                 flag = "ECART"
             else:
                 flag = "OK   "
-            print(f"  {flag} {c['label']:<34} source={src:<8} declare={c['tex']}"
-                  + ("  <- ABSENT du manuscrit : declaration perimee ?" if not in_tex else ""))
+            hint = ""
+            if not in_tex:
+                # Un ORPHELIN a deux causes tres differentes : la declaration est perimee
+                # (defaut REEL), ou le nombre est bien la mais le tokenizer ne l'isole pas
+                # -- typiquement colle a un prefixe (PC9, L4, Rv0667). Ne pas distinguer les
+                # deux oblige a inspecter chaque cas a la main, ce qui est exactement le
+                # travail que cet outil doit eviter (vecu le 2026-08-03).
+                glued = re.search(rf"[A-Za-z]{re.escape(str(c['tex']))}(?![\w.])", tex_raw)
+                hint = ("  <- present mais COLLE a un prefixe (" + glued.group(0)
+                        + ") : le tokenizer ne l'isole pas, ce n'est PAS un ecart"
+                        if glued else
+                        "  <- ABSENT du manuscrit : declaration perimee ?")
+                if glued:
+                    bad -= 1          # faux positif identifie : ne pas le compter en ecart
+            print(f"  {flag} {c['label']:<34} source={src:<8} declare={c['tex']}{hint}")
         print(f"\n{'TOUS LES CHIFFRES CONCORDENT' if not bad else f'{bad} ECART(S) A CORRIGER'}")
 
         # --- COUVERTURE : le piege du mode declaratif ---------------------------------
@@ -176,7 +241,7 @@ def main() -> int:
         lo, hi = (0, 10**9)
         if a.lines:
             lo, hi = (int(x) for x in a.lines.split("-"))
-        body = [(l, v, c) for l, v, c in tex_numbers(Path(a.tex).read_text(encoding="utf-8"))
+        body = [(l, v, c) for l, v, c in tex_numbers(resolve_inputs(Path(a.tex)))
                 if lo <= l <= hi and v >= a.min]
         uncovered = [(l, v, c) for l, v, c in body if round(v, 4) not in declared]
         scope = f"lignes {lo}-{hi}" if a.lines else "tout le corps"
@@ -195,7 +260,7 @@ def main() -> int:
     if not data:
         print("Aucune donnee chargee : rien a recroiser.", file=sys.stderr)
         return 2
-    nums = [(l, v, c) for l, v, c in tex_numbers(Path(a.tex).read_text(encoding="utf-8"))
+    nums = [(l, v, c) for l, v, c in tex_numbers(resolve_inputs(Path(a.tex)))
             if v >= a.min]
 
     absent, near, multiple, ok = [], [], [], []

@@ -129,6 +129,63 @@ Quand l'auteur confirme, après vérification du brouillon sur le portail :
 python3 scripts/zenodo_deposit.py publish <id>
 ```
 
+### Checklist AVANT publication (l'ordre compte, tout devient définitif après)
+
+1. **Resynchroniser les métadonnées EN LIGNE, pas seulement le `metadata.json` local.**
+   Un titre d'article change souvent entre le dépôt du brouillon et la publication.
+   Le brouillon garde l'ancien, et le `metadata.json` corrigé sur disque **ne remonte
+   pas tout seul**. Faire un `PUT /api/deposit/depositions/<id>` d'abord. Vécu
+   (dark_enzymes 2026-07-31) : brouillon déposé sous l'ancien titre, corrigé en local
+   six semaines plus tôt, jamais propagé — le DOI aurait porté l'ancien titre pour
+   toujours. Penser aussi à la **description**, qui cite souvent le titre en toutes
+   lettres : un `replace` sur le seul champ `title` laisse la description périmée.
+
+2. **Vérifier le CONTENU DISTANT, pas une note de session antérieure.** Le fichier
+   local a pu être nettoyé après téléversement, et une note « intégrité vérifiée »
+   datant d'une autre séance n'est pas une vérification. Retélécharger depuis Zenodo
+   (`files[i].links.download` + `?access_token=`) et contrôler ce qui compte : MD5,
+   taille décompressée, **décompte des entrées attendues**, présence nominative des
+   éléments que le manuscrit cite. Vécu : bundle de 43 Mo retéléchargé, MD5 conforme,
+   3942 fichiers dont exactement 3906 fiches attendues et les 6 cibles nommées
+   présentes. C'est cette vérification-là qui autorise un geste irréversible.
+
+3. **Déclarer les liens entre dépôts** via `related_identifiers` (`isDerivedFrom`,
+   `isSupplementTo`, `references`) quand plusieurs records se citent l'un l'autre.
+   Gratuit avant publication, laborieux après.
+
+### Choisir le DOI À CITER : concept ou version, décidé PAR RESSOURCE
+
+Zenodo donne deux DOI : le **concept** (résout toujours vers la dernière version) et
+la **version** (fige un état). Le réflexe « toujours le concept » ou « toujours la
+version » est faux : la règle dépend de ce que la phrase du manuscrit promet au
+lecteur.
+
+| Ce que le texte dit de la ressource | DOI à citer |
+|---|---|
+| « continuellement mise à jour », « ressource vivante », atlas, base | **concept** |
+| étaye des tables, figures, modèles **nommés** dans le texte | **version** |
+| provenance / contexte général | concept |
+| « les scripts qui produisent les chiffres rapportés ici » | version |
+
+Test décisif : *le lecteur qui suit ce lien doit-il trouver exactement ce que
+l'article décrit, ou l'état courant ?* Vécu (dark_enzymes) : le même manuscrit cite
+le **concept** pour l'atlas compagnon (décrit comme continuellement mis à jour) et la
+**version** pour son paquet supplémentaire (qui porte les Tables S4/S5 et les modèles
+que le texte nomme). Les deux choix sont corrects, dans le même article.
+
+> **★ Ne JAMAIS citer une URL de service quand un identifiant pérenne existe.**
+> Une URL de fonction serverless autogénérée (`*.functions.fnc.*.scw.cloud`, Cloud Run,
+> Lambda…), et même un domaine custom pointant dessus, n'a pas la stabilité d'une
+> citation. Vécu : l'URL de l'atlas compagnon citée en Méthodes comme provenance des
+> six cibles est **morte** entre la rédaction et la soumission ; une review l'avait
+> signalée comme « mineure : stabiliser l'URL » et le point était resté ouvert. La
+> panne a forcé une correction qui était la bonne **indépendamment de la panne**.
+> Corollaire de diagnostic : un **TCP qui se connecte puis une poignée TLS qui meurt
+> sans réponse** n'est ni un scale-to-zero (qui donnerait un délai puis une réponse)
+> ni un container supprimé (qui donnerait un 404 depuis l'edge) — c'est un front cassé
+> derrière un load-balancer encore en écoute. Tester **hors bac à sable** avant de
+> conclure, et avec des témoins (un site connu doit répondre 200 depuis le même point).
+
 ## Exemple de metadata.json
 
 ```json

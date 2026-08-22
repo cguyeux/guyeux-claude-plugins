@@ -4,10 +4,15 @@ description: >-
   Peer review of a scientific manuscript as for a high-impact journal. Reads the full paper
   (LaTeX or text), evaluates structure, methodology, statistics, terminology, figures and
   references, and produces a structured review in French with severity-ranked
-  recommendations. For TB / MTBC manuscripts, validates the state of the art and citation
-  completeness against tbmonitor-papers (~190k PubMed TB abstracts). Use when the user asks
-  for a critical read of a manuscript, wants to know what a reviewer would object to, asks
-  to review a paper before submission, or wants a second opinion on a draft.
+  recommendations. Measures mechanically what linear reading cannot see: total length against
+  the target journal's limit, near-verbatim redundancy between sections, dead-end failure
+  narrative versus informative negatives, under-use of supplementary materials, and citation
+  traceability of the data provenance (plus the self-citation rate, in both directions). For
+  TB / MTBC manuscripts, validates the state of the art and citation completeness against
+  tbmonitor-papers (~190k PubMed TB abstracts). Use when the user asks for a critical read of
+  a manuscript, wants to know what a reviewer would object to, asks whether a paper is too
+  long for a journal, asks to review a paper before submission, or wants a second opinion on
+  a draft.
 argument-hint: "<path to main.tex or manuscript file>"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebSearch, WebFetch, mcp__tbmonitor__execute_sql, mcp__tbmonitor__show_schema
 ---
@@ -106,7 +111,188 @@ le recit veut une serie homogene, les donnees viennent de variantes heterogenes,
 substitution d'un chiffre par celui d'une variante voisine est **invisible a la
 relecture**. C'est le premier endroit ou chercher.
 
+7. **Les affirmations de RANG exigent un TRI, pas une recherche.** « Les plus frequents
+   sont A, B et C », « le plus conserve », « le meilleur modele », « les trois premiers » :
+   ces enonces ne se verifient PAS en confirmant que A, B et C existent avec les bonnes
+   valeurs, ce que fait naturellement une verification nombre par nombre. Il faut **trier
+   la source entiere sur le critere annonce** et comparer le classement obtenu a celui du
+   texte. Vecu (dark_enzymes) : « the most frequent are H222N n=101, Y224C n=33, and D178G
+   n=23 » — les trois valeurs etaient exactes et correctement attribuees, mais le tri
+   complet de la table supplementaire donnait **R175Q n=30 en troisieme position**, saute
+   par le texte. Erreur contredite par la propre supplementaire du manuscrit, donc visible
+   par tout relecteur qui l'ouvre. Une verification nombre par nombre ne peut pas
+   l'attraper : chaque nombre pris isolement est juste.
+
+8. **Les FOURCHETTES exigent de recalculer les deux extremes.** « ranged from X to Y »,
+   « entre X et Y », « au plus X » : recalculer min et max sur l'ensemble reel des valeurs,
+   jamais se contenter de verifier que X et Y apparaissent quelque part. Vecu : « mean
+   pLDDT ranged from 0.85 to 0.92 » alors que les six valeurs reelles montaient a **0,97**,
+   deux cibles sur six sortant de l'intervalle publie. Meme angle mort que le point 7 : la
+   borne haute annoncee EXISTE bien dans les donnees, elle n'est simplement pas le maximum.
+
+9. **La FRAICHEUR des instantanes : deux chiffres justes peuvent faire une phrase fausse.**
+   Quand la source est une base VIVANTE (collection qui grossit, corpus reindexe, jeu
+   nettoye), un nombre calcule le jour J et un nombre calcule le jour J+n **ne se
+   juxtaposent pas**, meme si chacun est exact dans son contexte. Verifier la DATE de
+   production de chaque chiffre, pas seulement sa valeur. Vecu : « les 1 387 genomes L6 de
+   la collection (145 209 genomes, toutes lignees) » — le 1 387 venait d'un balayage du
+   jour, le 145 209 d'une couche calculee sept semaines plus tot, et la collection en
+   comptait **143 110** au moment de la redaction. Aucune verification de coherence interne
+   ne peut attraper cela, puisque les deux nombres sont vrais. **Reflexe : dater les
+   sources ; si deux chiffres d'une meme phrase viennent de deux instantanes, recalculer le
+   plus ancien ou retirer celui qui n'est pas necessaire a l'enonce.**
+
+10. **Les affirmations de CONTRASTE exigent de recalculer LES DEUX COTES, et de verifier
+    qu'on compare bien la meme grandeur.** « X est plus conserve que Y », « les cas traites
+    repondent mieux que les temoins », « A varie d'un ordre de grandeur plus que B » : ces
+    enonces ont **deux** membres, et le second est presque toujours celui que personne n'a
+    recalcule. Deux facons de se tromper, souvent combinees : (i) le contraste **n'existe
+    pas** dans la direction annoncee ; (ii) les deux membres ne sont pas la **meme
+    grandeur**, si bien que l'ecart mesure un changement de definition et non un effet.
+    Vecu (dark_enzymes) : « les residus catalytiques portent des variants dans au plus
+    0,04 % des genomes, alors que les codons voisins en portent un ordre de grandeur plus
+    frequents ». Le membre gauche etait exact et verifie ; le membre droit n'avait jamais
+    ete recalcule. En le recalculant : le maximum non-synonyme des codons voisins est
+    **0,0335 %**, donc **INFERIEUR** au maximum catalytique de 0,0403 %. Le contraste
+    n'existait pas. Il paraissait exister parce que le membre droit avait ete lu sur les
+    variants **synonymes** (jusqu'a 0,197 %) et le membre gauche sur les **non-synonymes** :
+    deux grandeurs differentes presentees comme comparables. L'enonce avait survecu a
+    plusieurs relectures et a un premier claim-check parce qu'il est **plausible pour un
+    specialiste du domaine**, ce qui est precisement ce qui le rendait invisible.
+    **REFLEXE : pour tout comparatif, ecrire les deux nombres cote a cote avec leur
+    definition exacte (meme population, meme classe d'evenement, meme denominateur) avant
+    de juger l'enonce. Un contraste dont un seul membre a ete calcule n'est pas verifie.**
+    Bonus frequent : le recalcul honnete livre souvent un contraste VALIDE mais different
+    (ici, non-synonyme au site contre synonyme dans son propre voisinage, qui tient fixes
+    le taux de mutation local et la profondeur d'echantillonnage), scientifiquement plus
+    solide que l'affirmation d'origine. Corriger renforce le papier au lieu de l'affaiblir.
+
+11. **Papier « systeme deploye » avec un depot de code associe accessible : chercher le
+    chiffre-cle sur TOUT l'historique git, pas seulement la branche courante.** Si un
+    depot de code correspondant au systeme decrit est accessible en local, ne pas se
+    contenter de lire le `HEAD` de la branche de travail avant de conclure qu'un chiffre
+    (benchmark, cout, latence) est/n'est pas retrouvable :
+    ```bash
+    git branch -a --format='%(refname:short)' | sed 's#^remotes/##' | sort -u > /tmp/branches.txt
+    while read -r b; do git grep -qn "MON_CHIFFRE_CLE" "$b" -- '*.md' '*.tex' '*.py' '*.json' 2>/dev/null && echo "MATCH: $b"; done < /tmp/branches.txt
+    ```
+    Chercher aussi la mention **narrative** du processus (pas seulement le chiffre exact)
+    dans les fichiers de suivi (`JOURNAL.md`, `cahier_de_labo.md`, `pistes.md`) : un
+    mecanisme peut etre reellement implemente en code (verifiable, donc le recit n'est pas
+    fabrique) sans que la mesure chiffree qui en decoule soit retrouvable nulle part
+    (le resultat n'a jamais ete logge/sauvegarde). **Distinguer ces deux verdicts dans la
+    review** : « mecanisme verifie en code, chiffre non reproductible » est une
+    preoccupation MAJEURE nuancee, pas une accusation de fabrication. Si le meme depot
+    contient un AUTRE papier du meme projet qui, lui, publie un harnais complet et
+    versionne (scripts + sorties brutes), le signaler explicitement : cela prouve que
+    l'equipe sait le faire et le fait deja ailleurs, ce qui rend l'omission plus difficile
+    a excuser et la recommandation plus concrete (« faites comme dans votre autre papier »).
+12. **Distinguer une propriete MESUREE d'une propriete simplement CONCUE** (« model-agnostic »,
+    « extensible », « scalable »...). Chercher si le texte rapporte une EXECUTION EFFECTIVE
+    qui exerce la propriete revendiquee (ex. un second fournisseur LLM reellement invoque
+    de bout en bout sur le meme benchmark), pas seulement une architecture qui le
+    permettrait en theorie. Si le code source est accessible, verifier que le mecanisme
+    existe reellement avant de trancher : classer en MODERE (pas MAJEUR) quand la capacite
+    est verifiee dans le code mais jamais exercee dans le papier — c'est une omission de
+    mesure, pas une invention.
+
 Consigner les ecarts trouves : ils alimentent les preoccupations MAJEURES de la review.
+
+> **Garde-fou de methode (vecu 2026-07-31, dark_enzymes).** Les points 1-6 se font en lisant
+> le texte et en cherchant ses nombres dans les sources ; les points 7-10 exigent de
+> **retourner a la donnee brute et de la manipuler** (trier, calculer un extremum, lire une
+> date de fichier, recalculer le membre droit d'un comparatif). Une passe qui ne fait que
+> les points 1-6 conclut « aucune incoherence numerique » sur un manuscrit qui en contient
+> quatre — c'est arrive le 2026-07-31 : trois erreurs de valeur trouvees par un audit
+> exhaustif lance en parallele, plus un contraste entierement faux trouve seulement en
+> rejouant le script source. Ne jamais rendre un verdict de Phase 1bis sans avoir
+> explicitement traite les affirmations de rang, les fourchettes, les dates de calcul et
+> les comparatifs.
+>
+> **Corollaire sur la plausibilite.** Les quatre classes partagent un trait : l'enonce faux
+> est *plausible pour un expert du domaine*. La relecture par un specialiste ne les attrape
+> donc pas mieux qu'une relecture naive, elle les attrape moins bien, parce que l'expertise
+> fournit la justification qui manque. Le seul remede est le recalcul.
+
+### Phase 1ter : MESURE MECANIQUE de l'economie du texte et de la tracabilite (OBLIGATOIRE)
+
+Meme raison d'etre que la Phase 1bis, transposee de l'exactitude a l'**economie** : trois
+defauts que la relecture lineaire ne peut pas voir, parce qu'ils ne se manifestent qu'en
+comparant des passages DISTANTS, chacun **correct isolement**. Un relecteur qui lit de la
+premiere a la derniere ligne ne les rencontre jamais ; il termine avec l'impression d'un
+texte dense, et ne saura pas dire que le meme chiffre a ete redonne trois fois, ni que le
+manuscrit depasse de 3000 mots la limite de la revue visee, ni qu'aucune de ses donnees
+n'est tracable a sa source. Les mesurer avant la grille, pas apres.
+
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/deai-latex/scripts/content_economy.py main.tex --limit <limite revue>
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/bib-check/scripts/self_citation.py main.tex --author <nom du 1er auteur>
+```
+
+**C1 -- Le manuscrit raconte-t-il ce qui n'a pas marche ?** Le script remonte les passages a
+marqueur (tentative anterieure, bascule de methode, resultat negatif, peripetie d'acces a une
+ressource). Le tri est un **jugement de relecteur**, jamais automatique, et il n'a que deux
+issues :
+
+| Ce que le passage fait | Verdict |
+|---|---|
+| Refute un claim que le lecteur porterait sinon ; sert de controle a un positif voisin ; borne l'espace de recherche ; previent un piege qu'un tiers reproduirait a ses frais | **Garder** — et exiger sa PUISSANCE (voir ci-dessous) |
+| Raconte la chronologie du chantier, un outil ecarte sans lecon, une peripetie d'acces (403, quota, route de repli, telechargement manuel), un negatif sur une hypothese que personne n'avait | **Signaler comme a supprimer** (MINEUR, MODERE si recurrent) |
+
+> **Exigence de puissance, a formuler comme une demande de reviewer.** Tout negatif conserve
+> doit declarer **ce qui a ete cherche, avec quel outil, a quel seuil, dans quelle version de
+> quelle base**. Un « no homolog was found » nu n'est pas un resultat : il est ininterpretable,
+> et le reviewer suivant demandera exactement cela. Absence de puissance sur un negatif qui
+> PORTE une conclusion du manuscrit → **MAJEUR**. Sur un negatif accessoire → MODERE.
+>
+> Le reflexe symetrique compte autant : **ne jamais demander la suppression d'un negatif
+> informatif** au motif qu'il alourdit. Un resultat negatif citable est un actif rare ; c'est
+> le RECIT des impasses qui est du remplissage.
+
+**C2 -- Longueur, redites, supplementaire.** Lire les trois sorties ensemble, elles decrivent
+un seul defaut structurel :
+
+| Signal mesure | Severite indicative |
+|---|---|
+| Longueur > limite de la revue cible declaree | **BLOQUANT pour la soumission** (rejet mecanique au desk), a dire tel quel |
+| n-grammes partages entre Resultats et Discussion (redite quasi verbatim) | MODERE ; MAJEUR si la Discussion refait la demonstration au lieu d'interpreter |
+| Meme jeton numerique dans >= 3 sections du corps | MINEUR a MODERE — verifier d'abord : un effectif ou une longueur de proteine se repete legitimement |
+| Resultats > 50 % du corps ET zero fichier supplementaire | MODERE, structurel : du materiel de reproductibilite est reste dans le corps |
+| Item supplementaire jamais cite dans le corps, ou renvoi vers un chemin local (`supplementary_materials/table_S1.csv`) | MINEUR |
+
+La recommandation de relecteur suit l'ordre des leviers, et **cet ordre fait partie de la
+recommandation** : epuiser les redites d'abord, migrer verbatim vers le supplementaire
+ensuite, polir en dernier. Recommander de « raccourcir » sans dire par ou revient a inviter
+l'auteur a sacrifier du contenu qui n'avait pas besoin de l'etre.
+
+**C3 -- Tracabilite de la provenance, et auto-citations.** Deux controles distincts, que la
+grille D9 confondait :
+
+1. **Tracabilite (vaut pour TOUT manuscrit, quel qu'en soit l'auteur).** La base de donnees,
+   la plateforme, le pipeline, la classification ou la nomenclature dont le manuscrit tire sa
+   matiere sont-ils **cites** ? Un lecteur peut-il remonter a la provenance de chaque jeu de
+   donnees ? Une provenance non citee est un defaut de reproductibilite → **MAJEUR**, au meme
+   titre qu'une version d'outil absente (D3). Ce controle ne depend pas de savoir qui a ecrit
+   quoi : il se lit dans les Methodes.
+2. **Volume d'auto-citations.** `self_citation.py --author <nom>` rend le taux. Bandes de
+   lecture (heuristique de travail, a presenter comme telle, pas comme une regle editoriale
+   publiee) : <= 15 % usage courant ; 15-25 % eleve, chaque entree doit soutenir un point
+   distinct ; > 25 % MODERE a signaler, un editeur le remarquera. Signaler nommement les
+   tapis de citations (`\citep{a,b,c}` d'un meme auteur sur un seul point) et toute
+   auto-citation dont le sujet ne recoupe pas la phrase qu'elle soutient.
+
+> **Cas particulier, a ne pas rater sur les manuscrits du groupe.** Le corpus local
+> `~/docs/cv/references/{journals,conferences}.bib` permet de detecter la **SOUS-citation** :
+> travaux anterieurs de l'equipe portant sur le point traite et absents de la `.bib`. Mesure
+> sur le parc en 2026-08 : plusieurs manuscrits a **0 auto-citation sur 20-40 references**
+> alors que leurs donnees venaient d'une plateforme publiee par les memes auteurs. Ce n'est
+> pas de la modestie, c'est une rupture de chaine de provenance, et c'est le premier point a
+> signaler. Sur un manuscrit EXTERNE, ce corpus n'existe pas : le controle se limite alors
+> legitimement au point 1 (tracabilite) et au point 2 (volume).
+
+Consigner les mesures dans la review avec leurs chiffres (« 14 282 mots, dont 65 % de
+Resultats, 0 fichier supplementaire, 0 auto-citation sur 41 references ») : un relecteur qui
+chiffre est un relecteur qu'on ne discute pas.
 
 ### Phase 2 : Grille d'evaluation (11 dimensions)
 
@@ -140,6 +326,12 @@ attribuer un niveau de severite :
 - Criteres d'inclusion/exclusion formalises et objectifs ?
 - Pipeline dependant d'un outil unique non valide ? → RED FLAG
 - Donnees d'entree accessibles ?
+- **Papier qui mesure/compare un systeme LLM : le(s) nom(s) de modele(s) sont-ils cites
+  explicitement (grep `gpt-|claude-|mistral|gemini|llama|temperature` sur tout le texte) ?
+  Aucune occurrence → RED FLAG BLOQUANT/MAJEUR** : un cout ou une latence en dollars/secondes
+  n'est ni interpretable ni reproductible sans savoir quel modele (version, temperature) les
+  a produits, et un changement de modele non declare entre deux configurations comparees
+  suffirait a expliquer l'ecart mesure.
 
 #### D4. Methodes : Rigueur statistique
 - Tests statistiques adaptes aux types de donnees ?
@@ -147,6 +339,10 @@ attribuer un niveau de severite :
 - Tailles d'echantillon suffisantes ?
 - Biais d'echantillonnage identifies et traites ?
 - Intervalles de confiance rapportes ?
+- **Taux de succes/reussite sur petit n (< 50, frequent dans les papiers « systeme LLM
+  deploye ») : calculer soi-meme l'IC de Wilson si absent du manuscrit** (ex. 10/10 →
+  IC95% ≈ [69%, 100%] : un « 100% » sans reserve sur n=10 est un red flag a signaler meme
+  si le manuscrit ne rapporte aucune erreur).
 - Distinction correlation/causalite respectee ?
 
 #### D5. Resultats : Coherence et completude
@@ -156,6 +352,11 @@ attribuer un niveau de severite :
   (pi, FST, Tajima's D, Ne, structure AMOVA...)
 - Chiffres coherents entre abstract, resultats, discussion, tables ?
 - Resultats negatifs rapportes honnetement ?
+- **Les negatifs conserves declarent-ils leur PUISSANCE** (quoi cherche, avec quel outil, a
+  quel seuil, dans quelle base et quelle version) ? Un negatif nu n'est pas interpretable (C1)
+- **Le texte raconte-t-il le chantier plutot que l'etat de connaissance ?** Chronologie des
+  tentatives, outils ecartes sans lecon, peripeties d'acces a une ressource : a signaler comme
+  a supprimer, en distinguant soigneusement du negatif informatif, qui lui doit RESTER (C1)
 
 #### D6. Discussion : Interpretation
 - Les interpretations depassent-elles les donnees ?
@@ -182,7 +383,15 @@ attribuer un niveau de severite :
 #### D9. Bibliographie
 - References appropriees et a jour ?
 - Format homogene ?
-- Auto-citations dans les normes (<15% sauf justification) ?
+- **Provenance tracable** : la base, la plateforme, le pipeline, la nomenclature dont vient la
+  matiere du manuscrit sont-ils cites ? Une provenance non citee est un defaut de
+  reproductibilite → MAJEUR (C3, point 1), independamment de qui l'a publiee
+- Auto-citations dans les normes (<= 15 % ; 15-25 % eleve ; > 25 % a signaler) ?
+- **Sous-citation** : des travaux anterieurs manifestement pertinents (des auteurs ou non)
+  manquent-ils aux postes ou le manuscrit s'appuie sur eux — donnees, methode reutilisee,
+  article precedent de la serie ? Un taux d'auto-citation de 0 % sur un manuscrit qui exploite
+  une ressource des auteurs est un signal, pas une vertu (C3, encadre)
+- Tapis de citations d'un meme auteur sur un point unique ? → FLAG
 - References manquantes pour les claims fortes ?
 - Preprints ou « in preparation » pour des outils critiques ? → FLAG
 
@@ -194,11 +403,19 @@ attribuer un niveau de severite :
 > manuscrit, et la signaler explicitement dans la review.
 
 #### D10. Structure et equilibre
-- Proportions section par section equilibrees ?
+- Proportions section par section equilibrees ? **Resultats > 50 % du corps = signal** (C2)
 - Discussion structuree en sous-sections thematiques ?
-- Materiaux supplementaires listes et decrits ?
-- Longueur globale appropriee pour le journal cible ?
-- Redondances entre sections ?
+- **La Discussion interprete-t-elle, ou refait-elle la demonstration des Resultats ?** Un
+  paragraphe de Discussion supprimable sans perdre une interpretation est un doublon (C2)
+- Materiaux supplementaires listes et decrits ? **Chaque item S cite au moins une fois dans le
+  corps ? Zero fichier supplementaire au-dela de ~8000 mots = signal structurel** (C2)
+- **Le corps reste-t-il autonome pour ses conclusions ?** Un chiffre qui soutient une
+  conclusion ne doit pas vivre uniquement en supplementaire
+- Longueur globale appropriee pour le journal cible ? **Mesuree (C2), sur le perimetre exact
+  qu'annonce le guide auteurs** — depassement = BLOQUANT pour la soumission
+- Redondances entre sections ? **Mesurees, pas estimees** : n-grammes partages et jetons
+  numeriques multi-sections (C2). Recommander l'ordre des leviers, pas un « raccourcir »
+  general : redites d'abord, migration verbatim ensuite, polish en dernier
 
 #### D11. Impact et originalite
 - Quelle est la contribution principale ?
@@ -285,6 +502,9 @@ N. [...]
 - Verifier les **chiffres** : totaux, pourcentages, effectifs coherents ?
 - Identifier les **claims non soutenues** par les donnees presentees
 - Distinguer ce qui est **demontré** vs **suggere** vs **speculé**
+- **Chiffrer l'economie du texte** (Phase 1ter) : longueur vs limite de la revue, redites
+  mesurees, part des Resultats, inventaire du supplementaire, tracabilite de la provenance et
+  taux d'auto-citation. Une remarque chiffree ne se discute pas
 
 ### Ce que la review NE DOIT PAS faire
 - Survoler des sections, chaque paragraphe compte
@@ -293,6 +513,13 @@ N. [...]
 - Ignorer les points positifs : l'equilibre renforce la credibilite
 - Proposer des analyses irréalisables (ex. : wet lab quand l'equipe est bioinformatique)
 - Repeter les memes points sous des formulations differentes
+- **Demander la suppression d'un resultat negatif informatif** : ce qui se coupe est le RECIT
+  des impasses, pas le negatif qui borne une conclusion ou sert de controle
+- **Recommander « de raccourcir » sans dire par ou** : donner l'ordre des leviers (redites,
+  puis migration verbatim vers le supplementaire, puis polish), sinon l'auteur sacrifie du
+  contenu qui n'avait pas besoin de l'etre
+- **Presenter les bandes d'auto-citation comme une regle editoriale publiee** : ce sont des
+  heuristiques de travail, a annoncer comme telles
 
 ### Calibration du score
 | Score | Signification |
@@ -347,6 +574,27 @@ Rappeler en 3-5 lignes :
 - L'etat actuel du manuscrit (claims verifies, review en cours, references OK...)
 - Les fichiers produits ou modifies
 
+### Ecart manuscrit <-> savoir du projet (si le projet est structure)
+
+Une review regarde le manuscrit tel qu'il est. Elle est aussi, mecaniquement, le
+meilleur moment pour voir ce qu'il ne contient PAS : une review qui dit "cette
+section est hors sujet" ou "ce resultat n'est pas exploite" enonce en realite une
+decision de perimetre, pas un defaut de redaction.
+
+Si la racine du projet porte un `etat_des_decouvertes.md`, verifier deux ecarts
+et les rapporter en quelques lignes (sans les corriger ici) :
+
+- **Acquis non exploites** : des enonces de §2 qui n'apparaissent nulle part dans
+  le manuscrit. Chacun est soit un manque du manuscrit (a integrer), soit un
+  acquis hors perimetre (destination B ou C, cf. `/recadrage`) -- jamais rien.
+- **Sections en trop** : une section du manuscrit qui ne sert pas la these
+  annoncee par l'abstract. C'est le symptome d'un projet qui a deborde son
+  cadre ; le remede n'est pas de couper, mais de decider ou va ce qui est coupe.
+
+Signaler le compte des deux, et proposer `/recadrage` si l'un des deux est non
+vide. Ne jamais supprimer du contenu d'un manuscrit au motif qu'il est hors
+sujet sans qu'une destination ait ete decidee pour lui.
+
 ### Suggestion de prochaine etape
 
 Evaluer l'etat global du manuscrit et proposer **la ou les commandes prioritaires**
@@ -361,6 +609,7 @@ parmi le pipeline de qualite :
 | `/lit-review [sujet]` | Un sujet necessite un approfondissement bibliographique |
 | `/reviewer-response` | Une review existe non encore traitee, ou traitement en cours |
 | `/reviewer-response next` | Remarques en attente dans la review active |
+| `/recadrage` | Des acquis du projet n'apparaissent pas dans le manuscrit, une section ne sert pas la these, ou le manuscrit deborde (>= 9 sections / >= 8 figures) |
 
 **Format de la suggestion** :
 

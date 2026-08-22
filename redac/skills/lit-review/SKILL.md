@@ -487,6 +487,59 @@ Pour chaque article retourne :
 4. **Retenir** : articles de pertinence haute et moyenne. Ignorer les faibles
    sauf en mode `--deep`
 
+### 2.2b Plein texte Europe PMC -- OBLIGATOIRE avant de conclure qu'un travail est a refaire
+
+Un abstract dit ce qu'un papier a trouve, jamais ce qu'il a **livre**. La
+question « faut-il faire ce calcul ou est-il deja fait ? » ne se tranche
+donc pas sur le resume. Des qu'un article retenu couvre le sujet de pres,
+lire son plein texte, gratuitement et sans clef :
+
+```bash
+S=${CLAUDE_PLUGIN_ROOT}/skills/lit-review/scripts/europepmc_fulltext.py
+python3 $S resolve <DOI>                                  # fullTextAvailable ?
+python3 $S sections <DOI>                                 # ou chercher
+python3 $S fulltext <DOI> --section "data availability"    # LE reflexe
+python3 $S fulltext <DOI> --section "methods"
+```
+
+**Rappel par le CORPS du texte, pas le resume (sous-commande `search`).** Un
+nom de gene, un locus tag, une methode vivent dans les Methodes/Resultats,
+jamais dans l'abstract : une recherche par resume les rate. Mesure
+2026-08-10 : `esxV` = 124 articles en plein texte contre 19 en resume seul,
+`Rv1363c` = 8 contre **0**. C'est la cause directe des genes qui ressortent
+« sans litterature » alors que des dizaines d'articles OA les mentionnent.
+Reflexe : lancer un `search` plein texte AVANT de conclure a l'absence de
+litterature sur une entite.
+
+```bash
+python3 $S search "esxV" --oa --since 2020 --sort cited   # articles dont le CORPS mentionne esxV
+python3 $S search "Rv1363c AND tuberculosis" --grep "Rv1363c"  # + phrases exactes de mention
+```
+
+`search` affiche l'ecart resume/plein texte (le manque devient visible),
+liste titre/annee/DOI/PMCID + drapeau OA, et avec `--grep` extrait du plein
+texte OA les phrases contenant le motif (une mention incidente d'un gene se
+lit ainsi sans ouvrir chaque article). `--oa` restreint aux articles au
+plein texte recuperable ; sans lui, `search` trouve plus large (Europe PMC
+indexe le corps bien au-dela de l'OA) mais les non-OA ne sont pas lisibles
+ici (passer par la cascade d'acces : Unpaywall, preprint, TDM institutionnel).
+
+**Lire la section Data Availability avant de decider qu'un travail merite
+d'etre refait.** Un depot public de code, de modeles ou de matrices
+transforme une replication couteuse en simple telechargement, et donc une
+piste envisagee en piste a clore. Cas d'ecole (2026-08-10) : une piste de
+modelisation metabolique par lignee a ete close le jour de son ouverture
+parce que le plein texte livrait le modele de base exact, la limite
+reconnue par les auteurs, et un depot GitLab contenant les 13 modeles par
+lignee deja cures. Aucun des trois faits n'etait dans l'abstract.
+
+Limites a garder en tete : couverture open access seulement (mesure
+2026-08 : 35 264 papiers TB en OA) ; `tbmonitor` reste la porte d'entree
+pour RECENSER puisqu'il indexe aussi le non-OA, Europe PMC sert a
+APPROFONDIR un article deja cible ; ne jamais deviner un PMCID (l'API rend
+`200` avec un autre article s'il est faux) ; viser Europe PMC avant le site
+de l'editeur, qui repond souvent `403`.
+
 ### 2.3 Extraction BibTeX
 
 Pour chaque article retenu :

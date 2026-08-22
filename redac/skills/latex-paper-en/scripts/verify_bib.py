@@ -77,6 +77,7 @@ class BibTeXVerifier:
             entries.append(
                 {"type": entry_type, "key": key, "fields": fields, "raw": match.group(0)}
             )
+            self.parse_issues.extend(self._check_missing_commas(match.group(3), key))
 
             key_lower = key.lower()
             if key_lower in seen_keys:
@@ -94,14 +95,103 @@ class BibTeXVerifier:
         self.entries = entries
         return entries
 
+    def _check_missing_commas(self, fields_str: str, entry_key: str) -> list[dict]:
+        # A field not separated from the previous one by a comma is silently
+        # tolerated by _parse_fields below (it just searches forward for the
+        # next `word =` pattern), but real BibTeX/biber chokes on the entry:
+        # it either drops the field or merges it into the previous one.
+        # Found 2026-08-18 on bpal_resistance_emergence: 93/96 entries had
+        # `verified = {date}` glued to the previous field with no comma
+        # (typically added by a manual Edit rather than crossref_verify.py's
+        # --mark-verified, which always inserts the comma) -- only 60/96
+        # entries actually compiled, and this script reported no issue.
+        issues: list[dict] = []
+        pos, n = 0, len(fields_str)
+        name_re = re.compile(r"(\w+)\s*=\s*")
+        prev_end: int | None = None
+        while pos < n:
+            m = name_re.search(fields_str, pos)
+            if not m:
+                break
+            if prev_end is not None and "," not in fields_str[prev_end:m.start()]:
+                issues.append(
+                    {
+                        "key": entry_key,
+                        "type": "missing_comma",
+                        "field": m.group(1).lower(),
+                        "severity": "error",
+                        "message": (
+                            f"Field '{m.group(1).lower()}' is not preceded by a comma "
+                            "(BibTeX/biber will silently drop or mis-merge this field)"
+                        ),
+                    }
+                )
+            i = m.end()
+            if i >= n:
+                break
+            if fields_str[i] == "{":
+                depth, j = 1, i + 1
+                while depth > 0 and j < n:
+                    if fields_str[j] == "{":
+                        depth += 1
+                    elif fields_str[j] == "}":
+                        depth -= 1
+                    j += 1
+                pos = j
+            elif fields_str[i] == '"':
+                j = fields_str.find('"', i + 1)
+                if j == -1:
+                    break
+                pos = j + 1
+            else:
+                m2 = re.match(r"\d+", fields_str[i:])
+                if not m2:
+                    pos = i + 1
+                    continue
+                pos = i + len(m2.group(0))
+            prev_end = pos
+        return issues
+
     def _parse_fields(self, fields_str: str) -> dict[str, str]:
+        # Depth-counting extraction, not a fixed-nesting regex: a single-level
+        # pattern like r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}' truncates at the second
+        # nested brace (e.g. an author field containing `{\v{Z}}{\'i}dek`, which
+        # nests THREE levels deep) and silently drops the rest of the field.
+        # Same class of bug already fixed in bib-check's crossref_verify.py /
+        # doi_coherence.py / author_format.py -- ported here so it stops
+        # recurring wherever a .bib field is parsed in this ecosystem.
         fields: dict[str, str] = {}
-        # Parse field = {value} or "value" or number
-        field_pattern = r'(\w+)\s*=\s*(?:\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}|"([^"]*)"|(\d+))'
-        for match in re.finditer(field_pattern, fields_str):
-            name = match.group(1).lower()
-            val = match.group(2) or match.group(3) or match.group(4) or ""
-            fields[name] = val.strip()
+        pos, n = 0, len(fields_str)
+        name_re = re.compile(r"(\w+)\s*=\s*")
+        while pos < n:
+            m = name_re.search(fields_str, pos)
+            if not m:
+                break
+            name = m.group(1).lower()
+            i = m.end()
+            if i >= n:
+                break
+            if fields_str[i] == "{":
+                depth, start, j = 1, i + 1, i + 1
+                while depth > 0 and j < n:
+                    if fields_str[j] == "{":
+                        depth += 1
+                    elif fields_str[j] == "}":
+                        depth -= 1
+                    j += 1
+                val, pos = fields_str[start:j - 1], j
+            elif fields_str[i] == '"':
+                j = fields_str.find('"', i + 1)
+                if j == -1:
+                    break
+                val, pos = fields_str[i + 1:j], j + 1
+            else:
+                m2 = re.match(r"\d+", fields_str[i:])
+                if not m2:
+                    pos = i + 1
+                    continue
+                val, pos = m2.group(0), i + len(m2.group(0))
+            fields[name] = re.sub(r"\s+", " ", val).strip()
         return fields
 
     def verify(self) -> dict:
