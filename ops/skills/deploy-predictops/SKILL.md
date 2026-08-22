@@ -12,7 +12,7 @@ argument-hint: "[message-commit]"
 
 # Deploy PredictOps : Pipeline complet
 
-Déploiement de `scripts/global/predictops_test_bon_ancien.py` (et tout fichier
+Déploiement de `~/docs/codes/predictops/scripts/global/predictops_test_bon_ancien.py` (et tout fichier
 modifié localement) vers les 4 départements en production :
 - **ovh1** → depts 25, 06, 31 (répertoires `Predictops_25`, `Predictops_06`, `Predictops_31`)
 - **ovh2** → dept 01 (répertoire `Predictops_01`)

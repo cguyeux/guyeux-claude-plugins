@@ -29,9 +29,9 @@ When the user is drafting a document (project proposal, application, letter, bio
 **Root**: `~/docs/cv/`
 - `cv.tex`, main content entry point (shows overall structure)
 - `affiliations.txt`, all co-authors: `Lastname, Firstname $ Institution $ Country`
-- `references/conferences.bib`, full BibTeX for conference papers (340 KB)
-- `references/journals.bib`, full BibTeX for journal papers (273 KB)
-- `references/abstracts_found.json`, `references/abstracts_missing.json`, abstract
+- `~/docs/cv/references/conferences.bib`, full BibTeX for conference papers (340 KB)
+- `~/docs/cv/references/journals.bib`, full BibTeX for journal papers (273 KB)
+- `~/docs/cv/references/abstracts_found.json`, `~/docs/cv/references/abstracts_missing.json`, abstract
   retrieval status per entry; useful to know which papers have no abstract on file
 - Variant CVs at the root (`erc.tex`, `iuf.tex`, `deleg.tex`, `avancement.tex`,
   `chrysalide.tex`) assemble the same `cvDoc/` blocks for a specific dossier. When
@@ -106,7 +106,7 @@ Present extracted information:
   - For a **co-author affiliation**: exact name and institution as it appears in affiliations.txt
 - **Ready to use**: paste-ready text or structured lists, not a meta-commentary about the CV
 
-If the user needs specific BibTeX entries, grep `references/conferences.bib` or `references/journals.bib` by title keywords or year.
+If the user needs specific BibTeX entries, grep `~/docs/cv/references/conferences.bib` or `~/docs/cv/references/journals.bib` by title keywords or year.
 
 If the user needs co-author affiliations, grep `affiliations.txt` by last name.
 

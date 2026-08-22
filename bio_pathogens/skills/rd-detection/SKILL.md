@@ -35,7 +35,7 @@ Par souche, dans `mp:/data/current/run/results/<SRA>/` (VPN requis, voir `remote
 
 **Méthode maison, lue au code source (pas au résumé) le 2026-08-17** sur `mp:/data/current/run/`
 (pipeline Snakemake de gsenelle, `rules/clipping.smk` + `rules/coverage.smk` +
-`scripts/{clipping_info,dynamic_rd,regions_coverage}.py` + `scripts/json_report.py`) :
+`mp:/data/current/run/scripts/{clipping_info,dynamic_rd,regions_coverage}.py` + `mp:/data/current/run/scripts/json_report.py`) :
 
 1. **Clipping brut** (`clipping_info.py`) : pour chaque read mappé sur `mapped.cram`, on retient les
    séquences soft-clippées d'au moins **10 pb** de chaque côté (`minClipping = 10`).
@@ -97,7 +97,7 @@ Protocole de recoupement, en trois temps :
 
 `scripts/crosscheck_rdscan.py` outille les trois temps, souche par souche (`--sample`), pas en batch
 sur toute la cohorte. **Format RDscan vérifié sur le source du dépôt** (commit `f7e2d91`, 2026-08-17 :
-`workflow/scripts/makeTables.R`, `proportions.py`, `concatenate_bed.py`, `resources/RD.bed`) : ce
+`RDscan/workflow/scripts/makeTables.R`, `proportions.py`, `concatenate_bed.py`, `resources/RD.bed`) : ce
 n'est pas une table longue par RD, mais deux matrices larges cohort-wide, d'où deux sous-commandes.
 
 ```bash
@@ -124,7 +124,7 @@ python3 scripts/crosscheck_rdscan.py putative coverage_report_dynamic_rd.bed.tsv
 
 ## Nouvelles RD candidates (CUS)
 
-`scripts/dynamic_rd.py` (lu en source) : un CUS est une paire signal-droit → signal-gauche, tous deux
+`mp:/data/current/run/scripts/dynamic_rd.py` (lu en source) : un CUS est une paire signal-droit → signal-gauche, tous deux
 à > 10 reads, dont l'écart au génome de référence est **< 30 pb** (constante codée en dur, pas un
 paramètre de config malgré ce qu'un résumé antérieur laissait entendre) ; nommage
 `CUS_GS_<startInclus0based>_<endExclus0based>`. Un candidat, pas une RD établie. Avant d'en faire un
@@ -137,7 +137,7 @@ la chaîne appelle réellement IS6110 — voir ci-dessous).
 délétion ; c'est bien une RD, mais son mécanisme est la perte d'un élément mobile, pas une délétion
 chromosomique classique. Le distinguer change l'interprétation évolutive.
 
-**Le même moteur sert à appeler IS6110** (`scripts/insertion_sequence.py`, `is_report.json`), avec un
+**Le même moteur sert à appeler IS6110** (`mp:/data/current/run/scripts/insertion_sequence.py`, `is_report.json`), avec un
 piège d'interprétation propre, différent de celui des RD : la liste `insertion_sequences` de
 `report.json` **ne contient que des appels positifs** (IS confirmée présente en référence OU nouvelle
 insertion confirmée) — il n'existe **aucune entrée pour une IS confirmée absente**. Une position IS

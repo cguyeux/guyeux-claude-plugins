@@ -41,7 +41,7 @@ user-invocable: true
   mirroré et lu par `sitvitweb`. Le mode CALL réutilise un outil publié (MIRU-profiler)
   plutôt que raccoder un pipeline maison de comptage de répétitions. **Vérifié en source le
   2026-08-17** : le pipeline TBannotator (`mp:/data/current/run/`) contient bien une tentative
-  interne (`rules/vntr_report.smk` + `scripts/vntr_report.py`, primer-pairs des 24 loci MIRU-VNTR
+  interne (`rules/vntr_report.smk` + `mp:/data/current/run/scripts/vntr_report.py`, primer-pairs des 24 loci MIRU-VNTR
   standard → extraction d'amplicon → TRF pour compter les répétitions), mais elle est **désactivée**
   (cible commentée dans `Snakefile`, `# expand(...vntr_report.json...)`) et le script lui-même est
   **incomplet** : il ne contient aucun `json.dump` vers sa sortie déclarée (seulement des `print()`

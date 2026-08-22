@@ -83,6 +83,12 @@ DECLENCHEUR = re.compile(
 EMOJI = re.compile(r"[\U0001F300-\U0001F9FF]")
 
 REF_FICHIER = re.compile(r"(?:scripts?|references?|assets?|src|templates?)/[\w./-]+")
+REF_EXTERNE = re.compile(
+    r"(https?://|~/|mp:/|<projet>|<skills>|cahier/|resultats/|résultats/|"
+    r"\bfigure?s?/|supplementary/|paper/|bdd/|investigate_phylo/|"
+    r"\$\{CLAUDE_PLUGIN_ROOT\}/skills/|PredictOps|Predictops|clone|"
+    r"pipeline TBannotator|RDscan|File S)"
+)
 
 DESC_MAX = 1024   # au-dela, la description risque d'etre tronquee dans le catalogue
 CORPS_MAX = 6000  # au-dela, le SKILL.md dilue l'attention a chaque chargement
@@ -133,6 +139,14 @@ def skills_canoniques():
 
 def audit():
     rows = []
+    existing_skill_refs = {
+        str(path.relative_to(skill_root))
+        for _, plugin_root in marketplace_plugins()
+        for skill_root in (plugin_root / "skills").iterdir()
+        if skill_root.is_dir()
+        for path in skill_root.rglob("*")
+        if path.is_file()
+    }
     for rec in skills_canoniques():
         p: Path = rec["path"]
         r: dict[str, Any] = dict(rec, path=str(p), issues=[])
@@ -175,12 +189,30 @@ def audit():
         if r["mots"] > CORPS_MAX:
             r["issues"].append(f"CORPS_OBESE({r['mots']}mots)")
 
-        # references de fichiers : bruyant par construction, a inspecter
-        manquants = sorted({
-            f for f in (m.group(0).rstrip(".,);:`\"'") for m in REF_FICHIER.finditer(corps))
-            if "<" not in f and "*" not in f
-            and not (p / f).exists() and not (p / f.split("/", 1)[-1]).exists()
-        })
+        # references de fichiers : seuls les chemins plausiblement portes par le
+        # skill courant sont signalés. Les URLs, racines personnelles et
+        # références explicites à d'autres skills canoniques sont contrôlées par
+        # leur propre skill plutôt que dupliquées ici.
+        manquants: list[str] = []
+        fence = False
+        for line in corps.splitlines():
+            if line.lstrip().startswith(("```", "~~~")):
+                fence = not fence
+                continue
+            if fence:
+                continue
+            for match in REF_FICHIER.finditer(line):
+                f = match.group(0).rstrip(".,);:`\"'")
+                if "<" in f or "*" in f:
+                    continue
+                if REF_EXTERNE.search(line):
+                    continue
+                if (p / f).exists() or (p / f.split("/", 1)[-1]).exists():
+                    continue
+                if f in existing_skill_refs:
+                    continue
+                manquants.append(f)
+        manquants = sorted(set(manquants))
         if manquants:
             r["issues"].append("REF_FICHIER_A_VERIFIER:" + ",".join(manquants[:5]))
 
