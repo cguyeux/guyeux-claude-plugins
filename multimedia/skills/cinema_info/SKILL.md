@@ -1,6 +1,7 @@
 ---
 name: cinema_info
-description: Moteur unifié de renseignement et de recherche cinématographique multi-sources. Fédère IMDb, Wikipédia multilingue, film-documentaire.fr, le National Film Registry (NFR) et la sélection des 1001 Films pour fournir métadonnées complètes, synopses détaillés et analyses critiques.
+description: >-
+  Moteur unifié de renseignement et de recherche cinématographique multi-sources. Fédère IMDb, Wikipédia multilingue, film-documentaire.fr, le National Film Registry (NFR) et la sélection des 1001 Films pour fournir métadonnées complètes, synopses détaillés et analyses critiques. Use when: rechercher, identifier, comparer ou enrichir des informations sur un film.
 version: 1.0.0
 ---
 

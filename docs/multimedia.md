@@ -16,11 +16,15 @@ Sommaire : [cinema_info](#cinema_info) ; [film_documentaire](#film_documentaire)
 
 ### cinema_info
 
-Moteur unifié de renseignement et de recherche cinématographique multi-sources. Fédère IMDb, Wikipédia multilingue, film-documentaire.fr, le National Film Registry (NFR) et la sélection des 1001 Films pour fournir métadonnées complètes, synopses détaillés et analyses critiques.
+Moteur unifié de renseignement et de recherche cinématographique multi-sources. Fédère IMDb, Wikipédia multilingue, film-documentaire.fr, le National Film Registry (NFR) et la sélection des 1001 Films pour fournir métadonnées complètes, synopses détaillés et analyses critiques
+
+Compétences : rechercher, identifier, comparer ou enrichir des informations sur un film
 
 ### film_documentaire
 
-Moteur de recherche et d'extraction de métadonnées pour le cinéma documentaire via la plateforme film-documentaire.fr. Extrait résumés complets, mots-clés thématiques, sélections en festivals, distinctions, durées et crédits.
+Moteur de recherche et d'extraction de métadonnées pour le cinéma documentaire via la plateforme film-documentaire.fr. Extrait résumés complets, mots-clés thématiques, sélections en festivals, distinctions, durées et crédits
+
+Compétences : rechercher, identifier ou documenter un film documentaire
 
 ### imdb
 

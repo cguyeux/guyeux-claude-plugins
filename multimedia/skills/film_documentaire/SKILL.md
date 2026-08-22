@@ -1,6 +1,7 @@
 ---
 name: film_documentaire
-description: Moteur de recherche et d'extraction de métadonnées pour le cinéma documentaire via la plateforme film-documentaire.fr. Extrait résumés complets, mots-clés thématiques, sélections en festivals, distinctions, durées et crédits.
+description: >-
+  Moteur de recherche et d'extraction de métadonnées pour le cinéma documentaire via la plateforme film-documentaire.fr. Extrait résumés complets, mots-clés thématiques, sélections en festivals, distinctions, durées et crédits. Use when: rechercher, identifier ou documenter un film documentaire.
 version: 0.1.0
 ---
 

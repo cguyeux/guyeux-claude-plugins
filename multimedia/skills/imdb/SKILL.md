@@ -1,6 +1,7 @@
 ---
 name: imdb
-description: Pipeline de métadonnées de films, notes et résumés détaillés (RAG). Utilise les datasets officiels IMDb, Wikipedia multilingue, sources spécialisées et un algorithme de score de matching pour enrichir les films avec synopsis complets, genres, durées et notes.
+description: >-
+  Pipeline de métadonnées de films, notes et résumés détaillés (RAG). Utilise les datasets officiels IMDb, Wikipedia multilingue, sources spécialisées et un algorithme de score de matching pour enrichir les films avec synopsis complets, genres, durées et notes. Use when: chercher une fiche IMDb, désambiguïser un titre ou enrichir des métadonnées de film.
 version: 0.3.0
 ---
 

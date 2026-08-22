@@ -73,8 +73,10 @@ AUP_CADRE = re.compile(
     r"research toolkit|FEMTO|Guyeux|phylogenom|evolutionary)", re.I)
 
 DECLENCHEUR = re.compile(
-    r"(use when|use this|use for|use to|used when|when the user|trigger|"
-    r"utiliser quand|a utiliser|pour toute|pour tout |load when|invoke)", re.I)
+    r"(use when|use this|use for|use to|use here|use proactively when|"
+    r"used when|when the user|trigger|"
+    r"utiliser quand|a utiliser|pour toute|pour tout |toute demande|"
+    r"déclencher|declencher|load when|invoke)", re.I)
 
 # Emojis reels uniquement. Les caracteres de dessin de boite (U+2500-257F), les
 # fleches (U+2190-21FF) et les operateurs mathematiques (U+2200-22FF) N'EN SONT
