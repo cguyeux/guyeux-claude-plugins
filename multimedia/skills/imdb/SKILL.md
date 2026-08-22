@@ -1,92 +1,52 @@
 ---
 name: imdb
-description: This skill should be used when the user asks to "recuperer les notes IMDb", "chercher la note d'un film", "enrichir une liste de films avec IMDb", "classer des films par note IMDb", "trouver les informations d'un film", "identifier un film par titre et annee", or mentions IMDb, OMDb, TMDb, movie ratings, film metadata, votes, genres, runtime, director, cast, poster, or IMDb ids.
-version: 0.1.0
+description: Pipeline de métadonnées de films, notes et résumés détaillés (RAG). Utilise les datasets officiels IMDb, Wikipedia multilingue, sources spécialisées et un algorithme de score de matching pour enrichir les films avec synopsis complets, genres, durées et notes.
+version: 0.3.0
 ---
 
-Pipeline de recuperation de notes et metadonnees de films a partir d'un cache local IMDb, avec enrichissement facultatif via OMDb ou TMDb quand une cle API est fournie.
+# Pipeline & Skill Cinéma Multi-Sources (IMDb, Wikipedia, RAG)
 
-## Principe
+Ce skill fournit une chaîne complète d'acquisition de métadonnées cinématographiques et de génération de fiches documentaires riches pour l'indexation RAG et la recherche textuelle sémantique (*ripgrep*).
 
-Utiliser d'abord les jeux de donnees officiels IMDb Non-Commercial Datasets, en particulier `title.basics.tsv.gz` et `title.ratings.tsv.gz`. Ces fichiers donnent les identifiants IMDb, titres, annees, durees, genres, notes moyennes et nombres de votes. Les telecharger une fois, construire un cache SQLite local, puis interroger ce cache sans refaire de requetes reseau.
+---
 
-Ne pas scraper les pages HTML d'IMDb pour recuperer les notes. Les pages IMDb changent souvent, peuvent imposer des limites d'acces, et le scraping direct n'est pas necessaire pour les donnees de base. Pour les champs non presents dans les datasets IMDb (resume, affiche, certification, certains credits detailles), utiliser un service prevu pour cela, typiquement OMDb ou TMDb, uniquement si l'utilisateur dispose d'une cle API.
+## 🏗️ Architecture Multi-Sources
 
-## Workflow recommande
+1. **Cache local IMDb (Données structurelles & Notes)** :
+   - Exploite `title.basics.tsv.gz` et `title.ratings.tsv.gz` dans SQLite (`~/.cache/imdb-skill/imdb.sqlite`).
+   - Fournit les identifiants `tt...`, genres exacts (*Documentary, Animation, Film-Noir, Crime, Drama...*), durées précises, notes moyennes et volume de votes.
+2. **Wikipedia Multilingue (Résumés détaillés, Thèmes & Contexte)** :
+   - Interrogation via l'API MediaWiki (FR puis EN).
+   - Extraction des sections *Synopsis / Résumé / Trame* et de l'introduction épurée (sans syntaxe wiki).
+3. **Moteur de validation & Score de matching (0-100)** :
+   - Calcul de similarité du titre (FR et titre original).
+   - Validation stricte de l'année (tolérance +/- 1 an).
+   - Vérification de la présence du nom du réalisateur dans la fiche source.
+   - Détection des mots-clés de l'univers cinématographique et pénalisation des pages d'homonymies/listes.
 
-1. Identifier l'entree demandee : titre libre, annee, identifiant IMDb `tt...`, ou liste de films.
-2. Verifier l'existence du cache SQLite local. Par defaut, utiliser `~/.cache/imdb-skill/imdb.sqlite`, ou un chemin de projet explicite si le resultat doit etre versionne avec une analyse.
-3. Si le cache est absent ou ancien, lancer `scripts/imdb_lookup.py update`. Le telechargement peut etre long et consommer plusieurs centaines de Mo compresses.
-4. Chercher par identifiant IMDb quand il est connu. Sinon, chercher par titre normalise et annee. Toujours afficher les alternatives proches si l'identification est ambigue.
-5. Retourner au minimum : titre, annee, type, note IMDb, nombre de votes, duree, genres, identifiant IMDb, URL IMDb.
-6. Appliquer un seuil de votes pour les classements. Une bonne valeur de depart est `--min-votes 1000` pour eviter de promouvoir des films quasi non notes.
-7. Pour enrichir avec synopsis, affiche ou champs editoriaux, utiliser `omdb` avec `OMDB_API_KEY`, ou adapter la requete TMDb de facon explicite.
+---
 
-## Script fourni
+## 🛠️ Scripts disponibles
 
-Le script principal est `scripts/imdb_lookup.py`. Il est volontairement en bibliotheque standard Python uniquement (`urllib`, `gzip`, `csv`, `sqlite3`) pour fonctionner dans un environnement minimal.
-
-### Construire ou rafraichir le cache
-
+### 1. Enrichissement d'un film individuel (`enrich_film_metadata.py`)
 ```bash
-python3 scripts/imdb_lookup.py update --db ~/.cache/imdb-skill/imdb.sqlite
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/imdb/scripts/enrich_film_metadata.py" "Cléopâtre" --orig-title "Cleopatra" --year 1934 --director "Cecil B. DeMille"
+```
+Retourne :
+- Score de matching & niveau de confiance (`HIGH`, `MODERATE`, `LOW`).
+- Page source et URL vérifiée.
+- Résumé / Synopsis extrait et nettoyé.
+
+### 2. Cache IMDb local (`imdb_lookup.py`)
+```bash
+# Vérification ou mise à jour du cache
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/imdb/scripts/imdb_lookup.py" meta
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/imdb/scripts/imdb_lookup.py" update
 ```
 
-Par defaut, seuls les types `movie`, `tvMovie` et `short` sont indexes. Ajouter ou remplacer les types avec `--title-types movie,tvMovie,tvSeries,tvMiniSeries` si la demande porte aussi sur les series.
+---
 
-### Chercher un film par titre
-
-```bash
-python3 scripts/imdb_lookup.py lookup "The Ninth Gate" --year 1999 --db ~/.cache/imdb-skill/imdb.sqlite
-```
-
-### Chercher par identifiant IMDb
-
-```bash
-python3 scripts/imdb_lookup.py lookup --imdb-id tt0142688 --db ~/.cache/imdb-skill/imdb.sqlite --format json
-```
-
-### Classer une liste simple de titres
-
-Creer un TSV avec les colonnes `title` et optionnellement `year`, puis lancer :
-
-```bash
-python3 scripts/imdb_lookup.py batch films.tsv --db ~/.cache/imdb-skill/imdb.sqlite --min-votes 1000 --format tsv
-```
-
-### Enrichissement OMDb facultatif
-
-```bash
-OMDB_API_KEY=... python3 scripts/imdb_lookup.py omdb --imdb-id tt0142688
-```
-
-Ne jamais inscrire une cle API dans le code, dans le skill, ou dans un fichier versionne. Lire la cle depuis l'environnement.
-
-## Politique de sortie
-
-Pour une reponse utilisateur courte, presenter les meilleurs resultats dans un tableau lisible :
-
-- titre retenu ;
-- annee ;
-- note IMDb ;
-- nombre de votes ;
-- genres ;
-- raison du choix si plusieurs homonymes existent.
-
-Pour une sortie reutilisable, produire du TSV ou du JSON. Le TSV est preferable pour des listes de films a retraiter dans un tableur ou un script.
-
-## Ambiguites et controles
-
-Toujours signaler les cas ambigus :
-
-- meme titre et plusieurs annees ;
-- remake portant le meme titre ;
-- titre localise absent de `title.basics.tsv.gz` ;
-- film court, episode ou telefilm confondu avec un long metrage ;
-- note fondee sur trop peu de votes.
-
-Utiliser `--limit 10` pour afficher les candidats. Si un titre localise ne matche pas, consulter `title.akas.tsv.gz` manuellement ou etendre le script avant de conclure que le film est absent.
-
-## Ressources additionnelles
-
-Consulter `references/sources.md` pour les sources de donnees, les limites juridiques et les pieges de schema.
+## 📋 Bonnes pratiques pour l'indexation RAG
+- **Fiches par film** : chaque œuvre possède sa fiche `.md` avec métadonnées YAML et texte structuré.
+- **Préservation des mots-clés sémantiques** : les résumés détaillés permettent de retrouver les œuvres par thème (ex: *Égypte antique, pharaon, péplum* pour *Cléopâtre*).
+- **Traitement par lots** : exécuter l'enrichissement par batches avec mise en cache locale pour éviter les requêtes redondantes.

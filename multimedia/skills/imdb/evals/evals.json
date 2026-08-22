@@ -1,0 +1,23 @@
+{
+  "skill_name": "imdb",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Cherche la note IMDb de The Ninth Gate (1999), avec le nombre de votes et la date des donnees.",
+      "expected_output": "Identifie tt0142688, retourne la note et les votes du cache, et indique cache_built_at_utc.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Enrichis mon TSV de films avec la note IMDb, trie ensuite les films par note en ignorant ceux qui ont moins de 1000 votes.",
+      "expected_output": "Utilise le mode batch, conserve les titres d'entree, applique min-votes et produit un TSV reutilisable avec provenance du cache.",
+      "files": ["examples/films.tsv"]
+    },
+    {
+      "id": 3,
+      "prompt": "Je n'ai pas encore de cache IMDb. Donne-moi la distribution et l'affiche de tt0142688.",
+      "expected_output": "Explique que ces champs ne sont pas dans les deux datasets de base et utilise OMDb seulement si OMDB_API_KEY est disponible, sans scraper IMDb ni exposer de secret.",
+      "files": []
+    }
+  ]
+}

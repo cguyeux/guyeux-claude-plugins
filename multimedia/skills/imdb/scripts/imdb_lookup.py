@@ -34,6 +34,8 @@ DEFAULT_DB = Path("~/.cache/imdb-skill/imdb.sqlite").expanduser()
 DEFAULT_CACHE_DIR = Path("~/.cache/imdb-skill/datasets").expanduser()
 DEFAULT_TITLE_TYPES = "movie,tvMovie,short"
 OMDB_URL = "https://www.omdbapi.com/"
+REQUIRED_CACHE_TABLES = {"titles", "ratings", "meta"}
+IMDB_ID_RE = re.compile(r"^tt[0-9]{7,}$", re.IGNORECASE)
 
 
 def normalize_title(value: str) -> str:
@@ -122,6 +124,51 @@ def connect_db(path: Path) -> sqlite3.Connection:
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA synchronous=NORMAL")
     return conn
+
+
+def connect_existing_db(path: Path) -> sqlite3.Connection:
+    path = path.expanduser()
+    update_hint = f"Run the update command first: imdb_lookup.py update --db {path}"
+    if not path.is_file() or path.stat().st_size == 0:
+        raise SystemExit(f"IMDb cache not found at {path}. {update_hint}")
+    try:
+        conn = sqlite3.connect(f"{path.resolve().as_uri()}?mode=ro", uri=True, timeout=30)
+    except sqlite3.Error as exc:
+        raise SystemExit(f"Cannot open IMDb cache at {path}: {exc}. {update_hint}") from exc
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA busy_timeout=30000")
+    tables = {
+        row["name"]
+        for row in conn.execute("SELECT name FROM sqlite_master WHERE type = 'table'")
+    }
+    missing = sorted(REQUIRED_CACHE_TABLES - tables)
+    if missing:
+        conn.close()
+        raise SystemExit(
+            f"IMDb cache at {path} is incomplete (missing: {', '.join(missing)}). "
+            f"{update_hint}"
+        )
+    return conn
+
+
+def normalize_imdb_id(value: str) -> str:
+    imdb_id = value.strip().lower()
+    if not IMDB_ID_RE.fullmatch(imdb_id):
+        raise SystemExit(
+            f"Invalid IMDb id {value!r}; expected a title id such as tt0142688"
+        )
+    return imdb_id
+
+
+def cache_built_at(conn: sqlite3.Connection) -> str | None:
+    row = conn.execute("SELECT value FROM meta WHERE key = 'built_at_utc'").fetchone()
+    return str(row["value"]) if row else None
+
+
+def add_cache_provenance(rows: list[dict[str, Any]], conn: sqlite3.Connection) -> None:
+    built_at = cache_built_at(conn)
+    for row in rows:
+        row["cache_built_at_utc"] = built_at
 
 
 def reset_schema(conn: sqlite3.Connection) -> None:
@@ -359,6 +406,7 @@ def lookup_rows(
     params: list[Any] = []
     where: list[str] = []
     if imdb_id:
+        imdb_id = normalize_imdb_id(imdb_id)
         where.append("t.tconst = ?")
         params.append(imdb_id)
     else:
@@ -433,6 +481,7 @@ def print_output(rows: list[dict[str, Any]], fmt: str) -> None:
         "num_votes",
         "runtime_minutes",
         "genres",
+        "cache_built_at_utc",
         "imdb_url",
         "match_score",
         "match_error",
@@ -453,29 +502,35 @@ def print_output(rows: list[dict[str, Any]], fmt: str) -> None:
         runtime = row.get("runtime_minutes") or "?"
         score = row.get("match_score")
         score_text = f" score={score}" if score is not None else ""
+        cache_text = f" cache={row.get('cache_built_at_utc') or '?'}"
         print(
             f"{row['tconst']} | {row['primary_title']} ({year}) | "
             f"{row['title_type']} | IMDb {rating or '?'} ({votes or 0} votes) | "
-            f"{runtime} min | {row.get('genres') or '?'} | {row['imdb_url']}{score_text}"
+            f"{runtime} min | {row.get('genres') or '?'} | "
+            f"{row['imdb_url']}{score_text}{cache_text}"
         )
 
 
 def lookup_command(args: argparse.Namespace) -> None:
-    conn = connect_db(Path(args.db).expanduser())
-    rows = lookup_rows(
-        conn,
-        title=args.title,
-        imdb_id=args.imdb_id,
-        year=args.year,
-        limit=args.limit,
-        min_votes=args.min_votes,
-        title_types=parse_types(args.title_types),
-    )
-    print_output(rows, args.format)
+    conn = connect_existing_db(Path(args.db).expanduser())
+    try:
+        rows = lookup_rows(
+            conn,
+            title=args.title,
+            imdb_id=args.imdb_id,
+            year=args.year,
+            limit=args.limit,
+            min_votes=args.min_votes,
+            title_types=parse_types(args.title_types),
+        )
+        add_cache_provenance(rows, conn)
+        print_output(rows, args.format)
+    finally:
+        conn.close()
 
 
 def batch_command(args: argparse.Namespace) -> None:
-    conn = connect_db(Path(args.db).expanduser())
+    conn = connect_existing_db(Path(args.db).expanduser())
     input_path = Path(args.input).expanduser()
     rows_out: list[dict[str, Any]] = []
     with input_path.open("rt", encoding="utf-8", newline="") as handle:
@@ -506,6 +561,8 @@ def batch_command(args: argparse.Namespace) -> None:
             else:
                 out = {**prefix, "match_error": "no_match"}
             rows_out.append(out)
+    add_cache_provenance(rows_out, conn)
+    conn.close()
     print_output(rows_out, args.format)
 
 
@@ -516,7 +573,7 @@ def omdb_command(args: argparse.Namespace) -> None:
     if not args.imdb_id:
         raise SystemExit("--imdb-id is required for OMDb lookup")
     params = {
-        "i": args.imdb_id,
+        "i": normalize_imdb_id(args.imdb_id),
         "apikey": api_key,
         "plot": args.plot,
         "r": "json",
@@ -529,8 +586,9 @@ def omdb_command(args: argparse.Namespace) -> None:
 
 
 def meta_command(args: argparse.Namespace) -> None:
-    conn = connect_db(Path(args.db).expanduser())
+    conn = connect_existing_db(Path(args.db).expanduser())
     rows = conn.execute("SELECT key, value FROM meta ORDER BY key").fetchall()
+    conn.close()
     print(json.dumps({row["key"]: row["value"] for row in rows}, ensure_ascii=False, indent=2))
 
 

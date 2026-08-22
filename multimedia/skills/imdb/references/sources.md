@@ -16,6 +16,8 @@ Fichiers utiles pour ce skill :
 
 Ces fichiers utilisent `\N` pour les valeurs manquantes. Les lignes sont separees par tabulation et compressees en gzip.
 
+IMDb indique que ces datasets sont rafraichis quotidiennement et qu'une copie locale est autorisee pour un usage personnel et non commercial, sous reserve de ses conditions courantes. Ne pas redistribuer le cache SQLite comme s'il s'agissait d'une base libre.
+
 ## Services d'enrichissement optionnels
 
 OMDb :

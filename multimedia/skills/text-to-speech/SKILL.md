@@ -253,6 +253,10 @@ Bon échantillon : une seule voix, au calme, mono, ~20-30 s de parole continue. 
 
 Comme pour OpenAI : `--tmp-dir cache/livre_segs --keep-segments` ; les segments déjà produits ne sont pas re-synthétisés (donc pas repayés).
 
+### Faux positif de garde-fou
+
+Un `403 guardrail_violation` ne se résout pas par les retries : le script arrête immédiatement la synthèse et enregistre le texte fautif dans `blocked_seg_XXXXX.txt` à côté du cache. Par défaut, basculer l'œuvre entière vers OpenAI pour préserver l'intégrité du texte et une voix constante. Si l'utilisateur exige explicitement Voxtral, ne jamais modifier le fichier source : reformuler fidèlement ce seul extrait pour l'audio, le synthétiser avec la même voix dans le cache sous le nom `seg_XXXXX.mp3`, puis relancer exactement la même commande.
+
 ### Particularités Voxtral
 
 - **Pas d'instructions de prosodie** : `--instructions` est accepté mais ignoré (avertissement). Régler le ton par `--voice`.
@@ -360,7 +364,7 @@ Liste complète : voir [VOICES.md sur Hugging Face](https://huggingface.co/hexgr
 2. **Segmentation** : Mistral découpe sur les fins de phrase françaises avec un double plafond mots + caractères (`--max-words 250`, `--max-chars 1500`) pour respecter la limite ~300 mots de Voxtral ; OpenAI découpe à 3 000 caractères sur les mêmes fins de phrase (regex `_SENT_END` : `.?!…` suivi d'une majuscule, « ou tiret cadratin) ; Kokoro découpe automatiquement par groupes de souffle.
 3. **Synthèse** segment par segment, MP3 individuels écrits dans un répertoire temporaire (Mistral décode chaque segment depuis le base64 renvoyé par l'API).
 4. **Retries** : backoff exponentiel sur erreur réseau/API (5 tentatives par défaut côté Mistral et OpenAI).
-5. **Concaténation** : `pydub` pour Mistral et OpenAI (avec silence configurable entre segments), `soundfile + ffmpeg` pour Kokoro.
+5. **Concaténation** : `pydub` pour les lectures Mistral courtes (avec silence configurable) ; au-delà de 100 segments Mistral assemble et réencode linéairement par manifeste `ffconcat` et ffmpeg, afin d'éviter une croissance quadratique en mémoire. OpenAI utilise `pydub`, Kokoro `soundfile + ffmpeg`.
 6. **Export MP3** : VBR qualitatif (`-q:a 2` côté Mistral/OpenAI, libmp3lame 192k côté Kokoro).
 
 ## Pièges connus
@@ -374,6 +378,7 @@ Liste complète : voir [VOICES.md sur Hugging Face](https://huggingface.co/hexgr
 - **Limite ~300 mots/requête** : dépassée, l'API renvoie une erreur. La segmentation `--max-words 250` la respecte ; ne pas la remonter au-delà de ~280.
 - **Modèle daté obligatoire** : `voxtral-mini-tts` seul est rejeté ; utiliser `voxtral-mini-tts-2603` (défaut du script). Vérifier périodiquement si un identifiant plus récent est publié.
 - **Audio en base64** : `speech.complete(...)` renvoie `resp.audio_data` (chaîne base64), pas des octets bruts ni un flux binaire ; le script décode via `base64.b64decode`.
+- **Long livre** : ne pas assembler des centaines de MP3 avec `combined + segment` dans pydub : ce patron devient quadratique. Le script passe automatiquement par ffmpeg au-delà de 100 segments. Après un découpage de vingt minutes, vérifier avec `ffprobe` le MP3 maître et les fichiers de début, milieu et fin, puis décoder un court extrait médian. Ne mettre le cache à la corbeille qu'après ces contrôles.
 
 ### Galerie / clonage de voix (Voxtral)
 

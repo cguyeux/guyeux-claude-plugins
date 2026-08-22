@@ -43,6 +43,19 @@ from typing import Iterable, List, Optional
 
 # Imports tardifs (mistralai/pydub) : on autorise --help sans dépendances.
 
+
+def trash_generated_file(path: Path) -> None:
+    """Move a generated temporary file to the desktop trash when possible."""
+    if not path.exists():
+        return
+    try:
+        subprocess.run(["gio", "trash", str(path)], check=True)
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        print(
+            f"[tts-mistral] fichier temporaire conservé faute de corbeille: {path}",
+            file=sys.stderr,
+        )
+
 DEFAULT_MODEL = "voxtral-mini-tts-2603"
 DEFAULT_VOICE = "fr_marie_neutral"
 
@@ -123,6 +136,10 @@ def synth_with_retries(client, model: str, text: str, out_mp3: Path,
             return
         except Exception as exc:  # noqa: BLE001 — on relogue tout
             last_exc = exc
+            # Un 403 de modération est déterministe pour le même texte : il ne
+            # faut pas gaspiller quatre appels supplémentaires à le relancer.
+            if "guardrail_violation" in str(exc):
+                raise RuntimeError("Segment bloqué par le guardrail Voxtral") from exc
             if attempt >= max_retries:
                 break
             print(f"  ! tentative {attempt}/{max_retries} échouée "
@@ -136,16 +153,55 @@ def synth_with_retries(client, model: str, text: str, out_mp3: Path,
 # ---------- Concaténation MP3 ----------
 
 def concat_mp3(files: Iterable[Path], out_mp3: Path, silence_ms: int) -> None:
-    from pydub import AudioSegment
-
-    silence = AudioSegment.silent(duration=silence_ms)
-    combined = None
-    for f in files:
-        seg = AudioSegment.from_file(f, format="mp3")
-        combined = seg if combined is None else combined + silence + seg
-    if combined is None:
+    """Assemble les segments sans concaténation quadratique en mémoire."""
+    seg_files = list(files)
+    if not seg_files:
         raise ValueError("Aucun segment audio à concaténer.")
-    combined.export(out_mp3, format="mp3", parameters=["-q:a", "2"])
+
+    # Pydub conserve les silences inter-segments et suffit pour une courte
+    # lecture. Au-delà, « combined + segment » devient quadratique et peut
+    # dépasser la mémoire disponible sur un livre entier.
+    if len(seg_files) <= 100:
+        from pydub import AudioSegment
+
+        silence = AudioSegment.silent(duration=silence_ms)
+        combined = AudioSegment.empty()
+        for f in seg_files:
+            if len(combined):
+                combined += silence
+            combined += AudioSegment.from_file(f, format="mp3")
+        combined.export(out_mp3, format="mp3", parameters=["-q:a", "2"])
+        return
+
+    out_mp3.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=".ffconcat", encoding="utf-8", delete=False,
+        dir=out_mp3.parent,
+    ) as manifest:
+        manifest.write("ffconcat version 1.0\n")
+        for segment in seg_files:
+            # Syntaxe ffconcat : une apostrophe littérale s'échappe ainsi.
+            escaped = str(segment.resolve()).replace("'", r"'\\''")
+            manifest.write(f"file '{escaped}'\n")
+        manifest_path = Path(manifest.name)
+
+    try:
+        print(
+            "[tts-mistral] assemblage ffmpeg linéaire "
+            f"({len(seg_files)} segments ; silence inter-segments implicite)",
+            flush=True,
+        )
+        subprocess.run(
+            [
+                "ffmpeg", "-nostdin", "-v", "error", "-y",
+                "-fflags", "+genpts", "-f", "concat", "-safe", "0",
+                "-i", str(manifest_path), "-c:a", "libmp3lame", "-q:a", "2",
+                str(out_mp3),
+            ],
+            check=True,
+        )
+    finally:
+        trash_generated_file(manifest_path)
 
 
 # ---------- Galerie de voix (manifeste local) ----------
@@ -209,8 +265,20 @@ def tts_file_to_mp3(input_txt: Path, output_mp3: Path, *,
             if seg_path.exists() and seg_path.stat().st_size > 0:
                 seg_files.append(seg_path)
                 continue
-            synth_with_retries(client, model, seg, seg_path,
-                               voice_id, ref_audio_b64)
+            try:
+                synth_with_retries(client, model, seg, seg_path,
+                                   voice_id, ref_audio_b64)
+            except RuntimeError as exc:
+                if "guardrail" not in str(exc).lower():
+                    raise
+                blocked_path = tmp_dir / f"blocked_seg_{idx:05d}.txt"
+                blocked_path.write_text(seg + "\n", encoding="utf-8")
+                raise RuntimeError(
+                    f"Segment {idx + 1}/{len(segments)} bloqué par Voxtral. "
+                    f"Texte conservé dans {blocked_path}. Pour rester sur la "
+                    "même voix, reformuler uniquement cet extrait pour l'audio, "
+                    f"le synthétiser dans {seg_path}, puis relancer avec le même cache."
+                ) from exc
             seg_files.append(seg_path)
 
         output_mp3.parent.mkdir(parents=True, exist_ok=True)
@@ -218,7 +286,7 @@ def tts_file_to_mp3(input_txt: Path, output_mp3: Path, *,
     finally:
         if cleanup_tmp:
             for p in seg_files:
-                p.unlink(missing_ok=True)
+                trash_generated_file(p)
             try:
                 tmp_dir.rmdir()
             except OSError:
@@ -312,7 +380,7 @@ def create_voice(name: str, from_audio: Path, *, slug: Optional[str],
     print(f"[tts-mistral] utiliser : --voice {vslug or vid}")
 
     if tmp_sample is not None and not keep_sample:
-        tmp_sample.unlink(missing_ok=True)
+        trash_generated_file(tmp_sample)
         try:
             tmp_sample.parent.rmdir()
         except OSError:
