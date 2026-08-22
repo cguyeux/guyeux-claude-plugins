@@ -1,7 +1,7 @@
 {
   "name": "bio_population_genetics",
   "description": "Academic research toolkit for ancient and modern human population genetics, archaeological radiocarbon databases, paleoclimate reconstructions, historical migration corpora, and linguistic/cultural atlases. Bundles general-purpose phylogenetic, statistical, and literature-mining tools used by the Guyeux group (FEMTO-ST, University of Franche-Comte) for peer-reviewed scientific publications on human evolutionary history and eco-anthropology.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": {
     "name": "Christophe Guyeux"
   }
