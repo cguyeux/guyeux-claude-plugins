@@ -16,7 +16,7 @@ description: >-
 argument-hint: "[chemin du livrable ou du projet]"
 ---
 
-# /notes-et-citations — l'appareil de notes d'un écrit juridique
+# /notes-et-citations : l'appareil de notes d'un écrit juridique
 
 Ce skill fait deux choses que l'on confond souvent : il pose les **conventions**
 de citation d'un écrit juridique, et il **vérifie** que ce qui est cité existe et

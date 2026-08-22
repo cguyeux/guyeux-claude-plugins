@@ -151,7 +151,7 @@ INITIALES ...`, **sans virgule**, fait echanger nom et prenom par BibTeX (regle 
 Last » : le dernier mot devient le nom de famille). Vu 2026-08-03 (Rv2438A) : `Choe D` affiche
 « D et al. » au lieu de « Choe et al. ». **Le defaut est invisible dans la bibliographie
 complete** (le style d'impression usuel reconstitue par coincidence le texte tel que tape) et
-n'apparait que sous `\citet`/`\citeauthor` — donc potentiellement des mois apres l'import,
+n'apparait que sous `\citet`/`\citeauthor`, donc potentiellement des mois apres l'import,
 a l'ajout d'une premiere citation nommee. Decidable sans reseau, comme la coherence DOI
 ci-dessus. Si des entrees sont signalees, corriger **tout le fichier `.bib` en une seule
 passe** (pas seulement les entrees citees par nom) : corriger un sous-ensemble cree une

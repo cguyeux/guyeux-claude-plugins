@@ -94,7 +94,7 @@ text-mining skills:
 > graph, ENA/UniProt/PDB accession cross-links, preprint discovery). Use `literature-access` for
 > "get me the legal full text of THIS DOI, maximising coverage across sources" and for full-text
 > RECALL (`search`, to find articles whose body mentions a gene the abstracts miss). Don't trigger
-> *this* skill for a paywalled paper you need to read — that's `literature-access`.
+> *this* skill for a paywalled paper you need to read: that's `literature-access`.
 
 ## Data sources covered (verified)
 

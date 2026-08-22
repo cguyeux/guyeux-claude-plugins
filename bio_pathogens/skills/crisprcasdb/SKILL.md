@@ -120,7 +120,7 @@ Le discriminant n'est pas le nombre de spacers mais **`drconservation`** : un CR
 definition fait de repetitions, donc des DR a 18-28 % d'identite ne sont pas des DR. Ces
 faux positifs tombent sur les familles **PE-PGRS** (repetitions en tandem Gly-Ala) et **PPE**.
 
-**Calibration a connaitre** : `drconservation` moyenne par niveau sur toute la base — ev1
+**Calibration a connaitre** : `drconservation` moyenne par niveau sur toute la base : ev1
 93,3 % (biaisee, loci a 1 spacer), ev2 **41,6 %** (mediane 43,1, max 70), ev3 85,2 %,
 ev4 93,1 % (mediane 95,5). Le niveau 2 EST la classe des repetitions mal conservees. Et
 chez les *Mycobacterium*, les loci du type « ev<=2, >=8 spacers, conservation <35 % » sont

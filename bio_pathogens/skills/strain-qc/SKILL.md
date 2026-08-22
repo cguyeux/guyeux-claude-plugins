@@ -442,7 +442,7 @@ Pour une souche MTBC saine, chaque housekeeping porte typiquement
 ou si rpoB+rpoC >15 (seuil absolu).
 
 > [!CAUTION]
-> **Le verdict est COMBINE, jamais un OU logique entre indicateurs — et le ratio MNP seul ne
+> **Le verdict est COMBINE, jamais un OU logique entre indicateurs, et le ratio MNP seul ne
 > vaut rien.** Le seuil WARN du MNP est fixe ici a 10 %, alors que le **Critere 8** qualifie
 > explicitement `%MNP ~10-12 %` de **« MTBC normal »**. Un MTBC parfaitement sain declenche
 > donc mecaniquement un WARN sur ce seul indicateur : c'est attendu, ce n'est PAS un signal.
