@@ -42,6 +42,7 @@ python3 $S/bdd_query.py strains L4.15          # souches d'un clade
 python3 $S/bdd_query.py --json strain L4.15 ERR1023322   # QC + nb SNP d'une souche
 python3 $S/bdd_query.py matrix L4.15 --min-frac 0.1       # matrice SNP binaire -> TSV
 python3 $S/bdd_query.py synapo L4.15                      # synapomorphies (frac >= 0.95)
+python3 $S/bdd_query.py synapo L5.2.1 --recursive --min-frac 0.90  # agrège L5.2.1 + tout son sous-arbre L5.2.1.*
 python3 $S/bdd_query.py align L4.15 --mask MASK.txt --rd-table RD.csv --out aln.phy  # alignement propre pour datation
 ```
 
@@ -50,6 +51,11 @@ python3 $S/bdd_query.py align L4.15 --mask MASK.txt --rd-table RD.csv --out aln.
 - `matrix` : lignes = souches, colonnes = positions SPDI présentes chez ≥ `min_frac`
   des souches ; `--json` renvoie aussi le vecteur 0/1 par souche.
 - `synapo` : positions partagées par ≥ seuil (défaut 0.95), candidates marqueurs de clade.
+- `--recursive` (sur `strains`/`matrix`/`synapo`) : agrège le conteneur `clade` avec TOUT son
+  sous-arbre `clade.*`. Indispensable dès qu'une lignée a été matérialisée en plusieurs
+  sous-conteneurs (géographiques, phylogénétiques...) : sans ce flag, `synapo L5.2.1` ne voit que
+  les souches du dossier racine `L5.2.1/` et ignore ses 7 sous-conteneurs `L5.2.1.*`, ce qui fausse
+  toute comparaison à un marqueur ou barcode publié portant sur le clade entier.
 - `align` : alignement binaire PHYLIP multi-clades **propre pour l'horloge moléculaire**
   (voir section dédiée ci-dessous).
 

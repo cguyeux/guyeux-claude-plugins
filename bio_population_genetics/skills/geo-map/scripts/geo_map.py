@@ -327,6 +327,34 @@ def _log(msg: str) -> None:
     print(msg, file=sys.stderr)
 
 
+def trash_generated_path(path: Path) -> None:
+    """Move a generated temporary file or directory to trash when possible."""
+    if not path.exists():
+        return
+    import subprocess as _subprocess
+    try:
+        _subprocess.run(["gio", "trash", str(path)], check=True)
+    except (FileNotFoundError, _subprocess.CalledProcessError):
+        _log(f"Temporary path kept because trash is unavailable: {path}")
+
+
+def read_table(path) -> pd.DataFrame:
+    """pd.read_csv wrapper that sniffs the delimiter instead of assuming comma.
+    A tab-separated input (.tsv, or any comma-free header) silently collapses to a
+    single column under plain pd.read_csv, which then fails downstream with a
+    confusing "'country' column required" error. Sniff on the header line
+    (comma/tab/semicolon/pipe) and fall back to comma if sniffing is inconclusive."""
+    import csv as _csv
+    with open(path, newline="") as fh:
+        header = fh.readline()
+    try:
+        dialect = _csv.Sniffer().sniff(header, delimiters=",\t;|")
+        sep = dialect.delimiter
+    except _csv.Error:
+        sep = ","
+    return pd.read_csv(path, sep=sep)
+
+
 # ----------------------------------------------------------------------
 # Natural Earth loader
 # ----------------------------------------------------------------------
@@ -1519,7 +1547,7 @@ def plot_layered(
 
     for layer in spec.get("layers", []):
         lt = layer["type"]
-        df = pd.read_csv(layer["csv"])
+        df = read_table(layer["csv"])
 
         if lt == "choropleth":
             merged = merge_data(load_world(REGION_DEFAULT_RES.get(region, "110m")), df)
@@ -2266,16 +2294,9 @@ def animate_choropleth(
         else:
             _log(f"Saved animation {out}")
 
-    # Cleanup tmpdir
     for p in frame_paths:
-        try:
-            p.unlink()
-        except Exception:
-            pass
-    try:
-        tmpdir.rmdir()
-    except Exception:
-        pass
+        trash_generated_path(p)
+    trash_generated_path(tmpdir)
 
 
 # ----------------------------------------------------------------------
@@ -2496,7 +2517,7 @@ Examples:
         if args.type not in ("choropleth", "gradient"):
             print(f"Error: --animate-by only supports choropleth/gradient.", file=sys.stderr)
             return 1
-        df_anim = pd.read_csv(args.input_file)
+        df_anim = read_table(args.input_file)
         if args.country_column != "country" and args.country_column in df_anim.columns:
             df_anim = df_anim.rename(columns={args.country_column: "country"})
         animate_choropleth(
@@ -2523,7 +2544,7 @@ Examples:
         return 0
 
     if args.type == "arcs":
-        df = pd.read_csv(args.input_file)
+        df = read_table(args.input_file)
         plot_arcs(
             df, args.output,
             src_lat_col=args.src_lat_col, src_lon_col=args.src_lon_col,
@@ -2537,7 +2558,7 @@ Examples:
         )
         return 0
 
-    df = pd.read_csv(args.input_file)
+    df = read_table(args.input_file)
     if args.country_column != "country" and args.country_column in df.columns:
         df = df.rename(columns={args.country_column: "country"})
 

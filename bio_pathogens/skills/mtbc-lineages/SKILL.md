@@ -4,6 +4,9 @@ description: >-
   Authority on Mycobacterium tuberculosis complex (MTBC) lineage
   definitions, hierarchies and SNP/SPDI markers. Precedence per
   SOURCES_OF_TRUTH.md: bdd/actuelle + barcode_complete.tsv authoritative;
+  for Bovis ONLY, the versioned registry
+  lineage_navigator/resultats/barcode_bovis/ is authoritative and the central
+  barcode is its mirror (SOURCES_OF_TRUTH.md 2 bis);
   lignees.py (key "moi" = Guyeux) is a marker bank, stale for L1.*,
   Bovis1.*, BCG.*, deep L6.
 
@@ -16,6 +19,28 @@ user-invocable: true
 
 # /mtbc-lineages -- MTBC Lineage Authority
 
+> [!TIP]
+> **pathotypr : appliquer NOTRE banque de marqueurs, hors ligne et sans réécrire un classifieur.**
+> `github.com/PathoGenOmics-Lab/pathotypr` (AGPL-3.0, préprint 2026, bioconda `pathotypr`) fait de la
+> classification de lignée et du génotypage **pilotés par des marqueurs SNP fournis par l'utilisateur**
+> (outil Rust, pas de compilateur requis), et il est agnostique du pathogène. C'est la forme dont nous
+> avons besoin : la banque maison (`guyeux`) existe déjà, et le même outil se transpose à *M. leprae*
+> ou *Yersinia* (voir `yersinia-resources`).
+>
+> **Évalué sur témoin le 2026-08-17** (panel de marqueurs publié par les auteurs, Zenodo
+> `10.5281/zenodo.19210043`, 3707 SNP L1-L10/A1-A4 ; `pathotypr classify` sur assemblages complets) :
+> H37Rv (NC_000962.3) → `L4` ; *M. bovis* AF2122/97 (NC_002945.4) → `A4;M_bovis` ; *M. africanum*
+> GM041182 (NC_015758.1) → `L6`. Les trois concordent avec la lignée publiée pour ces souches de
+> référence. **Piège rencontré** : les FASTQ de test livrés dans le dépôt `RDscan` (`lineage2_1.fastq.gz`,
+> `lineage6_1.fastq.gz`) ne sont PAS des témoins valides pour pathotypr malgré leur nom — ce sont des
+> lectures simulées à partir de H37Rv (en-têtes `@NC_000962.3-<pos>`), donc leur profil SNP est celui
+> de H37Rv (L4), quel que soit le nom du fichier ; les deux ont été classées `L4` par pathotypr, ce qui
+> est correct pour leur origine réelle et n'est pas un défaut de l'outil.
+>
+> Pour mémoire, **Nomenclature WS** (MIRU-VNTRplus) offre une comparaison à une base de souches de
+> référence des grandes lignées, par service web.
+
+
 ## Source of truth (read SOURCES_OF_TRUTH.md first)
 
 The taxonomic authority hierarchy is **fixed canonically** in
@@ -25,6 +50,8 @@ The taxonomic authority hierarchy is **fixed canonically** in
 1. bdd/actuelle/<clade>/             ← physical source (existence + per-strain placement)
 2. barcoding_v2/barcode_complete.tsv ← authoritative derived registry (SPDI)
    + rd_markers.json / is_markers.json / _marker_overrides.json / _marker_blacklist.json
+2bis. Bovis ONLY: lineage_navigator/résultats/barcode_bovis/  ← the versioned registry is
+   authoritative, barcode_complete.tsv is its mirror (SOURCES_OF_TRUTH.md § 2 bis, 2026-08-18)
 3. TBannotator system_name='guyeux' (ex-'Senelle')      ← snapshot (= moi/Guyeux, may lag)
 4. lignees.py key 'moi'              ← MARKER BANK (1 SPDI/clade, possibly stale)
 5. snp_barcoding.csv, strain_lineages.csv  ← OBSOLETE, never authoritative on read
@@ -340,6 +367,48 @@ When a reviewer or downstream task needs the published-system label,
 read it from `taxonomy_crossmap.tsv` (or the barcoder's "Informative
 equivalents" block), do **not** re-derive it from `snp_barcoding.csv`.
 
+### Placing a strain by markers : three traps, measured (2026-07-31)
+
+Placing a genome by « deepest entity whose positive markers are present »
+is the right principle, but a naive threshold (e.g. fraction ≥ 0.9) is
+**not safe**. Three failure modes, all met the same day on real strains.
+
+**1. Single-marker entities win by construction.** `barcode_complete.tsv`
+defines **498 of 2 295 MTBC entities (22 %) with a SINGLE positive SPDI**.
+Such an entity scores a trivial 100 % as soon as that one SPDI is present,
+so it **outranks a better-documented sister at 1/2**. Worse, **426 of them
+have no directory at all in `bdd/actuelle`** : they can capture a placement
+though no strain lives there. Real case : `L4.8.1.1` (1 marker, 0 members)
+beat `L4.8.2` (2 markers, 3 767 members) for two genomes.
+→ **Never let a single-marker entity outrank a partially-confirmed sister.**
+Weight by marker count, require ≥ 2 present markers to go deeper than the
+parent, or deprioritise entities with no materialised member.
+
+**2. Some markers are simply WRONG — verify exclusivity before trusting one.**
+Measured on the two sister clades L4.2.1.1 / L4.2.1.2 (200 + 189 genomes) :
+
+| clade | marker « L4.2.1.1 » | marker « L4.2.1.2 » |
+|---|---|---|
+| L4.2.1.1 | 98 % | **98 %** |
+| L4.2.1.2 | 0 % | **1 %** |
+
+The SPDI labelled « L4.2.1.2 » (`NC_000962.3:1429037:A:C`) actually marks
+**L4.2.1.1**, and true L4.2.1.2 genomes carry **no marker at all** (99 %).
+A strain carrying « the .2 marker but not the .1 » was therefore placed in
+L4.2.1.2 — wrongly. **Before trusting a marker to separate two sisters,
+test its exclusivity on samples of BOTH clades** ; the cost is seconds and
+it is the only way to catch an inverted or mislabelled marker.
+
+**3. A rare marker profile means « undetermined », not « the other sister ».**
+The same strain had a profile shared by only 2 % of one clade and 1 % of the
+other — i.e. atypical everywhere. The honest placement is then the **parent**
+whose marker is fully present (here L4.2.1, 1/1), not a coin-flip between
+sisters. Rule of thumb used throughout : **a strain placed too high can be
+refined later ; placed too low it misleads durably.**
+
+Cross-check with the nearest neighbour in `bdd/actuelle` : markers and
+distance disagreeing is the signal to stop and diagnose, not to pick one.
+
 ---
 
 ## Special cases (CRITICAL : do not try to normalise these)
@@ -349,17 +418,102 @@ Four MTBC classification problems cannot be solved by a simple
 The skill provides a first-class command for each, with reference data
 files in the `data/` subdirectory.
 
-### Taxonomie Bovis (mise à jour 2026-06-30, nomenclature pointée)
+### Taxonomie Bovis — le registre VERSIONNÉ fait foi (2026-08-18)
 
-> ⚠️ **La subdivision `s2.X.Y.Z` détaillée plus bas est SUPERSÉDÉE (datée 2026-05-16, pré-refonte).** La taxo
-> *M. bovis* a été refondue en juin 2026 (re-encodage trichotomie 22-06 puis re-peignages 27-30 juin). Le chemin
-> `bdd/actuelle/Bovis2.*` N'EXISTE PLUS (notation pointée : `bdd/actuelle/Bovis.2.*`). **Source autoritative
-> courante = `bdd/actuelle/Bovis.*` (physique) + `global_supplementary/barcoding_v2/barcode_complete.tsv`
-> (régénéré) ; atlas narratif = `Bovis_full/article/supplementary_materials/atlas_bovis_sublineages.md`.** L'arbre
-> `s2.X.Y.Z` ci-dessous est conservé pour ses annotations BIOLOGIQUES (hôtes, géo, patterns wildlife-livestock,
-> toujours valides), PAS pour ses labels (drifté).
+> [!IMPORTANT]
+> **Pour Bovis, et pour Bovis seulement, l'autorité n'est pas `barcode_complete.tsv` mais un
+> registre local versionné** (`SOURCES_OF_TRUTH.md` § 2 bis, amendement CG du 2026-08-18). Le bloc
+> Bovis du barcode central en est désormais le MIROIR, resynchronisé par
+> `lineage_navigator/analyses/sync_central_barcode.py`. Motif mesuré : avant resynchronisation,
+> 348 des 401 entités Bovis du fichier central (87 %) nommaient des nœuds qui n'existent plus, et
+> sur les 51 entités comparables le Jaccard médian des jeux de marqueurs valait 0,179.
 
-**Structure courante (vérifiée par souches/RD, 2026-06-30) :**
+```
+mtbc/lineage_navigator/résultats/barcode_bovis/
+    barcode_bovis_attribution.tsv   ← marqueurs par entité, pour CLASSER  (colonnes : entity type spdi role seuils date n_apprentissage version)
+    barcode_bovis_laminarite.tsv    ← même chose au régime miss_frac=0, pour les tests d'arboréité
+    barcode_bovis.meta.json         ← version, empreinte d'état de la BDD, condensats par jeu
+```
+
+**Lire les marqueurs d'un nœud** (la colonne d'entité s'appelle `entity`, pas `node` — la sortie
+brute de `bfs_validate.py`, elle, dit `node` ; tout outil qui lit un registre Bovis doit accepter
+les deux) :
+
+```
+awk -F'\t' '$1=="Bovis.2.1.2.2.2.1.4"{print $3}' .../barcode_bovis_attribution.tsv
+```
+
+**Classer une souche NOUVELLE depuis ses seuls SPDI** — c'est le point d'entrée, et il rend cinq
+verdicts, pas deux :
+
+```
+python3 mtbc/lineage_navigator/analyses/assign_bovis.py --strain <ACCESSION>
+python3 .../assign_bovis.py --batch liste.txt --tsv out.tsv --trace-tsv trace.tsv
+```
+
+| verdict | sens |
+|---|---|
+| `CLASSE` | descente jusqu'à une feuille du registre |
+| `CLASSE_BASALE` | arrêt sur un nœud dont aucun enfant ne réclame la souche, ET elle était informative à chacun : elle est dans le nœud, au grade basal |
+| `ARRET_REGISTRE` | même arrêt, mais une branche concurrente n'était pas testable (aucun de ses marqueurs couvert) : abstention, PAS basalité |
+| `NON_CLASSABLE` | du Bovis, mais aucun enfant de la racine ne la réclame |
+| `HORS_BOVIS` | le test d'entrée (12 marqueurs de la racine, fuite nulle sur 129 920 souches hors clade) échoue : rien n'est classé |
+
+> [!CAUTION]
+> **Le classeur REFUSE de tourner sur un registre périmé, et c'est voulu.** L'empreinte du fichier
+> est comparée à l'état réel de `bdd/actuelle/` (nombre de nœuds, nombre de souches, condensat du
+> placement souche→nœud) ; si elle diverge, code de retour 1 avec l'écart, et la régénération à
+> lancer est `python3 analyses/build_barcode.py --regen`. `--stale-ok` force en inscrivant la
+> réserve dans la sortie. Un registre silencieusement périmé est pire qu'une absence de registre.
+
+**Structure courante, mesurée le 2026-08-18** (458 nœuds, 13 159 souches) :
+
+| nœud | souches | contenu |
+|---|---:|---|
+| `Bovis.1` | 11 | proto basal est-africain |
+| `Bovis.2.1` | 1 497 | dont le clade vaccinal **BCG** = `Bovis.2.1.2.2.2.1` (699, RD1-délété) |
+| `Bovis.2.2` | 11 510 | quasi tout le clade ; `Bovis.2.2.1` en porte 11 489, sa sœur `Bovis.2.2.2` 20 |
+| `Bovis.2.3` | 139 | eurasien à composante humaine |
+
+Le clade BCG se scinde exactement selon la coupure publiée **early / late** : `Bovis.2.1.2.2.2.1.3`
+(609 souches) est **RD2-délété** (BCG « late », post-1927 : Pasteur, Danish, Glaxo, Tice…),
+`Bovis.2.1.2.2.2.1.4` (90) est **RD2-intact** (BCG « early » : Japan, Russia, Moreau, Birkhaug).
+Mesure : RD2 appelée absente chez 273/300 souches de `.3` échantillonnées et 0/90 de `.4`
+(p = 1,6e-64). `.4` porte en outre une délétion de ~1,6 kb (4 140 085-4 141 687) qui emporte
+l'antitoxine **vapB48** (Rv3697A) en entier, l'extrémité de la toxine **vapC48** (Rv3697c) et 78 %
+de Rv3698 : **90/90 chez `.4`, 0/200 chez `.3`**, aucune RD nommée du panel de la chaîne ne la
+couvre.
+
+> [!WARNING]
+> **Les noms Bovis ne sont PAS stables d'une refonte à l'autre : un script qui code un nom en dur
+> doit être RELU, pas seulement relancé.** Exemple mesurable : la note historique ci-dessous
+> (2026-06-30) décrit `Bovis.2.2.1` comme « Af1 ouest-africain, 97 souches » ; dans la taxonomie
+> courante, `Bovis.2.2.1` désigne 11 489 souches, soit 87 % du clade. Ce n'est pas un décompte qui
+> a changé, c'est la même chaîne de caractères qui nomme un autre clade.
+
+**Fragilité connue du registre, à citer si un argument repose sur un nœud isolé** : 19 nœuds de
+≥ 20 souches (6 233 souches au total) ne tiennent qu'à UN marqueur, dont `Bovis.2.2.1` lui-même
+(11 489 souches). Ce n'est pas un défaut : mesuré, ce marqueur unique (`NC_000962.3:1647116:T:C`,
+Rv1461) est porté par 11 478 des 11 483 souches informatives du nœud et par 0 des 1 670 autres
+souches de Bovis. Chez un clonal, une seule synapomorphie suffit à établir la monophylie, et un
+nœud qui rassemble 97 % de son parent a mécaniquement un tronc court. Inventaire à jour :
+`lineage_navigator/analyses/single_marker_nodes.py`.
+
+---
+
+#### [HISTORIQUE 2026-06-30, nomenclature pointée] Structure d'avant le cycle de validation Bovis
+
+
+> ⚠️ **TOUT ce qui suit est de la matière HISTORIQUE, conservée pour ses annotations BIOLOGIQUES
+> (hôtes, géographie, patterns wildlife-livestock, routes) qui restent valides. Aucun LABEL de cette
+> section ne doit servir à classer** : la taxonomie Bovis a été refondue en juin 2026 (trichotomie
+> 22-06, re-peignages 27-30 juin) puis passée au cycle de validation en largeur en août 2026, et les
+> comptes ci-dessous sont ceux d'un état antérieur — `Bovis.2.2.1` y vaut 97 souches contre 11 489
+> aujourd'hui. Source autoritative courante : la section précédente (registre versionné). L'atlas
+> narratif `Bovis_full/article/supplementary_materials/atlas_bovis_sublineages.md` est lui aussi à
+> relire avant citation. Le chemin `bdd/actuelle/Bovis2.*` (sans point) N'EXISTE PLUS.
+
+**Structure telle que vérifiée le 2026-06-30 (labels PÉRIMÉS, biologie valide) :**
 - `Bovis.1`, proto basal est-africain (11 souches).
 - couronne `Bovis.2`, trichotomie :
   - `Bovis.2.1` : Af2 est-africain (`Bovis.2.1.1`, 123) + radiation européenne (`Bovis.2.1.2.2.2.2`) + **clade
@@ -367,8 +521,9 @@ files in the `data/` subdirectory.
   - `Bovis.2.2` : Af1 ouest-africain (`Bovis.2.2.1`, 97) + clade C ibéro-colonial (`Bovis.2.2.2.1`, incl. clade
     Kruger `Bovis.2.2.2.1.7.*`) + clade D ouest-européen (`Bovis.2.2.2.2.1`) + cœur Eu1 britannique (`Bovis.2.2.2.2.2`).
   - `Bovis.2.3` : eurasien à composante humaine (Chine ; Anatolie/Caucase/Levant).
-- **Identifier une souche par les marqueurs de `barcode_complete.tsv` (courant) + RD via `report.json` (BCG =
-  RD1-délété), JAMAIS par `markers_v2/` (pré-22-juin) ni par le label `s2.X` historique.**
+- **Pour identifier une souche Bovis, ne rien tirer d'ici : utiliser `assign_bovis.py` sur le registre
+  versionné (section précédente).** Ni `markers_v2/` (pré-22-juin), ni le label `s2.X` historique, ni
+  le bloc Bovis de `barcode_complete.tsv` lu seul (il est un miroir, resynchronisé le 2026-08-18).
 
 ---
 
@@ -542,6 +697,16 @@ mycobacteria.
   data, not available in a bare `spdi.txt`).
 - **Caveat** : IS6110 alone does not separate MTBC from *M. canettii*.
   Use `ancestral-signature` or lineage markers to distinguish.
+- **Caveat vérifié en source (2026-08-17, `scripts/insertion_sequence.py` du pipeline TBannotator
+  sur `mp:/data/current/run/`)** : `report.json.insertion_sequences` ne liste QUE des appels
+  **positifs** — une copie confirmée présente en référence, ou une nouvelle insertion confirmée. Il
+  n'existe **aucune entrée pour une copie confirmée absente**. Un compte bas (0-2, la zone déjà
+  qualifiée « borderline » ci-dessus) peut donc être soit un vrai signal biologique (souche à peu de
+  copies), soit un artefact de filtrage : la position a un signal de clipping ambigu
+  (`other_mutation_signal > 0`, mutation complexe aux abords) et est silencieusement écartée, sans
+  trace dans la sortie. Avant de trancher sur un compte bas, recouper `coverage_report_is.bed.tsv`
+  de la souche (colonnes `quality`/`low_coverage`/`mean_ratio`/`other`, mêmes seuils que les RD, voir
+  `rd-detection`) plutôt que de lire `0 copie` comme une absence prouvée.
 
 ### L8 / Canettii ancestral signature (corrected)
 

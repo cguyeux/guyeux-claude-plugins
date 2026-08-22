@@ -61,6 +61,25 @@ def list_strains(bdd, clade):
         raise SystemExit(f"clade introuvable : {clade}")
     return sorted(s for s in os.listdir(d) if is_strain_dir(os.path.join(d, s)))
 
+def subtree_clades(bdd, prefix):
+    """Conteneurs 'prefix' + tous ses descendants 'prefix.*' (ex. L5.2.1 ->
+    L5.2.1, L5.2.1.1, L5.2.1.1.1.1, ...). Une lignée matérialisée en
+    sous-conteneurs géographiques/phylogénétiques n'est PAS un seul dossier ;
+    comparer un clade entier à un marqueur publié exige d'agréger tout le
+    sous-arbre, pas seulement le conteneur racine."""
+    root = actuelle(bdd)
+    return sorted(d for d in os.listdir(root)
+                  if os.path.isdir(os.path.join(root, d))
+                  and (d == prefix or d.startswith(prefix + ".")))
+
+def list_strains_recursive(bdd, prefix):
+    """[(clade_dir, sra), ...] pour tout le sous-arbre de `prefix`."""
+    pairs = []
+    for d in subtree_clades(bdd, prefix):
+        for s in list_strains(bdd, d):
+            pairs.append((d, s))
+    return pairs
+
 def read_spdi(bdd, clade, sra):
     fp = os.path.join(actuelle(bdd), clade, sra, REF, "spdi.txt")
     if not os.path.exists(fp):
@@ -224,10 +243,16 @@ def build_alignment(bdd, clades, mask=None, min_frac=0.0, code_rd=True,
              "pct_missing": round(100 * n_missing / (n * len(cols)), 3) if n and cols else 0.0}
     return order, cols, char, stats
 
-def build_matrix(bdd, clade, min_frac=0.0):
-    """Matrice binaire souches x positions SPDI (1 = variant présent)."""
-    strains = list_strains(bdd, clade)
-    per_strain = {s: set(read_spdi(bdd, clade, s)) for s in strains}
+def build_matrix(bdd, clade, min_frac=0.0, recursive=False):
+    """Matrice binaire souches x positions SPDI (1 = variant présent).
+    recursive=True agrège `clade` + tout son sous-arbre `clade.*`."""
+    if recursive:
+        pairs = list_strains_recursive(bdd, clade)
+        strains = [s for _, s in pairs]
+        per_strain = {s: set(read_spdi(bdd, d, s)) for d, s in pairs}
+    else:
+        strains = list_strains(bdd, clade)
+        per_strain = {s: set(read_spdi(bdd, clade, s)) for s in strains}
     freq = Counter()
     for s in strains:
         freq.update(per_strain[s])
@@ -244,6 +269,13 @@ def cmd_clades(bdd, args):
     return "\n".join(lines) + f"\n# {len(data)} clades, {total} souches"
 
 def cmd_strains(bdd, args):
+    if getattr(args, "recursive", False):
+        pairs = list_strains_recursive(bdd, args.clade)
+        if args.json:
+            return {"clade": args.clade, "recursive": True, "n_strains": len(pairs),
+                    "strains": [{"dir": d, "sra": s} for d, s in pairs]}
+        lines = [f"{d}/{s}" for d, s in pairs]
+        return "\n".join(lines) + f"\n# {len(pairs)} souches (sous-arbre {args.clade}.*)"
     s = list_strains(bdd, args.clade)
     if args.json:
         return {"clade": args.clade, "n_strains": len(s), "strains": s}
@@ -253,7 +285,8 @@ def cmd_strain(bdd, args):
     return strain_detail(bdd, args.clade, args.sra)
 
 def cmd_matrix(bdd, args):
-    strains, cols, per_strain, freq, n = build_matrix(bdd, args.clade, args.min_frac)
+    strains, cols, per_strain, freq, n = build_matrix(
+        bdd, args.clade, args.min_frac, recursive=getattr(args, "recursive", False))
     if args.json:
         rows = {s: [1 if c in per_strain[s] else 0 for c in cols] for s in strains}
         return {"clade": args.clade, "n_strains": n, "n_positions": len(cols),
@@ -313,15 +346,16 @@ def cmd_align(bdd, args):
     return "\n".join(lines)
 
 def cmd_synapo(bdd, args):
-    strains, cols, per_strain, freq, n = build_matrix(bdd, args.clade, 0.0)
+    recursive = getattr(args, "recursive", False)
+    strains, cols, per_strain, freq, n = build_matrix(bdd, args.clade, 0.0, recursive=recursive)
     thr = args.min_frac if args.min_frac > 0 else 0.95
     synapo = [{"spdi": p, "n": freq[p], "frac": round(freq[p]/n, 4)}
               for p in cols if n and freq[p]/n >= thr]
     synapo.sort(key=lambda x: (-x["frac"], x["spdi"]))
     if args.json:
-        return {"clade": args.clade, "n_strains": n, "threshold": thr,
+        return {"clade": args.clade, "recursive": recursive, "n_strains": n, "threshold": thr,
                 "n_synapo": len(synapo), "synapomorphies": synapo}
-    out = [f"# clade={args.clade} n_strains={n} seuil={thr} -> {len(synapo)} synapomorphies"]
+    out = [f"# clade={args.clade} n_strains={n} seuil={thr} recursive={recursive} -> {len(synapo)} synapomorphies"]
     out += [f"{d['spdi']}\t{d['n']}/{n}\t{d['frac']}" for d in synapo]
     return "\n".join(out)
 
@@ -332,9 +366,12 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("clades")
     p = sub.add_parser("strains"); p.add_argument("clade")
+    p.add_argument("--recursive", action="store_true", help="agréger clade + tout son sous-arbre clade.*")
     p = sub.add_parser("strain"); p.add_argument("clade"); p.add_argument("sra")
     p = sub.add_parser("matrix"); p.add_argument("clade"); p.add_argument("--min-frac", type=float, default=0.0, dest="min_frac")
+    p.add_argument("--recursive", action="store_true", help="agréger clade + tout son sous-arbre clade.*")
     p = sub.add_parser("synapo"); p.add_argument("clade"); p.add_argument("--min-frac", type=float, default=0.0, dest="min_frac")
+    p.add_argument("--recursive", action="store_true", help="agréger clade + tout son sous-arbre clade.*")
     p = sub.add_parser("align", help="alignement binaire masqué + RD->? prêt pour BEAST2")
     p.add_argument("clades", nargs="+", help="un ou plusieurs clades")
     p.add_argument("--mask", help="fichier positions à masquer (ex. traces_mask_positions.txt)")
