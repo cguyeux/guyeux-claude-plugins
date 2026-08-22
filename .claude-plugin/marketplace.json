@@ -58,6 +58,11 @@
       "name": "maboss",
       "source": "./maboss",
       "description": "MaBoSS / CoLoMoTo toolkit: .bnd/.cfg Boolean-model authoring (official refcard grammar), the pyMaBoSS API and Oscar Dufossez's CCT temporal-logic evaluator, and the ecosystem map (WebMaBoSS by Vincent Noel, model repositories, positioning vs INDRA). For cancer signalling modelling and the mabossDemo literature-coherency project."
+    },
+    {
+      "name": "droit",
+      "source": "./droit",
+      "description": "Academic research toolkit for French legal scholarship (droit public, constitutionnel, penal, droit de la nationalite et de la citoyennete): detailed references in footnotes following the conventions of Camille Aynes' doctoral thesis, and verification of case-law and statutory citations against official sources before publication."
     }
   ]
 }

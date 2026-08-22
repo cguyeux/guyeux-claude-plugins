@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Génère la documentation des skills (docs/) à partir du frontmatter des SKILL.md.
 
-La documentation est cadrée sous l'angle de la recherche M. tuberculosis (MTBC) :
-un pipeline de recherche organise l'ensemble, et chaque page de plugin ouvre sur
-son rôle dans un projet M. tuberculosis. Les entrées par skill (raison d'être,
-compétences) sont extraites fidèlement du frontmatter des SKILL.md.
+La documentation couvre les onze plugins du marketplace. Un pipeline de
+recherche M. tuberculosis (MTBC) organise le sous-ensemble scientifique, tandis
+que les domaines séparés sont présentés sans les rabattre artificiellement sur
+le MTBC. Les entrées par skill sont extraites du frontmatter des SKILL.md.
 
-Le plugin `maboss` relève d'un AUTRE projet (modélisation booléenne de la
-signalisation, mabossDemo) : il est documenté sur une page à part, hors pipeline.
+Les plugins `maboss` et `droit` relèvent de domaines séparés et sont documentés
+sur leurs propres pages, hors pipeline MTBC.
 
 Régénérable : relancer `python3 docs/build_docs.py` depuis la racine du dépôt
 après tout ajout/modification de skill. Chaque skill canonique (SKILL.md réel)
@@ -25,21 +25,23 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 
-# Plugins de la collection M. tuberculosis (ordre d'affichage).
-PLUGINS = [
-    "bio_pathogens",
-    "bio_population_genetics",
-    "bio_redac",
-    "redac",
-    "ia",
-    "multimedia",
-    "ops",
-    "web",
-]
+def marketplace_plugin_names() -> list[str]:
+    data = json.loads((ROOT / ".claude-plugin" / "marketplace.json").read_text(encoding="utf-8"))
+    plugins = data.get("plugins")
+    if not isinstance(plugins, list):
+        raise ValueError("liste `plugins` absente du marketplace")
+    names = [record.get("name") for record in plugins if isinstance(record, dict)]
+    if any(not isinstance(name, str) for name in names) or len(names) != len(plugins):
+        raise ValueError("entree de plugin invalide dans le marketplace")
+    if len(set(names)) != len(names):
+        raise ValueError("nom de plugin duplique dans le marketplace")
+    return names
 
-# Plugins d'un AUTRE projet, documentés à part (hors angle M. tuberculosis).
-SEPARATE = ["maboss"]
-ALL_PLUGINS = PLUGINS + SEPARATE
+
+ALL_PLUGINS = marketplace_plugin_names()
+SEPARATE_NAMES = {"maboss", "droit"}
+SEPARATE = [plugin for plugin in ALL_PLUGINS if plugin in SEPARATE_NAMES]
+PLUGINS = [plugin for plugin in ALL_PLUGINS if plugin not in SEPARATE_NAMES]
 
 # Rôle de chaque plugin DANS UN PROJET M. tuberculosis (cadrage éditorial).
 MTB_ANGLE = {
@@ -51,6 +53,12 @@ MTB_ANGLE = {
         "rapportées dans la littérature évaluée par des pairs, assignation de "
         "lignées, bases de données génomiques spécialisées. C'est le plugin qu'on "
         "active quand le travail porte effectivement sur M. tuberculosis."
+    ),
+    "bio_bacteria": (
+        "Domaine bactérien hors MTBC stricto sensu. Porte les méthodes qui ne se "
+        "transposent pas correctement au complexe M. tuberculosis : assemblage "
+        "de novo, clonalité cgMLST, mobilome ab initio, bases et corpus consacrés "
+        "aux mycobactéries non tuberculeuses et aux autres genres bactériens."
     ),
     "bio_population_genetics": (
         "Contexte hôte et outillage générique. Pour une étude M. tuberculosis, "
@@ -96,6 +104,12 @@ MTB_ANGLE = {
         "Il est documenté ici uniquement parce qu'il partage le même dépôt de "
         "plugins, et reste hors du pipeline de recherche M. tuberculosis."
     ),
+    "droit": (
+        "Domaine juridique distinct. Réunit les conventions de notes et de "
+        "citations du droit français ainsi que la vérification des décisions et "
+        "textes normatifs à leurs sources officielles. Il reste hors du pipeline "
+        "de recherche M. tuberculosis et s'active uniquement par projet."
+    ),
 }
 
 # Pipeline de recherche M. tuberculosis : narration structurante de l'index.
@@ -109,8 +123,8 @@ au dépôt final. Les skills cités sont indicatifs ; le catalogue complet suit.
 | Étape | Ce qu'on fait | Skills clés | Plugin d'origine |
 |-------|---------------|-------------|------------------|
 | 1. Cadrage et littérature | Choisir la question, revue de l'état de l'art MTBC | `scientific-problem-selection`, `lit-review`, `pubmed-database`, `openalex`, `europe-pmc`, `read-scientific-pdf` | ia, redac, bio_population_genetics |
-| 2. Acquisition des génomes | Récupérer génomes de référence et isolats publiés | `ncbi-pathogen-detection`, `pathogens-portal`, `tb-cli`, `biopython`, `pysam` | bio_pathogens, bio_population_genetics |
-| 3. Variants, résistance, lignées | Génomique comparative, allèles de résistance, lignée | `resistance-profiler`, `mbovis`, `mycobacterium-leprae`, `scikit-bio` | bio_pathogens, bio_population_genetics |
+| 2. Acquisition des génomes | Récupérer génomes de référence et isolats publiés | `ncbi-pathogen-detection`, `pathogens-portal`, `tb-cli`, `biopython`, `pysam` | bio_bacteria, bio_pathogens, bio_population_genetics |
+| 3. Variants, résistance, lignées | Génomique comparative, allèles de résistance, lignée | `resistance-profiler`, `mycobacterium-leprae`, `scikit-bio` | bio_pathogens, bio_bacteria, bio_population_genetics |
 | 4. Phylogénie et datation | Arbre, horloge moléculaire, skyline démographique | `iqtree-lsd2`, `bayesian-skyline`, `beast2-phylogeography`, `pastml` | bio_population_genetics, bio_pathogens |
 | 5. Phylogéographie, contexte hôte | Dispersion, migrations humaines, paléoclimat | `geo-map`, `nextstrain`, `migration-data`, `itol` | bio_population_genetics |
 | 6. Modélisation, stats, ML | Tests statistiques, classification, modèles | `statsmodels`, `scikit-learn`, `scanpy` | ia, bio_population_genetics |
@@ -121,7 +135,8 @@ au dépôt final. Les skills cités sont indicatifs ; le catalogue complet suit.
 
 Les skills sans lien direct avec M. tuberculosis (outillage générique de fichiers,
 web, multimédia, ops) servent de support à toute étape ; ils sont listés sous leur
-plugin. Le plugin `maboss` relève d'un autre projet et est documenté à part.
+plugin. `bio_bacteria` porte explicitement les bactéries hors MTBC stricto sensu.
+Les plugins `maboss` et `droit` relèvent d'autres domaines et sont documentés à part.
 """
 
 TRIGGER_RE = re.compile(
@@ -238,7 +253,11 @@ def render_plugin_page(plugin, plugin_desc, canonical, appears, by_home):
     if plugin_desc.get(plugin):
         lines += [f"> {clean(plugin_desc[plugin])}", ""]
     if MTB_ANGLE.get(plugin):
-        label = "## Positionnement" if plugin in SEPARATE else "## Rôle dans un projet M. tuberculosis"
+        label = (
+            "## Positionnement"
+            if plugin in SEPARATE or plugin == "bio_bacteria"
+            else "## Rôle dans un projet M. tuberculosis"
+        )
         lines += [label, "", MTB_ANGLE[plugin], ""]
     lines += [
         f"Skills propres (canoniques) : **{len(own)}** ; skills partagés utilisés "
@@ -282,12 +301,12 @@ def main():
     sep_total = sum(len(by_home.get(p, [])) for p in SEPARATE)
 
     idx = [
-        "# Documentation des skills : boîte à outils de recherche M. tuberculosis",
+        "# Documentation des skills de recherche du groupe Guyeux",
         "",
-        f"Cette collection outille le programme de recherche du groupe Guyeux "
-        f"(FEMTO-ST) en phylogénomique évolutive du complexe *Mycobacterium "
-        f"tuberculosis* (MTBC), de l'accès aux génomes publiés jusqu'au manuscrit. "
-        f"Elle réunit **{core_total} skills canoniques** sur "
+        f"Cette collection outille les travaux du groupe Guyeux (FEMTO-ST), dont "
+        f"la phylogénomique évolutive du complexe *Mycobacterium tuberculosis* "
+        f"(MTBC), la génétique des populations et la génomique bactérienne hors "
+        f"MTBC. Elle réunit **{core_total} noms de skills actifs** sur "
         f"**{len([p for p in PLUGINS if by_home.get(p)])} plugins**. Chaque skill "
         f"est décrit par sa raison d'être et ses compétences ; les skills partagés "
         f"entre plugins (symlinks) sont documentés une seule fois, sur la page de "
@@ -299,7 +318,7 @@ def main():
         "`SKILL.md`. Régénérer après tout ajout de skill.",
         "",
         PIPELINE_MD,
-        "## Plugins de la collection",
+        "## Plugins scientifiques et transverses",
         "",
         "| Plugin | Rôle dans un projet M. tuberculosis | Skills propres |",
         "|--------|-------------------------------------|----------------|",
@@ -311,7 +330,7 @@ def main():
         idx.append(f"| [{plugin}]({plugin}.md) | {role} | {len(by_home.get(plugin, []))} |")
 
     if sep_total:
-        idx += ["", "## Autre projet (hors angle M. tuberculosis)", "",
+        idx += ["", "## Domaines séparés (hors angle M. tuberculosis)", "",
                 "| Plugin | Objet | Skills propres |", "|--------|-------|----------------|"]
         for plugin in SEPARATE:
             role = clean(MTB_ANGLE.get(plugin, plugin_desc.get(plugin, "")))
@@ -324,11 +343,11 @@ def main():
         home = canonical[name]["home"]
         raison = canonical[name]["raison"]
         short = raison[:90].rstrip() + ("…" if len(raison) > 90 else "")
-        tag = " _(autre projet)_" if home in SEPARATE else ""
+        tag = " _(domaine séparé)_" if home in SEPARATE else ""
         idx.append(f"- [`{name}`]({home}.md#{name}){tag} : {short}")
     (DOCS / "README.md").write_text("\n".join(idx) + "\n", encoding="utf-8")
 
-    print(f"OK : {core_total} skills (collection M. tuberculosis) + {sep_total} (autre projet).")
+    print(f"OK : {core_total} skills (scientifiques/transverses) + {sep_total} (domaines separes).")
     for plugin in ALL_PLUGINS:
         print(f"  {plugin:26} propres={len(by_home.get(plugin, [])):3}")
 

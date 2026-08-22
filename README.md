@@ -8,7 +8,8 @@ Documentation complète, skill par skill (raison d'être et compétences, sous l
 
 | Plugin | Rôle |
 |--------|------|
-| [bio_pathogens](docs/bio_pathogens.md) | Génomique computationnelle des pathogènes bactériens (MTBC, *M. leprae*, *Y. pestis*, *H. pylori*), lignages, allèles de résistance, bases de données spécialisées, à des fins de publications évaluées par des pairs. |
+| [bio_pathogens](docs/bio_pathogens.md) | Phylogénomique évolutive du MTBC stricto sensu : chaîne TBannotator, lignages, variants et littérature spécialisée, à des fins de publications évaluées par des pairs. |
+| [bio_bacteria](docs/bio_bacteria.md) | Génomique bactérienne hors MTBC stricto sensu : assemblage, cgMLST, mobilome ab initio, mycobactéries non tuberculeuses et autres genres. |
 | [bio_population_genetics](docs/bio_population_genetics.md) | Génétique des populations humaines anciennes et modernes, archéologie, paléoclimat, corpus de migrations, plus les outils génériques de phylogénétique, statistiques et fouille de littérature. |
 | [bio_redac](docs/bio_redac.md) | Phase hybride analyse + rédaction (agrège les skills des autres plugins). |
 | [redac](docs/redac.md) | Rédaction pure : LaTeX, slides, manuscrits, vérification de références et de figures. |
@@ -17,8 +18,9 @@ Documentation complète, skill par skill (raison d'être et compétences, sous l
 | [ops](docs/ops.md) | Projets PrédictOps, OptimOps, DoctrinOps. |
 | [web](docs/web.md) | Développement et test d'applications web. |
 | [maboss](docs/maboss.md) | MaBoSS / CoLoMoTo : modèles booléens `.bnd`/`.cfg` (grammaire refcard), API pyMaBoSS et évaluateur CCT (Oscar Dufossez), carte de l'écosystème (WebMaBoSS de Vincent Noël, dépôts de modèles, positionnement vs INDRA). Modélisation de la signalisation cancer, projet mabossDemo. |
+| [droit](docs/droit.md) | Recherche juridique en droit français : conventions de notes et citations, vérification des décisions et textes normatifs aux sources officielles. |
 
-Le répertoire `mes_skills/` regroupe des skills personnels supplémentaires (itol, rasigade) non empaquetés en plugin.
+Le répertoire `mes_skills/` conserve des ressources personnelles historiques pour iTOL et Rasigade. Il ne contient actuellement aucun `SKILL.md` actif et n'est pas empaqueté en plugin.
 
 ## Cartographie des skills
 
@@ -37,7 +39,7 @@ La collection s'organise comme la chaîne de production d'un article de phylogé
 | 9. Vérification et réponse aux relecteurs | `redac` |
 | 10. Valorisation et dépôt (DOI, Overleaf, financements) | `redac` |
 
-Le catalogue complet, skill par skill (raison d'être et compétences, sous l'angle M. tuberculosis), est dans le [dossier `docs/`](docs/README.md) : une page par plugin, plus un index alphabétique des 161 skills. Le plugin `maboss` relève d'un autre projet (modélisation booléenne, mabossDemo) et y est documenté à part.
+Le catalogue complet est dans le [dossier `docs/`](docs/README.md) : une page par plugin, plus un index alphabétique des 188 noms de skills actifs. Les deux versions intentionnellement divergentes de `phylo-history` portent ce total à 189 répertoires canoniques. Les plugins `maboss` et `droit` relèvent de domaines séparés et y sont documentés à part.
 
 ## Installation
 
@@ -48,6 +50,19 @@ Ajouter ce dépôt comme marketplace, puis installer les plugins voulus :
 /plugin install bio_pathogens@guyeux-claude-plugins
 /plugin install redac@guyeux-claude-plugins
 ```
+
+Pour Codex, le dépôt reste également la source canonique. Le fichier
+`codex_skills.json` sélectionne les skills exposés dans les sessions et le
+synchroniseur crée des liens vers leurs répertoires réels :
+
+```
+python3 _audit/tools/sync_codex_skills.py --apply
+python3 _audit/tools/sync_codex_skills.py
+```
+
+La seconde commande doit indiquer zéro skill manquant et zéro conflit. Le
+synchroniseur ne remplace jamais un fichier, un répertoire ou un lien divergent
+déjà présent dans `~/.codex/skills`.
 
 ## Architecture des skills partagés
 

@@ -30,8 +30,37 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
-PLUGINS = ["bio_pathogens", "bio_population_genetics", "redac", "bio_redac",
-           "ia", "multimedia", "ops", "web", "maboss"]
+
+
+def marketplace_plugins(root: Path = ROOT) -> list[tuple[str, Path]]:
+    """Lire les plugins depuis le manifeste canonique du marketplace."""
+    marketplace = root / ".claude-plugin" / "marketplace.json"
+    data = json.loads(marketplace.read_text(encoding="utf-8"))
+    plugins = data.get("plugins")
+    if not isinstance(plugins, list):
+        raise ValueError(f"liste `plugins` absente de {marketplace}")
+
+    resolved_root = root.resolve()
+    result: list[tuple[str, Path]] = []
+    seen: set[str] = set()
+    for record in plugins:
+        if not isinstance(record, dict):
+            raise ValueError(f"entree plugin invalide dans {marketplace}")
+        name, source = record.get("name"), record.get("source")
+        if not isinstance(name, str) or not isinstance(source, str):
+            raise ValueError(f"plugin sans nom/source valide dans {marketplace}")
+        if name in seen:
+            raise ValueError(f"plugin duplique dans {marketplace}: {name}")
+        path = (root / source).resolve()
+        try:
+            path.relative_to(resolved_root)
+        except ValueError as exc:
+            raise ValueError(f"source plugin hors depot: {source}") from exc
+        if not path.is_dir():
+            raise ValueError(f"source plugin absente: {source}")
+        seen.add(name)
+        result.append((name, path))
+    return result
 
 # Vocabulaire qui declenche le classifieur AUP sans cadrage explicite.
 # Volontairement etroit : « pathogen », « strain » ou « resistance » seuls dans
@@ -83,8 +112,8 @@ def parse_frontmatter(text: str):
 def skills_canoniques():
     """Un seul enregistrement par skill reel, quel que soit le nombre de symlinks."""
     vus = {}
-    for plug in PLUGINS:
-        sd = ROOT / plug / "skills"
+    for plug, plugin_root in marketplace_plugins():
+        sd = plugin_root / "skills"
         if not sd.is_dir():
             continue
         for entry in sorted(sd.iterdir()):
