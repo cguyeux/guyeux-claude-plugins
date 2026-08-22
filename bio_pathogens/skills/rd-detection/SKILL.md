@@ -51,7 +51,7 @@ Par souche, dans `mp:/data/current/run/results/<SRA>/` (VPN requis, voir `remote
 5. **Couverture** : `mean_ratio` = profondeur moyenne de la région / profondeur moyenne du génome ;
    `low_coverage` = fraction de bases sous une profondeur minimale de **5×** (`minDepth`).
 6. **`other`** (`other_mutation_signal`) : signal de clipping supplémentaire près des bornes qui ne
-   fait PAS partie de la paire retenue — un signe de mutation complexe, pas d'une délétion nette.
+   fait PAS partie de la paire retenue : un signe de mutation complexe, pas d'une délétion nette.
 
 **L'appel binaire présent/absent n'est PAS une colonne du TSV** : `coverage_report_rd.bed.tsv` et
 `coverage_report_dynamic_rd.bed.tsv` ne portent que les mesures brutes (`quality`, `low_coverage`,
@@ -67,7 +67,7 @@ lu en source) est un **OU de trois conditions**, PAS un ET, et diffère entre RD
 > [!IMPORTANT]
 > **Un appel de RD n'est pas une absence de couverture, et le seuil OU n'est pas un ET.** Une
 > couverture faible peut venir d'un biais GC, d'un sous-échantillonnage, ou d'une région répétée où
-> les lectures ne mappent pas de façon unique — c'est pour ça que `quality` (le signal de clipping)
+> les lectures ne mappent pas de façon unique, c'est pour ça que `quality` (le signal de clipping)
 > suffit SEUL à déclarer une RD connue absente, indépendamment de la couverture. Un texte antérieur de
 > ce skill (et de `~/.claude/knowledge/tuberculosis.md`) disait « profondeur >90 % ET ratio <10 % ET
 > score ≥80 % » : c'est faux sur les trois points (seuil couverture réel 95 % pas 90 %, c'est un OU pas
@@ -87,7 +87,7 @@ Protocole de recoupement, en trois temps :
    est certaine et dont les RD diagnostiques sont publiées (RD9 pour la séparation *tuberculosis* /
    animale, RD105 pour L2, RD750 pour L3...). Un recoupement sans témoin positif ne mesure rien.
 2. **Comparer l'appel, et les bornes quand elles existent** : pour les RD connues, RDscan rend un
-   appel présent/absent par échantillon sur des bornes fixes (celles de `resources/RD.bed`) — seul
+   appel présent/absent par échantillon sur des bornes fixes (celles de `resources/RD.bed`) : seul
    l'appel se compare. Pour les RD candidates, RDscan rend une coordonnée par détection : un désaccord
    de **bornes** de quelques dizaines de paires de bases n'est alors pas un désaccord d'appel, c'est
    une différence de définition du flanc.
@@ -131,7 +131,7 @@ paramètre de config malgré ce qu'un résumé antérieur laissait entendre) ; n
 caractère de clade : recouper avec RDscan, vérifier qu'aucune étude ne l'a déjà nommée (`lit-review`,
 et `tbmonitor-papers` pour la littérature TB), et contrôler qu'elle ne tombe pas dans une région
 PE/PPE ou riche en IS, où les artefacts abondent (`isfinder-offline`, et `mtbc-lineages` pour ce que
-la chaîne appelle réellement IS6110 — voir ci-dessous).
+la chaîne appelle réellement IS6110 : voir ci-dessous).
 
 **Piège de sens** : une IS présente chez H37Rv et absente de la souche produit un signal de
 délétion ; c'est bien une RD, mais son mécanisme est la perte d'un élément mobile, pas une délétion
@@ -140,7 +140,7 @@ chromosomique classique. Le distinguer change l'interprétation évolutive.
 **Le même moteur sert à appeler IS6110** (`mp:/data/current/run/scripts/insertion_sequence.py`, `is_report.json`), avec un
 piège d'interprétation propre, différent de celui des RD : la liste `insertion_sequences` de
 `report.json` **ne contient que des appels positifs** (IS confirmée présente en référence OU nouvelle
-insertion confirmée) — il n'existe **aucune entrée pour une IS confirmée absente**. Une position IS
+insertion confirmée), il n'existe **aucune entrée pour une IS confirmée absente**. Une position IS
 absente de cette liste peut donc vouloir dire trois choses indiscernables sans relire les fichiers de
 couverture bruts : (1) délétion nette confirmée (`quality ≥ 0.8`), (2) signal ambigu et donc écarté
 (`other > 0`, mutation complexe aux abords), ou (3) position simplement non testée. Ceci explique la
