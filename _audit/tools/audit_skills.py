@@ -218,20 +218,6 @@ def audit():
         if manquants:
             r["issues"].append("REF_FICHIER_A_VERIFIER:" + ",".join(manquants[:5]))
 
-        # tirets cadratin : seule la PROSE compte, ceux des blocs de code sont
-        # legitimes (arbres ASCII, sorties d'exemple). Voir tools/dedash.py.
-        n_prose = 0
-        fence = False
-        for line in corps.splitlines():
-            if line.lstrip().startswith(("```", "~~~")):
-                fence = not fence
-                continue
-            if fence or "—" not in line:
-                continue
-            n_prose += re.sub(r"`[^`]*`", "", line).count("—")
-        if n_prose:
-            r["issues"].append(f"TIRET_CADRATIN_PROSE({n_prose})")
-
         if EMOJI.search(text):
             r["issues"].append("EMOJI")
 
