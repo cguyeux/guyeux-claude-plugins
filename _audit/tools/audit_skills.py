@@ -16,6 +16,9 @@ la premiere passe, trois metriques sur quatre etaient du bruit :
 - les references de fichiers absentes etaient a 85 % des chemins inter-skills
   relatifs, des URL ou du contenu d'exemple (le script les signale toujours,
   c'est a l'humain de trancher).
+- la longueur du corps depend du workflow. Elle reste disponible dans
+  `audit.json`, mais ne constitue pas un echec mecanique : une extraction vers
+  `references/` doit etre decidee apres lecture de la structure du skill.
 
 Ne jamais rapporter un chiffre de sortie sans avoir inspecte les cas un par un.
 """
@@ -93,7 +96,6 @@ REF_EXTERNE = re.compile(
 )
 
 DESC_MAX = 1024   # au-dela, la description risque d'etre tronquee dans le catalogue
-CORPS_MAX = 6000  # au-dela, le SKILL.md dilue l'attention a chaque chargement
 CORPS_MIN = 60
 
 
@@ -188,9 +190,6 @@ def audit():
 
         if r["mots"] < CORPS_MIN:
             r["issues"].append(f"CORPS_MAIGRE({r['mots']}mots)")
-        if r["mots"] > CORPS_MAX:
-            r["issues"].append(f"CORPS_OBESE({r['mots']}mots)")
-
         # references de fichiers : seuls les chemins plausiblement portes par le
         # skill courant sont signalés. Les URLs, racines personnelles et
         # références explicites à d'autres skills canoniques sont contrôlées par

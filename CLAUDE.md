@@ -140,8 +140,7 @@ chargé de la session, un plugin qui double de taille se paie à chaque prompt.
 ## Outils d'audit du dépôt
 
 ```bash
-python3 _audit/tools/audit_skills.py --detail   # frontmatter, chemins, doublons, style
-python3 _audit/tools/dedash.py --dry-run        # tirets cadratin en prose
+python3 _audit/tools/audit_skills.py --detail   # frontmatter, chemins et doublons
 ```
 
 Lire l'en-tête de chaque script avant de s'y fier : ils documentent les
