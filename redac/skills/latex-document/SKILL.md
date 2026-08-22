@@ -1,18 +1,12 @@
 ---
 name: latex-document
 description: >-
-  Universal LaTeX document skill: create, compile and convert any document to a professional
-  PDF with PNG previews. Covers reports, theses, books, letters, invoices, resumes and
-  academic CVs, exams, cheat sheets and reference cards, fillable PDF forms, conditional
-  content, mail merge from CSV/JSON, latexdiff version diffs, pgfplots and matplotlib
-  charts, booktabs tables, TikZ, Mermaid diagrams, bibliography, CJK and multilingual
-  documents (auto XeLaTeX), algorithms, tcolorbox, siunitx, Pandoc conversion to and from
-  Markdown/DOCX/HTML, and PDF-to-LaTeX conversion of printed or handwritten documents. Also
-  PDF utilities: merge, split, encrypt, optimise, watermark, extract text or tables, OCR,
-  fill an existing form. Compilation auto-detects pdflatex, xelatex or lualatex, with
-  latexmk, texfot log filtering and PDF/A output. Use when the user asks to write, compile,
-  debug, convert or manipulate a LaTeX document or a PDF. For journal articles prefer latex-
-  paper-en, for slides beamer-slides, for posters latex-posters.
+  Universal LaTeX document skill: create, edit, compile, and convert reports,
+  theses, articles, letters, posters, and structured documents to professional
+  PDF with optional PNG previews. Covers document structure, packages, figures,
+  tables, bibliography, and build troubleshooting. Use when: the user asks to
+  create or revise a LaTeX document, compile to PDF, convert Markdown or text to
+  LaTeX, or diagnose a LaTeX build or layout issue.
 ---
 
 # LaTeX Document Skill

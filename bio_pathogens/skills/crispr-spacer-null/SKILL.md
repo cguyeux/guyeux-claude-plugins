@@ -1,21 +1,13 @@
 ---
 name: crispr-spacer-null
-description: >
+description: >-
   Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed comparative
-  genomics: juge si un espaceur CRISPR (ou toute sequence courte de 20-50 nt)
-  correspond a une cible plus que le hasard, sur du materiel trop court et trop
-  diverge pour qu'une e-value brute veuille dire quoi que ce soit seule. Fournit
-  quatre modeles nuls composables extraits et generalises du dossier
-  `SpacerEgalVirus` (origine phagique des espaceurs du locus DR du MTBC,
-  2026) : permutation d'ordre k avec diagnostic de degenerescence (theoreme
-  BEST), temoins genomiques GC-apparies hors locus, tests de force et de
-  specificite contre BLAST, et correspondances partielles en k-mers courts
-  (Shmakov 2017/2020) pour le materiel trop diverge pour aligner. Use when:
-  interpreter un hit BLAST a e = 1e-3 - 10 sur une sequence de 20-50 nt,
-  juger si un espaceur CRISPR cible un protospacer plus qu'une sequence de
-  meme composition, construire un controle biologique (pas seulement
-  statistique) pour un signal de sequence courte, ou chercher des vestiges de
-  correspondance dans du materiel trop degrade pour BLASTN.
+  genomics: evaluate whether a CRISPR spacer, primer, amplicon, or short marker
+  sequence is truly absent from a published bacterial genome set, rather than an
+  artefact of assembly, orientation, masking, read depth, database scope, or
+  taxonomy. Use when: testing spacer or marker null claims, comparing CRISPR
+  arrays, auditing negative PCR or BLAST results, or deciding whether a zero-hit
+  sequence can support an evolutionary claim.
 ---
 
 # crispr-spacer-null — un appariement court n'a de sens que comparatif

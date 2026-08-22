@@ -76,9 +76,9 @@ Compétences : comparer les schémas de mutation entre lignées animales et huma
 
 ### crispr-spacer-null
 
-Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed comparative genomics: juge si un espaceur CRISPR (ou toute sequence courte de 20-50 nt) correspond a une cible plus que le hasard, sur du materiel trop court et trop diverge pour qu'une e-value brute veuille dire quoi que ce soit seule. Fournit quatre modeles nuls composables extraits et generalises du dossier `SpacerEgalVirus` (origine phagique des espaceurs du locus DR du MTBC, 2026) : permutation d'ordre k avec diagnostic de degenerescence (theoreme BEST), temoins genomiques GC-apparies hors locus, tests de force et de specificite contre BLAST, et correspondances partielles en k-mers courts (Shmakov 2017/2020) pour le materiel trop diverge pour aligner
+Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed comparative genomics: evaluate whether a CRISPR spacer, primer, amplicon, or short marker sequence is truly absent from a published bacterial genome set, rather than an artefact of assembly, orientation, masking, read depth, database scope, or taxonomy
 
-Compétences : interpreter un hit BLAST a e = 1e-3 - 10 sur une sequence de 20-50 nt, juger si un espaceur CRISPR cible un protospacer plus qu'une sequence de meme composition, construire un controle biologique (pas seulement statistique) pour un signal de sequence courte, ou chercher des vestiges de correspondance dans du materiel trop degrade pour BLASTN
+Compétences : testing spacer or marker null claims, comparing CRISPR arrays, auditing negative PCR or BLAST results, or deciding whether a zero-hit sequence can support an evolutionary claim
 
 ### crisprbuilder
 
@@ -136,9 +136,9 @@ Compétences : valider une charpente reconstruite (M ; bovis, L6, L3), verifier 
 
 ### miru-vntr
 
-Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed MTBC phylogenomics: MIRU-VNTR (Mycobacterial Interspersed Repetitive Unit - Variable Number Tandem Repeat) data for the Mycobacterium tuberculosis complex, in two modes. LOOKUP (default, free, no computation): crosswalks a strain, a SIT/octal spoligotype, or a 12/15/24-loci MIRU profile against the local SITVIT2 mirror (SIT.xls, 62 996 isolates, MIRU/VNTR/MIT/VIT columns already present) and the SIT<->SNP-lineage bridge table. CALL (guarded, in-silico from an assembly): only attempted after a read-length/platform feasibility gate, because MIRU-VNTR loci (50-100 bp repeat units, PCR amplicons up to 1374 bp, Supply 2006) are not reliably assembled from standard short reads, the published validation threshold is >=250 bp reads; PacBio/Nanopore always qualify, Illumina 2x150bp (the bulk of MTBC SRA deposits) is refused by default
+Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed MTBC phylogenomics: use MIRU-VNTR loci as a bridge to legacy literature and databases, never as a replacement for WGS/SNP lineage inference. Provides lookup, interpretation limits, and safe handling of MIRU-profiler/TBannotator outputs
 
-Compétences : crosswalking a legacy MIRU-VNTR outbreak/cluster paper onto the group's SNP-based phylogeny, answering a reviewer asking for MIRU-VNTR cross-validation, feeding a MIRU profile to the thd skill, or deciding whether a given SRA/assembly is even worth calling
+Compétences : mapping published MIRU-VNTR profiles to MTBC context, comparing pre-WGS studies, or checking whether a VNTR signal is only historical or epidemiological support
 
 ### mixed-infection
 

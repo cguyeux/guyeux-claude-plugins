@@ -1,20 +1,13 @@
 ---
 name: miru-vntr
-description: >
-  Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed MTBC phylogenomics:
-  MIRU-VNTR (Mycobacterial Interspersed Repetitive Unit - Variable Number Tandem Repeat)
-  data for the Mycobacterium tuberculosis complex, in two modes. LOOKUP (default, free,
-  no computation): crosswalks a strain, a SIT/octal spoligotype, or a 12/15/24-loci MIRU
-  profile against the local SITVIT2 mirror (SIT.xls, 62 996 isolates, MIRU/VNTR/MIT/VIT
-  columns already present) and the SIT<->SNP-lineage bridge table. CALL (guarded,
-  in-silico from an assembly): only attempted after a read-length/platform feasibility
-  gate, because MIRU-VNTR loci (50-100 bp repeat units, PCR amplicons up to 1374 bp,
-  Supply 2006) are not reliably assembled from standard short reads -- the published
-  validation threshold is >=250 bp reads; PacBio/Nanopore always qualify, Illumina
-  2x150bp (the bulk of MTBC SRA deposits) is refused by default. Use when: crosswalking
-  a legacy MIRU-VNTR outbreak/cluster paper onto the group's SNP-based phylogeny,
-  answering a reviewer asking for MIRU-VNTR cross-validation, feeding a MIRU profile to
-  the thd skill, or deciding whether a given SRA/assembly is even worth calling.
+description: >-
+  Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed MTBC
+  phylogenomics: use MIRU-VNTR loci as a bridge to legacy literature and
+  databases, never as a replacement for WGS/SNP lineage inference. Provides
+  lookup, interpretation limits, and safe handling of MIRU-profiler/TBannotator
+  outputs. Use when: mapping published MIRU-VNTR profiles to MTBC context,
+  comparing pre-WGS studies, or checking whether a VNTR signal is only
+  historical or epidemiological support.
 argument-hint: "<souche|SIT|octal|profil MIRU> [--call <assembly.fasta>] [--check-feasibility <accession SRA>]"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebFetch
 user-invocable: true
