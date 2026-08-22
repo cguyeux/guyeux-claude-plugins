@@ -6,13 +6,21 @@
 
 Outillage périphérique (audio, vidéo, synthèse vocale, sous-titrage). Utile à la valorisation et à la communication d'un projet M. tuberculosis (séminaires, supports pédagogiques), pas à l'analyse génomique.
 
-Skills propres (canoniques) : **3** ; skills partagés utilisés (symlinks) : **0**.
+Skills propres (canoniques) : **5** ; skills partagés utilisés (symlinks) : **0**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [imdb](#imdb) ; [silent-film-subs](#silent-film-subs) ; [text-to-speech](#text-to-speech)
+Sommaire : [cinema_info](#cinema_info) ; [film_documentaire](#film_documentaire) ; [imdb](#imdb) ; [silent-film-subs](#silent-film-subs) ; [text-to-speech](#text-to-speech)
+
+### cinema_info
+
+Moteur unifié de renseignement et de recherche cinématographique multi-sources. Fédère IMDb, Wikipédia multilingue, film-documentaire.fr, le National Film Registry (NFR) et la sélection des 1001 Films pour fournir métadonnées complètes, synopses détaillés et analyses critiques.
+
+### film_documentaire
+
+Moteur de recherche et d'extraction de métadonnées pour le cinéma documentaire via la plateforme film-documentaire.fr. Extrait résumés complets, mots-clés thématiques, sélections en festivals, distinctions, durées et crédits.
 
 ### imdb
 
@@ -31,4 +39,3 @@ Compétences : compléter, créer ou réparer les sous-titres d'un film muet ; o
 Synthetise un fichier .mp3 a partir d'un fichier texte (.txt, .md, chapitre de livre) via trois moteurs. Par defaut Mistral/Voxtral (voxtral-mini-tts) : voix preregles multilingues dont six francaises en registres emotionnels, galerie de voix clonees depuis un enregistrement, clonage ponctuel par echantillon ; le ton se choisit par la variante de voix, Voxtral n'acceptant pas d'instructions de prosodie en texte libre. Alternative OpenAI gpt-4o-mini-tts quand on veut une prosodie pilotee par un prompt sur mesure ou davantage de voix. Kokoro-82M en local, gratuit et hors ligne. Avant synthese, Claude lit un echantillon, identifie auteur, genre, epoque et ton, puis choisit la voix.
 
 Compétences : narrer un texte en audio ; generer un MP3 ou un livre audio ; lire un fichier a voix haute ; l'utilisateur mentionne TTS, synthese vocale, Voxtral, Kokoro, F5-TTS ou XTTS ; l'utilisateur dit Whisper en confondant avec la reconnaissance vocale
-

@@ -6,13 +6,13 @@
 
 Projets applicatifs du groupe (PrédictOps, OptimOps, DoctrinOps), hors du champ M. tuberculosis ; présents dans la collection pour d'autres travaux.
 
-Skills propres (canoniques) : **3** ; skills partagés utilisés (symlinks) : **1**.
+Skills propres (canoniques) : **4** ; skills partagés utilisés (symlinks) : **2**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [deploy-predictops](#deploy-predictops) ; [documentation](#documentation) ; [incident-response](#incident-response)
+Sommaire : [deploy-predictops](#deploy-predictops) ; [documentation](#documentation) ; [incident-response](#incident-response) ; [upstream-contribution](#upstream-contribution)
 
 ### deploy-predictops
 
@@ -32,6 +32,12 @@ Déroule un workflow de réponse à incident : triage, communication et rédacti
 
 Compétences :  on a un incident », « la production est tombée », une alerte à évaluer en sévérité, une mise à jour en cours d'incident, ou la rédaction d'un post-mortem sans reproche après résolution
 
+### upstream-contribution
+
+Prépare (et, sur autorisation explicite, pousse) une contribution vers un dépôt open source amont à partir d'une réimplémentation ou d'un fork local qui l'a dépassé
+
+Compétences : sur "proposer ça en amont", "remonter ce correctif au dépôt d'origine", "contribuer à [dépôt GitHub]", "faire une PR/issue sur le repo de X", ou quand un outil local corrige ou étend un outil externe dont il dérive
+
 ## Skills partagés (via symlink)
 
 Documentés sur la page de leur plugin d'origine.
@@ -39,4 +45,4 @@ Documentés sur la page de leur plugin d'origine.
 | Skill | Origine |
 |-------|---------|
 | [create-viz](bio_population_genetics.md#create-viz) | `bio_population_genetics` |
-
+| [remote-compute](bio_population_genetics.md#remote-compute) | `bio_population_genetics` |

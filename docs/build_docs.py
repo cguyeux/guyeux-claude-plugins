@@ -279,7 +279,7 @@ def render_plugin_page(plugin, plugin_desc, canonical, appears, by_home):
             home = canonical[n]["home"]
             lines.append(f"| [{n}]({home}.md#{n}) | `{home}` |")
         lines.append("")
-    return "\n".join(lines) + "\n"
+    return "\n".join(lines).rstrip() + "\n"
 
 
 def main():

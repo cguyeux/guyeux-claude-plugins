@@ -6,13 +6,13 @@
 
 Rédaction et contrôle qualité du manuscrit M. tuberculosis : mise en forme LaTeX, vérification des affirmations et des références, nettoyage stylistique, réponse aux relecteurs, dépôt Zenodo et pont Overleaf.
 
-Skills propres (canoniques) : **28** ; skills partagés utilisés (symlinks) : **4**.
+Skills propres (canoniques) : **29** ; skills partagés utilisés (symlinks) : **4**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [beamer-slides](#beamer-slides) ; [bib-check](#bib-check) ; [biblatex](#biblatex) ; [claim-check](#claim-check) ; [cv](#cv) ; [deai-latex](#deai-latex) ; [docs-latex](#docs-latex) ; [fig-check](#fig-check) ; [grant-proposal](#grant-proposal) ; [humanizer](#humanizer) ; [latex-build](#latex-build) ; [latex-document](#latex-document) ; [latex-formatting](#latex-formatting) ; [latex-paper-en](#latex-paper-en) ; [latex-posters](#latex-posters) ; [latex-tables](#latex-tables) ; [latex-writing](#latex-writing) ; [lit-review](#lit-review) ; [manuscript-review](#manuscript-review) ; [overleaf-bridge](#overleaf-bridge) ; [pdf-to-latex](#pdf-to-latex) ; [reviewer-response](#reviewer-response) ; [slide-design](#slide-design) ; [slide-polish](#slide-polish) ; [supp-check](#supp-check) ; [synthesize-research](#synthesize-research) ; [theme-factory](#theme-factory) ; [zenodo-deposit](#zenodo-deposit)
+Sommaire : [beamer-slides](#beamer-slides) ; [bib-check](#bib-check) ; [biblatex](#biblatex) ; [claim-check](#claim-check) ; [cv](#cv) ; [deai-latex](#deai-latex) ; [docs-latex](#docs-latex) ; [fig-check](#fig-check) ; [grant-proposal](#grant-proposal) ; [humanizer](#humanizer) ; [latex-build](#latex-build) ; [latex-document](#latex-document) ; [latex-formatting](#latex-formatting) ; [latex-paper-en](#latex-paper-en) ; [latex-posters](#latex-posters) ; [latex-tables](#latex-tables) ; [latex-writing](#latex-writing) ; [lit-review](#lit-review) ; [literature-access](#literature-access) ; [manuscript-review](#manuscript-review) ; [overleaf-bridge](#overleaf-bridge) ; [pdf-to-latex](#pdf-to-latex) ; [reviewer-response](#reviewer-response) ; [slide-design](#slide-design) ; [slide-polish](#slide-polish) ; [supp-check](#supp-check) ; [synthesize-research](#synthesize-research) ; [theme-factory](#theme-factory) ; [zenodo-deposit](#zenodo-deposit)
 
 ### beamer-slides
 
@@ -122,6 +122,12 @@ Revue de littérature scientifique systématique et incrémentale. Recherche, li
 
 Compétences : construire une revue de littérature sur un sujet ; approfondir une revue existante ; préparer un état de l'art pour un article ou une demande de financement ; repérer des lacunes ; découvrir des travaux précurseurs antérieurs à la terminologie actuelle
 
+### literature-access
+
+Maximise l'accès LÉGAL au plein texte scientifique en cascade, pour combler le trou entre « résumé » (tbmonitor, abstracts) et « article payant ». Deux moteurs : recall par le CORPS du texte (trouver les articles dont le corps mentionne un gène / locus tag / méthode, pas seulement le résumé, via europepmc_fulltext.py search) et résolution d'accès (donné un DOI, rendre la meilleure voie légale : Europe PMC OA lisible ici, Unpaywall green/gold OA, OpenAlex, Semantic Scholar, puis hand-off vers TDM institutionnel / bibliothèque sous licence / contact auteur). Ne contourne AUCUN paywall
+
+Compétences : un gène ressort « sans littérature » alors qu'il est cité dans des articles OA ; vérifier qu'un terme est réellement absent de la littérature ; obtenir le plein texte d'un DOI pour claim-check/bib-check/lit-review ; construire une revue à haut rappel
+
 ### manuscript-review
 
 Revue par les pairs d'un manuscrit scientifique comme pour une revue a fort facteur d'impact. Lit l'article complet (LaTeX ou texte), evalue structure, methodologie, statistiques, terminologie, figures et references, et produit une revue structuree en francais avec des recommandations classees par severite. Pour les manuscrits TB et MTBC, valide l'etat de l'art et la completude des citations contre tbmonitor-papers (environ 190 000 resumes TB de PubMed).
@@ -192,4 +198,3 @@ Documentés sur la page de leur plugin d'origine.
 | [geo-map](bio_population_genetics.md#geo-map) | `bio_population_genetics` |
 | [read-scientific-pdf](bio_population_genetics.md#read-scientific-pdf) | `bio_population_genetics` |
 | [sci-figure](bio_population_genetics.md#sci-figure) | `bio_population_genetics` |
-

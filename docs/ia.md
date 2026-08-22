@@ -6,7 +6,7 @@
 
 Machine learning et data science au service des analyses MTBC : classification de lignées, prédiction de phénotypes de résistance à partir de génotypes, réduction de dimension sur des matrices de SNP, explication des modèles obtenus.
 
-Skills propres (canoniques) : **14** ; skills partagés utilisés (symlinks) : **3**.
+Skills propres (canoniques) : **14** ; skills partagés utilisés (symlinks) : **4**.
 
 [Retour à l'index de la documentation](README.md)
 
@@ -104,7 +104,7 @@ Documentés sur la page de leur plugin d'origine.
 
 | Skill | Origine |
 |-------|---------|
+| [remote-compute](bio_population_genetics.md#remote-compute) | `bio_population_genetics` |
 | [scientific-problem-selection](bio_population_genetics.md#scientific-problem-selection) | `bio_population_genetics` |
 | [scikit-learn](bio_population_genetics.md#scikit-learn) | `bio_population_genetics` |
 | [statsmodels](bio_population_genetics.md#statsmodels) | `bio_population_genetics` |
-

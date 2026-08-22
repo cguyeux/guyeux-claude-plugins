@@ -25,4 +25,3 @@ Compétences : l'utilisateur demande de construire des composants, pages ou appl
 Pilote et teste une application web locale avec Playwright : navigation, remplissage de formulaires, parcours de clics, assertions sur le DOM rendu, captures d'ecran et lecture des journaux de la console du navigateur.
 
 Compétences : verifier qu'un frontend local fonctionne ; reproduire un bug d'interface ; controler une page apres une modification ; capturer une copie d'ecran d'un serveur de developpement ; inspecter les erreurs console et reseau depuis un navigateur sans affichage
-

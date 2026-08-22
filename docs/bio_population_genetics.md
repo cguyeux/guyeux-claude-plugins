@@ -6,13 +6,13 @@
 
 Contexte hôte et outillage générique. Pour une étude M. tuberculosis, l'histoire des populations humaines, les migrations, la paléoclimatologie et l'archéologie éclairent la co-évolution hôte-pathogène et la dispersion des lignées du MTBC. Le plugin porte aussi les briques transversales (phylogénétique, statistiques, fouille de littérature) réutilisées par les analyses MTBC elles-mêmes.
 
-Skills propres (canoniques) : **52** ; skills partagés utilisés (symlinks) : **3**.
+Skills propres (canoniques) : **55** ; skills partagés utilisés (symlinks) : **3**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [aadr](#aadr) ; [abc-xgboost](#abc-xgboost) ; [amtdb](#amtdb) ; [atlantic-voyages](#atlantic-voyages) ; [bayesian-skyline](#bayesian-skyline) ; [beast2-phylogeography](#beast2-phylogeography) ; [bioc-pmc](#bioc-pmc) ; [biopython](#biopython) ; [bioskills](#bioskills) ; [boltz](#boltz) ; [bovine-genomics](#bovine-genomics) ; [card](#card) ; [clinical-trial-protocol-skill](#clinical-trial-protocol-skill) ; [create-viz](#create-viz) ; [d-place](#d-place) ; [domestication-pathways](#domestication-pathways) ; [esm-atlas-cli](#esm-atlas-cli) ; [europe-pmc](#europe-pmc) ; [geo-map](#geo-map) ; [glottolog](#glottolog) ; [indian-ocean-voyages](#indian-ocean-voyages) ; [iqtree-lsd2](#iqtree-lsd2) ; [itol](#itol) ; [migration-data](#migration-data) ; [modern-human-reference-panels](#modern-human-reference-panels) ; [neolithic-14c](#neolithic-14c) ; [nextflow-development](#nextflow-development) ; [nextstrain](#nextstrain) ; [ontologies](#ontologies) ; [openalex](#openalex) ; [orbis](#orbis) ; [owtrad](#owtrad) ; [p3k14c](#p3k14c) ; [paleoclimate](#paleoclimate) ; [pastml](#pastml) ; [pleiades](#pleiades) ; [pubmed-database](#pubmed-database) ; [pubtator](#pubtator) ; [pysam](#pysam) ; [rdkit](#rdkit) ; [read-scientific-pdf](#read-scientific-pdf) ; [scanpy](#scanpy) ; [sci-figure](#sci-figure) ; [scientific-problem-selection](#scientific-problem-selection) ; [scikit-bio](#scikit-bio) ; [scikit-learn](#scikit-learn) ; [seshat](#seshat) ; [slavevoyages](#slavevoyages) ; [statsmodels](#statsmodels) ; [tooluniverse-sequence-retrieval](#tooluniverse-sequence-retrieval) ; [wals](#wals) ; [worldclim-bioclim](#worldclim-bioclim)
+Sommaire : [aadr](#aadr) ; [abc-xgboost](#abc-xgboost) ; [amtdb](#amtdb) ; [atlantic-voyages](#atlantic-voyages) ; [bayesian-skyline](#bayesian-skyline) ; [beast2-phylogeography](#beast2-phylogeography) ; [bioc-pmc](#bioc-pmc) ; [biopython](#biopython) ; [bioskills](#bioskills) ; [biotools](#biotools) ; [boltz](#boltz) ; [bovine-genomics](#bovine-genomics) ; [card](#card) ; [clinical-trial-protocol-skill](#clinical-trial-protocol-skill) ; [create-viz](#create-viz) ; [d-place](#d-place) ; [domestication-pathways](#domestication-pathways) ; [esm-atlas-cli](#esm-atlas-cli) ; [europe-pmc](#europe-pmc) ; [foldseek](#foldseek) ; [geo-map](#geo-map) ; [glottolog](#glottolog) ; [indian-ocean-voyages](#indian-ocean-voyages) ; [iqtree-lsd2](#iqtree-lsd2) ; [itol](#itol) ; [migration-data](#migration-data) ; [modern-human-reference-panels](#modern-human-reference-panels) ; [neolithic-14c](#neolithic-14c) ; [nextflow-development](#nextflow-development) ; [nextstrain](#nextstrain) ; [ontologies](#ontologies) ; [openalex](#openalex) ; [orbis](#orbis) ; [owtrad](#owtrad) ; [p3k14c](#p3k14c) ; [paleoclimate](#paleoclimate) ; [pastml](#pastml) ; [pleiades](#pleiades) ; [pubmed-database](#pubmed-database) ; [pubtator](#pubtator) ; [pysam](#pysam) ; [rdkit](#rdkit) ; [read-scientific-pdf](#read-scientific-pdf) ; [remote-compute](#remote-compute) ; [scanpy](#scanpy) ; [sci-figure](#sci-figure) ; [scientific-problem-selection](#scientific-problem-selection) ; [scikit-bio](#scikit-bio) ; [scikit-learn](#scikit-learn) ; [seshat](#seshat) ; [slavevoyages](#slavevoyages) ; [statsmodels](#statsmodels) ; [tooluniverse-sequence-retrieval](#tooluniverse-sequence-retrieval) ; [wals](#wals) ; [worldclim-bioclim](#worldclim-bioclim)
 
 ### aadr
 
@@ -68,6 +68,12 @@ Installe 425 skills de bioinformatique couvrant l'analyse de séquences, le RNA-
 
 Compétences : mettre en place des capacités de bioinformatique ; quand une tâche bioinfo requiert un skill spécialisé pas encore installé
 
+### biotools
+
+Academic research toolkit (Guyeux group, FEMTO-ST) for querying the ELIXIR bio.tools registry (~30 000 catalogued bioinformatics tools) and, crucially, diffing the result against the skills and knowledge base we already have, so a sweep returns what is genuinely new rather than what we already use
+
+Compétences : asking whether a published tool exists for a task before writing one, looking for independent implementations to cross-check a home-made method, doing a periodic watch on tooling for MTBC, mycobacteria, Yersinia or any bacterium, or checking whether a tool named in a manuscript is registered and still alive
+
 ### boltz
 
 Boite a outils de recherche academique (groupe Guyeux, FEMTO-ST), bio-informatique structurale evaluee par les pairs : predit EN LOCAL des complexes biomoleculaires (multimeres, ions metalliques, ligands) avec Boltz-2, sans compte ni GPU (inference sur processeur), la ou AlphaFold Server n'est pas automatisable. Fournit la recette d'installation validee, l'ecriture des entrees YAML, la reutilisation d'un MSA deja produit, la lecture correcte des sorties (le schema Boltz differe du schema AF3) et les garde-fous d'interpretation.
@@ -121,6 +127,10 @@ Compétences : traduire une séquence protéique en résumé de fonction biologi
 Interroge Europe PMC (EMBL-EBI), le depot europeen de litterature biomedicale couvrant les resumes PubMed, le texte integral PMC, les preprints de plus de 32 serveurs (bioRxiv, medRxiv, Research Square), livres, brevets, recommandations et financements. Fournit une API REST pour la recherche, la recuperation du texte integral et des annotations de text mining precalculees (genes, maladies, molecules, organismes, termes GO, numeros d'acces). Pour la litterature TB limitee a PubMed sans preprints, tbmonitor-papers est plus rapide.
 
 Compétences : chercher de la litterature biomedicale y compris des preprints ; recuperer le texte integral d'un article en acces ouvert ; recuperer des annotations en JSON ou XML ; relier des publications a des numeros d'acces de donnees (ENA, UniProt, ChEMBL, PDB) ; decouvrir des articles lies via le graphe de citations
+
+### foldseek
+
+Academic research toolkit for peer-reviewed structural bioinformatics in the Guyeux group (FEMTO-ST). This skill should be used when the user asks to search a protein structure with Foldseek, compare AlphaFold or ESMFold models against PDB, AlphaFold DB or CATH, investigate a structurally conserved dark gene, interpret Foldseek E-values and TM-scores, or cluster predicted protein structures without overclaiming molecular function.
 
 ### geo-map
 
@@ -260,6 +270,12 @@ Extraction rapide du texte d'un PDF scientifique (articles, thèses, rapports) v
 
 Compétences : PDF scientifique long ; article à colonnes ou tableaux complexes ; lecture séquentielle d'un corpus pour une revue ; PDF scanné nécessitant OCR ; quand la lecture native d'un PDF renvoie un résultat partiel ou inattendu
 
+### remote-compute
+
+Deploy long, memory-hungry, disk-hungry or GPU computations of the Guyeux group (FEMTO-ST) onto the two remote machines available over SSH: `mp` (standalone 64-thread / 125 GB / 51 TB box, no scheduler) and `mh` (mesohelios Slurm cluster login node, A100 and L40 GPUs, 1 TB bigmem nodes, BeeGFS). Covers the choice between them, sbatch recipes, data staging, quota and filesystem traps, and job monitoring
+
+Compétences : a computation needs more RAM, more disk, more cores, a GPU, or more wall-clock time than the laptop can give, or when asked to run something "sur mp", "sur mh", "sur le cluster", "en GPU", "en batch
+
 ### scanpy
 
 Boite a outils passant a l'echelle pour l'expression genique en cellule unique, batie sur AnnData : controle qualite, normalisation, reduction de dimension, clustering, inference de trajectoires et graphiques. Pour des matrices d'expression bulk ou du clustering generique, preferer scikit-learn.
@@ -335,4 +351,3 @@ Documentés sur la page de leur plugin d'origine.
 | [claim-check](redac.md#claim-check) | `redac` |
 | [lit-review](redac.md#lit-review) | `redac` |
 | [reviewer-response](redac.md#reviewer-response) | `redac` |
-
