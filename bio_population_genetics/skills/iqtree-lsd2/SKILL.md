@@ -13,6 +13,16 @@ description: >-
 
 # IQ-TREE 2 + LSD2 : Fast ML Phylogenetics with Tip-Dating
 
+> [!TIP]
+> **Où faire tourner IQ-TREE.** `-T AUTO` sur le portable plafonne vite : au-delà de quelques
+> centaines de taxons, ou avec `-B 1000` sur un alignement large, le calcul appartient aux machines
+> distantes. `mh` partition `smp` (32 à 48 c, 93 à 251 Go) ou `mpi` (24 c/nœud), 8 jours maximum ;
+> `mp` sinon (64 threads, aucune limite de temps). **IQ-TREE 3.1.3 est prêt sur `mh`** dans
+> `/Work/Users/cguyeux/envs/phylo/bin`, où le binaire s'appelle **`iqtree`** et non `iqtree2` :
+> adapter les commandes de ce skill en conséquence. Rien sur `mp`.
+> Voir le skill `remote-compute` (sonde d'état, modèles `sbatch`, pièges). Prérequis : VPN monté (`sudo vpn up`).
+
+
 ## Overview
 
 **IQ-TREE 2** is the reference open-source Maximum-Likelihood

@@ -93,14 +93,34 @@ def openai_lire(path, modele=MODELE_DEFAUT):
                  "image_url": {"url": f"data:image/jpeg;base64,{b64}", "detail": "high"}},
             ],
         }],
-        "max_completion_tokens": 4000,
+        # gpt-5.5 est un modele a RAISONNEMENT : sur la consigne paleographique complete
+        # ci-dessus, mesure (05/08) a 1500-3000+ jetons de raisonnement REELLEMENT
+        # consommes avant le premier mot de transcription visible, contre ~1500 avec une
+        # consigne courte. A 4000 (valeur d'origine), une page dense peut epuiser le
+        # budget dans le raisonnement seul et renvoyer une transcription VIDE, en
+        # silence -- constate sur ARMENGOL p.12 (~30 lignes), P4.26, 05/08. Relevé large
+        # pour laisser une marge reelle a la transcription elle-meme.
+        "max_completion_tokens": 16000,
     }).encode()
     req = urllib.request.Request(
         "https://api.openai.com/v1/chat/completions", data=corps,
         headers={"Authorization": f"Bearer {cle}", "Content-Type": "application/json"})
     try:
         with urllib.request.urlopen(req, timeout=300) as r:
-            return json.load(r)["choices"][0]["message"]["content"]
+            reponse = json.load(r)
+        contenu = reponse["choices"][0]["message"]["content"]
+        if not contenu.strip():
+            # ECHOUER VISIBLEMENT (doctrine du PROMPT ci-dessus) : un fichier vide,
+            # sans erreur, se lirait comme "aucune divergence" dans le rapport de
+            # consensus -- le pire faux silence possible pour cet outil.
+            u = reponse.get("usage", {})
+            sys.exit(f"OpenAI a renvoyé une transcription VIDE (finish_reason="
+                      f"{reponse['choices'][0].get('finish_reason')!r}, "
+                      f"{u.get('completion_tokens_details', {}).get('reasoning_tokens', '?')} "
+                      f"jetons de raisonnement sur {u.get('completion_tokens', '?')} au total). "
+                      f"Page probablement trop dense pour ce budget de jetons : augmenter "
+                      f"max_completion_tokens ou découper la page.")
+        return contenu
     except urllib.error.HTTPError as e:
         detail = e.read().decode(errors="replace")[:300]
         if e.code == 429:

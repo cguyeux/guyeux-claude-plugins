@@ -12,6 +12,12 @@ description: >-
 
 # PastML : Fast Ancestral Character Reconstruction
 
+> [!TIP]
+> **Au-delà de quelques milliers de feuilles**, la reconstruction d'états ancestraux sature la
+> mémoire locale : `mp` (125 Go, disponible sans file d'attente) ou `mh` `bigmem` (1 To). PastML
+> reste à ajouter à l'environnement `/Work/Users/cguyeux/envs/phylo` (`micromamba install -p … pastml`). Voir le skill `remote-compute` (sonde d'état, modèles `sbatch`, pièges). Prérequis : VPN monté (`sudo vpn up`).
+
+
 ## Overview
 
 **PastML** is a fast Maximum-Likelihood method for **Ancestral Character

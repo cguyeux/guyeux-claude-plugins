@@ -87,6 +87,14 @@ text-mining skills:
 | **`europe-pmc`** | **Biomedical focus + preprints + annotations + data links** |
 | **`bioc-pmc`** | PMC OA full text in BioC format for NLP pipelines |
 | **`pubtator`** | Pre-computed NER annotations (same family as Europe PMC annotations) |
+| **`literature-access`** | LEGAL full-text ACCESS cascade (Europe PMC OA + HAL + Unpaywall + BU/TDM) + full-text RECALL search |
+
+> **Boundary with `literature-access`.** Both use the shared `europepmc_fulltext.py`. Use *this*
+> skill for Europe PMC's OWN features (search with field codes, text-mining annotations, citation
+> graph, ENA/UniProt/PDB accession cross-links, preprint discovery). Use `literature-access` for
+> "get me the legal full text of THIS DOI, maximising coverage across sources" and for full-text
+> RECALL (`search`, to find articles whose body mentions a gene the abstracts miss). Don't trigger
+> *this* skill for a paywalled paper you need to read — that's `literature-access`.
 
 ## Data sources covered (verified)
 
@@ -214,9 +222,27 @@ curl -sL "https://www.ebi.ac.uk/europepmc/annotations_api/annotationsByEntity?en
 
 ## Python wrapper
 
-No official EMBL-EBI Python client, but the REST API is trivial to
-wrap. Community options include `europepmc-api` and writing your own
-thin helper:
+**Ready-made, in this repository.** Before writing a client, use the one
+already written and tested (stdlib only, disk cache, no dependency):
+
+```bash
+S=${CLAUDE_PLUGIN_ROOT}/skills/lit-review/scripts/europepmc_fulltext.py
+python3 $S resolve  <DOI|PMID|PMCID|title>   # identifiers + fullTextAvailable flag
+python3 $S sections <DOI>                    # table of contents of the full text
+python3 $S fulltext <DOI> --section "methods"
+python3 $S fulltext <DOI> --grep "<pattern>"
+```
+
+It carries the guard that matters: **a wrong PMCID returns HTTP 200 with a
+DIFFERENT article** (verified 2026-08-10, `PMC8945347` for `PMC8945471`),
+so the script always resolves from the DOI and cross-checks the DOI found
+in the returned XML. It is wired into `claim-check` (verify a claim in the
+Methods, not the abstract), `bib-check` (citation relevance when the
+abstract does not settle it) and `lit-review` (read Data Availability
+before concluding that a piece of work must be redone).
+
+For anything the script does not cover (annotations API, citation graph,
+preprint-specific queries), wrap the REST API yourself:
 
 ```python
 import requests

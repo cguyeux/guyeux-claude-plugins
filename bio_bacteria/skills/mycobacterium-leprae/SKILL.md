@@ -15,6 +15,16 @@ description: >-
 
 # *Mycobacterium leprae* : The Richest Ancient *Mycobacterium* Corpus
 
+> [!TIP]
+> **Leproma, la base génomique historique de l'espèce.** `genolist.pasteur.fr/Leproma` (Institut
+> Pasteur, plateforme GenoList) donne l'annotation de référence de *M. leprae* TN, gène par gène, avec
+> les pseudogènes explicitement marqués, ce qui est central chez une espèce dont le génome est en
+> réduction massive. Base ancienne et figée : la croiser avec une annotation récente plutôt que s'y
+> fier seule. À noter que la chaîne TBannotator a déjà tourné sur *M. leprae* : **710 souches** sous
+> `mp:/data/current/run/references_results/NC_002677.1/`, profondeurs très hétérogènes (0,2× à 57×),
+> à trier avant tout calcul (voir `panisa` et `remote-compute`).
+
+
 ## Overview
 
 *Mycobacterium leprae* is the causative agent of leprosy (Hansen's

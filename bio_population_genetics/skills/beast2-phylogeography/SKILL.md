@@ -13,6 +13,13 @@ description: >-
 
 # BEAST2 Phylogeography : MASCOT, BASTA, and the Structured Coalescent
 
+> [!TIP]
+> **Calcul distant quasi obligatoire.** Un modèle phylogéographique discret ou continu multiplie le
+> coût par chaîne : viser un tableau de jobs Slurm sur `mh` (`mpi`/`smp`, 8 jours) avec une chaîne par
+> réplicat, ou `mp` pour une chaîne unique très longue (aucune limite de temps). Environnement
+> phylo sur `mh` : `/Work/Users/cguyeux/envs/phylo` (voir `remote-compute` pour son contenu). Voir le skill `remote-compute` (sonde d'état, modèles `sbatch`, pièges). Prérequis : VPN monté (`sudo vpn up`).
+
+
 ## Overview
 
 **BEAST2** (*Bayesian Evolutionary Analysis by Sampling Trees, version 2*)

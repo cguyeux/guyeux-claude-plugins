@@ -12,6 +12,13 @@ description: >-
 
 # Bayesian Skyline : Ne(t) and Re(t) Reconstruction from Sequence Data
 
+> [!TIP]
+> **Coût typique : des jours de CPU.** Répliquer plutôt qu'allonger : tableau de jobs Slurm sur `mh`
+> (une chaîne par réplicat, `--array`), puis combiner les traces. `mp` pour une chaîne unique qui
+> dépasse 8 jours. Environnement phylo sur `mh` : `/Work/Users/cguyeux/envs/phylo` (contenu et
+> pièges dans `remote-compute`) ; Tracer, en revanche, reste à installer. Voir le skill `remote-compute` (sonde d'état, modèles `sbatch`, pièges). Prérequis : VPN monté (`sudo vpn up`).
+
+
 ## Overview
 
 **Skyline plots** are a family of Bayesian phylodynamic methods for

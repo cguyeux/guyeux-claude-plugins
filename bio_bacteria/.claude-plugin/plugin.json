@@ -1,7 +1,7 @@
 {
   "name": "bio_bacteria",
   "description": "Academic research toolkit for comparative genomics of bacteria BEYOND the Mycobacterium tuberculosis complex stricto sensu: non-tuberculous mycobacteria (M. abscessus, M. avium, M. ulcerans...) and other genera. Genome assembly and characterisation, core-genome MLST clonality, ab initio mobile-element detection, antimicrobial-resistance allele frequencies from published research isolates. Used by the Guyeux group (FEMTO-ST, University of Franche-Comte) for peer-reviewed scientific publications. For MTBC stricto sensu, use the bio_pathogens plugin.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": {
     "name": "Christophe Guyeux"
   }
