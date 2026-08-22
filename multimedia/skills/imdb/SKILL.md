@@ -11,7 +11,7 @@ Ce skill fournit une chaîne complète d'acquisition de métadonnées cinématog
 
 ---
 
-## 🏗️ Architecture Multi-Sources
+## Architecture Multi-Sources
 
 1. **Cache local IMDb (Données structurelles & Notes)** :
    - Exploite `title.basics.tsv.gz` et `title.ratings.tsv.gz` dans SQLite (`~/.cache/imdb-skill/imdb.sqlite`).
@@ -27,7 +27,7 @@ Ce skill fournit une chaîne complète d'acquisition de métadonnées cinématog
 
 ---
 
-## 🛠️ Scripts disponibles
+## Scripts disponibles
 
 ### 1. Enrichissement d'un film individuel (`enrich_film_metadata.py`)
 ```bash
@@ -47,7 +47,7 @@ python3 "${CLAUDE_PLUGIN_ROOT}/skills/imdb/scripts/imdb_lookup.py" update
 
 ---
 
-## 📋 Bonnes pratiques pour l'indexation RAG
+## Bonnes pratiques pour l'indexation RAG
 - **Fiches par film** : chaque œuvre possède sa fiche `.md` avec métadonnées YAML et texte structuré.
 - **Préservation des mots-clés sémantiques** : les résumés détaillés permettent de retrouver les œuvres par thème (ex: *Égypte antique, pharaon, péplum* pour *Cléopâtre*).
 - **Traitement par lots** : exécuter l'enrichissement par batches avec mise en cache locale pour éviter les requêtes redondantes.

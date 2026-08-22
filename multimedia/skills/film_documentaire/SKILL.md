@@ -16,7 +16,7 @@ Ce skill permet d'interroger la base encyclopédique de référence [film-docume
 
 ---
 
-## 🛠️ Utilisation en ligne de commande
+## Utilisation en ligne de commande
 
 ### 1. Recherche par titre et réalisateur
 ```bash
@@ -30,7 +30,7 @@ python3 "${CLAUDE_PLUGIN_ROOT}/skills/film_documentaire/scripts/film_doc_lookup.
 
 ---
 
-## 📋 Données retournées
+## Données retournées
 - `title` : Titre français
 - `english_title` : Titre international / anglais
 - `director` : Réalisateur / Réalisatrice

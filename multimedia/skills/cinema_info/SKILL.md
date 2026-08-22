@@ -11,7 +11,7 @@ Ce skill offre une passerelle de renseignement cinématographique fédérant les
 
 ---
 
-## 🏛️ Sources fédérées
+## Sources fédérées
 
 1. **IMDb Cache Local** : notes moyennes, volume de votes, genres stricts, durées et identifiants `tt...`.
 2. **Wikipédia Multilingue** : extraction des trames narratives complètes en français (avec traduction automatique des résumés détaillés en anglais quand la page française est un embryon).
@@ -21,7 +21,7 @@ Ce skill offre une passerelle de renseignement cinématographique fédérant les
 
 ---
 
-## 🛠️ Utilisation en ligne de commande
+## Utilisation en ligne de commande
 
 ### 1. Recherche complète d'un film
 ```bash
