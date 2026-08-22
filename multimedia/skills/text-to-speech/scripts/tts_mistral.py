@@ -44,8 +44,8 @@ from typing import Iterable, List, Optional
 # Imports tardifs (mistralai/pydub) : on autorise --help sans dépendances.
 
 
-def trash_generated_file(path: Path) -> None:
-    """Move a generated temporary file to the desktop trash when possible."""
+def trash_generated_path(path: Path) -> None:
+    """Move a generated temporary file or directory to the desktop trash when possible."""
     if not path.exists():
         return
     try:
@@ -201,7 +201,7 @@ def concat_mp3(files: Iterable[Path], out_mp3: Path, silence_ms: int) -> None:
             check=True,
         )
     finally:
-        trash_generated_file(manifest_path)
+        trash_generated_path(manifest_path)
 
 
 # ---------- Galerie de voix (manifeste local) ----------
@@ -286,11 +286,8 @@ def tts_file_to_mp3(input_txt: Path, output_mp3: Path, *,
     finally:
         if cleanup_tmp:
             for p in seg_files:
-                trash_generated_file(p)
-            try:
-                tmp_dir.rmdir()
-            except OSError:
-                pass
+                trash_generated_path(p)
+            trash_generated_path(tmp_dir)
 
 
 # ---------- Création d'une voix (clonage depuis un enregistrement) ----------
@@ -380,11 +377,8 @@ def create_voice(name: str, from_audio: Path, *, slug: Optional[str],
     print(f"[tts-mistral] utiliser : --voice {vslug or vid}")
 
     if tmp_sample is not None and not keep_sample:
-        trash_generated_file(tmp_sample)
-        try:
-            tmp_sample.parent.rmdir()
-        except OSError:
-            pass
+        trash_generated_path(tmp_sample)
+        trash_generated_path(tmp_sample.parent)
     return 0
 
 
