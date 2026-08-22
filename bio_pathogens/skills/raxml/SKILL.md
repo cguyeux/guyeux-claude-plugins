@@ -15,6 +15,17 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query
 
 # RAxML-NG : Inférence phylogénétique MTBC
 
+> [!TIP]
+> **Trois routes de calcul, dans cet ordre.** (1) Ce skill soumet le job **côté serveur TBannotator**
+> (`tool_submit_raxml_job`) : aucun transfert, c'est la bonne route quand les souches sont déjà en
+> base. (2) `mp` porte `raxmlHPC` dans `/usr/bin` (version ancienne, pas `raxml-ng`) et n'a aucune
+> limite de temps. (3) `mh` (Slurm) pour du multi-nœuds : **`raxml-ng` 2.0.2 y est prêt** dans
+> `/Work/Users/cguyeux/envs/phylo/bin`, mais il **exige**
+> `LD_LIBRARY_PATH=/Work/Users/cguyeux/envs/phylo/lib` (le `libstdc++` de Rocky 8 est trop ancien ;
+> ni `micromamba run` ni `micromamba activate` ne suffisent).
+> Voir le skill `remote-compute` (sonde d'état, modèles `sbatch`, pièges). Prérequis : VPN monté (`sudo vpn up`).
+
+
 Outil de recherche académique du groupe Guyeux, Institut FEMTO-ST (CNRS UMR 6174), Université Marie et Louis Pasteur (ex-Université de Franche-Comté), Besançon. Produit des inférences phylogénomiques destinées à des publications scientifiques évaluées par des pairs.
 
 Soumission, suivi et récupération de phylogénies RAxML-NG via le serveur MCP TBannotator. Produit des arbres Newick publication-quality pour annotation iTOL.

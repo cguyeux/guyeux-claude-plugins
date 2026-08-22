@@ -54,7 +54,89 @@ confirmé par `optimize` reste une observation, pas une lignée.
 
 Et le BRUIT se traite EN AMONT, sinon on optimise sur du bruit (séquençage vers faux SNP
 vers fausses synapomorphies ; chimères ; mauvaise couverture ; paquets de transmission à
-2-3 SNP qui sur-pondèrent les zones denses).
+2-3 SNP qui sur-pondèrent les zones denses). Le contrôle de GC par MAD sur le lot
+(cf. `strain-qc`, critère 2) fait partie de cet amont : une souche contaminée forme un
+bloc d'artefact qui croise tout le monde et déguise un problème de qualité en problème
+de topologie.
+
+### Face au co-clustering : règle d'emploi mesurée (L6, 2026-08-10)
+
+Le recouvrement avec `binary-coclustering` est réel et a été tranché par la mesure sur le
+même pool (L6, 1 364 souches), pas par argument :
+
+| | densité (SVD-150 + HDBSCAN) | co-clustering (g=40) |
+|---|---|---|
+| clusters rendus | 13 | 38 |
+| souches non classées | **398 (29,2 %)** | 0 |
+| marqueurs exclusifs à un seul cluster (médiane) | 135 | 0 |
+| temps | 55 s | 149 s |
+| ARI entre les deux partitions | 0,097 | |
+
+Lecture : les deux ne mesurent pas la même chose. La densité est deux fois plus rapide et
+rend des groupes gros et nettement séparés, chacun avec ses marqueurs exclusifs — mais elle
+**renvoie 29 % des souches au bruit**, ce qui est exactement le régime redouté sur un clade
+sur-échantillonné. Le co-clustering ne jette personne et descend plus fin, mais ses blocs
+**ne sont pas des candidats clades** (3 sur 38 seulement portent une synapomorphie
+exclusive) : ils ne se lisent qu'à travers les present-sets de leurs blocs-marqueurs, qui
+eux sont laminaires (0 croisement sur ce fit).
+
+**Règle : densité pour EXPLORER (y a-t-il de la structure ?), co-clustering pour DÉFINIR
+(sur quels marqueurs ?), `marker-laminarity` pour trancher dans les deux cas.** L'ARI de
+0,097 entre les deux partitions n'est pas un désaccord à arbitrer, c'est la conséquence de
+granularités et de régimes différents.
+
+### Confirmé ET nuancé sur L3 (8 744 souches, 2026-08-11, projet `coclustering_lineages`, P12.2)
+
+Même protocole rejoué sur un pool 6× plus gros, cette fois contre une vraie vérité terrain
+(taxonomie d'avant l'aplatissement, 81 sous-lignées, 7 254 souches), pas seulement les deux
+partitions l'une contre l'autre :
+
+| | co-clustering (g=120, m=200) | densité (SVD-200 + HDBSCAN-10) |
+|---|---|---|
+| clusters proposés | 120 | 79 |
+| souches non classées | 0 | 2 933 (33,5 %) |
+| sans marqueur exclusif à 1 cluster | 41/120 | 6/79 |
+| marqueurs médians / cluster | 15 | 72 |
+| temps de calcul | 5 791 s (96 min) | 259 s (4,3 min) |
+| ARI vs vérité terrain (81 sous-lignées) | 0,252 | 0,682 (hors bruit) |
+
+La lecture naïve attendue était « la densité échoue sur les pools géants, le co-clustering
+réussit » : ce n'est PAS ce que montrent les chiffres. Sur les 66,5 % de souches qu'elle ose
+classer, la densité est nettement PLUS fidèle à la vérité terrain (0,682) que le
+co-clustering sur l'intégralité du pool (0,252), et 22× plus rapide. Le co-clustering ne
+l'emporte pas par précision ponctuelle ; il l'emporte parce qu'il ne jette personne (0
+souche non classée contre 33,5 % de bruit) et parce que ses fusions, quand il y en a, sont
+individuellement défendables (97,22 % de part défendable mesurée sur ce même pool). La
+colonne « sans marqueur exclusif » ne se lit pas comme un échec du co-clustering : c'est
+l'effet d'exclusivité déjà caractérisé sur L6 (une structure emboîtée pénalise
+mécaniquement la partition la plus fine sur ce critère), à lire via `marker-laminarity` sur
+les present-sets, pas via ce compte.
+
+**RÈGLE D'EMPLOI CONSOLIDÉE (L6 + L3), complémentarité et non substitution : la densité pour
+un premier passage rapide et des appels haute confiance, quand jeter un tiers du pool est
+acceptable ; le co-clustering pour une classification exhaustive avec marqueurs définissants
+et zéro souche perdue, au prix d'environ 22× le temps de calcul.** Le co-clustering est plus
+COMPLET, pas plus PRÉCIS ; ne jamais présenter l'un comme remplaçant l'autre dans un
+manuscrit ou un choix de pipeline.
+
+### Contrôle de sortie : la subdivision proposée tient-elle dans un arbre ?
+
+Une fois `optimize` passé, la partition retenue s'accompagne de ses marqueurs
+définissants. Chacun a été validé contre son pool, aucun ne l'a été **contre les
+autres**. Le test qui manque est celui de la compatibilité mutuelle : les
+present-sets des marqueurs définissants forment-ils une famille laminaire (emboîtés
+ou disjoints), ou se croisent-ils ?
+
+    python3 <skills>/marker-laminarity/scripts/check_laminarity.py --pool bdd/actuelle/<L> --markers <registre de marqueurs> --gff3 investigate_phylo/resources/NC_000962.3.gff3 --out résultats/<L>_laminarity
+
+Un croisement de forte fragilité (des dizaines ou des centaines de souches de part et
+d'autre) dit qu'au moins une des deux bornes proposées n'existe pas comme clade. C'est
+exactement le contrôle que « un cluster n'est pas un clade » appelle, mais rendu
+mesurable : au lieu de rappeler la règle, on la teste.
+
+À l'inverse, la fragilité 1-2 domine dès qu'on lit nos `spdi.txt` en binaire (78 % des
+croisements sur L6) : passer `--gff3` pour le mode 3-états, sinon le contrôle rend un
+verdict d'incompatibilité qui ne mesure que des trous de couverture.
 
 ## Skills liés
 
@@ -422,6 +504,38 @@ archivés, leur contenu opérant est ici. Les scripts eux-mêmes PERSISTENT (rie
   sous-ensemble).
 - Le repli glouton est une heuristique de sélection de sous-ensemble (pas l'optimum exact
   du subset) ; suffisant en pratique, le Pareto est lisse.
+
+### Faut-il passer à une vraie optimisation multi-objectif (NSGA-II) ? Non — instruit le 2026-08-10
+
+La question était ouverte (piste P9.3) : un balayage de `lambda` sur une scalarisation
+n'est pas une optimisation multi-objectif, et un vrai front rendrait le choix explicite.
+Verdict après examen : **ne pas réécrire le solveur**, pour deux raisons dont la seconde
+est scientifique et non budgétaire.
+
+**1. Sur les deux objectifs actuels, le balayage ne rate rien.** Une scalarisation
+pondérée n'atteint que les points du front situés sur son enveloppe convexe. Mesuré sur
+un front concave de référence : le balayage de 5 000 valeurs de `lambda` ne rend que
+**2 solutions sur 41**, les deux extrêmes, et 95 % du front est hors de portée quelle que
+soit la pondération. Sur un front convexe, en revanche, il rend **41 sur 41**. Le critère
+de décision est donc la géométrie du front réel, et le skill la documente déjà : « le
+Pareto est lisse ». Un Pareto lisse et régulier en `lambda` est la signature d'un front
+convexe. Dans ce régime, NSGA-II retrouverait exactement ce que le balayage trouve déjà,
+pour un coût de réécriture élevé.
+
+**2. Le troisième objectif ne doit PAS en être un.** L'apport théorique de NSGA-III serait
+de traiter la pureté synapomorphique comme un objectif à maximiser plutôt que comme la
+contrainte `MINSYN`, un balayage 1D de `lambda` étant alors structurellement incapable de
+couvrir un front à deux dimensions. Mais `MINSYN >= 2` est un critère **principiel**, pas
+un compromis négociable : une sous-lignée sans synapomorphie propre n'est pas un clade,
+elle est un cluster. En faire un objectif reviendrait à accepter des lignées sans
+synapomorphie en échange d'un meilleur MDL — exactement ce que le cadrage « un cluster
+n'est pas un clade » interdit. Le front gagné serait un front de solutions
+taxonomiquement irrecevables.
+
+À rouvrir seulement si un balayage réel montre des sauts de `#lignées` que `lambda` ne
+peut pas franchir (symptôme de non-convexité), ou si un objectif légitimement négociable
+s'ajoute. Note de coût, accessoire : le skill `pymoo` est installé mais **la bibliothèque
+ne l'est pas** dans le Python système.
 - La cohérence géo dépend de la couverture de géolocalisation (terminaux peu géolocalisés
   donnent un pays dominant bruité ; MINSYN et #BioProject filtrent).
 

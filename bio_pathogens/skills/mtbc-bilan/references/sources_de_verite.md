@@ -28,5 +28,7 @@ complete, avec le detail de ce qui fait autorite et de ce qui ne le fait pas.
 
 2. Si une `~/.claude/knowledge/tuberculosis.md` existe, la consulter pour
    les apprentissages transverses.
-3. Lire `codes/mtbc/CLAUDE.md` pour les conventions globales du depot.
+3. Lire `codes/mtbc/CLAUDE.md` pour les conventions globales du depot (le
+   descriptif du depot : inventaire des repertoires, structure standard d'un
+   projet, `bdd/`, skills, est dans `codes/mtbc/README.md` depuis le 2026-08-09).
 

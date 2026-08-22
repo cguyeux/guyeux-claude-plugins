@@ -105,7 +105,9 @@ passe par un encadre) ; **visuel** (4-10 figures). **Avant de rediger, lire
    > taxonomiques. Integral : `references/sources_de_verite.md`.
 
 2. Consulter `~/.claude/knowledge/tuberculosis.md` s'il existe.
-3. Lire `codes/mtbc/CLAUDE.md` (conventions globales du depot).
+3. Lire `codes/mtbc/CLAUDE.md` (conventions globales du depot ; l'inventaire des
+   repertoires, la structure standard d'un projet et la description de `bdd/`
+   sont dans `codes/mtbc/README.md` depuis le 2026-08-09).
 
 ## Declenchement
 
@@ -465,6 +467,40 @@ se contenter d'une breve section "Pour archivage". **Sinon** : lister les
 criteres manquants puis les pistes hierarchisees. Si seul le critere 7
 manque : **"Projet quasi-boucle, mais les faits suivants restent fragiles --
 consolidation requise avant cloture serieuse."**
+
+### Phase 8bis -- Verdict de PERIMETRE (en plus du verdict de cloture)
+
+Les sept criteres ci-dessus disent si le projet est FINI. Ils ne disent pas s'il
+est encore le BON CONTENANT. Deux projets sur lesquels ce skill a ete lance
+peuvent etre "non boucles" pour des raisons opposees : il reste du travail dans
+le cadre, ou le cadre lui-meme a cesse de correspondre a ce qui est su.
+
+Lancer :
+
+```bash
+python3 ~/.claude/skills/recadrage/recadrage_signals.py <projet>
+```
+
+et reporter dans le bilan, en une sous-section courte :
+
+- **acquis hors article** : combien d'acquis de `etat_des_decouvertes.md` §2
+  portent une destination B (second papier) ou C (essaimage), et combien n'ont
+  AUCUNE destination -- un acquis non tague est un acquis qui se perdra a la
+  cloture ;
+- **signaux de scission** atteints (sur les 5 criteres de `/recadrage` Phase 4) ;
+- **anciennete du dernier recadrage**.
+
+Puis ajouter au verdict, a cote de CLORE / APPROFONDIR / PIVOTER, deux issues
+que la grille de cloture ne sait pas produire :
+
+- **ESSAIMER** : le projet est sain et son article tient, mais il porte des
+  acquis qui n'y entreront jamais. Ils doivent partir vers le `pistes.md` du
+  repertoire parent avant la cloture, sans quoi ils meurent avec le projet.
+- **SCINDER** : >= 3 criteres sur 5 atteints. Le projet contient deux articles
+  qui s'empechent mutuellement.
+
+Dans les deux cas, ne pas executer le geste ici (ce skill est en lecture seule) :
+le nommer, le chiffrer, et renvoyer vers `/recadrage`.
 
 ---
 

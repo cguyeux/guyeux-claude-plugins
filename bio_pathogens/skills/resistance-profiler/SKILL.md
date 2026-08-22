@@ -16,6 +16,18 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query
 
 # Resistance Profiler : Profil de résistance MTBC
 
+> [!TIP]
+> **Huit prédicteurs publiés existent : s'en servir comme ÉTALONS, pas comme remplaçants.**
+> `TB-ML` (`10.1093/bioadv/vbad040`, GPL-3.0, conteneurs) est explicitement un **cadre de comparaison**
+> de méthodes de prédiction de résistance : c'est le bon point d'entrée pour chiffrer notre performance
+> plutôt que l'affirmer. Les autres : **DrPRG** (graphes de référence, `10.1099/mgen.0.001081`),
+> **MTB++** (classifieur sur 31-mers, `10.1093/bioinformatics/btae243`), **GenTB**, **Treesist-TB**,
+> **Resistance Sniffer**, **PointFinder** (meilleur traitement des indels et codons stop prématurés),
+> **GenoMycAnalyzer** (espèce + résistance sur tout le genre). Avant de comparer : fixer le même
+> catalogue de mutations et le même jeu de phénotypes des deux côtés, sinon on mesure la divergence des
+> catalogues et non celle des méthodes (voir `resistance-catalogue`).
+
+
 > Cadre : groupe Guyeux, Institut FEMTO-ST (CNRS UMR 6174), Université Marie et Louis
 > Pasteur (ex-Université de Franche-Comté), Besançon. Outil de recherche académique,
 > destiné à des publications évaluées par les pairs en phylogénomique de la résistance

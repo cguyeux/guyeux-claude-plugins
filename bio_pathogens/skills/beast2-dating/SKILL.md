@@ -13,6 +13,18 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 
 # beast2-dating : BEAST2 sur alignements SNP binaires MTBC
 
+> [!TIP]
+> **Une chaîne BEAST2 sérieuse ne tourne pas sur un portable.** Compter des jours. `mp` est la seule
+> machine **sans limite de temps** (Slurm plafonne à 8 jours, 12 sur `gpu`), donc le défaut pour une
+> chaîne longue relancée depuis un état. Sur `mh`, **BEAST2 2.7.7 est prêt** dans
+> `/Work/Users/cguyeux/envs/phylo/bin` (l'exécuter avec `LD_LIBRARY_PATH=…/envs/phylo/lib`).
+> **Le BEAGLE fourni est CPU seulement** (`-beagle_info` ne liste que `FRAMEWORK_CPU`, sans CUDA) :
+> les A100 du cluster ne servent donc à rien ici sans une compilation CUDA de BEAGLE. Le levier
+> réel est le parallélisme de chaînes : lancer N chaînes indépendantes en tableau de jobs Slurm
+> plutôt qu'une seule très longue.
+> Voir le skill `remote-compute` (sonde d'état, modèles `sbatch`, pièges). Prérequis : VPN monté (`sudo vpn up`).
+
+
 ## Pourquoi ce skill existe
 
 Les runs BEAST2 sur données MTBC de notre pipeline échouent presque toujours,

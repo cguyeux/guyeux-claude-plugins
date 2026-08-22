@@ -184,10 +184,51 @@ Sub-lineage | n   | MDR (%, 95% CI)      | Any R (%, 95% CI)     | p (FDR)
 | IC d'une proportion | Clopper-Pearson | Toujours (exact) |
 | Tests multiples | FDR Benjamini-Hochberg | Défaut. Bonferroni si très conservateur |
 
+## Puissance : ce que « non significatif » veut dire sur une petite sous-lignée
+
+Ce skill teste **a posteriori**. Il ne dit pas si l'échantillon avait la moindre chance
+de détecter l'effet cherché. Or « aviez-vous la puissance de détecter cette
+différence ? » tombe systématiquement en review sur les sous-lignées à n ≈ 20, et une
+non-significativité rapportée sans effet minimal détectable (MDE) est un point faible
+récurrent de nos manuscrits.
+
+**Effet minimal détectable** à 80 % de puissance, α = 0,05 bilatéral, pour une
+sous-lignée de `n1` souches comparée à un reste de 1 000, en points de pourcentage
+d'écart par rapport à la fréquence de base `p2` :
+
+| n1 | p2 = 5 % | p2 = 20 % | p2 = 50 % |
+|---:|---:|---:|---:|
+| 10 | +33,6 | +42,2 | +38,9 |
+| 20 | +21,6 | +29,5 | +29,6 |
+| 30 | +16,7 | +23,8 | +24,8 |
+| 50 | +12,3 | +18,2 | +19,7 |
+| 100 | +8,2 | +12,9 | +14,5 |
+| 200 | +5,7 | +9,3 | +10,8 |
+| 500 | +3,9 | +6,5 | +7,6 |
+
+Lecture : sur une sous-lignée de **20 souches**, face à une fréquence de base de 20 %,
+il faut un écart de **près de 30 points** pour espérer le détecter. En dessous, un
+Fisher non significatif ne démontre **rien** : il ne distingue pas « pas de différence »
+de « différence que ce n = 20 ne pouvait pas voir ». C'est une **absence de preuve**,
+pas une preuve d'absence, et il faut l'écrire ainsi dans le manuscrit.
+
+Recalculer pour un cas précis (le skill `statistical-power` est installé) :
+
+```python
+import sys; sys.path.insert(0, "<skills>/statistical-power/scripts")
+from power import power
+power(test="two_proportions", prop1=0.45, prop2=0.20, nobs1=20, ratio=50, alpha=0.05)
+```
+
+Règle d'écriture : **tout résultat non significatif rapporté sur n < 100 s'accompagne
+de son MDE.** Cela transforme un point faible en argument (« notre échantillon exclut
+tout écart supérieur à X points »), et cela coûte une ligne.
+
 ## Intégration
 
 | Skill | Usage |
 |-------|-------|
+| `statistical-power` | MDE et puissance a priori, en amont de tout test de ce skill |
 | `resistance-profiler` | Fournit les données de résistance par lignée |
 | `phylogeography` | Fournit les données géographiques pour comparaison |
 | `tbannotator-mcp` | Source directe des données |

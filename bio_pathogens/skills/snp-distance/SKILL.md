@@ -15,6 +15,22 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query
 
 # SNP Distance : Matrice de distances pairwise MTBC
 
+> [!TIP]
+> **Alternative pan-génome, pour les clusters de transmission.** Ce skill compare sur une référence
+> unique, donc il est aveugle à ce qui est absent de H37Rv. **PANPASCO** (Jaenicke et al., *PLoS Comput
+> Biol* 2020, `10.1371/journal.pcbi.1007527`, `gitlab.com/rki_bioinformatics/panpasco`) calcule des
+> distances SNP par paires sur un **mapping pan-génome**, ce qui change les distances quand le génome
+> accessoire compte. À utiliser en recoupement quand une distance décide d'un lien de transmission,
+> jamais silencieusement à la place de l'autre : les deux échelles ne sont pas comparables.
+
+
+> [!TIP]
+> **Une matrice de distances est quadratique.** À 10 000 souches elle compte 5·10⁷ paires, à 100 000
+> elle en compte 5·10⁹ : le calcul et la matrice elle-même débordent le portable bien avant la
+> patience. Envoyer sur `mp` (125 Go, 64 threads, `/data` pour écrire la matrice) ou `mh` `bigmem`
+> (1 To). Voir le skill `remote-compute` (sonde d'état, modèles `sbatch`, pièges). Prérequis : VPN monté (`sudo vpn up`).
+
+
 Calcul de matrices de distances SNP pairwise à partir de données SPDI binaires. Produit des matrices symétriques prêtes pour t-SNE+HDBSCAN, THD, arbres NJ, ou identification de clusters de transmission.
 
 ## Quand utiliser

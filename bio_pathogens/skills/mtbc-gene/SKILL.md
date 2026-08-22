@@ -17,6 +17,17 @@ user-invocable: true
 
 # /mtbc-gene -- the H37Rv gene and protein layer
 
+> [!TIP]
+> **Deux bases pour qualifier un gène au-delà de l'annotation.** **BacFITBase**
+> (`tartaglialab.com/bacfitbase`, `10.1093/nar/gkz931`) recense la contribution des gènes bactériens
+> **pendant l'infection d'un hôte**, ce qui est une question distincte de l'essentialité in vitro
+> mesurée par TnSeq (dont les pièges de comptage de sites TA sont documentés dans
+> `~/.claude/knowledge/tuberculosis.md`). **TuberQ** (`tuberq.proteinq.com.ar`,
+> `10.1093/database/bau035`) donne la druggabilité des protéines de *M. tuberculosis*, utile pour
+> juger si un gène « dark » a un intérêt thérapeutique déclaré. Les deux sont anciennes : citer la
+> mesure, pas la base, et vérifier la publication d'origine.
+
+
 Everything this skill does starts from **one H37Rv gene, named (`katG`) or given by
 its locus tag (`Rv1908c`)**, and answers at a chosen granularity:
 

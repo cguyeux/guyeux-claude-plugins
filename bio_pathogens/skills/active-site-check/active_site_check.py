@@ -120,27 +120,44 @@ def find_entries(entries, *, ec=None, uniprot=None, pdb=None, mcsa=None) -> list
     return sel
 
 
-def map_active_site(qaln: str, taln: str, tstart: int, cat_resids: list[dict]):
+def map_active_site(qaln: str, taln: str, tstart: int, cat_resids: list[dict], qstart: int = 1):
     """Walk a pairwise alignment in TARGET coordinates; for each catalytic target residue
-    (keyed by uniprot_resid), record the aligned query residue and whether it is identical.
-    Returns (rows, n_total, n_present, n_identical)."""
+    (keyed by uniprot_resid), record the aligned query residue, its QUERY-sequence position,
+    and whether it is identical. Returns (rows, n_total, n_present, n_identical).
+
+    `qstart` is the 1-based query-sequence residue number of the first aligned query residue
+    (defaults to 1, i.e. qaln covers the query from its start; pass Foldseek's own `qstart`
+    field for a genuinely LOCAL alignment where the query match does not begin at residue 1 --
+    otherwise `query_resid` silently reports the wrong number).
+
+    WHY `query_resid` MATTERS (reforged 2026-08-01, cf. `dark_enzymes` P10.3): the letter and
+    role of a catalytic residue are not enough to CROSS-CHECK an M-CSA-based call against an
+    independent method (e.g. a structural superposition) -- that comparison is only possible
+    once you know WHICH residue of the query the mapping landed on. Before this fix, every
+    caller had to re-walk qaln/taln by hand to recover it (duplicated in at least two places in
+    one downstream script) -- exactly the class of tool debt this skill exists to eliminate.
+    """
     want = {r["uniprot_resid"]: r for r in cat_resids if r.get("uniprot_resid") is not None}
     tpos = tstart - 1
+    qpos = qstart - 1
     rows = []
     seen = {}
     for qc, tc in zip(qaln, taln):
+        if qc != "-":
+            qpos += 1
         if tc != "-":
             tpos += 1
             if tpos in want and tpos not in seen:
                 present = qc != "-"
                 ident = present and qc.upper() == aa1(want[tpos]["code"])
                 seen[tpos] = {"uniprot_resid": tpos, "target_aa": want[tpos]["code"],
-                              "query_aa": qc if present else "-", "present": present,
-                              "identical": ident, "role": want[tpos]["role"]}
+                              "query_aa": qc if present else "-",
+                              "query_resid": qpos if present else None,
+                              "present": present, "identical": ident, "role": want[tpos]["role"]}
     for rp in want:
         rows.append(seen.get(rp, {"uniprot_resid": rp, "target_aa": want[rp]["code"],
-                                  "query_aa": None, "present": False, "identical": False,
-                                  "role": want[rp]["role"]}))
+                                  "query_aa": None, "query_resid": None, "present": False,
+                                  "identical": False, "role": want[rp]["role"]}))
     rows.sort(key=lambda x: (x["uniprot_resid"] is None, x["uniprot_resid"]))
     n = len(rows)
     return rows, n, sum(r["present"] for r in rows), sum(r["identical"] for r in rows)
@@ -179,6 +196,10 @@ def main(argv=None):
             sp.add_argument("--taln", required=True, help="aligned target string (with '-')")
             sp.add_argument("--tstart", required=True, type=int,
                             help="UniProt residue number of first aligned target residue")
+            sp.add_argument("--qstart", type=int, default=1,
+                            help="query-sequence residue number of first aligned query residue "
+                                 "(Foldseek's own `qstart`; default 1 for a full-length/global "
+                                 "query alignment -- pass the real value for a local alignment)")
         sp.add_argument("--json", action="store_true")
 
     a = p.parse_args(argv)
@@ -205,7 +226,7 @@ def main(argv=None):
                 print(f"  {r['code']}{r['uniprot_resid']}  (PDB {r['pdb_id']} {r['chain']}:{r['auth_resid']})  role: {r['role']}")
         return 0
 
-    rows, n, present, ident = map_active_site(a.qaln, a.taln, a.tstart, cat)
+    rows, n, present, ident = map_active_site(a.qaln, a.taln, a.tstart, cat, qstart=a.qstart)
     verdict = _verdict(n, present, ident)
     if a.json:
         print(json.dumps({"entry": header, "n_catalytic": n, "n_present": present,
@@ -214,7 +235,8 @@ def main(argv=None):
         print(f"M-CSA {header['mcsa_id']}  EC {header['ec']}  UniProt {header['uniprot']}")
         for r in rows:
             mark = "==" if r["identical"] else ("~~" if r["present"] else "XX")
-            print(f"  [{mark}] target {r['target_aa']}{r['uniprot_resid']}  query {r['query_aa']}  role: {r['role']}")
+            qpos = f"{r['query_aa']}{r['query_resid']}" if r["query_resid"] else (r["query_aa"] or "-")
+            print(f"  [{mark}] target {r['target_aa']}{r['uniprot_resid']}  query {qpos}  role: {r['role']}")
         print(f"\n  VERDICT: {verdict}")
     return 0
 

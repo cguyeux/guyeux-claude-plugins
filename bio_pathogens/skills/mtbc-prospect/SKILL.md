@@ -449,6 +449,27 @@ Puis inviter a `/pistes read` pour voir l'arbre a jour, et `/cahier-de-labo upda
 si la prospection a elle-meme produit une connaissance (une analogie eclairante,
 un lien litterature).
 
+**Triage de perimetre avant d'ecrire (obligatoire, cf. `/recadrage`).** Une
+prospection laterale genere par construction des pistes qui debordent l'objet du
+projet : c'est meme son interet. Avant l'ecriture de la Phase 8, trancher pour
+chaque survivante ou elle appartient :
+- **dans le projet** (elle sert la question fondatrice ou l'article en cours) ->
+  `pistes.md` du projet, comme decrit en Phase 8 ;
+- **hors du projet** (autre gene, autre lignee, autre organisme, autre
+  discipline) -> `pistes.md` du repertoire **parent**, au format
+  `[SERENDIPITE <- <projet>]` avec ses sous-pistes d'amorcage obligatoires
+  (litterature, test in silico minimal, critere go/no-go). Voir `/recadrage`
+  Phase 3bis pour le format exact.
+Une piste hors perimetre inscrite dans le projet disparaitra avec lui : c'est le
+mode de perte que `/recadrage` existe pour empecher, et la Phase 9 est le dernier
+moment ou l'on peut encore l'eviter sans relire tout le dossier.
+
+Enfin, si la prospection revele que la question fondatrice elle-meme ne colle
+plus a ce qui est su (l'objectif principal est tranche, ou le resultat le plus
+solide n'est pas celui qu'annonce le titre), ne pas le traiter comme une piste :
+le signaler et proposer `/recadrage` complet. Prospect imagine des directions
+neuves ; il n'a pas autorite pour redefinir le cadre.
+
 **(b) Rien n'a survecu.** Le dire franchement, sans remplissage :
 
 ```
@@ -509,6 +530,12 @@ C'est une conclusion honnete et souhaitable : ne pas la maquiller.
 - **`/lit-review` et `tbmonitor-papers`** : appui litterature du challenge.
 - **`/etat`** : quand une piste prospectee, une fois realisee, produit un acquis,
   `/pistes done` propose de migrer vers `etat_des_decouvertes.md`.
+- **`/recadrage`** : geste complementaire et symetrique. `prospect` CREE de la
+  matiere (directions neuves) ; `recadrage` la RANGE (destination de chaque
+  acquis, essaimage hors projet, scission). La Phase 9 de ce skill applique son
+  triage a chaud sur les pistes generees ; le recadrage complet, lui, relit tout
+  le dossier et peut redefinir la question fondatrice -- ce que prospect ne fait
+  jamais.
 - **`/cahier-de-labo`** : consigner la seance de prospection si elle a produit une
   connaissance (analogie, lien litterature, contradiction inter-projets).
 

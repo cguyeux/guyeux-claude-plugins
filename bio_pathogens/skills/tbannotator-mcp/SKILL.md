@@ -258,6 +258,37 @@ FROM mv_strain_classification
 WHERE system_name = 'guyeux' AND lineage_code LIKE '4.15%';
 ```
 
+## PIÈGE MAJEUR : `host` est du texte libre non harmonisé (mesuré le 2026-08-10)
+
+`mv_strain_metadata.host` porte **252 valeurs distinctes** pour 165 511 souches, recopiées
+telles quelles depuis les BioSample. Filtrer sur le binôme canonique **rate silencieusement
+la moitié de la cible** :
+
+```sql
+-- ce que l'on écrit spontanément
+WHERE host = 'Bos taurus'                    -->  4 728 souches
+-- ce qui est réellement bovin
+WHERE host ILIKE ANY(ARRAY['%bos taurus%','%cattle%','%bovine%','%cow%',
+                           '%calf%','%heifer%','%bull%'])   -->  8 261 souches, 14 étiquettes
+```
+
+**43 % des souches bovines manquent** avec le filtre canonique. Les étiquettes réelles
+incluent `Cattle` (1 639), `Bovine` (792), `BOVINE` (351), `Dairy cattle` (337), `cattle`
+(128), `Cow` (121). Même fragmentation ailleurs : `Homo sapiens` / `Homo sapiens sapiens`
+(2 258) / `Human/Culture` (233) / `Homosapiens` (183) / `"""Homo sapiens` (126, guillemets
+parasites) ; blaireau réparti sur `Meles meles` (196) / `BADGER` (195) / `Badger` (124) ;
+cervidés sur `Deer` (133) / `Cervid` (105).
+
+C'est la pire classe d'erreur : **la requête aboutit, le résultat est plausible, et il est
+faux**. Elle touche directement toute analyse hôte-spécifique (`animal_vs_human`,
+`convergent-evolution`, `tissue-tropism-mtbc`, `coevolution`).
+
+Règle : **ne jamais filtrer `host` par égalité.** Toujours (a) lister d'abord les valeurs
+présentes (`GROUP BY host ORDER BY count(*) DESC`), (b) construire un `ILIKE ANY(...)`
+couvrant les variantes de casse, les noms vernaculaires et les binômes, (c) rapporter le
+nombre d'étiquettes agrégées dans le manuscrit. Le même contrôle vaut pour
+`isolation_source`.
+
 ## Important Notes
 
 - The `guyeux` classification system (renamed from `Senelle` on the 2026-07-31 IDEEV migration) corresponds to the TBannotator/Guyeux nomenclature used in L4.11, L4.14, L4.15 articles. The **default** system is now `tblearn` (ML-based).

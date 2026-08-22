@@ -180,6 +180,48 @@ Critere 2 : Taux GC
   Attendu : 61% - 69% (MTBC normal : ~65.6%)
 ```
 
+#### Complement : outlier de GC RELATIF au lot (MAD), a passer AVANT un clustering
+
+Le seuil absolu ci-dessus attrape une contamination massive par un organisme a GC
+tres different. Il ne voit PAS une contamination moderee par une mycobacterie
+voisine, dont le GC reste dans 61-69 %. Or c'est precisement celle-la qui fait le
+plus de degats en aval : une souche contaminee forme un **bloc d'artefact qui
+croise tout le monde** dans un co-clustering ou un test de compatibilite de
+marqueurs, et le diagnostic se lit alors comme un probleme de topologie, pas de
+qualite.
+
+Le controle robuste est un ecart median absolu (MAD), calcule **sur le lot etudie**
+plutot que contre une constante :
+
+```python
+import numpy as np
+gc = np.asarray(gc_values, dtype=float)          # un lot, une lignee, un pool
+med = np.median(gc)
+sigma = 1.4826 * np.median(np.abs(gc - med))     # MAD -> ecart-type robuste
+outlier = np.abs(gc - med) > 3 * sigma           # 3 sigma par defaut
+```
+
+Le facteur 1,4826 convertit le MAD en equivalent ecart-type pour une gaussienne ;
+la mediane et le MAD ne sont pas tires par les valeurs aberrantes, contrairement a
+la moyenne et a l'ecart-type, ce qui est exactement ce qu'on veut quand ce sont les
+aberrantes que l'on cherche.
+
+**Le moment compte autant que la methode** : ce controle se passe **en amont** du
+clustering ou de la reconstruction, pas post hoc sur les resultats. Une fois la
+souche entree dans le calcul, elle a deja deforme la structure qu'on essaie de
+lire.
+
+Deux garde-fous. Un lot **homogene** donne un MAD tres petit, donc 3 sigma tres
+serre : verifier `sigma` avant de conclure (un plancher absolu, par exemple
+0,1 point de GC, evite de declarer aberrantes des souches parfaitement normales).
+Et un lot **majoritairement contamine** deplace la mediane : le MAD dit alors que
+les souches saines sont les aberrantes. Croiser avec le seuil absolu, qui lui ne
+depend pas du lot.
+
+Origine : controle qualite du depot `bi-clustering` de C. Lecarpentier, ou il
+precede tout ajustement de LBM. Voir aussi `marker-laminarity`, qui subit
+directement cet artefact.
+
 ### Critere 3 : Couverture du genome
 
 Le pourcentage de bases du genome de reference (H37Rv) couvertes par
@@ -190,7 +232,19 @@ au moins 1 read.
 Lire le `report.json` de TBannotator :
 ```python
 coverage = report['mapping_stats']['covered_bases_percent']
+if coverage is not None and coverage <= 1:
+    coverage *= 100          # <-- OBLIGATOIRE, voir l'avertissement ci-dessous
 ```
+
+> [!WARNING]
+> **`covered_bases_percent` est stocke comme une FRACTION (0-1), malgre son nom.** Une souche
+> a 99,5 % de couverture porte la valeur `0.995` : comparer directement au seuil de 95 fait
+> echouer TOUTES les souches. Vecu le 2026-07-31 : un lot de 29 genomes excellents (couverture
+> reelle 98,8-99,8 %, profondeur 84-95x) est ressorti **29/29 FAIL**. Meme ambiguite que
+> `gc_content` au critere 2 : normaliser d'abord (`x*100 if x <= 1`).
+>
+> **Regle de diagnostic generale** : un lot entier qui echoue au MEME critere est presque
+> toujours un bug de mesure, pas une realite biologique. Verifier l'unite avant de conclure.
 
 #### Seuils
 
@@ -307,6 +361,14 @@ contamination inter-especes, declencher le Critere 6.
 Si la lignee est inconnue : appliquer les seuils generiques
 (800-3000 PASS, <500 ou >4000 FAIL).
 
+> [!IMPORTANT]
+> **Ne PAS calculer la distribution de reference sur une lignee MAJEURE agregee.** L4 melange
+> des sous-lignees aux profils tres differents (L4.9 mediane 347, L4.1 max 1119) : un min/max
+> calcule sur « tout L4 » est ininterpretable, et un echantillon tronque le fausse encore.
+> Vecu le 2026-07-31 : un max L4 estime a 991 sur echantillon partiel a produit de faux WARN
+> pour des souches a 1013-1058 SPDI, parfaitement normales pour L4.1 (vrai max > 1130).
+> Utiliser la distribution de la SOUS-lignee, ou a defaut balayer la lignee entiere.
+
 #### Sortie
 
 ```
@@ -378,6 +440,20 @@ Pour une souche MTBC saine, chaque housekeeping porte typiquement
 
 **Verdict combine** : FAIL si au moins 2 indicateurs sur 3 sont FAIL,
 ou si rpoB+rpoC >15 (seuil absolu).
+
+> [!CAUTION]
+> **Le verdict est COMBINE, jamais un OU logique entre indicateurs — et le ratio MNP seul ne
+> vaut rien.** Le seuil WARN du MNP est fixe ici a 10 %, alors que le **Critere 8** qualifie
+> explicitement `%MNP ~10-12 %` de **« MTBC normal »**. Un MTBC parfaitement sain declenche
+> donc mecaniquement un WARN sur ce seul indicateur : c'est attendu, ce n'est PAS un signal.
+> Une implementation naive en OU transforme tout un lot sain en suspect de contamination
+> (vecu le 2026-07-31).
+>
+> **Le discriminant fort est rpoB+rpoC**, pas le MNP. Reperes empiriques mesures sur 29
+> genomes MTBC sains (couverture 98,8-99,8 %, profondeur 84-95x) : **rpoB+rpoC = 0 a 3**
+> et **MNP = 9,1 a 12,8 %**. A comparer au cas de contamination averee du Cas 1
+> (rpoB 41, rpoC 47, MNP 24,7 %, depth HK/autre 7,6x) : l'ecart est d'un ordre de grandeur
+> sur rpoB/rpoC, alors que le MNP d'un MTBC sain frole deja le seuil WARN.
 
 #### Sortie
 

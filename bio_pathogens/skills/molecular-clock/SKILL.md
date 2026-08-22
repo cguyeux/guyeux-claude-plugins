@@ -16,6 +16,15 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query
 
 # Molecular Clock : Datation moléculaire MTBC
 
+> [!TIP]
+> **Ce qui déborde ici, c'est la mémoire, pas le temps.** Une matrice de distances ou un alignement
+> de plusieurs milliers de souches passe mal en local : `mp` offre 125 Go immédiatement disponibles,
+> `mh` partition `bigmem` va jusqu'à 1 To. À noter, `treetime` est **déjà installé aux deux
+> endroits** : `/usr/bin/treetime` sur `mp` (route la moins coûteuse pour une datation rapide) et
+> version 0.12.1 dans `/Work/Users/cguyeux/envs/phylo/bin` sur `mh`.
+> Voir le skill `remote-compute` (sonde d'état, modèles `sbatch`, pièges). Prérequis : VPN monté (`sudo vpn up`).
+
+
 Estimation des temps de divergence pour les phylogénies MTBC. Gère spécifiquement le problème du signal temporel faible (R² < 0.01) inhérent à MTBC, avec des stratégies de calibration multi-contraintes.
 
 ## Phase 0 : Cadre épistémique : les TMRCA dépendent de la fenêtre de calibration

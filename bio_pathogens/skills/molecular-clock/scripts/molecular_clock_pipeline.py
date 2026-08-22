@@ -488,7 +488,7 @@ def main():
         candidates = [
             script_dir / '../../investigate_phylo/iqtree2',
             script_dir / '../../../mtbc/investigate_phylo/iqtree2',
-            Path.home() / 'Documents/docs/codes/mtbc/investigate_phylo/iqtree2',
+            Path.home() / 'docs/codes/mtbc/investigate_phylo/iqtree2',
         ]
         iqtree = None
         for c in candidates:

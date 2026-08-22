@@ -95,10 +95,56 @@ def read_rd_from_report(report_path: Path) -> dict[str, bool]:
     return rd_status
 
 
+def resolve_pool(lineage_dir: Path) -> list[Path]:
+    """Répertoires à scanner pour le nœud désigné par `lineage_dir`.
+
+    `bdd/actuelle/` a un naming PLAT : `Bovis.2` et `Bovis.2.1` sont deux répertoires FRÈRES,
+    la hiérarchie est entièrement dans le nom. Deux conséquences, toutes deux fatales à un
+    `iterdir()` sur le seul répertoire nommé (dette P6.9 de lineage_navigator) :
+
+      - un nœud INTERNE n'y porte que ses souches BASALES. `bdd/actuelle/Bovis.2.1/` contient
+        une poignée de souches quand le clade `Bovis.2.1` en compte 1 490 ;
+      - en convention dir-mixte, un nœud sans souche basale n'a AUCUN répertoire. `Bovis.2.2`
+        (11 423 souches) et `Bovis.2.3` (139) n'existent pas sur disque. L'ancien code sortait
+        « n'est pas un répertoire » sur les plus gros clades de la base.
+
+    On rassemble donc le répertoire lui-même s'il existe, plus tous ses frères dont le nom est
+    un descendant pointé, le point de séparation étant obligatoire (`Bovis.1.` ne matche jamais
+    `Bovis.10`). Un répertoire hors BDD (pool de symlinks, dossier de travail) est rendu tel
+    quel : le comportement historique est conservé.
+    """
+    if any(ch in lineage_dir.name for ch in "/\\"):
+        return [lineage_dir]
+    parent, name = lineage_dir.parent, lineage_dir.name
+    pools = [lineage_dir] if lineage_dir.is_dir() else []
+    if parent.is_dir():
+        pools += sorted(d for d in parent.iterdir()
+                        if d.is_dir() and d.name.startswith(name + "."))
+    return pools or [lineage_dir]
+
+
 def scan_lineage_dir(lineage_dir: Path, ref: str) -> list[dict]:
-    """Scanne le répertoire et lit les données de chaque SRA."""
+    """Scanne le répertoire et lit les données de chaque SRA.
+
+    Découverte RÉCURSIVE (corrigé 2026-08-17, dette P6.9 de lineage_navigator). L'ancienne
+    version ne regardait que les enfants directs. Sur une BDD à naming PLAT (`bdd/actuelle/`,
+    où `Bovis.2` et `Bovis.2.1` sont deux répertoires frères) c'est correct ; mais dès qu'on lui
+    donne un pool de symlinks organisé en sous-répertoires, ou une BDD à hiérarchie réelle, elle
+    rendait 0 souche sans le dire. Une souche est donc repérée par la présence d'un répertoire
+    `<ref>/`, à n'importe quelle profondeur, symlinks suivis et doublons dédupliqués.
+    """
     samples = []
-    sra_dirs = sorted([d for d in lineage_dir.iterdir() if d.is_dir() and not d.name.startswith(".")])
+    sra_dirs, seen = [], set()
+    for pool in resolve_pool(lineage_dir):
+        for ref_dir in sorted(pool.glob(f"**/{ref}")):
+            sra_dir = ref_dir.parent
+            if sra_dir == pool or sra_dir.name.startswith("."):
+                continue
+            key = sra_dir.resolve()
+            if key in seen:
+                continue
+            seen.add(key)
+            sra_dirs.append(sra_dir)
 
     for sra_dir in sra_dirs:
         ref_dir = sra_dir / ref
@@ -1123,15 +1169,20 @@ def main():
     args = parser.parse_args()
 
     lineage_dir = args.lineage_dir.resolve()
-    if not lineage_dir.is_dir():
-        print(f"ERREUR: {lineage_dir} n'est pas un répertoire.", file=sys.stderr)
+    pools = resolve_pool(lineage_dir)
+    if not any(p.is_dir() for p in pools):
+        print(f"ERREUR: ni {lineage_dir} ni aucun sous-clade `{lineage_dir.name}.*` "
+              f"n'existe dans {lineage_dir.parent}.", file=sys.stderr)
         sys.exit(1)
 
     lineage_name = lineage_dir.name
-    output_path = args.output or (lineage_dir / "clade_finder.png")
+    # Le nœud peut être un CONTENEUR sans répertoire : on écrit alors à côté, dans le parent.
+    default_out = (lineage_dir if lineage_dir.is_dir() else lineage_dir.parent) / \
+        (f"clade_finder_{lineage_name}.png" if not lineage_dir.is_dir() else "clade_finder.png")
+    output_path = args.output or default_out
 
     # Phase 0 : scan
-    print(f"Scan de {lineage_dir}...", file=sys.stderr)
+    print(f"Scan de {lineage_dir} ({len(pools)} répertoire(s) du sous-arbre)...", file=sys.stderr)
     samples = scan_lineage_dir(lineage_dir, args.ref)
     if len(samples) < 5:
         print(f"ERREUR: seulement {len(samples)} SRAs avec données. Minimum 5.", file=sys.stderr)

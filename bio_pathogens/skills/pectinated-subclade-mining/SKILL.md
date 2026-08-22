@@ -220,6 +220,34 @@ pour une hierarchie SPECIFIEE (il relance sa propre detection qui diverge).
    exclure aussi les sister-clades proches phylogenetiquement.
 4. **Conclure trop vite avec 0 synapomorphismes** : tester avec seuils
    relaches avant d'abandonner ; si toujours 0, c'est une vraie homogeneite.
+5. **Ne jamais verifier que les markers extraits sont mutuellement compatibles**
+   (cf. section suivante) : chaque sous-clade est valide SEUL, jamais le jeu.
+
+## Validation de laminarite en sortie (obligatoire depuis 2026-08-10)
+
+Ce skill valide chaque sous-clade **isolement** : ses markers sont-ils presents
+dedans et absents ailleurs ? Il ne demande jamais si le JEU de markers produit,
+pris ensemble, est compatible avec **un** arbre. Or deux sous-clades peuvent
+chacun passer le test per-pool tout en portant des markers qui se **croisent** :
+c'est le conflit des quatre gametes, et il signifie qu'au moins un des deux
+clades n'existe pas tel qu'on l'a decoupe.
+
+Apres une campagne d'extraction, passer le jeu complet a `marker-laminarity` :
+
+    python3 <skills>/marker-laminarity/scripts/check_laminarity.py --pool bdd/actuelle/<L> [--pool ...] --markers <projet>/data/markers_v2 --gff3 investigate_phylo/resources/NC_000962.3.gff3 --out résultats/<L>_laminarity
+
+Ce qu'il faut lire, dans l'ordre : la **borne combinatoire** (plus de present-sets
+distincts que `n-1` = incompatibilite prouvee sans calcul) ; le nombre de
+**croisements** ; et surtout leur **fragilite**, `min(depassement)` = le nombre de
+souches dont le retrait tuerait le conflit. Un croisement de fragilite 1 ou 2 est
+un trou de couverture ou une souche douteuse, a traiter par `strain-qc` ; un
+croisement a trois chiffres est un vrai desaccord de decoupe, a arbitrer par
+l'arbre ML.
+
+Le mode 3-etats (`--gff3`) n'est pas optionnel en pratique : sans lui, nos
+`spdi.txt` confondent « absent » et « non couvert », et la mesure sur L6 montre
+que **78 % des croisements ainsi declares tiennent sur au plus 2 souches**, donc
+sont des artefacts de couverture.
 
 ## Fichiers produits
 

@@ -15,6 +15,14 @@ user-invocable: true
 
 # mbovis.org : Spoligo Bovis (SB) Database Guide
 
+> [!TIP]
+> **SITVITBovis, la déclinaison *M. bovis* de SITVIT.** `pasteur-guadeloupe.fr:8081/SITVIT_Bovis`
+> (`10.1093/database/baab081`) est une base publique **et un outil de cartographie** des cas animaux
+> **et humains** attribués à *M. bovis*, donc la ressource adaptée quand la question porte sur
+> l'interface hôte animal / hôte humain. Complète `sitvitweb` (spoligotypes MTBC en général) et se
+> croise avec `bovine-genomics` pour le versant hôte.
+
+
 ## Vue d'ensemble
 
 mbovis.org est la base de données internationale de référence pour la nomination

@@ -19,6 +19,16 @@ user-invocable: true
 
 # mtbc-gene-network : the MTBC interactome as a queryable graph (local-first)
 
+> [!TIP]
+> **Interactome indépendant de STRING : MycoPrint.** `webs.iiitd.edu.in/raghava/mycoprint/`
+> prédit l'interactome de H37Rv par **Domain Interaction Mapping**, méthode différente des canaux
+> STRING. Intérêt direct : la base de connaissances documente que les canaux de POSITION de STRING
+> (voisinage, fusion, cooccurrence) font redécouvrir le chromosome plutôt que la biologie. Un
+> interactome fondé sur les domaines protéiques n'a pas ce biais, ce qui en fait un contrôle et non un
+> doublon. Attendu, en revanche : une couverture et une précision différentes, à ne pas fusionner
+> naïvement avec un réseau STRING.
+
+
 ## Overview
 
 `annotation_mtbc` already computed the whole-proteome STRING network once
