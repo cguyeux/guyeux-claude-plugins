@@ -135,7 +135,7 @@ la laminarisation classique traiter que ce qui reste.
 
 `--strain-tolerance` : >= 1 est un compte absolu de taxons ; < 1 (defaut 0,05) est
 une fraction de la taille du plus petit marqueur du croisement. **Avec `--fit`, les
-taxons sont des BLOCS-SOUCHES, pas des souches reelles** — une exception y retire un
+taxons sont des BLOCS-SOUCHES, pas des souches reelles** : une exception y retire un
 bloc entier, pas la poignee de souches reelles qui le composent ; pour un nettoyage a
 la resolution de la souche reelle, construire une matrice souche-reelle x
 marqueur-agrege (presence = porte au moins un SPDI brut membre du marqueur) et la
@@ -193,12 +193,12 @@ en `ImageData` a 1 px par cellule puis mise a l'echelle par le canvas, ce qui re
 fluide a plusieurs centaines de milliers de cellules. Sur L6 : 618 profils x 651
 marqueurs = 402 k cellules, fichier de 1,2 Mo. Sur des souches **brutes** (35 401
 lignes pour L2.2.1) l'image serait hors de portee. **On ne navigue jamais la matrice
-brute, on navigue la matrice reduite** — et la deduplication par profil est
+brute, on navigue la matrice reduite** : la deduplication par profil est
 exactement cette reduction.
 
 ## Tests
 
-`python3 scripts/test_laminarity.py` — huit cas dont la reponse se derive a la main
+`python3 scripts/test_laminarity.py` : huit cas dont la reponse se derive a la main
 (jeu laminaire qui doit rendre `((a,b),(c,d));`, conflit des 4 gametes, depassement
 sur UNKNOWN, borne combinatoire, deduplication des deux axes, fragilite et temoins,
 `--strain-level` qui repare sous le seuil de tolerance et qui s'abstient au-dessus).

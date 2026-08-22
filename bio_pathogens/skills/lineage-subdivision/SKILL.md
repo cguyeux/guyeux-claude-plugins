@@ -73,7 +73,7 @@ même pool (L6, 1 364 souches), pas par argument :
 | ARI entre les deux partitions | 0,097 | |
 
 Lecture : les deux ne mesurent pas la même chose. La densité est deux fois plus rapide et
-rend des groupes gros et nettement séparés, chacun avec ses marqueurs exclusifs — mais elle
+rend des groupes gros et nettement séparés, chacun avec ses marqueurs exclusifs, mais elle
 **renvoie 29 % des souches au bruit**, ce qui est exactement le régime redouté sur un clade
 sur-échantillonné. Le co-clustering ne jette personne et descend plus fin, mais ses blocs
 **ne sont pas des candidats clades** (3 sur 38 seulement portent une synapomorphie
@@ -505,7 +505,7 @@ archivés, leur contenu opérant est ici. Les scripts eux-mêmes PERSISTENT (rie
 - Le repli glouton est une heuristique de sélection de sous-ensemble (pas l'optimum exact
   du subset) ; suffisant en pratique, le Pareto est lisse.
 
-### Faut-il passer à une vraie optimisation multi-objectif (NSGA-II) ? Non — instruit le 2026-08-10
+### Faut-il passer à une vraie optimisation multi-objectif (NSGA-II) ? Non, instruction du 2026-08-10
 
 La question était ouverte (piste P9.3) : un balayage de `lambda` sur une scalarisation
 n'est pas une optimisation multi-objectif, et un vrai front rendrait le choix explicite.
@@ -528,7 +528,7 @@ contrainte `MINSYN`, un balayage 1D de `lambda` étant alors structurellement in
 couvrir un front à deux dimensions. Mais `MINSYN >= 2` est un critère **principiel**, pas
 un compromis négociable : une sous-lignée sans synapomorphie propre n'est pas un clade,
 elle est un cluster. En faire un objectif reviendrait à accepter des lignées sans
-synapomorphie en échange d'un meilleur MDL — exactement ce que le cadrage « un cluster
+synapomorphie en échange d'un meilleur MDL, exactement ce que le cadrage « un cluster
 n'est pas un clade » interdit. Le front gagné serait un front de solutions
 taxonomiquement irrecevables.
 

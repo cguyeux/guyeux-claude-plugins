@@ -198,7 +198,7 @@ script les traite par defaut :
   massivement sur-confiante et toutes les probabilites saturent a 0 ou 1.
   L'argmax survit, la confiance non. Defaut `--weight block` : un bloc-marqueur
   compte pour **une** observation (la fraction de presence porte l'information).
-  `--weight marker` reproduit la formule naive, gardee pour comparaison — si les
+  `--weight marker` reproduit la formule naive, gardee pour comparaison : si les
   posterieurs saturent avec elle et pas avec `block`, c'est la demonstration du
   piege sur vos donnees.
 - **Absence contre non-couverture.** Un marqueur non appele n'est pas une absence.
@@ -208,7 +208,7 @@ script les traite par defaut :
 
 ## Tests
 
-`python3 scripts/test_place_strains.py` — quatre cas sur donnees synthetiques
+`python3 scripts/test_place_strains.py` : quatre cas sur donnees synthetiques
 generees DEPUIS un `alpha` connu, donc a reponse verifiable. Ils exhibent les deux
 pieges au lieu de les affirmer : sous `--weight marker` les trois posterieurs
 saturent a **1,000**, sous `--weight block` ils valent 0,990 a 0,993 ; et l'argmax

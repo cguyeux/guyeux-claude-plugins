@@ -345,7 +345,7 @@ Une fois toutes les figures inspectees :
    Results, Discussion...), en excluant l'occurrence dans sa propre
    caption. Une figure sans aucun appel depuis la prose est une issue
    bloquante, listee explicitement dans le rapport (Phase 6) meme si
-   toutes ses autres criteres visuels sont OK — le statut global de
+   toutes ses autres criteres visuels sont OK : le statut global de
    cette figure ne peut pas etre `OK` tant qu'elle n'est pas citee.
 
 ---
@@ -479,10 +479,10 @@ applicable automatiquement :
 - Appliquer la grille de criteres A-H systematiquement
 - Comparer chaque figure a sa caption LaTeX
 - **Verifier que chaque legende est autosuffisante** (comprehensible
-  sans lire le texte principal — critere F, regle imperative)
+  sans lire le texte principal, critere F, regle imperative)
 - **Verifier que chaque figure legendee est appelee par au moins un
   `\ref{}` depuis la prose du corps du texte** (regle imperative,
-  Phase 5 point 7) — pas seulement l'inverse (refs cassees)
+  Phase 5 point 7), pas seulement l'inverse (refs cassees)
 - Maintenir `fig_check.md` a jour, tri par numero d'apparition
 - Reperer les figures orphelines et les refs cassees
 - Proposer des corrections concretes et actionnables (pas de "ameliorer
