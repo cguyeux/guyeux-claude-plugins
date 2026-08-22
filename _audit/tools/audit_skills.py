@@ -98,6 +98,15 @@ REF_EXTERNE = re.compile(
 DESC_MAX = 1024   # au-dela, la description risque d'etre tronquee dans le catalogue
 CORPS_MIN = 60
 
+# Deux implementations reelles, complementaires et volontairement distinctes :
+# le diagnostic vit dans bio_pathogens, la narration de manuscrit dans bio_redac.
+DOUBLONS_INTENTIONNELS = {
+    "phylo-history": {
+        "bio_pathogens/skills/phylo-history",
+        "bio_redac/skills/phylo-history",
+    },
+}
+
 
 def parse_frontmatter(text: str):
     """Renvoie (dict, corps). dict vaut None si le frontmatter est absent."""
@@ -248,7 +257,8 @@ def main():
         for r in signales:
             print(f"{r['home']:24s} {r['dir']:34s} {'; '.join(r['issues'])}")
 
-    # doublons : deux copies REELLES d'un meme nom divergent en silence
+    # Deux copies reelles d'un meme nom divergent en silence, sauf exception
+    # documentee dont les deux chemins attendus sont presents.
     par_nom = defaultdict(list)
     for r in rows:
         par_nom[r["dir"]].append(r)
@@ -256,7 +266,11 @@ def main():
     if dbl:
         print("\nNoms portes par plusieurs skills reels :")
         for n, v in sorted(dbl.items()):
-            etat = "IDENTIQUES" if len({x["sha"] for x in v}) == 1 else "divergents"
+            paths = {str(Path(x["path"]).relative_to(ROOT)) for x in v}
+            if paths == DOUBLONS_INTENTIONNELS.get(n):
+                etat = "EXCEPTION_INTENTIONNELLE (diagnostic + narration)"
+            else:
+                etat = "IDENTIQUES" if len({x["sha"] for x in v}) == 1 else "divergents"
             print(f"  {n:32s} {[x['home'] for x in v]}  {etat}")
         print("  (IDENTIQUES = a symlinker sur le canonique avant divergence)")
 
