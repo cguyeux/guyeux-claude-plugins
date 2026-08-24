@@ -89,6 +89,18 @@
       "category": "Developer tools"
     },
     {
+      "name": "multimedia",
+      "source": {
+        "source": "local",
+        "path": "./plugins/multimedia"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
       "name": "ops",
       "source": {
         "source": "local",

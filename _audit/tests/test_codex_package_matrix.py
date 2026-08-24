@@ -70,6 +70,21 @@ class CodexPackageMatrixTests(unittest.TestCase):
             {row["package_candidate"] for row in direct},
         )
 
+    def test_payload_packages_are_marked_after_materialization(self):
+        rows = self.matrix.build_rows()
+        payload = [row for row in rows if row["classification"] == "packaged-payload"]
+        self.assertEqual(15, len(payload))
+        self.assertEqual(
+            {
+                "bio-pathogens",
+                "bio-population-genetics",
+                "ia",
+                "multimedia",
+                "web",
+            },
+            {row["package_candidate"] for row in payload},
+        )
+
     def test_matrix_keeps_required_verrous_visible(self):
         rows = {row["name"]: row for row in self.matrix.build_rows()}
         self.assertIn("unsupported-frontmatter", rows["tbmonitor-papers"]["signals"])

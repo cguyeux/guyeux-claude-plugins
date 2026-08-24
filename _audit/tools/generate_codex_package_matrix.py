@@ -99,6 +99,8 @@ def classify(signals: set[str], packages: list[str]) -> str:
     if packages:
         if packages == ["guyeux-phylo-pilot"]:
             return "packaged-pilot"
+        if "script-payload" in signals or "data-payload" in signals:
+            return "packaged-payload"
         return "packaged-direct"
     if "project-memory-write" in signals:
         return "blocked-by-personal-workflow"
@@ -115,6 +117,8 @@ def action_for(row: dict[str, Any]) -> str:
         return "Deja materialise dans le lot temoin, verifier lors de l'extension."
     if classification == "packaged-direct":
         return "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
+    if classification == "packaged-payload":
+        return "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
     if classification == "blocked-by-personal-workflow":
         return "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
     if classification == "needs-codex-runtime-adaptation":
@@ -195,6 +199,7 @@ def markdown(rows: list[dict[str, Any]]) -> str:
         f"- Total non exporte Codex : {len(rows)}",
         f"- Deja materialises dans un paquet pilote : {counts['classification'].get('packaged-pilot', 0)}",
         f"- Deja materialises dans des paquets directs : {counts['classification'].get('packaged-direct', 0)}",
+        f"- Deja materialises dans des paquets payload audites : {counts['classification'].get('packaged-payload', 0)}",
         f"- Bloques par workflow personnel d'ecriture : {counts['classification'].get('blocked-by-personal-workflow', 0)}",
         f"- Adaptation runtime Claude ou MCP requise : {counts['classification'].get('needs-codex-runtime-adaptation', 0)}",
         f"- Audit de payload requis : {counts['classification'].get('needs-payload-package-audit', 0)}",

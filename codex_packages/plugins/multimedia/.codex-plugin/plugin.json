@@ -1,0 +1,18 @@
+{
+  "name": "multimedia",
+  "version": "0.1.0",
+  "description": "Local Codex package for 2 migrated Claude skills.",
+  "author": {
+    "name": "Christophe Guyeux"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Multimedia Payload",
+    "shortDescription": "Audited multimedia skills.",
+    "longDescription": "Codex package for multimedia skills with scripts and lightweight assets, excluding generated environments and caches.",
+    "developerName": "Christophe Guyeux",
+    "category": "Developer tools",
+    "capabilities": [],
+    "defaultPrompt": "Use the installed skills with their documented prerequisites and evidence boundaries."
+  }
+}

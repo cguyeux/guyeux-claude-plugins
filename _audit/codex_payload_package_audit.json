@@ -1,0 +1,455 @@
+{
+  "rows": [
+    {
+      "name": "beast2-dating",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/beast2-dating",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 2,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 23934,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 23935,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": [],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "host-pathogen-pair",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/host-pathogen-pair",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 4,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 12690,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 12691,
+        "excluded_files": 2,
+        "excluded_bytes": 22861,
+        "excluded_roots": [
+          "__pycache__"
+        ],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "mtbc-gene-network",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/mtbc-gene-network",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 7,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 7,
+        "copied_bytes_expected": 25081,
+        "copied_files_actual": 7,
+        "copied_bytes_actual": 24998,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": [],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "sitvitweb",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/sitvitweb",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 5,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 3,
+        "copied_bytes_expected": 28348,
+        "copied_files_actual": 3,
+        "copied_bytes_actual": 28271,
+        "excluded_files": 2,
+        "excluded_bytes": 19961,
+        "excluded_roots": [
+          "__pycache__"
+        ],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "atlantic-voyages",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/atlantic-voyages",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 5,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 3,
+        "copied_bytes_expected": 54068,
+        "copied_files_actual": 3,
+        "copied_bytes_actual": 53924,
+        "excluded_files": 2,
+        "excluded_bytes": 58397,
+        "excluded_roots": [
+          "__pycache__"
+        ],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "bioskills",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/bioskills",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 2,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 7404,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 7405,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": [],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "domestication-pathways",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/domestication-pathways",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 69530,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 69436,
+        "excluded_files": 2,
+        "excluded_bytes": 96842,
+        "excluded_roots": [
+          "__pycache__"
+        ],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "indian-ocean-voyages",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/indian-ocean-voyages",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 47354,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 47236,
+        "excluded_files": 2,
+        "excluded_bytes": 78949,
+        "excluded_roots": [
+          "__pycache__"
+        ],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "itol",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/itol",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 9,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 4,
+        "copied_bytes_expected": 45567,
+        "copied_files_actual": 4,
+        "copied_bytes_actual": 45568,
+        "excluded_files": 5,
+        "excluded_bytes": 84756,
+        "excluded_roots": [
+          "__pycache__"
+        ],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "migration-data",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/migration-data",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 39522,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 39412,
+        "excluded_files": 2,
+        "excluded_bytes": 73982,
+        "excluded_roots": [
+          "__pycache__"
+        ],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "modern-human-reference-panels",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/modern-human-reference-panels",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 28,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 12,
+        "copied_bytes_expected": 63371,
+        "copied_files_actual": 12,
+        "copied_bytes_actual": 63359,
+        "excluded_files": 16,
+        "excluded_bytes": 105377,
+        "excluded_roots": [
+          "__pycache__"
+        ],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "ml-model-explainer",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/ml-model-explainer",
+      "package_candidate": "ia",
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 5,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 3,
+        "copied_bytes_expected": 8422,
+        "copied_files_actual": 3,
+        "copied_bytes_actual": 8423,
+        "excluded_files": 2,
+        "excluded_bytes": 14502,
+        "excluded_roots": [
+          "__pycache__"
+        ],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "silent-film-subs",
+      "source_plugin": "multimedia",
+      "canonical_path": "multimedia/skills/silent-film-subs",
+      "package_candidate": "multimedia",
+      "packaged_in": [
+        "multimedia"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 6,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 4,
+        "copied_bytes_expected": 25161,
+        "copied_files_actual": 4,
+        "copied_bytes_actual": 25162,
+        "excluded_files": 2,
+        "excluded_bytes": 36366,
+        "excluded_roots": [
+          "__pycache__"
+        ],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "text-to-speech",
+      "source_plugin": "multimedia",
+      "canonical_path": "multimedia/skills/text-to-speech",
+      "package_candidate": "multimedia",
+      "packaged_in": [
+        "multimedia"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 11430,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 14,
+        "copied_bytes_expected": 92465,
+        "copied_files_actual": 14,
+        "copied_bytes_actual": 92467,
+        "excluded_files": 11416,
+        "excluded_bytes": 295107878,
+        "excluded_roots": [
+          ".venv",
+          "__pycache__"
+        ],
+        "binary_files_expected": 0
+      }
+    },
+    {
+      "name": "webapp-testing",
+      "source_plugin": "web",
+      "canonical_path": "web/skills/webapp-testing",
+      "package_candidate": "web",
+      "packaged_in": [
+        "web"
+      ],
+      "classification": "packaged-payload",
+      "signals": [
+        "script-payload",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 10,
+      "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee.",
+      "audit": {
+        "copied_files_expected": 6,
+        "copied_bytes_expected": 22612,
+        "copied_files_actual": 6,
+        "copied_bytes_actual": 22618,
+        "excluded_files": 4,
+        "excluded_bytes": 11848,
+        "excluded_roots": [
+          "__pycache__"
+        ],
+        "binary_files_expected": 0
+      }
+    }
+  ]
+}
