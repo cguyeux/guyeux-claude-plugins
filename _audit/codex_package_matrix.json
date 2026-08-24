@@ -1,0 +1,2250 @@
+{
+  "summary": {
+    "source_plugin": {
+      "bio_bacteria": 8,
+      "bio_pathogens": 43,
+      "bio_population_genetics": 48,
+      "bio_redac": 1,
+      "ia": 14,
+      "maboss": 12,
+      "multimedia": 3,
+      "ops": 4,
+      "web": 2
+    },
+    "package_candidate": {
+      "bio-bacteria": 8,
+      "bio-pathogens": 39,
+      "bio-population-genetics": 47,
+      "bio-redac": 1,
+      "guyeux-phylo-pilot": 5,
+      "ia": 14,
+      "maboss": 12,
+      "multimedia": 3,
+      "ops": 4,
+      "web": 2
+    },
+    "classification": {
+      "blocked-by-personal-workflow": 9,
+      "direct-package-candidate": 48,
+      "needs-codex-runtime-adaptation": 58,
+      "needs-payload-package-audit": 15,
+      "packaged-pilot": 5
+    }
+  },
+  "rows": [
+    {
+      "name": "aadr",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/aadr",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 24,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "abc-xgboost",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/abc-xgboost",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "supporting-resources"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 26,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "active-site-check",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/active-site-check",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "script-payload"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 4,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "amtdb",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/amtdb",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 24,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "ancestral-reconstruction",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/ancestral-reconstruction",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "astrologics",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/astrologics",
+      "package_candidate": "maboss",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "atlantic-voyages",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/atlantic-voyages",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 5,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "atlas-add-lineage",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/atlas-add-lineage",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
+      "name": "bacdive",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/bacdive",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "bactrline",
+      "source_plugin": "bio_bacteria",
+      "canonical_path": "bio_bacteria/skills/bactrline",
+      "package_candidate": "bio-bacteria",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "provenance-recorded",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 2,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "bayesian-skyline",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/bayesian-skyline",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "bdd-bridge",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/bdd-bridge",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "project-memory-write",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
+      "name": "beast2-dating",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/beast2-dating",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 2,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "beast2-phylogeography",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/beast2-phylogeography",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "bioc-pmc",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/bioc-pmc",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "biolqm-convert",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/biolqm-convert",
+      "package_candidate": "maboss",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "biopython",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/biopython",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "bioskills",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/bioskills",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 2,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "bn-control",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/bn-control",
+      "package_candidate": "maboss",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "boltz",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/boltz",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "boolean-attractors",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/boolean-attractors",
+      "package_candidate": "maboss",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "bovine-genomics",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/bovine-genomics",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 2,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "card",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/card",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "causal-inference",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/causal-inference",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "clinical-trial-protocol-skill",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/clinical-trial-protocol-skill",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "data-payload",
+        "mcp-runtime",
+        "script-payload",
+        "supporting-resources"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 13,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "coevolution",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/coevolution",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 7,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "colomoto-run",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/colomoto-run",
+      "package_candidate": "maboss",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "convergent-evolution",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/convergent-evolution",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "d-place",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/d-place",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 24,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "denovo-content-qc",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/denovo-content-qc",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "project-memory-write",
+        "script-payload"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 5,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
+      "name": "deploy-predictops",
+      "source_plugin": "ops",
+      "canonical_path": "ops/skills/deploy-predictops",
+      "package_candidate": "ops",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "documentation",
+      "source_plugin": "ops",
+      "canonical_path": "ops/skills/documentation",
+      "package_candidate": "ops",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "project-memory-write"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
+      "name": "domestication-pathways",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/domestication-pathways",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "enterobase",
+      "source_plugin": "bio_bacteria",
+      "canonical_path": "bio_bacteria/skills/enterobase",
+      "package_candidate": "bio-bacteria",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "esm-atlas-cli",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/esm-atlas-cli",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "supporting-resources",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 14,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "europe-pmc",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/europe-pmc",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "fetch-tbannotator",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/fetch-tbannotator",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "project-memory-write",
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
+      "name": "frontend-design",
+      "source_plugin": "web",
+      "canonical_path": "web/skills/frontend-design",
+      "package_candidate": "web",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "geopandas",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/geopandas",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "glottolog",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/glottolog",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 24,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "helicobacter-pylori-phylogeography",
+      "source_plugin": "bio_bacteria",
+      "canonical_path": "bio_bacteria/skills/helicobacter-pylori-phylogeography",
+      "package_candidate": "bio-bacteria",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "host-pathogen-pair",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/host-pathogen-pair",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 4,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "imdb",
+      "source_plugin": "multimedia",
+      "canonical_path": "multimedia/skills/imdb",
+      "package_candidate": "multimedia",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "supporting-resources"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 9,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "incident-response",
+      "source_plugin": "ops",
+      "canonical_path": "ops/skills/incident-response",
+      "package_candidate": "ops",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "indian-ocean-voyages",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/indian-ocean-voyages",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "iqtree-lsd2",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/iqtree-lsd2",
+      "package_candidate": "guyeux-phylo-pilot",
+      "packaged_in": [
+        "guyeux-phylo-pilot"
+      ],
+      "classification": "packaged-pilot",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Deja materialise dans le lot temoin, verifier lors de l'extension."
+    },
+    {
+      "name": "itol",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/itol",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 9,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "lineage-comparison",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/lineage-comparison",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 2,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "lineage-subdivision",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/lineage-subdivision",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "maboss-advanced",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/maboss-advanced",
+      "package_candidate": "maboss",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "maboss-ecosystem",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/maboss-ecosystem",
+      "package_candidate": "maboss",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "maboss-model",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/maboss-model",
+      "package_candidate": "maboss",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "migration-data",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/migration-data",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "mk-ascertainment",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/mk-ascertainment",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 7,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "ml-model-explainer",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/ml-model-explainer",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 5,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "model-inference",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/model-inference",
+      "package_candidate": "maboss",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "model-repositories",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/model-repositories",
+      "package_candidate": "maboss",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "modern-human-reference-panels",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/modern-human-reference-panels",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 28,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "molecular-clock",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/molecular-clock",
+      "package_candidate": "guyeux-phylo-pilot",
+      "packaged_in": [
+        "guyeux-phylo-pilot"
+      ],
+      "classification": "packaged-pilot",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Deja materialise dans le lot temoin, verifier lors de l'extension."
+    },
+    {
+      "name": "mtbc-bilan",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/mtbc-bilan",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "supporting-resources",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 17,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
+      "name": "mtbc-epistasis",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/mtbc-epistasis",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 3,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "mtbc-gene",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/mtbc-gene",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 22,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "mtbc-gene-network",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/mtbc-gene-network",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 7,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "mtbc-lineages",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/mtbc-lineages",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "data-payload",
+        "mcp-runtime",
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "user-invocable"
+      ],
+      "file_count": 21,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "mtbc-prospect",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/mtbc-prospect",
+      "package_candidate": "guyeux-phylo-pilot",
+      "packaged_in": [
+        "guyeux-phylo-pilot"
+      ],
+      "classification": "packaged-pilot",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "project-memory-write",
+        "supporting-resources",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 2,
+      "action": "Deja materialise dans le lot temoin, verifier lors de l'extension."
+    },
+    {
+      "name": "mtbc-reboot",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/mtbc-reboot",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "project-memory-write",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
+      "name": "mycobacterium-leprae",
+      "source_plugin": "bio_bacteria",
+      "canonical_path": "bio_bacteria/skills/mycobacterium-leprae",
+      "package_candidate": "bio-bacteria",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "ncbi-pathogen-detection",
+      "source_plugin": "bio_bacteria",
+      "canonical_path": "bio_bacteria/skills/ncbi-pathogen-detection",
+      "package_candidate": "bio-bacteria",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "neolithic-14c",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/neolithic-14c",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 24,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "networkx",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/networkx",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "nextflow-development",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/nextflow-development",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 42,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "nextstrain",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/nextstrain",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "ntm-resources",
+      "source_plugin": "bio_bacteria",
+      "canonical_path": "bio_bacteria/skills/ntm-resources",
+      "package_candidate": "bio-bacteria",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "provenance-recorded",
+        "supporting-resources",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 3,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "numpy",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/numpy",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "numpy-low-level",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/numpy-low-level",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "ontologies",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/ontologies",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "openalex",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/openalex",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "orbis",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/orbis",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 25,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "owtrad",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/owtrad",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 21,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "p3k14c",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/p3k14c",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 24,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "paleoclimate",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/paleoclimate",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 30,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "pandas-performance",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/pandas-performance",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "pangenome-enrichment",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/pangenome-enrichment",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "pastml",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/pastml",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "pathogens-portal",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/pathogens-portal",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "pectinated-subclade-mining",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/pectinated-subclade-mining",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "project-memory-write",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 2,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
+      "name": "phylo-history",
+      "source_plugin": "bio_redac",
+      "canonical_path": "bio_redac/skills/phylo-history",
+      "package_candidate": "bio-redac",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "phylogeography",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/phylogeography",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "pleiades",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/pleiades",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 24,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "pubmed-database",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/pubmed-database",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "pubtator",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/pubtator",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "pydruglogics",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/pydruglogics",
+      "package_candidate": "maboss",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "pymaboss",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/pymaboss",
+      "package_candidate": "maboss",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "pymlst",
+      "source_plugin": "bio_bacteria",
+      "canonical_path": "bio_bacteria/skills/pymlst",
+      "package_candidate": "bio-bacteria",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "provenance-recorded",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 2,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "pysam",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/pysam",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "raxml",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/raxml",
+      "package_candidate": "guyeux-phylo-pilot",
+      "packaged_in": [
+        "guyeux-phylo-pilot"
+      ],
+      "classification": "packaged-pilot",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 2,
+      "action": "Deja materialise dans le lot temoin, verifier lors de l'extension."
+    },
+    {
+      "name": "rdkit",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/rdkit",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "resistance-catalogue",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/resistance-catalogue",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 16,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "resistance-profiler",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/resistance-profiler",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 2,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "scanpy",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/scanpy",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "scientific-problem-selection",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/scientific-problem-selection",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "supporting-resources"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 11,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "scikit-bio",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/scikit-bio",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "scikit-learn",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/scikit-learn",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "scipy",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/scipy",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "senior-data-scientist",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/senior-data-scientist",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "seshat",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/seshat",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 24,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "shapely",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/shapely",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "silent-film-subs",
+      "source_plugin": "multimedia",
+      "canonical_path": "multimedia/skills/silent-film-subs",
+      "package_candidate": "multimedia",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 6,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "sitvitweb",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/sitvitweb",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 5,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "sklearn-advanced",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/sklearn-advanced",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "sklearn-explainability",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/sklearn-explainability",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "slavevoyages",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/slavevoyages",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 24,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "snp-distance",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/snp-distance",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 2,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "spaam-ancient-metagenome-dir",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/spaam-ancient-metagenome-dir",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "spaam-community",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/spaam-community",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "spdi-annotation",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/spdi-annotation",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "species-id",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/species-id",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "sra-geolocate",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/sra-geolocate",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 1,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "statistical-analysis",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/statistical-analysis",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "statsmodels",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/statsmodels",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "strain-qc",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/strain-qc",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
+      "name": "string-db",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/string-db",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "supporting-resources",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 14,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "tb-cli",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/tb-cli",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "tbannotator-mcp",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/tbannotator-mcp",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 3,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "tbmonitor-papers",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/tbmonitor-papers",
+      "package_candidate": "guyeux-phylo-pilot",
+      "packaged_in": [
+        "guyeux-phylo-pilot"
+      ],
+      "classification": "packaged-pilot",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Deja materialise dans le lot temoin, verifier lors de l'extension."
+    },
+    {
+      "name": "text-to-speech",
+      "source_plugin": "multimedia",
+      "canonical_path": "multimedia/skills/text-to-speech",
+      "package_candidate": "multimedia",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 11430,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "thd",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/thd",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "tooluniverse-sequence-retrieval",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/tooluniverse-sequence-retrieval",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 3,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "tsne-hdbscan",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/tsne-hdbscan",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
+      "name": "upstream-contribution",
+      "source_plugin": "ops",
+      "canonical_path": "ops/skills/upstream-contribution",
+      "package_candidate": "ops",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "provenance-recorded"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 2,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "wals",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/wals",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 24,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "webapp-testing",
+      "source_plugin": "web",
+      "canonical_path": "web/skills/webapp-testing",
+      "package_candidate": "web",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 10,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
+    },
+    {
+      "name": "worldclim-bioclim",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/worldclim-bioclim",
+      "package_candidate": "bio-population-genetics",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 28,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "xgboost-iterative-optimizer",
+      "source_plugin": "ia",
+      "canonical_path": "ia/skills/xgboost-iterative-optimizer",
+      "package_candidate": "ia",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "supporting-resources"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 2,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    },
+    {
+      "name": "yersinia-resources",
+      "source_plugin": "bio_bacteria",
+      "canonical_path": "bio_bacteria/skills/yersinia-resources",
+      "package_candidate": "bio-bacteria",
+      "packaged_in": [],
+      "classification": "direct-package-candidate",
+      "signals": [
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+    }
+  ]
+}
