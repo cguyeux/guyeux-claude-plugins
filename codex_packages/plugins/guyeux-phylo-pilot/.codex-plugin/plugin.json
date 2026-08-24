@@ -1,0 +1,18 @@
+{
+  "name": "guyeux-phylo-pilot",
+  "version": "0.1.0",
+  "description": "Local pilot for five MTBC phylogenomics research skills.",
+  "author": {
+    "name": "Christophe Guyeux"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Guyeux Phylo Pilot",
+    "shortDescription": "Five MTBC phylogenomics pilot skills.",
+    "longDescription": "A local, materialized pilot package for literature, prospective, clock and tree workflows in MTBC phylogenomics.",
+    "developerName": "Christophe Guyeux",
+    "category": "Developer tools",
+    "capabilities": [],
+    "defaultPrompt": "Use the installed MTBC phylogenomics skills with their stated evidence and MCP prerequisites."
+  }
+}
