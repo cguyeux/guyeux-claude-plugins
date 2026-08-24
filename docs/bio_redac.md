@@ -6,7 +6,7 @@
 
 Phase hybride analyse et rédaction. Agrège par symlink les skills des autres plugins pour le moment où l'on passe des résultats phylogénomiques M. tuberculosis (arbre daté, profils de résistance, figures) au manuscrit.
 
-Skills propres (canoniques) : **1** ; skills partagés utilisés (symlinks) : **147**.
+Skills propres (canoniques) : **1** ; skills partagés utilisés (symlinks) : **148**.
 
 [Retour à l'index de la documentation](README.md)
 
@@ -69,6 +69,7 @@ Documentés sur la page de leur plugin d'origine.
 | [europe-pmc](bio_population_genetics.md#europe-pmc) | `bio_population_genetics` |
 | [fetch-tbannotator](bio_pathogens.md#fetch-tbannotator) | `bio_pathogens` |
 | [fig-check](redac.md#fig-check) | `redac` |
+| [fig-ideation](redac.md#fig-ideation) | `redac` |
 | [geo-map](bio_population_genetics.md#geo-map) | `bio_population_genetics` |
 | [glottolog](bio_population_genetics.md#glottolog) | `bio_population_genetics` |
 | [grant-proposal](redac.md#grant-proposal) | `redac` |

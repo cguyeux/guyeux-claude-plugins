@@ -1,6 +1,6 @@
 # Documentation des skills de recherche du groupe Guyeux
 
-Cette collection outille les travaux du groupe Guyeux (FEMTO-ST), dont la phylogénomique évolutive du complexe *Mycobacterium tuberculosis* (MTBC), la génétique des populations et la génomique bactérienne hors MTBC. Elle réunit **175 noms de skills actifs** sur **9 plugins**. Chaque skill est décrit par sa raison d'être et ses compétences ; les skills partagés entre plugins (symlinks) sont documentés une seule fois, sur la page de leur plugin d'origine.
+Cette collection outille les travaux du groupe Guyeux (FEMTO-ST), dont la phylogénomique évolutive du complexe *Mycobacterium tuberculosis* (MTBC), la génétique des populations et la génomique bactérienne hors MTBC. Elle réunit **176 noms de skills actifs** sur **9 plugins**. Chaque skill est décrit par sa raison d'être et ses compétences ; les skills partagés entre plugins (symlinks) sont documentés une seule fois, sur la page de leur plugin d'origine.
 
 [Retour au README du dépôt](../README.md)
 
@@ -38,7 +38,7 @@ Les plugins `maboss` et `droit` relèvent d'autres domaines et sont documentés 
 | [bio_bacteria](bio_bacteria.md) | Domaine bactérien hors MTBC stricto sensu. Porte les méthodes qui ne se transposent pas correctement au complexe M. tuberculosis : assemblage de no… | 9 |
 | [bio_population_genetics](bio_population_genetics.md) | Contexte hôte et outillage générique. Pour une étude M. tuberculosis, l'histoire des populations humaines, les migrations, la paléoclimatologie et… | 55 |
 | [bio_redac](bio_redac.md) | Phase hybride analyse et rédaction. Agrège par symlink les skills des autres plugins pour le moment où l'on passe des résultats phylogénomiques M.… | 1 |
-| [redac](redac.md) | Rédaction et contrôle qualité du manuscrit M. tuberculosis : mise en forme LaTeX, vérification des affirmations et des références, nettoyage stylis… | 29 |
+| [redac](redac.md) | Rédaction et contrôle qualité du manuscrit M. tuberculosis : mise en forme LaTeX, vérification des affirmations et des références, nettoyage stylis… | 30 |
 | [ia](ia.md) | Machine learning et data science au service des analyses MTBC : classification de lignées, prédiction de phénotypes de résistance à partir de génot… | 14 |
 | [multimedia](multimedia.md) | Outillage périphérique (audio, vidéo, synthèse vocale, sous-titrage). Utile à la valorisation et à la communication d'un projet M. tuberculosis (sé… | 5 |
 | [ops](ops.md) | Projets applicatifs du groupe (PrédictOps, OptimOps, DoctrinOps), hors du champ M. tuberculosis ; présents dans la collection pour d'autres travaux. | 4 |
@@ -106,6 +106,7 @@ Les plugins `maboss` et `droit` relèvent d'autres domaines et sont documentés 
 - [`europe-pmc`](bio_population_genetics.md#europe-pmc) : Interroge Europe PMC (EMBL-EBI), le depot europeen de litterature biomedicale couvrant les…
 - [`fetch-tbannotator`](bio_pathogens.md#fetch-tbannotator) : Récupère report.json et génère spdi.txt pour des souches MTBC depuis le serveur TBannotato…
 - [`fig-check`](redac.md#fig-check) : Vérification visuelle systématique des figures d'un article scientifique via les capacités…
+- [`fig-ideation`](redac.md#fig-ideation) : Idéation de figures pour un manuscrit : cherche la figure qui MANQUE, là où fig-check ne v…
 - [`film_documentaire`](multimedia.md#film_documentaire) : Moteur de recherche et d'extraction de métadonnées pour le cinéma documentaire via la plat…
 - [`foldseek`](bio_population_genetics.md#foldseek) : Academic research toolkit for peer-reviewed structural bioinformatics in the Guyeux group…
 - [`frontend-design`](web.md#frontend-design) : Crée des interfaces frontend distinctives et de qualité production, avec une exigence esth…

@@ -6,13 +6,13 @@
 
 Rédaction et contrôle qualité du manuscrit M. tuberculosis : mise en forme LaTeX, vérification des affirmations et des références, nettoyage stylistique, réponse aux relecteurs, dépôt Zenodo et pont Overleaf.
 
-Skills propres (canoniques) : **29** ; skills partagés utilisés (symlinks) : **4**.
+Skills propres (canoniques) : **30** ; skills partagés utilisés (symlinks) : **4**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [beamer-slides](#beamer-slides) ; [bib-check](#bib-check) ; [biblatex](#biblatex) ; [claim-check](#claim-check) ; [cv](#cv) ; [deai-latex](#deai-latex) ; [docs-latex](#docs-latex) ; [fig-check](#fig-check) ; [grant-proposal](#grant-proposal) ; [humanizer](#humanizer) ; [latex-build](#latex-build) ; [latex-document](#latex-document) ; [latex-formatting](#latex-formatting) ; [latex-paper-en](#latex-paper-en) ; [latex-posters](#latex-posters) ; [latex-tables](#latex-tables) ; [latex-writing](#latex-writing) ; [lit-review](#lit-review) ; [literature-access](#literature-access) ; [manuscript-review](#manuscript-review) ; [overleaf-bridge](#overleaf-bridge) ; [pdf-to-latex](#pdf-to-latex) ; [reviewer-response](#reviewer-response) ; [slide-design](#slide-design) ; [slide-polish](#slide-polish) ; [supp-check](#supp-check) ; [synthesize-research](#synthesize-research) ; [theme-factory](#theme-factory) ; [zenodo-deposit](#zenodo-deposit)
+Sommaire : [beamer-slides](#beamer-slides) ; [bib-check](#bib-check) ; [biblatex](#biblatex) ; [claim-check](#claim-check) ; [cv](#cv) ; [deai-latex](#deai-latex) ; [docs-latex](#docs-latex) ; [fig-check](#fig-check) ; [fig-ideation](#fig-ideation) ; [grant-proposal](#grant-proposal) ; [humanizer](#humanizer) ; [latex-build](#latex-build) ; [latex-document](#latex-document) ; [latex-formatting](#latex-formatting) ; [latex-paper-en](#latex-paper-en) ; [latex-posters](#latex-posters) ; [latex-tables](#latex-tables) ; [latex-writing](#latex-writing) ; [lit-review](#lit-review) ; [literature-access](#literature-access) ; [manuscript-review](#manuscript-review) ; [overleaf-bridge](#overleaf-bridge) ; [pdf-to-latex](#pdf-to-latex) ; [reviewer-response](#reviewer-response) ; [slide-design](#slide-design) ; [slide-polish](#slide-polish) ; [supp-check](#supp-check) ; [synthesize-research](#synthesize-research) ; [theme-factory](#theme-factory) ; [zenodo-deposit](#zenodo-deposit)
 
 ### beamer-slides
 
@@ -61,6 +61,12 @@ Compétences : produire un PDF de qualité présentation à partir d'un Markdown
 Vérification visuelle systématique des figures d'un article scientifique via les capacités multimodales. Pour chaque \includegraphics : lit l'image, évalue lisibilité, résolution, chevauchements, taille des textes, clarté des flèches, cohérence de palette, correspondance figure/légende. Maintient un registre fig_check.md et propose (applique en mode --fix) des corrections par régénération du script source quand il est détectable.
 
 Compétences : préparer une soumission ou resoumission ; après modification de figures ; vérifier avant impression d'un poster ; déboguer une figure illisible dans le PDF final
+
+### fig-ideation
+
+Idéation de figures pour un manuscrit : cherche la figure qui MANQUE, là où fig-check ne vérifie que celles qui existent. Détecte mécaniquement les figures pendantes, orphelines et muettes, mesure le déficit de registre conceptuel face au corpus, balaie un bestiaire de 25 archétypes (frise à double registre, tanglegram hôte-pathogène, avant/après de topologie, flux CONSORT génomique, schéma de mécanisme, anatomie de locus), auto-challenge chaque candidate (charge de preuve, modèle nul, gain contre coût), esquisse en jetable puis livre en TikZ vectoriel compilé et inspecté, et tient le registre fig_plan.md. Fournit aussi une couche d'iconographie libre (PhyloPic résolu par taxid NCBI, Bioicons), convertie en PDF vectoriel sans Inkscape, avec garde-fou de licence share-alike et génération automatique de l'attribution.
+
+Compétences : écrire le squelette d'un article en phase 2 ; répondre à une objection de manuscript-review par un schéma ; un article paraît austère ou illisible ; un mécanisme est décrit en prose sans dessin ; savoir quelles figures déjà produites dorment sur le disque
 
 ### grant-proposal
 

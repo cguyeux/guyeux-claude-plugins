@@ -624,6 +624,30 @@ Le manuscrit a ete modifie par cette session. Je recommande :
 (ou /reviewer-response next s'il reste des remarques en attente)
 ```
 
+## Apres la review : passer les objections au filtre de la figure
+
+Avant de conclure, enchainer **`/fig-ideation review`**. Une part des objections de
+relecture ne demande pas une analyse de plus mais une **figure** de plus, et le relecteur
+ne dit presque jamais « faites une figure » : il dit qu'il ne comprend pas, qu'il n'est pas
+convaincu, ou que la methode n'est pas reproductible.
+
+| Ce que le relecteur ecrit | Ce qu'il demande souvent |
+|---|---|
+| « la methode est difficile a suivre », « je n'ai pas pu reproduire » | un diagramme de flux des donnees, exclusions chiffrees |
+| « en quoi cela differe de [travail anterieur] ? », « la nouveaute n'est pas claire » | une figure avant/apres |
+| « le mecanisme propose n'est pas etaye » | un schema de mecanisme, avec ce que la donnee ne tranche pas |
+| « la datation n'est pas convaincante » | une frise avec les intervalles de credibilite traces |
+| « pourquoi ces seuils ? » | un arbre de decision, valeurs sur les aretes |
+
+Le piege a ne pas manquer : **une figure ne repond qu'aux objections portant sur la
+LISIBILITE de l'argument, jamais sur sa validite.** Un relecteur qui doute d'un resultat
+veut une analyse ; dessiner un argument faux le rend seulement plus visible. Quand le doute
+est de fond, ouvrir une piste d'analyse, et la figure vient apres.
+
+Ce skill ne detecte pas non plus les figures **manquantes** : sa dimension D8 ne pose que
+cinq questions sur les figures presentes. C'est `/fig-ideation` qui couvre cet angle mort,
+ainsi que les figures deja produites mais jamais integrees au manuscrit.
+
 Si a ton sens le travail est **termine** (toutes les reviews traitees, claims
 verifies, bib OK, texte nettoye), le dire clairement :
 

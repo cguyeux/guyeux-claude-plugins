@@ -3,12 +3,13 @@
 Ce fichier est genere par `_audit/tools/generate_codex_package_matrix.py`.
 Il inventorie les skills canoniques absents de `codex_skills.json` et indique le premier traitement requis pour les empaqueter dans Codex.
 
-- Total non exporte Codex : 135
+- Total non exporte Codex : 136
 - Deja materialises dans un paquet pilote : 5
 - Deja materialises dans des paquets directs : 48
 - Deja materialises dans des paquets payload audites : 15
 - Deja materialises avec adaptation runtime Codex : 56
-- Bloques par workflow personnel d'ecriture : 9
+- Deja materialises avec garde-fou workflow Codex : 10
+- Bloques par workflow personnel d'ecriture : 0
 - Adaptation runtime Claude ou MCP requise : 2
 - Audit de payload requis : 0
 - Candidats directs sans verrou mecanique majeur : 0
@@ -20,7 +21,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | bio-bacteria | 8 |
 | bio-pathogens | 39 |
 | bio-population-genetics | 47 |
-| bio-redac | 1 |
+| bio-redac | 2 |
 | guyeux-phylo-pilot | 5 |
 | ia | 14 |
 | maboss | 12 |
@@ -39,11 +40,11 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | ancestral-reconstruction | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | astrologics | maboss | maboss | packaged-direct | web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | atlantic-voyages | bio_population_genetics | bio-population-genetics | packaged-payload | script-payload, unsupported-frontmatter, web-runtime | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
-| atlas-add-lineage | bio_pathogens | bio-pathogens | blocked-by-personal-workflow | claude-runtime-reference, project-memory-write, unsupported-frontmatter, web-runtime | Porter ou neutraliser les ecritures de memoire projet avant empaquetage. |
+| atlas-add-lineage | bio_pathogens | bio-pathogens | packaged-workflow-guarded | claude-runtime-reference, project-memory-write, unsupported-frontmatter, web-runtime | Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution. |
 | bacdive | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | bactrline | bio_bacteria | bio-bacteria | packaged-direct | provenance-recorded, unsupported-frontmatter, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | bayesian-skyline | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
-| bdd-bridge | bio_pathogens | bio-pathogens | blocked-by-personal-workflow | claude-runtime-reference, mcp-runtime, project-memory-write, script-payload, unsupported-frontmatter | Porter ou neutraliser les ecritures de memoire projet avant empaquetage. |
+| bdd-bridge | bio_pathogens | bio-pathogens | packaged-workflow-guarded | claude-runtime-reference, mcp-runtime, project-memory-write, script-payload, unsupported-frontmatter | Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution. |
 | beast2-dating | bio_pathogens | bio-pathogens | packaged-payload | script-payload | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
 | beast2-phylogeography | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | bioc-pmc | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
@@ -61,14 +62,15 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | colomoto-run | maboss | maboss | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | convergent-evolution | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | d-place | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | mcp-runtime, supporting-resources, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
-| denovo-content-qc | bio_pathogens | bio-pathogens | blocked-by-personal-workflow | project-memory-write, script-payload | Porter ou neutraliser les ecritures de memoire projet avant empaquetage. |
+| denovo-content-qc | bio_pathogens | bio-pathogens | packaged-workflow-guarded | project-memory-write, script-payload | Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution. |
 | deploy-predictops | ops | ops | packaged-direct | unsupported-frontmatter | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
-| documentation | ops | ops | blocked-by-personal-workflow | project-memory-write | Porter ou neutraliser les ecritures de memoire projet avant empaquetage. |
+| documentation | ops | ops | packaged-workflow-guarded | project-memory-write | Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution. |
 | domestication-pathways | bio_population_genetics | bio-population-genetics | packaged-payload | script-payload, unsupported-frontmatter, web-runtime | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
 | enterobase | bio_bacteria | bio-bacteria | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | esm-atlas-cli | bio_population_genetics | bio-population-genetics | packaged-direct | supporting-resources, unsupported-frontmatter, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | europe-pmc | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | claude-runtime-reference, mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
-| fetch-tbannotator | bio_pathogens | bio-pathogens | blocked-by-personal-workflow | claude-runtime-reference, mcp-runtime, project-memory-write, script-payload, unsupported-frontmatter, web-runtime | Porter ou neutraliser les ecritures de memoire projet avant empaquetage. |
+| fetch-tbannotator | bio_pathogens | bio-pathogens | packaged-workflow-guarded | claude-runtime-reference, mcp-runtime, project-memory-write, script-payload, unsupported-frontmatter, web-runtime | Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution. |
+| fig-ideation | redac | bio-redac | packaged-workflow-guarded | claude-runtime-reference, data-payload, mcp-runtime, project-memory-write, script-payload, supporting-resources, unsupported-frontmatter, web-runtime | Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution. |
 | frontend-design | web | web | packaged-direct | none | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | geopandas | ia | ia | packaged-direct | unsupported-frontmatter, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | glottolog | bio_population_genetics | bio-population-genetics | packaged-direct | supporting-resources, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
@@ -91,13 +93,13 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | model-repositories | maboss | maboss | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | modern-human-reference-panels | bio_population_genetics | bio-population-genetics | packaged-payload | script-payload, supporting-resources, web-runtime | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
 | molecular-clock | bio_pathogens | guyeux-phylo-pilot | packaged-pilot | mcp-runtime, script-payload, unsupported-frontmatter, web-runtime | Deja materialise dans le lot temoin, verifier lors de l'extension. |
-| mtbc-bilan | bio_pathogens | bio-pathogens | blocked-by-personal-workflow | claude-runtime-reference, project-memory-write, supporting-resources, unsupported-frontmatter, web-runtime | Porter ou neutraliser les ecritures de memoire projet avant empaquetage. |
+| mtbc-bilan | bio_pathogens | bio-pathogens | packaged-workflow-guarded | claude-runtime-reference, project-memory-write, supporting-resources, unsupported-frontmatter, web-runtime | Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution. |
 | mtbc-epistasis | bio_pathogens | bio-pathogens | packaged-runtime-adapted | claude-runtime-reference, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | mtbc-gene | bio_pathogens | bio-pathogens | packaged-runtime-adapted | claude-runtime-reference, script-payload, supporting-resources, unsupported-frontmatter, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | mtbc-gene-network | bio_pathogens | bio-pathogens | packaged-payload | script-payload, supporting-resources, unsupported-frontmatter | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
 | mtbc-lineages | bio_pathogens | bio-pathogens | packaged-runtime-adapted | claude-runtime-reference, data-payload, mcp-runtime, script-payload, supporting-resources, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | mtbc-prospect | bio_pathogens | guyeux-phylo-pilot | packaged-pilot | claude-runtime-reference, mcp-runtime, project-memory-write, supporting-resources, unsupported-frontmatter, web-runtime | Deja materialise dans le lot temoin, verifier lors de l'extension. |
-| mtbc-reboot | bio_pathogens | bio-pathogens | blocked-by-personal-workflow | claude-runtime-reference, mcp-runtime, project-memory-write, unsupported-frontmatter, web-runtime | Porter ou neutraliser les ecritures de memoire projet avant empaquetage. |
+| mtbc-reboot | bio_pathogens | bio-pathogens | packaged-workflow-guarded | claude-runtime-reference, mcp-runtime, project-memory-write, unsupported-frontmatter, web-runtime | Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution. |
 | mycobacterium-leprae | bio_bacteria | bio-bacteria | packaged-runtime-adapted | mcp-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | ncbi-pathogen-detection | bio_bacteria | bio-bacteria | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | neolithic-14c | bio_population_genetics | bio-population-genetics | packaged-direct | supporting-resources, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
@@ -117,7 +119,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | pangenome-enrichment | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | pastml | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | pathogens-portal | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
-| pectinated-subclade-mining | bio_pathogens | bio-pathogens | blocked-by-personal-workflow | claude-runtime-reference, mcp-runtime, project-memory-write, script-payload, unsupported-frontmatter | Porter ou neutraliser les ecritures de memoire projet avant empaquetage. |
+| pectinated-subclade-mining | bio_pathogens | bio-pathogens | packaged-workflow-guarded | claude-runtime-reference, mcp-runtime, project-memory-write, script-payload, unsupported-frontmatter | Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution. |
 | phylo-history | bio_redac | bio-redac | packaged-direct | unsupported-frontmatter | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | phylogeography | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | pleiades | bio_population_genetics | bio-population-genetics | packaged-direct | supporting-resources, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
@@ -152,7 +154,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | sra-geolocate | bio_pathogens | bio-pathogens | packaged-runtime-adapted | claude-runtime-reference, mcp-runtime, unsupported-frontmatter, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | statistical-analysis | ia | ia | packaged-direct | unsupported-frontmatter | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | statsmodels | bio_population_genetics | bio-population-genetics | packaged-direct | unsupported-frontmatter, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
-| strain-qc | bio_pathogens | bio-pathogens | blocked-by-personal-workflow | claude-runtime-reference, project-memory-write, unsupported-frontmatter | Porter ou neutraliser les ecritures de memoire projet avant empaquetage. |
+| strain-qc | bio_pathogens | bio-pathogens | packaged-workflow-guarded | claude-runtime-reference, project-memory-write, unsupported-frontmatter | Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution. |
 | string-db | bio_pathogens | bio-pathogens | packaged-direct | supporting-resources, unsupported-frontmatter, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | tb-cli | bio_pathogens | bio-pathogens | packaged-direct | unsupported-frontmatter | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | tbannotator-mcp | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |

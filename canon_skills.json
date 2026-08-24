@@ -52,6 +52,7 @@
   "europe-pmc": "bio_population_genetics/skills/europe-pmc",
   "fetch-tbannotator": "bio_pathogens/skills/fetch-tbannotator",
   "fig-check": "redac/skills/fig-check",
+  "fig-ideation": "redac/skills/fig-ideation",
   "film_documentaire": "multimedia/skills/film_documentaire",
   "foldseek": "bio_population_genetics/skills/foldseek",
   "frontend-design": "web/skills/frontend-design",

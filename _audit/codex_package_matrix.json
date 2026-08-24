@@ -9,13 +9,14 @@
       "maboss": 12,
       "multimedia": 3,
       "ops": 4,
+      "redac": 1,
       "web": 2
     },
     "package_candidate": {
       "bio-bacteria": 8,
       "bio-pathogens": 39,
       "bio-population-genetics": 47,
-      "bio-redac": 1,
+      "bio-redac": 2,
       "guyeux-phylo-pilot": 5,
       "ia": 14,
       "maboss": 12,
@@ -24,12 +25,12 @@
       "web": 2
     },
     "classification": {
-      "blocked-by-personal-workflow": 9,
       "needs-codex-runtime-adaptation": 2,
       "packaged-direct": 48,
       "packaged-payload": 15,
       "packaged-pilot": 5,
-      "packaged-runtime-adapted": 56
+      "packaged-runtime-adapted": 56,
+      "packaged-workflow-guarded": 10
     }
   },
   "rows": [
@@ -165,8 +166,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/atlas-add-lineage",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "blocked-by-personal-workflow",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-workflow-guarded",
       "signals": [
         "claude-runtime-reference",
         "project-memory-write",
@@ -178,7 +181,7 @@
         "user-invocable"
       ],
       "file_count": 1,
-      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
       "name": "bacdive",
@@ -240,8 +243,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/bdd-bridge",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "blocked-by-personal-workflow",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-workflow-guarded",
       "signals": [
         "claude-runtime-reference",
         "mcp-runtime",
@@ -254,7 +259,7 @@
         "user-invocable"
       ],
       "file_count": 4,
-      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
       "name": "beast2-dating",
@@ -556,15 +561,17 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/denovo-content-qc",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "blocked-by-personal-workflow",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-workflow-guarded",
       "signals": [
         "project-memory-write",
         "script-payload"
       ],
       "unsupported_frontmatter": [],
       "file_count": 5,
-      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
       "name": "deploy-predictops",
@@ -589,14 +596,16 @@
       "source_plugin": "ops",
       "canonical_path": "ops/skills/documentation",
       "package_candidate": "ops",
-      "packaged_in": [],
-      "classification": "blocked-by-personal-workflow",
+      "packaged_in": [
+        "ops"
+      ],
+      "classification": "packaged-workflow-guarded",
       "signals": [
         "project-memory-write"
       ],
       "unsupported_frontmatter": [],
       "file_count": 1,
-      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
       "name": "domestication-pathways",
@@ -680,8 +689,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/fetch-tbannotator",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "blocked-by-personal-workflow",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-workflow-guarded",
       "signals": [
         "claude-runtime-reference",
         "mcp-runtime",
@@ -696,7 +707,33 @@
         "user-invocable"
       ],
       "file_count": 4,
-      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
+    },
+    {
+      "name": "fig-ideation",
+      "source_plugin": "redac",
+      "canonical_path": "redac/skills/fig-ideation",
+      "package_candidate": "bio-redac",
+      "packaged_in": [
+        "bio-redac"
+      ],
+      "classification": "packaged-workflow-guarded",
+      "signals": [
+        "claude-runtime-reference",
+        "data-payload",
+        "mcp-runtime",
+        "project-memory-write",
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 16,
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
       "name": "frontend-design",
@@ -1106,8 +1143,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/mtbc-bilan",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "blocked-by-personal-workflow",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-workflow-guarded",
       "signals": [
         "claude-runtime-reference",
         "project-memory-write",
@@ -1120,7 +1159,7 @@
         "user-invocable"
       ],
       "file_count": 17,
-      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
       "name": "mtbc-epistasis",
@@ -1239,8 +1278,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/mtbc-reboot",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "blocked-by-personal-workflow",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-workflow-guarded",
       "signals": [
         "claude-runtime-reference",
         "mcp-runtime",
@@ -1253,7 +1294,7 @@
         "user-invocable"
       ],
       "file_count": 1,
-      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
       "name": "mycobacterium-leprae",
@@ -1602,8 +1643,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/pectinated-subclade-mining",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "blocked-by-personal-workflow",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-workflow-guarded",
       "signals": [
         "claude-runtime-reference",
         "mcp-runtime",
@@ -1616,7 +1659,7 @@
         "user-invocable"
       ],
       "file_count": 2,
-      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
       "name": "phylo-history",
@@ -2268,8 +2311,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/strain-qc",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "blocked-by-personal-workflow",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-workflow-guarded",
       "signals": [
         "claude-runtime-reference",
         "project-memory-write",
@@ -2280,7 +2325,7 @@
         "user-invocable"
       ],
       "file_count": 1,
-      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
       "name": "string-db",

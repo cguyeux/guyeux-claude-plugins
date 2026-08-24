@@ -1,7 +1,7 @@
 {
   "name": "ops",
   "version": "0.1.0",
-  "description": "Local direct Codex package for 3 migrated Claude skills.",
+  "description": "Local Codex package for 4 migrated Claude skills.",
   "author": {
     "name": "Christophe Guyeux"
   },
@@ -9,10 +9,10 @@
   "interface": {
     "displayName": "Ops Direct",
     "shortDescription": "Direct operational skills.",
-    "longDescription": "Direct Codex package for operational skills that do not need runtime adaptation before packaging.",
+    "longDescription": "Codex package for operational skills already audited for direct or guarded workflow packaging.",
     "developerName": "Christophe Guyeux",
     "category": "Developer tools",
     "capabilities": [],
-    "defaultPrompt": "Use the installed skills with their documented prerequisites and evidence boundaries."
+    "defaultPrompt": "Use the installed skills with their documented prerequisites, guardrails, and evidence boundaries."
   }
 }

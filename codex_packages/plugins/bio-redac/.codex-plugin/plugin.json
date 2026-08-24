@@ -1,18 +1,18 @@
 {
   "name": "bio-redac",
   "version": "0.1.0",
-  "description": "Local direct Codex package for 1 migrated Claude skills.",
+  "description": "Local Codex package for 2 migrated Claude skills.",
   "author": {
     "name": "Christophe Guyeux"
   },
   "skills": "./skills/",
   "interface": {
     "displayName": "Bio Redac Direct",
-    "shortDescription": "Direct scientific writing bridge skill.",
-    "longDescription": "Direct Codex package for scientific writing bridge skills that do not need runtime adaptation before packaging.",
+    "shortDescription": "Direct biological writing skills.",
+    "longDescription": "Codex package for biological writing skills already audited for direct or guarded workflow packaging.",
     "developerName": "Christophe Guyeux",
     "category": "Developer tools",
     "capabilities": [],
-    "defaultPrompt": "Use the installed skills with their documented prerequisites and evidence boundaries."
+    "defaultPrompt": "Use the installed skills with their documented prerequisites, guardrails, and evidence boundaries."
   }
 }
