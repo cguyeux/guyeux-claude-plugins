@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "p3k14c-client"
+version = "0.1.0"
+description = "Resilient stdlib-only client for p3k14c (global archaeological radiocarbon database)"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+p3k14c = "p3k14c_client.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["p3k14c_client*"]

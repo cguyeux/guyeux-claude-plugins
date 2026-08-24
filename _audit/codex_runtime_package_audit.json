@@ -1,0 +1,1241 @@
+{
+  "rows": [
+    {
+      "name": "enterobase",
+      "source_plugin": "bio_bacteria",
+      "canonical_path": "bio_bacteria/skills/enterobase",
+      "package_candidate": "bio-bacteria",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 14244,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 14446,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "helicobacter-pylori-phylogeography",
+      "source_plugin": "bio_bacteria",
+      "canonical_path": "bio_bacteria/skills/helicobacter-pylori-phylogeography",
+      "package_candidate": "bio-bacteria",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 17733,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 17935,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "mycobacterium-leprae",
+      "source_plugin": "bio_bacteria",
+      "canonical_path": "bio_bacteria/skills/mycobacterium-leprae",
+      "package_candidate": "bio-bacteria",
+      "coarse_signals": [
+        "mcp-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 23804,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 24006,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "ncbi-pathogen-detection",
+      "source_plugin": "bio_bacteria",
+      "canonical_path": "bio_bacteria/skills/ncbi-pathogen-detection",
+      "package_candidate": "bio-bacteria",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 11708,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 11910,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "pymlst",
+      "source_plugin": "bio_bacteria",
+      "canonical_path": "bio_bacteria/skills/pymlst",
+      "package_candidate": "bio-bacteria",
+      "coarse_signals": [
+        "mcp-runtime",
+        "provenance-recorded",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "mcp-narrative-only",
+      "action": "Emballage possible ; la mention MCP n'est pas un appel runtime direct.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 8153,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 8242,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "ancestral-reconstruction",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/ancestral-reconstruction",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "mcp-tool-name"
+      ],
+      "runtime_bucket": "codex-mcp-tool-prerequisite",
+      "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 37671,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 37757,
+        "excluded_files": 2,
+        "excluded_bytes": 87918,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "bacdive",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/bacdive",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 11982,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 12184,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "coevolution",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/coevolution",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "mcp-tool-name"
+      ],
+      "runtime_bucket": "codex-mcp-tool-prerequisite",
+      "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire.",
+      "audit": {
+        "copied_files_expected": 3,
+        "copied_bytes_expected": 37828,
+        "copied_files_actual": 3,
+        "copied_bytes_actual": 37909,
+        "excluded_files": 4,
+        "excluded_bytes": 87835,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "convergent-evolution",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/convergent-evolution",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "mcp-tool-name",
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "codex-mcp-tool-prerequisite",
+      "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 19983,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 20074,
+        "excluded_files": 2,
+        "excluded_bytes": 31393,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "lineage-comparison",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/lineage-comparison",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "mcp-tool-name",
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "codex-mcp-tool-prerequisite",
+      "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 20098,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 20195,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "pangenome-enrichment",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/pangenome-enrichment",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "mcp-tool-name",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-tool-prerequisite",
+      "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 25608,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 25699,
+        "excluded_files": 2,
+        "excluded_bytes": 34326,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "pathogens-portal",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/pathogens-portal",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 11263,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 11465,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "phylogeography",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/phylogeography",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "mcp-tool-name",
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "codex-mcp-tool-prerequisite",
+      "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 18037,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 18142,
+        "excluded_files": 2,
+        "excluded_bytes": 31563,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "resistance-catalogue",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/resistance-catalogue",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "tbmonitor-mcp",
+        "mcp-tool-name"
+      ],
+      "runtime_bucket": "codex-mcp-tool-prerequisite",
+      "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire.",
+      "audit": {
+        "copied_files_expected": 7,
+        "copied_bytes_expected": 54578,
+        "copied_files_actual": 7,
+        "copied_bytes_actual": 54535,
+        "excluded_files": 9,
+        "excluded_bytes": 68742,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "resistance-profiler",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/resistance-profiler",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "mcp-tool-name",
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "codex-mcp-tool-prerequisite",
+      "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 20346,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 20439,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "snp-distance",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/snp-distance",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "mcp-tool-name"
+      ],
+      "runtime_bucket": "codex-mcp-tool-prerequisite",
+      "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 21048,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 21133,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "spaam-ancient-metagenome-dir",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/spaam-ancient-metagenome-dir",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 25222,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 25424,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "spaam-community",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/spaam-community",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 15264,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 15466,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "spdi-annotation",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/spdi-annotation",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "mcp-tool-name",
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "codex-mcp-tool-prerequisite",
+      "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 33887,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 33941,
+        "excluded_files": 2,
+        "excluded_bytes": 56440,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "species-id",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/species-id",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "generic-mcp-mention",
+        "web-tool-name",
+        "http-literal"
+      ],
+      "runtime_bucket": "mcp-narrative-only",
+      "action": "Emballage possible ; la mention MCP n'est pas un appel runtime direct.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 15473,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 15575,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "tbannotator-mcp",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/tbannotator-mcp",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "claude-config-or-branding",
+        "tbannotator-mcp",
+        "mcp-tool-name",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-tool-prerequisite",
+      "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire.",
+      "audit": {
+        "copied_files_expected": 3,
+        "copied_bytes_expected": 25873,
+        "copied_files_actual": 3,
+        "copied_bytes_actual": 25967,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "tsne-hdbscan",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/tsne-hdbscan",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "mcp-tool-name",
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "codex-mcp-tool-prerequisite",
+      "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 35845,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 35952,
+        "excluded_files": 2,
+        "excluded_bytes": 58958,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "aadr",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/aadr",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 10,
+        "copied_bytes_expected": 47718,
+        "copied_files_actual": 10,
+        "copied_bytes_actual": 47929,
+        "excluded_files": 14,
+        "excluded_bytes": 83024,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "amtdb",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/amtdb",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 10,
+        "copied_bytes_expected": 39616,
+        "copied_files_actual": 10,
+        "copied_bytes_actual": 39805,
+        "excluded_files": 14,
+        "excluded_bytes": 78526,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "bayesian-skyline",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/bayesian-skyline",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 22478,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 22680,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "beast2-phylogeography",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/beast2-phylogeography",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 22014,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 22216,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "bioc-pmc",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/bioc-pmc",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "web-tool-name",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 14163,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 14366,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "card",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/card",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 13088,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 13290,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "d-place",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/d-place",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 10,
+        "copied_bytes_expected": 39519,
+        "copied_files_actual": 10,
+        "copied_bytes_actual": 39708,
+        "excluded_files": 14,
+        "excluded_bytes": 78456,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "nextflow-development",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/nextflow-development",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "claude-config-or-branding",
+        "http-literal"
+      ],
+      "runtime_bucket": "claude-branding-only",
+      "action": "Emballage possible apres neutralisation de la mention de marque si necessaire.",
+      "audit": {
+        "copied_files_expected": 22,
+        "copied_bytes_expected": 203673,
+        "copied_files_actual": 22,
+        "copied_bytes_actual": 203668,
+        "excluded_files": 20,
+        "excluded_bytes": 341966,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "nextstrain",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/nextstrain",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 17202,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 17404,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "openalex",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/openalex",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 16565,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 16767,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "orbis",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/orbis",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 11,
+        "copied_bytes_expected": 54819,
+        "copied_files_actual": 11,
+        "copied_bytes_actual": 54999,
+        "excluded_files": 14,
+        "excluded_bytes": 111999,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "p3k14c",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/p3k14c",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 10,
+        "copied_bytes_expected": 37365,
+        "copied_files_actual": 10,
+        "copied_bytes_actual": 37554,
+        "excluded_files": 14,
+        "excluded_bytes": 78900,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "pastml",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/pastml",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 13413,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 13615,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "pubmed-database",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/pubmed-database",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbmonitor-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 4,
+        "copied_bytes_expected": 46100,
+        "copied_files_actual": 4,
+        "copied_bytes_actual": 46235,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "pubtator",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/pubtator",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "web-tool-name",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 15959,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 16161,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "seshat",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/seshat",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 10,
+        "copied_bytes_expected": 49924,
+        "copied_files_actual": 10,
+        "copied_bytes_actual": 50105,
+        "excluded_files": 14,
+        "excluded_bytes": 85332,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "slavevoyages",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/slavevoyages",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "mcp-runtime",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "codex-mcp-documentation-only",
+      "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",
+      "audit": {
+        "copied_files_expected": 10,
+        "copied_bytes_expected": 41949,
+        "copied_files_actual": 10,
+        "copied_bytes_actual": 42128,
+        "excluded_files": 14,
+        "excluded_bytes": 88448,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "biolqm-convert",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/biolqm-convert",
+      "package_candidate": "maboss",
+      "coarse_signals": [
+        "mcp-runtime"
+      ],
+      "runtime_issues": [
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "mcp-narrative-only",
+      "action": "Emballage possible ; la mention MCP n'est pas un appel runtime direct.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 2695,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 2894,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "bn-control",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/bn-control",
+      "package_candidate": "maboss",
+      "coarse_signals": [
+        "mcp-runtime"
+      ],
+      "runtime_issues": [
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "mcp-narrative-only",
+      "action": "Emballage possible ; la mention MCP n'est pas un appel runtime direct.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 4599,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 4801,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "boolean-attractors",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/boolean-attractors",
+      "package_candidate": "maboss",
+      "coarse_signals": [
+        "mcp-runtime"
+      ],
+      "runtime_issues": [
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "mcp-narrative-only",
+      "action": "Emballage possible ; la mention MCP n'est pas un appel runtime direct.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 3664,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 3866,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "colomoto-run",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/colomoto-run",
+      "package_candidate": "maboss",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "mcp-narrative-only",
+      "action": "Emballage possible ; la mention MCP n'est pas un appel runtime direct.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 2856,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 3058,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "maboss-advanced",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/maboss-advanced",
+      "package_candidate": "maboss",
+      "coarse_signals": [
+        "mcp-runtime"
+      ],
+      "runtime_issues": [
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "mcp-narrative-only",
+      "action": "Emballage possible ; la mention MCP n'est pas un appel runtime direct.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 2449,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 2651,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "model-repositories",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/model-repositories",
+      "package_candidate": "maboss",
+      "coarse_signals": [
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "mcp-narrative-only",
+      "action": "Emballage possible ; la mention MCP n'est pas un appel runtime direct.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 2485,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 2687,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "pydruglogics",
+      "source_plugin": "maboss",
+      "canonical_path": "maboss/skills/pydruglogics",
+      "package_candidate": "maboss",
+      "coarse_signals": [
+        "mcp-runtime"
+      ],
+      "runtime_issues": [
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "mcp-narrative-only",
+      "action": "Emballage possible ; la mention MCP n'est pas un appel runtime direct.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 1987,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 2189,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    }
+  ]
+}

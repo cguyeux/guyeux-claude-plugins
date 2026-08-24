@@ -1,0 +1,25 @@
+# FIXTURE - illustrative subset for OFFLINE TESTS ONLY; NOT real AADR genotypes.
+# Headers mirror the AADR .anno; values approximate published individuals.
+Genetic ID	Master ID	Group Label	Political Entity	Locality	Lat.	Long.	Date mean in BP	Date standard deviation in BP	Publication	Coverage	Molecular Sex	Assessment
+Winstrup_Lund.SG	Winstrup	Sweden_Lund_Medieval	Sweden	Lund Cathedral	55.7047	13.1910	271	0	Sabin2020	3.40	XY	PASS
+Vac_mummy_I.SG	Vac_I	Hungary_Vac_18C	Hungary	Vac Dominican church	47.7753	19.1347	200	30	Kay2015	2.10	XX	PASS
+Vac_mummy_II.SG	Vac_II	Hungary_Vac_18C	Hungary	Vac Dominican church	47.7753	19.1347	230	30	Kay2015	1.80	XY	PASS
+Vac_mummy_III.SG	Vac_III	Hungary_Vac_18C	Hungary	Vac Dominican church	47.7753	19.1347	250	30	Kay2015	0.40	XX	QUESTIONABLE_CRITICAL (contamination)
+Chiribaya_Peru.SG	Chiribaya	Peru_Chiribaya_LIP	Peru	Chiribaya Alta	-17.6000	-71.3000	950	50	Bos2014	2.90	XY	PASS
+Moquegua_Col.SG	Moquegua	Peru_Moquegua_Colonial	Peru	Moquegua M6-Estuquina	-17.1900	-70.9300	450	40	Vagene2022	1.50	XX	PASS
+Koln_Med.SG	KolnMed	Germany_Koln_Medieval	Germany	Koeln	50.9375	6.9603	800	60	Krause2018	1.20	XY	PASS
+London_Rom.SG	LondonRom	England_London_Roman	England	Londinium	51.5099	-0.1180	1700	50	Martiniano2016	1.05	XY	PASS
+Roma_Imp.SG	RomaImp	Italy_Roma_Imperial	Italy	Roma	41.9028	12.4964	1850	60	Antonio2019	2.30	XX	PASS
+Roma_IronAge.SG	RomaIA	Italy_Roma_IronAge	Italy	Roma	41.9028	12.4964	2600	80	Antonio2019	1.70	XY	PASS
+Greece_Hel.SG	GreeceHel	Greece_Hellenistic	Greece	Athens	37.9838	23.7275	2100	70	Lazaridis2017	0.90	XY	PASS
+Spain_Med.SG	SpainMed	Spain_Iberia_Medieval	Spain	Toledo	39.8628	-4.0273	700	50	Olalde2019	1.10	XX	PASS
+Poland_Med.SG	PolandMed	Poland_Medieval	Poland	Krakow	50.0647	19.9450	600	45	Stolarek2019	0.80	XY	PASS
+Netherlands_Med.SG	NLMed	Netherlands_Medieval	Netherlands	Utrecht	52.0907	5.1214	900	55	Altena2020	1.00	XX	PASS
+Hungary_BA.SG	HunBA	Hungary_BronzeAge	Hungary	Great Hungarian Plain	47.0000	20.0000	3500	90	Gamba2014	1.40	XY	PASS
+Sweden_Neo.SG	SweNeo	Sweden_TRB_Neolithic	Sweden	Gokhem	58.3000	13.5000	4900	100	Skoglund2014	2.00	XX	PASS
+Russia_Steppe.SG	RusSteppe	Russia_Yamnaya	Russia	Samara	53.2000	50.1500	4500	120	Haak2015	1.60	XY	PASS
+France_PD.DG	FrancePD	France_modern	France	Paris	48.8566	2.3522	0	0	1000Genomes2015	30.00	XX	PASS
+Germany_PD.DG	GermanyPD	Germany_modern	Germany	Berlin	52.5200	13.4050	0	0	HumanOrigins2014	28.00	XY	PASS
+England_PD.DG	EnglandPD	England_modern	England	London	51.5074	-0.1278	0	0	1000Genomes2015	31.00	XX	PASS
+Mexico_Col.SG	MexicoCol	Mexico_Teposcolula	Mexico	Teposcolula-Yucundaa	17.5800	-97.4700	405	35	Vagene2018	0.70	XY	PASS
+Italy_PD.DG	ItalyPD	Italy_modern	Italy	Roma	41.9028	12.4964	0	0	HumanOrigins2014	27.00	XX	PASS

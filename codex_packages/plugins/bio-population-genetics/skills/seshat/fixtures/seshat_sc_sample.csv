@@ -1,0 +1,22 @@
+# FIXTURE - illustrative long-format Seshat subset for OFFLINE TESTS ONLY; values approximate.
+NGA,Polity,start_year,end_year,variable,value_from,value_to,source
+Latium,Roman Kingdom,-750,-509,Polity Population,30000,60000,Turchin2018
+Latium,Roman Republic,-509,-27,Polity Population,4000000,4500000,Turchin2018
+Latium,Roman Republic,-509,-27,Polity territory,300000,800000,Turchin2018
+Latium,Roman Principate,-27,284,Polity Population,50000000,60000000,Turchin2018
+Latium,Roman Principate,-27,284,Capital Population,800000,1000000,Turchin2018
+Upper Egypt,Naqada II,-3600,-3300,Polity Population,5000,20000,Turchin2018
+Upper Egypt,Old Kingdom Egypt,-2686,-2181,Polity Population,1000000,1500000,Turchin2018
+Upper Egypt,Old Kingdom Egypt,-2686,-2181,Capital Population,30000,50000,Turchin2018
+Upper Egypt,New Kingdom Egypt,-1550,-1069,Polity Population,3000000,4000000,Turchin2018
+Kachi Plain,Indus Valley (Harappan),-2600,-1900,Polity Population,500000,1000000,Turchin2018
+Kachi Plain,Kushan Empire,30,375,Polity Population,3000000,5000000,Turchin2018
+Konya Plain,Catalhoyuk,-7100,-5950,Polity Population,2000,8000,Turchin2018
+Konya Plain,Hittite New Kingdom,-1400,-1180,Polity Population,800000,1200000,Turchin2018
+Konya Plain,Seljuk Sultanate of Rum,1077,1307,Polity Population,2000000,3000000,Turchin2018
+Kansai,Yayoi,-300,250,Polity Population,100000,500000,Turchin2018
+Kansai,Nara,710,794,Polity Population,4000000,6000000,Turchin2018
+Kansai,Heian,794,1185,Capital Population,100000,200000,Turchin2018
+Susiana,Susa I,-4200,-3800,Polity Population,3000,10000,Turchin2018
+Susiana,Elam (Middle),-1500,-1100,Polity Population,200000,400000,Turchin2018
+Susiana,Achaemenid Empire,-550,-330,Polity Population,17000000,35000000,Turchin2018

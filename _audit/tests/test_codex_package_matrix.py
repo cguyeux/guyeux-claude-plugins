@@ -85,12 +85,27 @@ class CodexPackageMatrixTests(unittest.TestCase):
             {row["package_candidate"] for row in payload},
         )
 
+    def test_runtime_packages_are_marked_after_materialization(self):
+        rows = self.matrix.build_rows()
+        runtime = [row for row in rows if row["classification"] == "packaged-runtime-adapted"]
+        self.assertEqual(46, len(runtime))
+        self.assertEqual(
+            {
+                "bio-bacteria",
+                "bio-pathogens",
+                "bio-population-genetics",
+                "maboss",
+            },
+            {row["package_candidate"] for row in runtime},
+        )
+
     def test_matrix_keeps_required_verrous_visible(self):
         rows = {row["name"]: row for row in self.matrix.build_rows()}
         self.assertIn("unsupported-frontmatter", rows["tbmonitor-papers"]["signals"])
         self.assertIn("script-payload", rows["active-site-check"]["signals"])
         self.assertIn("project-memory-write", rows["mtbc-bilan"]["signals"])
         self.assertEqual("blocked-by-personal-workflow", rows["mtbc-bilan"]["classification"])
+        self.assertEqual("needs-codex-runtime-adaptation", rows["active-site-check"]["classification"])
 
 
 if __name__ == "__main__":

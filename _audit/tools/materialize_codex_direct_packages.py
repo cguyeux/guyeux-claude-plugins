@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import fnmatch
+import re
 import shutil
 from collections import defaultdict
 from pathlib import Path
@@ -13,7 +15,9 @@ ROOT = Path(__file__).resolve().parents[2]
 MATRIX = ROOT / "_audit" / "codex_package_matrix.json"
 PACKAGES_ROOT = ROOT / "codex_packages" / "plugins"
 MARKETPLACE = ROOT / "codex_packages" / ".agents" / "plugins" / "marketplace.json"
-UNSUPPORTED_FRONTMATTER = {"argument-hint", "user-invocable", "version"}
+UNSUPPORTED_FRONTMATTER = {"argument-hint", "disable-model-invocation", "user-invocable", "version"}
+EXCLUDE_DIRS = {".git", ".mypy_cache", ".pytest_cache", ".ruff_cache", ".venv", "__pycache__", "venv"}
+EXCLUDE_GLOBS = {"*.pyc", "*.pyo"}
 TEXT_SUFFIXES = {
     ".csv",
     ".geojson",
@@ -87,9 +91,17 @@ def strip_unsupported_frontmatter(text: str) -> str:
         if skipping and line[:1] in " \t":
             continue
         skipping = False
-        kept.append(line)
+        kept.append(sanitize_frontmatter_value(line))
     kept.append("---")
     return "\n".join(kept) + text[end + 4 :]
+
+
+def sanitize_frontmatter_value(line: str) -> str:
+    if re.match(r"^description:\s*[>|]", line):
+        return line
+    line = re.sub(r">(\d)", r"more than \1", line)
+    line = re.sub(r"<(\d)", r"less than \1", line)
+    return line.replace("<->", "to").replace("<", "").replace(">", "")
 
 
 def direct_rows() -> list[dict[str, Any]]:
@@ -100,8 +112,16 @@ def direct_rows() -> list[dict[str, Any]]:
     ]
 
 
+def ignore(_directory: str, names: list[str]) -> set[str]:
+    ignored = set()
+    for name in names:
+        if name in EXCLUDE_DIRS or any(fnmatch.fnmatch(name, pattern) for pattern in EXCLUDE_GLOBS):
+            ignored.add(name)
+    return ignored
+
+
 def copy_skill(source: Path, target: Path) -> None:
-    shutil.copytree(source, target, dirs_exist_ok=True)
+    shutil.copytree(source, target, dirs_exist_ok=True, ignore=ignore)
     skill_md = target / "SKILL.md"
     skill_md.write_text(strip_unsupported_frontmatter(skill_md.read_text(encoding="utf-8")), encoding="utf-8")
     clean_text_payload(target)

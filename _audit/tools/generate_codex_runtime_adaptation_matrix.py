@@ -39,7 +39,7 @@ def load_runtime_rows() -> list[dict[str, Any]]:
     matrix = json.loads(PACKAGE_MATRIX.read_text(encoding="utf-8"))
     return [
         row for row in matrix["rows"]
-        if row["classification"] == "needs-codex-runtime-adaptation"
+        if row["classification"] in {"needs-codex-runtime-adaptation", "packaged-runtime-adapted"}
     ]
 
 

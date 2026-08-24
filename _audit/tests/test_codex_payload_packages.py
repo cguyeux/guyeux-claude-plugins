@@ -61,6 +61,7 @@ class CodexPayloadPackagesTests(unittest.TestCase):
                 text = (PACKAGES / row["package_candidate"] / "skills" / row["name"] / "SKILL.md").read_text(encoding="utf-8")
                 fm = frontmatter(text)
                 self.assertNotIn("argument-hint:", fm)
+                self.assertNotIn("disable-model-invocation:", fm)
                 self.assertNotIn("user-invocable:", fm)
                 self.assertNotIn("version:", fm)
 

@@ -1,7 +1,7 @@
 {
   "name": "bio-bacteria",
   "version": "0.1.0",
-  "description": "Local direct Codex package for 3 migrated Claude skills.",
+  "description": "Local Codex package for 8 migrated Claude skills.",
   "author": {
     "name": "Christophe Guyeux"
   },
@@ -9,7 +9,7 @@
   "interface": {
     "displayName": "Bio Bacteria Direct",
     "shortDescription": "Direct bacterial research skills.",
-    "longDescription": "Direct Codex package for bacterial research skills that do not need runtime adaptation before packaging.",
+    "longDescription": "Codex package for bacterial research skills already audited for direct, payload, or runtime-adapted packaging.",
     "developerName": "Christophe Guyeux",
     "category": "Developer tools",
     "capabilities": [],

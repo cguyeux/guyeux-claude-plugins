@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import fnmatch
 import json
+import re
 import shutil
 from collections import defaultdict
 from pathlib import Path
@@ -16,7 +17,7 @@ JSON_OUT = ROOT / "_audit" / "codex_payload_package_audit.json"
 MD_OUT = ROOT / "_audit" / "codex_payload_package_audit.md"
 PACKAGES_ROOT = ROOT / "codex_packages" / "plugins"
 MARKETPLACE = ROOT / "codex_packages" / ".agents" / "plugins" / "marketplace.json"
-UNSUPPORTED_FRONTMATTER = {"argument-hint", "user-invocable", "version"}
+UNSUPPORTED_FRONTMATTER = {"argument-hint", "disable-model-invocation", "user-invocable", "version"}
 EXCLUDE_DIRS = {".git", ".mypy_cache", ".pytest_cache", ".ruff_cache", ".venv", "__pycache__", "venv"}
 EXCLUDE_GLOBS = {"*.pyc", "*.pyo"}
 TEXT_SUFFIXES = {
@@ -78,9 +79,17 @@ def strip_unsupported_frontmatter(text: str) -> str:
         if skipping and line[:1] in " \t":
             continue
         skipping = False
-        kept.append(line)
+        kept.append(sanitize_frontmatter_value(line))
     kept.append("---")
     return "\n".join(kept) + text[end + 4 :]
+
+
+def sanitize_frontmatter_value(line: str) -> str:
+    if re.match(r"^description:\s*[>|]", line):
+        return line
+    line = re.sub(r">(\d)", r"more than \1", line)
+    line = re.sub(r"<(\d)", r"less than \1", line)
+    return line.replace("<->", "to").replace("<", "").replace(">", "")
 
 
 def clean_text_payload(target: Path) -> None:

@@ -1,7 +1,7 @@
 {
   "name": "maboss",
   "version": "0.1.0",
-  "description": "Local direct Codex package for 5 migrated Claude skills.",
+  "description": "Local Codex package for 12 migrated Claude skills.",
   "author": {
     "name": "Christophe Guyeux"
   },
@@ -9,7 +9,7 @@
   "interface": {
     "displayName": "MaBoSS Direct",
     "shortDescription": "Direct MaBoSS modelling skills.",
-    "longDescription": "Direct Codex package for MaBoSS modelling skills that do not need runtime adaptation before packaging.",
+    "longDescription": "Codex package for MaBoSS modelling skills already audited for direct or runtime-adapted packaging.",
     "developerName": "Christophe Guyeux",
     "category": "Developer tools",
     "capabilities": [],
