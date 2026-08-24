@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "string-db-cli"
+version = "0.1.0"
+description = "Stdlib-only client and CLI for the STRING v12 protein-association REST API (ad-hoc queries)."
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+string-db = "string_db.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["string_db*"]

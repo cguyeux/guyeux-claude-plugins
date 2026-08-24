@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "verified_on": "2026-08-21",
+  "resources": [
+    {
+      "slug": "ntm-db",
+      "name": "NTM-DB",
+      "scope": "Genomes, metadata, MLST, resistance and virulence annotations, pan-genomes, and online analyses for non-tuberculous mycobacteria.",
+      "homepage": "https://ngdc.cncb.ac.cn/ntmdb/",
+      "citation": {
+        "title": "NTM-DB: A Comprehensive Non-Tuberculosis Mycobacteria Genomic Database",
+        "doi": "10.1101/2025.07.22.666127",
+        "kind": "preprint",
+        "year": 2025
+      },
+      "live_check": {
+        "status": "reachable",
+        "method": "HTTPS GET from the audit host and browser retrieval",
+        "observed": "HTTP 200; home, documentation, and download pages were retrievable.",
+        "checked_on": "2026-08-21"
+      },
+      "rights": {
+        "resource_license_status": "stated",
+        "resource_license": "CC-BY-3.0-CN",
+        "evidence": "https://ngdc.cncb.ac.cn/ntmdb/",
+        "publication_license": "not-assessed-for-resource-reuse",
+        "reuse_note": "The site states that related data and processed results are downloadable and displays CC BY 3.0 China Mainland. Preserve accession-level provenance and verify the terms of upstream GenBank, RefSeq, literature, and submitted records before redistribution."
+      }
+    },
+    {
+      "slug": "mabellini",
+      "name": "Mabellini",
+      "scope": "Genome-wide structural proteome models and annotations for Mycobacterium abscessus, with a historical REST API and model downloads described in the publication.",
+      "homepage": "https://www.mabellinidb.science/",
+      "citation": {
+        "title": "Mabellini: a genome-wide database for understanding the structural proteome and evaluating prospective antimicrobial targets of the emerging pathogen Mycobacterium abscessus",
+        "doi": "10.1093/database/baz113",
+        "kind": "journal-article",
+        "year": 2019
+      },
+      "live_check": {
+        "status": "not-reproducibly-reachable",
+        "method": "HTTPS GET from the audit host",
+        "observed": "DNS resolution failed for both the bare and www hostnames; the publication remains available through PubMed Central.",
+        "checked_on": "2026-08-21"
+      },
+      "rights": {
+        "resource_license_status": "not-found",
+        "resource_license": null,
+        "evidence": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6853642/",
+        "publication_license": "open-access-publication; not treated as a database-content license",
+        "reuse_note": "The article's availability and reuse terms do not establish a license for bulk redistribution of the database, its annotations, or its structural models. Seek explicit terms or rights-holder permission before redistribution."
+      }
+    },
+    {
+      "slug": "mac-inmv-ssr",
+      "name": "MAC-INMV-SSR",
+      "scope": "Web application for SSR and MIRU-VNTR genotyping of members of the Mycobacterium avium complex, including M. avium subsp. paratuberculosis.",
+      "homepage": "http://mac-inmv.tours.inra.fr/",
+      "citation": {
+        "title": "MAC-INMV-SSR: a web application dedicated to genotyping members of Mycobacterium avium complex (MAC) including Mycobacterium avium subsp. paratuberculosis strains",
+        "doi": "10.1016/j.meegid.2019.104075",
+        "kind": "journal-article",
+        "year": 2020
+      },
+      "live_check": {
+        "status": "not-reproducibly-reachable",
+        "method": "HTTP and HTTPS GET from the audit host plus browser retrieval",
+        "observed": "Repeated DNS resolution failures and a browser timeout; one isolated HTTP probe was not reproducible.",
+        "checked_on": "2026-08-21"
+      },
+      "rights": {
+        "resource_license_status": "not-found",
+        "resource_license": null,
+        "evidence": "https://www.sciencedirect.com/science/article/abs/pii/S1567134819303016",
+        "publication_license": "Elsevier copyright; all rights reserved on the official article page",
+        "reuse_note": "Public web access and the publication do not establish permission to redistribute the database or submitted profiles. Use interactively for research and citation unless explicit terms or rights-holder permission are obtained."
+      }
+    }
+  ]
+}

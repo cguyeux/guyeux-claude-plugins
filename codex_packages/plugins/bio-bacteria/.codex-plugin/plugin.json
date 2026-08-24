@@ -1,0 +1,18 @@
+{
+  "name": "bio-bacteria",
+  "version": "0.1.0",
+  "description": "Local direct Codex package for 3 migrated Claude skills.",
+  "author": {
+    "name": "Christophe Guyeux"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Bio Bacteria Direct",
+    "shortDescription": "Direct bacterial research skills.",
+    "longDescription": "Direct Codex package for bacterial research skills that do not need runtime adaptation before packaging.",
+    "developerName": "Christophe Guyeux",
+    "category": "Developer tools",
+    "capabilities": [],
+    "defaultPrompt": "Use the installed skills with their documented prerequisites and evidence boundaries."
+  }
+}

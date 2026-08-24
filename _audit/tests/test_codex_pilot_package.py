@@ -22,10 +22,11 @@ class CodexPilotPackageTests(unittest.TestCase):
     def test_repo_marketplace_points_to_the_pilot(self):
         marketplace = json.loads(MARKETPLACE.read_text(encoding="utf-8"))
         self.assertEqual("personal", marketplace["name"])
-        self.assertEqual(["guyeux-phylo-pilot"], [entry["name"] for entry in marketplace["plugins"]])
+        entries = {entry["name"]: entry for entry in marketplace["plugins"]}
+        self.assertIn("guyeux-phylo-pilot", entries)
         self.assertEqual(
             "./plugins/guyeux-phylo-pilot",
-            marketplace["plugins"][0]["source"]["path"],
+            entries["guyeux-phylo-pilot"]["source"]["path"],
         )
 
     def test_manifest_and_materialized_skill_set(self):

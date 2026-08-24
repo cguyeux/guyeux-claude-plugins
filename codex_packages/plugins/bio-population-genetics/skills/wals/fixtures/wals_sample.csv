@@ -1,0 +1,14 @@
+# FIXTURE WALS subset OFFLINE TESTS ONLY
+ID,Name,Glottocode,Macroarea,Family,Subfamily,Genus,Latitude,Longitude,ISO639P3code
+ger,German,stan1293,Eurasia,Indo-European,Germanic,Germanic,52.5,13.4,deu
+swa,Swahili,swah1253,Africa,Niger-Congo,Benue-Congo,Bantoid,-6.8,39.3,swh
+yor,Yoruba,yoru1245,Africa,Niger-Congo,Defoid,Defoid,7.4,3.9,yor
+man,Mandinka,mand1435,Africa,Niger-Congo,Western Mande,Western Mande,13.0,-15.0,mnk
+zul,Zulu,zulu1248,Africa,Niger-Congo,Benue-Congo,Bantoid,-29.0,30.0,zul
+ful,Fula,fula1264,Africa,Niger-Congo,Northern Atlantic,Atlantic,14.0,-4.0,ful
+amh,Amharic,amha1245,Africa,Afro-Asiatic,Semitic,Semitic,9.0,38.7,amh
+hau,Hausa,haus1257,Africa,Afro-Asiatic,Chadic,West Chadic,11.0,8.5,hau
+ara,Arabic,arab1395,Eurasia,Afro-Asiatic,Semitic,Semitic,24.0,45.0,arb
+mnd,Mandarin,mand1415,Eurasia,Sino-Tibetan,Chinese,Chinese,34.0,108.0,cmn
+que,Quechua,quec1387,SAmerica,Quechuan,Quechuan,Quechuan,-13.5,-72.0,que
+tur,Turkish,nucl1301,Eurasia,Turkic,Turkic,Turkic,39.0,35.0,tur

@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wals-client"
+version = "0.1.0"
+description = "Resilient stdlib-only client for WALS (World Atlas of Language Structures)"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+wals = "wals_client.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["wals_client*"]

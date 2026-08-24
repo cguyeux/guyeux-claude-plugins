@@ -25,9 +25,9 @@
     },
     "classification": {
       "blocked-by-personal-workflow": 9,
-      "direct-package-candidate": 48,
       "needs-codex-runtime-adaptation": 58,
       "needs-payload-package-audit": 15,
+      "packaged-direct": 48,
       "packaged-pilot": 5
     }
   },
@@ -53,14 +53,16 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/abc-xgboost",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "supporting-resources"
       ],
       "unsupported_frontmatter": [],
       "file_count": 26,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "active-site-check",
@@ -117,14 +119,16 @@
       "source_plugin": "maboss",
       "canonical_path": "maboss/skills/astrologics",
       "package_candidate": "maboss",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "maboss"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "atlantic-voyages",
@@ -185,8 +189,10 @@
       "source_plugin": "bio_bacteria",
       "canonical_path": "bio_bacteria/skills/bactrline",
       "package_candidate": "bio-bacteria",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-bacteria"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "provenance-recorded",
         "unsupported-frontmatter",
@@ -197,7 +203,7 @@
         "user-invocable"
       ],
       "file_count": 2,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "bayesian-skyline",
@@ -298,14 +304,19 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/biopython",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
+        "unsupported-frontmatter",
         "web-runtime"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "bioskills",
@@ -370,14 +381,16 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/bovine-genomics",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
       "file_count": 2,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "card",
@@ -399,14 +412,19 @@
       "source_plugin": "ia",
       "canonical_path": "ia/skills/causal-inference",
       "package_candidate": "ia",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-direct",
       "signals": [
+        "unsupported-frontmatter",
         "web-runtime"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "clinical-trial-protocol-skill",
@@ -514,8 +532,10 @@
       "source_plugin": "ops",
       "canonical_path": "ops/skills/deploy-predictops",
       "package_candidate": "ops",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ops"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "unsupported-frontmatter"
       ],
@@ -523,7 +543,7 @@
         "argument-hint"
       ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "documentation",
@@ -578,8 +598,10 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/esm-atlas-cli",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "supporting-resources",
         "unsupported-frontmatter",
@@ -590,7 +612,7 @@
         "user-invocable"
       ],
       "file_count": 14,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "europe-pmc",
@@ -635,41 +657,50 @@
       "source_plugin": "web",
       "canonical_path": "web/skills/frontend-design",
       "package_candidate": "web",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "web"
+      ],
+      "classification": "packaged-direct",
       "signals": [],
       "unsupported_frontmatter": [],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "geopandas",
       "source_plugin": "ia",
       "canonical_path": "ia/skills/geopandas",
       "package_candidate": "ia",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-direct",
       "signals": [
+        "unsupported-frontmatter",
         "web-runtime"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "glottolog",
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/glottolog",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "supporting-resources",
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
       "file_count": 24,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "helicobacter-pylori-phylogeography",
@@ -711,9 +742,12 @@
       "signals": [
         "claude-runtime-reference",
         "script-payload",
-        "supporting-resources"
+        "supporting-resources",
+        "unsupported-frontmatter"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 9,
       "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
     },
@@ -722,8 +756,10 @@
       "source_plugin": "ops",
       "canonical_path": "ops/skills/incident-response",
       "package_candidate": "ops",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ops"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "unsupported-frontmatter"
       ],
@@ -731,7 +767,7 @@
         "argument-hint"
       ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "indian-ocean-voyages",
@@ -841,8 +877,10 @@
       "source_plugin": "maboss",
       "canonical_path": "maboss/skills/maboss-ecosystem",
       "package_candidate": "maboss",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "maboss"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "unsupported-frontmatter",
         "web-runtime"
@@ -852,15 +890,17 @@
         "user-invocable"
       ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "maboss-model",
       "source_plugin": "maboss",
       "canonical_path": "maboss/skills/maboss-model",
       "package_candidate": "maboss",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "maboss"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "unsupported-frontmatter"
       ],
@@ -869,7 +909,7 @@
         "user-invocable"
       ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "migration-data",
@@ -927,12 +967,14 @@
       "source_plugin": "maboss",
       "canonical_path": "maboss/skills/model-inference",
       "package_candidate": "maboss",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "maboss"
+      ],
+      "classification": "packaged-direct",
       "signals": [],
       "unsupported_frontmatter": [],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "model-repositories",
@@ -1167,29 +1209,36 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/neolithic-14c",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "supporting-resources",
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
       "file_count": 24,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "networkx",
       "source_plugin": "ia",
       "canonical_path": "ia/skills/networkx",
       "package_candidate": "ia",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-direct",
       "signals": [
+        "unsupported-frontmatter",
         "web-runtime"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "nextflow-development",
@@ -1228,8 +1277,10 @@
       "source_plugin": "bio_bacteria",
       "canonical_path": "bio_bacteria/skills/ntm-resources",
       "package_candidate": "bio-bacteria",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-bacteria"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "provenance-recorded",
         "supporting-resources",
@@ -1241,47 +1292,60 @@
         "user-invocable"
       ],
       "file_count": 3,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "numpy",
       "source_plugin": "ia",
       "canonical_path": "ia/skills/numpy",
       "package_candidate": "ia",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-direct",
       "signals": [
+        "unsupported-frontmatter",
         "web-runtime"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "numpy-low-level",
       "source_plugin": "ia",
       "canonical_path": "ia/skills/numpy-low-level",
       "package_candidate": "ia",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
-      "signals": [],
-      "unsupported_frontmatter": [],
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-direct",
+      "signals": [
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "ontologies",
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/ontologies",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "openalex",
@@ -1319,15 +1383,17 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/owtrad",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "supporting-resources",
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
       "file_count": 21,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "p3k14c",
@@ -1350,29 +1416,36 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/paleoclimate",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "supporting-resources",
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
       "file_count": 30,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "pandas-performance",
       "source_plugin": "ia",
       "canonical_path": "ia/skills/pandas-performance",
       "package_candidate": "ia",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-direct",
       "signals": [
+        "unsupported-frontmatter",
         "web-runtime"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "pangenome-enrichment",
@@ -1450,8 +1523,10 @@
       "source_plugin": "bio_redac",
       "canonical_path": "bio_redac/skills/phylo-history",
       "package_candidate": "bio-redac",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-redac"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "unsupported-frontmatter"
       ],
@@ -1460,7 +1535,7 @@
         "user-invocable"
       ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "phylogeography",
@@ -1486,15 +1561,17 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/pleiades",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "supporting-resources",
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
       "file_count": 24,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "pubmed-database",
@@ -1550,8 +1627,10 @@
       "source_plugin": "maboss",
       "canonical_path": "maboss/skills/pymaboss",
       "package_candidate": "maboss",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "maboss"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "unsupported-frontmatter"
       ],
@@ -1560,7 +1639,7 @@
         "user-invocable"
       ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "pymlst",
@@ -1587,12 +1666,18 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/pysam",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
-      "signals": [],
-      "unsupported_frontmatter": [],
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
+      "signals": [
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "raxml",
@@ -1621,14 +1706,19 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/rdkit",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
+        "unsupported-frontmatter",
         "web-runtime"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "resistance-catalogue",
@@ -1673,80 +1763,105 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/scanpy",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
-      "signals": [],
-      "unsupported_frontmatter": [],
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
+      "signals": [
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "scientific-problem-selection",
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/scientific-problem-selection",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "supporting-resources"
       ],
       "unsupported_frontmatter": [],
       "file_count": 11,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "scikit-bio",
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/scikit-bio",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
+        "unsupported-frontmatter",
         "web-runtime"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "scikit-learn",
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/scikit-learn",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
+        "unsupported-frontmatter",
         "web-runtime"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "scipy",
       "source_plugin": "ia",
       "canonical_path": "ia/skills/scipy",
       "package_candidate": "ia",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-direct",
       "signals": [
+        "unsupported-frontmatter",
         "web-runtime"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "senior-data-scientist",
       "source_plugin": "ia",
       "canonical_path": "ia/skills/senior-data-scientist",
       "package_candidate": "ia",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-direct",
       "signals": [],
       "unsupported_frontmatter": [],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "seshat",
@@ -1769,14 +1884,19 @@
       "source_plugin": "ia",
       "canonical_path": "ia/skills/shapely",
       "package_candidate": "ia",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-direct",
       "signals": [
+        "unsupported-frontmatter",
         "web-runtime"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "silent-film-subs",
@@ -1817,26 +1937,37 @@
       "source_plugin": "ia",
       "canonical_path": "ia/skills/sklearn-advanced",
       "package_candidate": "ia",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-direct",
       "signals": [
+        "unsupported-frontmatter",
         "web-runtime"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "sklearn-explainability",
       "source_plugin": "ia",
       "canonical_path": "ia/skills/sklearn-explainability",
       "package_candidate": "ia",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
-      "signals": [],
-      "unsupported_frontmatter": [],
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-direct",
+      "signals": [
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "slavevoyages",
@@ -1965,8 +2096,10 @@
       "source_plugin": "ia",
       "canonical_path": "ia/skills/statistical-analysis",
       "package_candidate": "ia",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "unsupported-frontmatter"
       ],
@@ -1974,21 +2107,26 @@
         "user-invocable"
       ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "statsmodels",
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/statsmodels",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
+        "unsupported-frontmatter",
         "web-runtime"
       ],
-      "unsupported_frontmatter": [],
+      "unsupported_frontmatter": [
+        "version"
+      ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "strain-qc",
@@ -2014,8 +2152,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/string-db",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "supporting-resources",
         "unsupported-frontmatter",
@@ -2026,15 +2166,17 @@
         "user-invocable"
       ],
       "file_count": 14,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "tb-cli",
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/tb-cli",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "unsupported-frontmatter"
       ],
@@ -2043,7 +2185,7 @@
         "user-invocable"
       ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "tbannotator-mcp",
@@ -2127,14 +2269,16 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/tooluniverse-sequence-retrieval",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
       "file_count": 3,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "tsne-hdbscan",
@@ -2160,29 +2304,33 @@
       "source_plugin": "ops",
       "canonical_path": "ops/skills/upstream-contribution",
       "package_candidate": "ops",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ops"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "provenance-recorded"
       ],
       "unsupported_frontmatter": [],
       "file_count": 2,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "wals",
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/wals",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "supporting-resources",
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
       "file_count": 24,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "webapp-testing",
@@ -2204,37 +2352,43 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/worldclim-bioclim",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "supporting-resources",
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
       "file_count": 28,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "xgboost-iterative-optimizer",
       "source_plugin": "ia",
       "canonical_path": "ia/skills/xgboost-iterative-optimizer",
       "package_candidate": "ia",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "ia"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "supporting-resources"
       ],
       "unsupported_frontmatter": [],
       "file_count": 2,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
       "name": "yersinia-resources",
       "source_plugin": "bio_bacteria",
       "canonical_path": "bio_bacteria/skills/yersinia-resources",
       "package_candidate": "bio-bacteria",
-      "packaged_in": [],
-      "classification": "direct-package-candidate",
+      "packaged_in": [
+        "bio-bacteria"
+      ],
+      "classification": "packaged-direct",
       "signals": [
         "unsupported-frontmatter",
         "web-runtime"
@@ -2244,7 +2398,7 @@
         "user-invocable"
       ],
       "file_count": 1,
-      "action": "Copier le skill dans son paquet cible, puis retirer les champs Claude si presents."
+      "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     }
   ]
 }

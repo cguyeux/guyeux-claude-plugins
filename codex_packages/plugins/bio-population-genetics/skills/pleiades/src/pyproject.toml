@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pleiades-client"
+version = "0.1.0"
+description = "Resilient stdlib-only client for the Pleiades ancient-places gazetteer"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+pleiades = "pleiades_client.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["pleiades_client*"]

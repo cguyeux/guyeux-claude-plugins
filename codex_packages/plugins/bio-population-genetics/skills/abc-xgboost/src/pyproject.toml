@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "abc-xgboost"
+version = "0.1.0"
+description = "ABC + XGBoost + SHAP scenario inference for allele-frequency trajectories (TYK2 axe 2)"
+requires-python = ">=3.10"
+# Needs xgboost + shap + scikit-learn (numpy/scipy). Install in a dedicated venv
+# (Python 3.11): /home/christophe/venvs/abc311 (pip install xgboost shap scikit-learn).
+dependencies = ["numpy", "scipy", "scikit-learn", "xgboost", "shap"]
+
+[project.scripts]
+abc-xgboost = "abc_xgboost.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["abc_xgboost*"]

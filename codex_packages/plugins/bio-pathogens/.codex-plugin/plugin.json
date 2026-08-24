@@ -1,0 +1,18 @@
+{
+  "name": "bio-pathogens",
+  "version": "0.1.0",
+  "description": "Local direct Codex package for 2 migrated Claude skills.",
+  "author": {
+    "name": "Christophe Guyeux"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Bio Pathogens Direct",
+    "shortDescription": "Direct pathogen research skills.",
+    "longDescription": "Direct Codex package for pathogen research skills that do not need runtime adaptation before packaging.",
+    "developerName": "Christophe Guyeux",
+    "category": "Developer tools",
+    "capabilities": [],
+    "defaultPrompt": "Use the installed skills with their documented prerequisites and evidence boundaries."
+  }
+}

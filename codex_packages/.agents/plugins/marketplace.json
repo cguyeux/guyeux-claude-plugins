@@ -15,6 +15,102 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Developer tools"
+    },
+    {
+      "name": "bio-bacteria",
+      "source": {
+        "source": "local",
+        "path": "./plugins/bio-bacteria"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
+      "name": "bio-pathogens",
+      "source": {
+        "source": "local",
+        "path": "./plugins/bio-pathogens"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
+      "name": "bio-population-genetics",
+      "source": {
+        "source": "local",
+        "path": "./plugins/bio-population-genetics"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
+      "name": "bio-redac",
+      "source": {
+        "source": "local",
+        "path": "./plugins/bio-redac"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
+      "name": "ia",
+      "source": {
+        "source": "local",
+        "path": "./plugins/ia"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
+      "name": "maboss",
+      "source": {
+        "source": "local",
+        "path": "./plugins/maboss"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
+      "name": "ops",
+      "source": {
+        "source": "local",
+        "path": "./plugins/ops"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
+      "name": "web",
+      "source": {
+        "source": "local",
+        "path": "./plugins/web"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
     }
   ]
 }

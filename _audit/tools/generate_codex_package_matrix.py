@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 JSON_OUT = ROOT / "_audit" / "codex_package_matrix.json"
 MD_OUT = ROOT / "_audit" / "codex_package_matrix.md"
 
-UNSUPPORTED_FRONTMATTER = {"argument-hint", "user-invocable"}
+UNSUPPORTED_FRONTMATTER = {"argument-hint", "user-invocable", "version"}
 CLAUDE_RUNTIME = re.compile(
     r"(~/.claude|CLAUDE_PLUGIN_ROOT|CLAUDE\.md|Claude Code|CLAUDE_CONFIG_DIR)"
 )
@@ -97,7 +97,9 @@ def has_support_dir(path: Path, dirname: str) -> bool:
 
 def classify(signals: set[str], packages: list[str]) -> str:
     if packages:
-        return "packaged-pilot"
+        if packages == ["guyeux-phylo-pilot"]:
+            return "packaged-pilot"
+        return "packaged-direct"
     if "project-memory-write" in signals:
         return "blocked-by-personal-workflow"
     if "claude-runtime-reference" in signals or "mcp-runtime" in signals:
@@ -111,6 +113,8 @@ def action_for(row: dict[str, Any]) -> str:
     classification = row["classification"]
     if classification == "packaged-pilot":
         return "Deja materialise dans le lot temoin, verifier lors de l'extension."
+    if classification == "packaged-direct":
+        return "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     if classification == "blocked-by-personal-workflow":
         return "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
     if classification == "needs-codex-runtime-adaptation":
@@ -190,6 +194,7 @@ def markdown(rows: list[dict[str, Any]]) -> str:
         "",
         f"- Total non exporte Codex : {len(rows)}",
         f"- Deja materialises dans un paquet pilote : {counts['classification'].get('packaged-pilot', 0)}",
+        f"- Deja materialises dans des paquets directs : {counts['classification'].get('packaged-direct', 0)}",
         f"- Bloques par workflow personnel d'ecriture : {counts['classification'].get('blocked-by-personal-workflow', 0)}",
         f"- Adaptation runtime Claude ou MCP requise : {counts['classification'].get('needs-codex-runtime-adaptation', 0)}",
         f"- Audit de payload requis : {counts['classification'].get('needs-payload-package-audit', 0)}",

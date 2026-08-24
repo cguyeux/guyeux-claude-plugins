@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "esm-atlas-cli"
+version = "0.2.0"
+description = "Resilient stdlib-only client for the ESM Atlas API (alpha)"
+requires-python = ">=3.10"
+# stdlib-only (urllib): nothing to install. Runs on the system Python as-is.
+dependencies = []
+
+[project.scripts]
+esm-atlas-cli = "esm_atlas_cli.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["esm_atlas_cli*"]

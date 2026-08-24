@@ -52,6 +52,24 @@ class CodexPackageMatrixTests(unittest.TestCase):
         for row in pilot.values():
             self.assertEqual("guyeux-phylo-pilot", row["package_candidate"])
 
+    def test_direct_packages_are_marked_after_materialization(self):
+        rows = self.matrix.build_rows()
+        direct = [row for row in rows if row["classification"] == "packaged-direct"]
+        self.assertEqual(48, len(direct))
+        self.assertEqual(
+            {
+                "bio-bacteria",
+                "bio-pathogens",
+                "bio-population-genetics",
+                "bio-redac",
+                "ia",
+                "maboss",
+                "ops",
+                "web",
+            },
+            {row["package_candidate"] for row in direct},
+        )
+
     def test_matrix_keeps_required_verrous_visible(self):
         rows = {row["name"]: row for row in self.matrix.build_rows()}
         self.assertIn("unsupported-frontmatter", rows["tbmonitor-papers"]["signals"])

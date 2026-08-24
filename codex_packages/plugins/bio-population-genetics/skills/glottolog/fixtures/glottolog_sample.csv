@@ -1,0 +1,14 @@
+# FIXTURE Glottolog subset OFFLINE TESTS ONLY
+Glottocode,Name,level,Family_ID,Macroarea,Latitude,Longitude,ISO639P3code
+stan1293,Standard German,language,indo1319,Eurasia,52.5,13.4,deu
+swah1253,Swahili,language,atla1278,Africa,-6.8,39.3,swh
+yoru1245,Yoruba,language,atla1278,Africa,7.4,3.9,yor
+mand1435,Mandinka,language,mand1469,Africa,13.0,-15.0,mnk
+plat1254,Malagasy,language,aust1307,Africa,-18.9,47.5,plt
+amha1245,Amharic,language,afro1255,Africa,9.0,38.7,amh
+haus1257,Hausa,language,afro1255,Africa,11.0,8.5,hau
+arab1395,Arabic,language,afro1255,Eurasia,24.0,45.0,arb
+mand1415,Mandarin,language,sino1245,Eurasia,34.0,108.0,cmn
+quec1387,Quechua,language,quec1387,SouthAmerica,-13.5,-72.0,que
+zulu1248,Zulu,language,atla1278,Africa,-29.0,30.0,zul
+fula1264,Fulah,language,atla1278,Africa,14.0,-4.0,ful
