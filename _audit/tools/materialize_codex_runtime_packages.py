@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Materialize low-risk runtime-adapted Codex package candidates."""
+"""Materialize runtime-adapted Codex package candidates."""
 from __future__ import annotations
 
 import fnmatch
@@ -18,11 +18,13 @@ MD_OUT = ROOT / "_audit" / "codex_runtime_package_audit.md"
 PACKAGES_ROOT = ROOT / "codex_packages" / "plugins"
 MARKETPLACE = ROOT / "codex_packages" / ".agents" / "plugins" / "marketplace.json"
 UNSUPPORTED_FRONTMATTER = {"argument-hint", "disable-model-invocation", "user-invocable", "version"}
-LOW_RISK_BUCKETS = {
+MATERIALIZABLE_BUCKETS = {
     "codex-mcp-documentation-only",
     "codex-mcp-tool-prerequisite",
     "mcp-narrative-only",
     "claude-branding-only",
+    "rewrite-cache-path",
+    "rewrite-claude-skill-paths",
 }
 EXCLUDE_DIRS = {".git", ".mypy_cache", ".pytest_cache", ".ruff_cache", ".venv", "__pycache__", "venv"}
 EXCLUDE_GLOBS = {"*.pyc", "*.pyo"}
@@ -61,6 +63,11 @@ PACKAGE_METADATA = {
         "short": "Direct MaBoSS modelling skills.",
         "long": "Codex package for MaBoSS modelling skills already audited for direct or runtime-adapted packaging.",
     },
+    "multimedia": {
+        "display": "Multimedia Payload",
+        "short": "Audited multimedia skills.",
+        "long": "Codex package for multimedia skills already audited for payload or runtime-adapted packaging.",
+    },
 }
 
 
@@ -96,6 +103,29 @@ def sanitize_frontmatter_value(line: str) -> str:
 def adapt_runtime_text(text: str, row: dict[str, Any]) -> str:
     text = strip_unsupported_frontmatter(text)
     text = text.replace("Claude Code", "Codex")
+    skill_name = re.escape(row["name"])
+    text = re.sub(
+        rf"\$\{{CLAUDE_PLUGIN_ROOT\}}/skills/{skill_name}/",
+        "",
+        text,
+    )
+    text = re.sub(
+        rf"\$CLAUDE_PLUGIN_ROOT/skills/{skill_name}/",
+        "",
+        text,
+    )
+    text = re.sub(
+        rf"~/.claude/skills/{skill_name}/",
+        "",
+        text,
+    )
+    text = text.replace("${CLAUDE_PLUGIN_ROOT}/skills/mtbc-gene", "../mtbc-gene")
+    text = text.replace("$CLAUDE_PLUGIN_ROOT/skills/lineage-subdivision/", "")
+    text = text.replace("${CLAUDE_PLUGIN_ROOT}/skills/lit-review/scripts/europepmc_fulltext.py", "lit-review/scripts/europepmc_fulltext.py")
+    text = text.replace("~/.claude/cache/sra-geolocate/", "~/.cache/codex/sra-geolocate/")
+    text = text.replace("~/.claude/cache/sra-geolocate/sra_geo_cache.csv", "~/.cache/codex/sra-geolocate/sra_geo_cache.csv")
+    text = text.replace("~/.claude/cache/sra-geolocate/supp/$PMCID/", "~/.cache/codex/sra-geolocate/supp/$PMCID/")
+    text = text.replace("~/.claude/knowledge/tuberculosis.md", "~/.Codex/knowledge/tuberculosis.md")
     text = re.sub(
         r"claude mcp add --transport http --scope user\s+([A-Za-z0-9_-]+)\s+(https?://\S+)",
         r"codex mcp add \1 --url \2",
@@ -115,6 +145,17 @@ def adapt_runtime_text(text: str, row: dict[str, Any]) -> str:
         )
         if "## Codex packaging note" not in text:
             text = text.rstrip() + "\n" + note
+    if row["runtime_bucket"] == "rewrite-claude-skill-paths" and "## Codex script path note" not in text:
+        text = text.rstrip() + (
+            "\n\n## Codex script path note\n\n"
+            "Bundled script paths in this packaged copy are relative to the directory containing this `SKILL.md`. "
+            "For sibling packaged skills, resolve the sibling directory in the same plugin cache before running scripts.\n"
+        )
+    if row["runtime_bucket"] == "rewrite-cache-path" and "## Codex cache note" not in text:
+        text = text.rstrip() + (
+            "\n\n## Codex cache note\n\n"
+            "This packaged copy uses `~/.cache/codex/sra-geolocate/` for reusable cache files instead of Claude-specific cache paths.\n"
+        )
     return text
 
 
@@ -133,7 +174,7 @@ def rows_to_materialize() -> list[dict[str, Any]]:
     matrix = json.loads(RUNTIME_MATRIX.read_text(encoding="utf-8"))
     return [
         row for row in matrix["rows"]
-        if row["runtime_bucket"] in LOW_RISK_BUCKETS
+        if row["runtime_bucket"] in MATERIALIZABLE_BUCKETS
     ]
 
 
@@ -244,7 +285,7 @@ def write_audit(rows: list[dict[str, Any]]) -> None:
         "# Audit des paquets runtime Codex",
         "",
         "Ce fichier est genere par `_audit/tools/materialize_codex_runtime_packages.py`.",
-        "Il couvre les familles runtime faibles, materialisees avec une note Codex et sans environnements locaux.",
+        "Il couvre les familles runtime materialisees avec une note Codex et sans environnements locaux.",
         "",
         "| skill | paquet | famille | fichiers copies | fichiers exclus | racines exclues |",
         "|---|---|---|---:|---:|---|",

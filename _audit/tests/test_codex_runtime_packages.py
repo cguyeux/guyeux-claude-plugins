@@ -21,13 +21,15 @@ class CodexRuntimePackagesTests(unittest.TestCase):
     def test_runtime_audit_records_the_46_low_risk_rows(self):
         audit = json.loads(AUDIT.read_text(encoding="utf-8"))
         rows = audit["rows"]
-        self.assertEqual(46, len(rows))
+        self.assertEqual(56, len(rows))
         self.assertEqual(
             {
                 "claude-branding-only",
                 "codex-mcp-documentation-only",
                 "codex-mcp-tool-prerequisite",
                 "mcp-narrative-only",
+                "rewrite-cache-path",
+                "rewrite-claude-skill-paths",
             },
             {row["runtime_bucket"] for row in rows},
         )
@@ -64,6 +66,22 @@ class CodexRuntimePackagesTests(unittest.TestCase):
                 text = (PACKAGES / row["package_candidate"] / "skills" / row["name"] / "SKILL.md").read_text(encoding="utf-8")
                 self.assertIn("## Codex packaging note", text)
                 self.assertIn("codex mcp list", text)
+
+    def test_rewritten_runtime_paths_do_not_keep_claude_paths(self):
+        audit = json.loads(AUDIT.read_text(encoding="utf-8"))
+        rows = [
+            row for row in audit["rows"]
+            if row["runtime_bucket"] in {"rewrite-cache-path", "rewrite-claude-skill-paths"}
+        ]
+        self.assertEqual(10, len(rows))
+        for row in rows:
+            with self.subTest(name=row["name"]):
+                text = (PACKAGES / row["package_candidate"] / "skills" / row["name"] / "SKILL.md").read_text(encoding="utf-8")
+                self.assertNotIn("CLAUDE_PLUGIN_ROOT", text)
+                self.assertNotIn("~/.claude/skills", text)
+                self.assertNotIn("~/.claude/cache", text)
+        sra = (PACKAGES / "bio-pathogens" / "skills" / "sra-geolocate" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("~/.cache/codex/sra-geolocate", sra)
 
 
 if __name__ == "__main__":

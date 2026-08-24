@@ -25,11 +25,11 @@
     },
     "classification": {
       "blocked-by-personal-workflow": 9,
-      "needs-codex-runtime-adaptation": 12,
+      "needs-codex-runtime-adaptation": 2,
       "packaged-direct": 48,
       "packaged-payload": 15,
       "packaged-pilot": 5,
-      "packaged-runtime-adapted": 46
+      "packaged-runtime-adapted": 56
     }
   },
   "rows": [
@@ -72,15 +72,17 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/active-site-check",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "needs-codex-runtime-adaptation",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-runtime-adapted",
       "signals": [
         "claude-runtime-reference",
         "script-payload"
       ],
       "unsupported_frontmatter": [],
       "file_count": 4,
-      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+      "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
       "name": "amtdb",
@@ -660,8 +662,10 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/europe-pmc",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "needs-codex-runtime-adaptation",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-runtime-adapted",
       "signals": [
         "claude-runtime-reference",
         "mcp-runtime",
@@ -669,7 +673,7 @@
       ],
       "unsupported_frontmatter": [],
       "file_count": 1,
-      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+      "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
       "name": "fetch-tbannotator",
@@ -783,8 +787,10 @@
       "source_plugin": "multimedia",
       "canonical_path": "multimedia/skills/imdb",
       "package_candidate": "multimedia",
-      "packaged_in": [],
-      "classification": "needs-codex-runtime-adaptation",
+      "packaged_in": [
+        "multimedia"
+      ],
+      "classification": "packaged-runtime-adapted",
       "signals": [
         "claude-runtime-reference",
         "script-payload",
@@ -795,7 +801,7 @@
         "version"
       ],
       "file_count": 9,
-      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+      "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
       "name": "incident-response",
@@ -895,8 +901,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/lineage-subdivision",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "needs-codex-runtime-adaptation",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-runtime-adapted",
       "signals": [
         "claude-runtime-reference",
         "script-payload",
@@ -908,7 +916,7 @@
         "user-invocable"
       ],
       "file_count": 4,
-      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+      "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
       "name": "maboss-advanced",
@@ -990,8 +998,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/mk-ascertainment",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "needs-codex-runtime-adaptation",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-runtime-adapted",
       "signals": [
         "claude-runtime-reference",
         "script-payload",
@@ -1002,7 +1012,7 @@
         "user-invocable"
       ],
       "file_count": 7,
-      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+      "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
       "name": "ml-model-explainer",
@@ -1117,8 +1127,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/mtbc-epistasis",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "needs-codex-runtime-adaptation",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-runtime-adapted",
       "signals": [
         "claude-runtime-reference",
         "script-payload",
@@ -1129,15 +1141,17 @@
         "user-invocable"
       ],
       "file_count": 3,
-      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+      "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
       "name": "mtbc-gene",
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/mtbc-gene",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "needs-codex-runtime-adaptation",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-runtime-adapted",
       "signals": [
         "claude-runtime-reference",
         "script-payload",
@@ -1150,7 +1164,7 @@
         "user-invocable"
       ],
       "file_count": 22,
-      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+      "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
       "name": "mtbc-gene-network",
@@ -1178,8 +1192,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/mtbc-lineages",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "needs-codex-runtime-adaptation",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-runtime-adapted",
       "signals": [
         "claude-runtime-reference",
         "data-payload",
@@ -1192,7 +1208,7 @@
         "user-invocable"
       ],
       "file_count": 21,
-      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+      "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
       "name": "mtbc-prospect",
@@ -2194,8 +2210,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/sra-geolocate",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "needs-codex-runtime-adaptation",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-runtime-adapted",
       "signals": [
         "claude-runtime-reference",
         "mcp-runtime",
@@ -2206,7 +2224,7 @@
         "argument-hint"
       ],
       "file_count": 1,
-      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+      "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
       "name": "statistical-analysis",
@@ -2370,8 +2388,10 @@
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/thd",
       "package_candidate": "bio-pathogens",
-      "packaged_in": [],
-      "classification": "needs-codex-runtime-adaptation",
+      "packaged_in": [
+        "bio-pathogens"
+      ],
+      "classification": "packaged-runtime-adapted",
       "signals": [
         "claude-runtime-reference",
         "mcp-runtime",
@@ -2383,7 +2403,7 @@
         "user-invocable"
       ],
       "file_count": 4,
-      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+      "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
       "name": "tooluniverse-sequence-retrieval",

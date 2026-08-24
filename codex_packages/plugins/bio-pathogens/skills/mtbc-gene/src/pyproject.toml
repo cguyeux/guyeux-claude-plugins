@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mtbc-gene"
+version = "0.1.0"
+description = "H37Rv gene layer: curated function, ESM-1v LLR variant impact, pathway narration"
+requires-python = ">=3.10"
+# pyyaml is the only hard pip dependency (pathway catalogue). esm-atlas-cli is wired on
+# PYTHONPATH by the launchers, as are the optional siblings mtbc-gene-network and
+# string-db (PPI context for the pathway mode).
+dependencies = ["pyyaml>=6.0"]
+
+[project.scripts]
+mtbc-gene-function = "mtbc_gene_function.__main__:main"
+mtbc-mutation-impact = "mtbc_mutation_impact.__main__:main"
+mtbc-pathway-explain = "mtbc_pathway_explain.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["mtbc_gene_function*", "mtbc_mutation_impact*", "mtbc_pathway_explain*"]
+
+[tool.setuptools.package-data]
+mtbc_pathway_explain = ["data/*.yaml"]

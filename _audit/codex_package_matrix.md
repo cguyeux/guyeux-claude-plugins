@@ -7,9 +7,9 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 - Deja materialises dans un paquet pilote : 5
 - Deja materialises dans des paquets directs : 48
 - Deja materialises dans des paquets payload audites : 15
-- Deja materialises avec adaptation runtime Codex : 46
+- Deja materialises avec adaptation runtime Codex : 56
 - Bloques par workflow personnel d'ecriture : 9
-- Adaptation runtime Claude ou MCP requise : 12
+- Adaptation runtime Claude ou MCP requise : 2
 - Audit de payload requis : 0
 - Candidats directs sans verrou mecanique majeur : 0
 
@@ -34,7 +34,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 |---|---|---|---|---|---|
 | aadr | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | mcp-runtime, supporting-resources, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | abc-xgboost | bio_population_genetics | bio-population-genetics | packaged-direct | supporting-resources | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
-| active-site-check | bio_pathogens | bio-pathogens | needs-codex-runtime-adaptation | claude-runtime-reference, script-payload | Remplacer les references Claude et declarer les prerequis MCP Codex. |
+| active-site-check | bio_pathogens | bio-pathogens | packaged-runtime-adapted | claude-runtime-reference, script-payload | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | amtdb | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | mcp-runtime, supporting-resources, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | ancestral-reconstruction | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | astrologics | maboss | maboss | packaged-direct | web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
@@ -67,35 +67,35 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | domestication-pathways | bio_population_genetics | bio-population-genetics | packaged-payload | script-payload, unsupported-frontmatter, web-runtime | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
 | enterobase | bio_bacteria | bio-bacteria | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | esm-atlas-cli | bio_population_genetics | bio-population-genetics | packaged-direct | supporting-resources, unsupported-frontmatter, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
-| europe-pmc | bio_population_genetics | bio-population-genetics | needs-codex-runtime-adaptation | claude-runtime-reference, mcp-runtime, web-runtime | Remplacer les references Claude et declarer les prerequis MCP Codex. |
+| europe-pmc | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | claude-runtime-reference, mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | fetch-tbannotator | bio_pathogens | bio-pathogens | blocked-by-personal-workflow | claude-runtime-reference, mcp-runtime, project-memory-write, script-payload, unsupported-frontmatter, web-runtime | Porter ou neutraliser les ecritures de memoire projet avant empaquetage. |
 | frontend-design | web | web | packaged-direct | none | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | geopandas | ia | ia | packaged-direct | unsupported-frontmatter, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | glottolog | bio_population_genetics | bio-population-genetics | packaged-direct | supporting-resources, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | helicobacter-pylori-phylogeography | bio_bacteria | bio-bacteria | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | host-pathogen-pair | bio_pathogens | bio-pathogens | packaged-payload | script-payload, web-runtime | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
-| imdb | multimedia | multimedia | needs-codex-runtime-adaptation | claude-runtime-reference, script-payload, supporting-resources, unsupported-frontmatter | Remplacer les references Claude et declarer les prerequis MCP Codex. |
+| imdb | multimedia | multimedia | packaged-runtime-adapted | claude-runtime-reference, script-payload, supporting-resources, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | incident-response | ops | ops | packaged-direct | unsupported-frontmatter | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | indian-ocean-voyages | bio_population_genetics | bio-population-genetics | packaged-payload | script-payload, unsupported-frontmatter, web-runtime | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
 | iqtree-lsd2 | bio_population_genetics | guyeux-phylo-pilot | packaged-pilot | mcp-runtime, web-runtime | Deja materialise dans le lot temoin, verifier lors de l'extension. |
 | itol | bio_population_genetics | bio-population-genetics | packaged-payload | script-payload | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
 | lineage-comparison | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
-| lineage-subdivision | bio_pathogens | bio-pathogens | needs-codex-runtime-adaptation | claude-runtime-reference, script-payload, unsupported-frontmatter, web-runtime | Remplacer les references Claude et declarer les prerequis MCP Codex. |
+| lineage-subdivision | bio_pathogens | bio-pathogens | packaged-runtime-adapted | claude-runtime-reference, script-payload, unsupported-frontmatter, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | maboss-advanced | maboss | maboss | packaged-runtime-adapted | mcp-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | maboss-ecosystem | maboss | maboss | packaged-direct | unsupported-frontmatter, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | maboss-model | maboss | maboss | packaged-direct | unsupported-frontmatter | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | migration-data | bio_population_genetics | bio-population-genetics | packaged-payload | script-payload, unsupported-frontmatter | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
-| mk-ascertainment | bio_pathogens | bio-pathogens | needs-codex-runtime-adaptation | claude-runtime-reference, script-payload, unsupported-frontmatter | Remplacer les references Claude et declarer les prerequis MCP Codex. |
+| mk-ascertainment | bio_pathogens | bio-pathogens | packaged-runtime-adapted | claude-runtime-reference, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | ml-model-explainer | ia | ia | packaged-payload | script-payload | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
 | model-inference | maboss | maboss | packaged-direct | none | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | model-repositories | maboss | maboss | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | modern-human-reference-panels | bio_population_genetics | bio-population-genetics | packaged-payload | script-payload, supporting-resources, web-runtime | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
 | molecular-clock | bio_pathogens | guyeux-phylo-pilot | packaged-pilot | mcp-runtime, script-payload, unsupported-frontmatter, web-runtime | Deja materialise dans le lot temoin, verifier lors de l'extension. |
 | mtbc-bilan | bio_pathogens | bio-pathogens | blocked-by-personal-workflow | claude-runtime-reference, project-memory-write, supporting-resources, unsupported-frontmatter, web-runtime | Porter ou neutraliser les ecritures de memoire projet avant empaquetage. |
-| mtbc-epistasis | bio_pathogens | bio-pathogens | needs-codex-runtime-adaptation | claude-runtime-reference, script-payload, unsupported-frontmatter | Remplacer les references Claude et declarer les prerequis MCP Codex. |
-| mtbc-gene | bio_pathogens | bio-pathogens | needs-codex-runtime-adaptation | claude-runtime-reference, script-payload, supporting-resources, unsupported-frontmatter, web-runtime | Remplacer les references Claude et declarer les prerequis MCP Codex. |
+| mtbc-epistasis | bio_pathogens | bio-pathogens | packaged-runtime-adapted | claude-runtime-reference, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
+| mtbc-gene | bio_pathogens | bio-pathogens | packaged-runtime-adapted | claude-runtime-reference, script-payload, supporting-resources, unsupported-frontmatter, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | mtbc-gene-network | bio_pathogens | bio-pathogens | packaged-payload | script-payload, supporting-resources, unsupported-frontmatter | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
-| mtbc-lineages | bio_pathogens | bio-pathogens | needs-codex-runtime-adaptation | claude-runtime-reference, data-payload, mcp-runtime, script-payload, supporting-resources, unsupported-frontmatter | Remplacer les references Claude et declarer les prerequis MCP Codex. |
+| mtbc-lineages | bio_pathogens | bio-pathogens | packaged-runtime-adapted | claude-runtime-reference, data-payload, mcp-runtime, script-payload, supporting-resources, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | mtbc-prospect | bio_pathogens | guyeux-phylo-pilot | packaged-pilot | claude-runtime-reference, mcp-runtime, project-memory-write, supporting-resources, unsupported-frontmatter, web-runtime | Deja materialise dans le lot temoin, verifier lors de l'extension. |
 | mtbc-reboot | bio_pathogens | bio-pathogens | blocked-by-personal-workflow | claude-runtime-reference, mcp-runtime, project-memory-write, unsupported-frontmatter, web-runtime | Porter ou neutraliser les ecritures de memoire projet avant empaquetage. |
 | mycobacterium-leprae | bio_bacteria | bio-bacteria | packaged-runtime-adapted | mcp-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
@@ -149,7 +149,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | spaam-community | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | spdi-annotation | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | species-id | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, unsupported-frontmatter, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
-| sra-geolocate | bio_pathogens | bio-pathogens | needs-codex-runtime-adaptation | claude-runtime-reference, mcp-runtime, unsupported-frontmatter, web-runtime | Remplacer les references Claude et declarer les prerequis MCP Codex. |
+| sra-geolocate | bio_pathogens | bio-pathogens | packaged-runtime-adapted | claude-runtime-reference, mcp-runtime, unsupported-frontmatter, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | statistical-analysis | ia | ia | packaged-direct | unsupported-frontmatter | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | statsmodels | bio_population_genetics | bio-population-genetics | packaged-direct | unsupported-frontmatter, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | strain-qc | bio_pathogens | bio-pathogens | blocked-by-personal-workflow | claude-runtime-reference, project-memory-write, unsupported-frontmatter | Porter ou neutraliser les ecritures de memoire projet avant empaquetage. |
@@ -158,7 +158,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | tbannotator-mcp | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | tbmonitor-papers | bio_pathogens | guyeux-phylo-pilot | packaged-pilot | claude-runtime-reference, mcp-runtime, unsupported-frontmatter, web-runtime | Deja materialise dans le lot temoin, verifier lors de l'extension. |
 | text-to-speech | multimedia | multimedia | packaged-payload | script-payload, web-runtime | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
-| thd | bio_pathogens | bio-pathogens | needs-codex-runtime-adaptation | claude-runtime-reference, mcp-runtime, script-payload, unsupported-frontmatter | Remplacer les references Claude et declarer les prerequis MCP Codex. |
+| thd | bio_pathogens | bio-pathogens | packaged-runtime-adapted | claude-runtime-reference, mcp-runtime, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | tooluniverse-sequence-retrieval | bio_population_genetics | bio-population-genetics | packaged-direct | web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | tsne-hdbscan | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | upstream-contribution | ops | ops | packaged-direct | provenance-recorded | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |

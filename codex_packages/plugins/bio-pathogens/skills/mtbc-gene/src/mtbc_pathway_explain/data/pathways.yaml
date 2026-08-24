@@ -1,0 +1,118 @@
+# Pathway catalogue for MTBC narration.
+# Locus tags follow the H37Rv NC_000962.3 nomenclature; gene names accepted as aliases.
+
+ESX-1:
+  description: "Type VII secretion system 1; deleted in BCG; essential for virulence and host-cell egress."
+  genes: [Rv3866, Rv3867, Rv3868, Rv3869, Rv3870, Rv3871, Rv3872, Rv3873, Rv3874, Rv3875, Rv3876, Rv3877, Rv3878, Rv3879c, Rv3880c, Rv3881c, Rv3882c, Rv3883c]
+  # esxA = Rv3875, esxB = Rv3874
+
+ESX-2:
+  description: "Type VII secretion system 2; accessory, paralogue of ESX-1 with no established role yet."
+  genes: [Rv3884c, Rv3885c, Rv3886c, Rv3887c, Rv3888c, Rv3889c, Rv3890c, Rv3891c, Rv3892c, Rv3893c, Rv3894c, Rv3895c]
+
+ESX-3:
+  description: "Type VII secretion system 3; iron/zinc acquisition; essential."
+  genes: [Rv0282, Rv0283, Rv0284, Rv0285, Rv0286, Rv0287, Rv0288, Rv0289, Rv0290, Rv0291, Rv0292]
+
+ESX-4:
+  description: "Type VII secretion system 4; ancestral system, function still poorly characterised; accessory."
+  genes: [Rv3444c, Rv3445c, Rv3446c, Rv3447c, Rv3448, Rv3449, Rv3450c]
+
+ESX-5:
+  description: "Type VII secretion system 5; PE/PPE protein export; outer-membrane integrity; virulence."
+  genes: [Rv1782, Rv1783, Rv1784, Rv1785c, Rv1786, Rv1787, Rv1788, Rv1789, Rv1790, Rv1791, Rv1792, Rv1793, Rv1794, Rv1795, Rv1796, Rv1797, Rv1798]
+
+PDIM:
+  description: "Phthiocerol dimycocerosate biosynthesis; cell-wall lipid critical for virulence and host adaptation."
+  genes: [ppsA, ppsB, ppsC, ppsD, ppsE, mas, fadD26, fadD28, drrA, drrB, drrC, mmpL7, lppX, papA5, tesA, pks15]
+
+MYCO_ACID:
+  description: "Mycolic acid biosynthesis (FAS-II cycle); target of isoniazid via katG-activated InhA inhibition."
+  genes: [inhA, kasA, kasB, mabA, hadA, hadB, hadC, fabD, fabH, acpM, accD6, embB, embC, embA]
+
+DosR:
+  description: "Dormancy regulon induced under hypoxia / nitric oxide stress; ~48 genes downstream of DosR/S/T."
+  genes: [Rv3132c, Rv3133c, Rv2027c, hspX, Rv2031c, Rv2028c, Rv2029c, Rv2030c, Rv2032, Rv2624c, Rv2625c, Rv2626c, Rv2627c, Rv2628, Rv2629, Rv2630]
+
+PE_PPE_CORE:
+  description: "Core PE_PGRS / PPE-MPTR families; surface-exposed antigens; high polymorphism."
+  genes: [PE_PGRS33, PE_PGRS62, PPE18, PPE60, PPE65, PE5, PPE38]
+
+INH_RESISTANCE:
+  description: "Genes most often mutated to confer isoniazid resistance."
+  genes: [katG, inhA, kasA, ahpC, ndh]
+
+RIF_RESISTANCE:
+  description: "Genes most often mutated to confer rifampicin resistance."
+  genes: [rpoB, rpoC, rpoA]
+
+# ── KEGG-derived metabolic and regulatory pathways ────────────────────────────
+
+GLYOXYLATE:
+  description: "Glyoxylate shunt; bypasses the TCA decarboxylation steps under fatty-acid catabolism; essential for persistence in the granuloma."
+  genes: [icl1, icl2a, icl2b, glcB, prpC, prpD, gltA1, gltA2]
+  # icl1 = Rv0467, icl2a = Rv1915, icl2b = Rv1916, glcB = Rv1837c (malate synthase)
+
+CHOLESTEROL_CATABOLISM:
+  description: "Cholesterol degradation; igr operon and Mce4 transporter; major carbon source intra-macrophage."
+  genes: [igr, hsaA, hsaB, hsaC, hsaD, hsaE, hsaF, hsaG, kshA, kshB, kstD, choD, fadE26, fadE27, fadE28, mce4A, mce4B, mce4C, mce4D, mce4E, mce4F]
+
+MCE_TRANSPORTERS:
+  description: "Mce (Mammalian Cell Entry) family transporters for cholesterol / fatty-acid uptake; four operons mce1-mce4."
+  genes: [mce1A, mce1B, mce1C, mce1D, mce1E, mce1F, mce2A, mce2B, mce2C, mce2D, mce2E, mce2F, mce3A, mce3B, mce3C, mce3D, mce3E, mce3F, mce4A, mce4B, mce4C, mce4D, mce4E, mce4F]
+
+IRON_ACQUISITION:
+  description: "Mycobactin / carboxymycobactin biosynthesis and siderophore-mediated iron uptake; under IdeR/zinc regulation."
+  genes: [mbtA, mbtB, mbtC, mbtD, mbtE, mbtF, mbtG, mbtH, mbtI, mbtJ, mbtK, ideR, irtA, irtB]
+
+NITROGEN_METABOLISM:
+  description: "Nitrate / nitrite reduction and ammonia assimilation; relevant under hypoxia and dormancy."
+  genes: [narG, narH, narI, narJ, narK2, nirB, nirD, glnA1, glnA2, glnA3, glnE, gdh, gltB, gltD]
+
+SULFATE_ASSIMILATION:
+  description: "Sulfate uptake and reduction to cysteine; under sulfate / cysteine starvation control."
+  genes: [cysA, cysT, cysW, sub1, cysD, cysN, cysH, sirA, cysM, cysE, cysK1, cysK2]
+
+F420_REDOX:
+  description: "Coenzyme F420 biosynthesis and dependent reductases; involved in PA-824/delamanid activation and nitroreduction."
+  genes: [fbiA, fbiB, fbiC, fbiD, fgd1, ddn, mca]
+
+SIGMA_FACTORS:
+  description: "Sigma factors directing transcription under specific stresses (heat, oxidative, surface, hypoxia)."
+  genes: [sigA, sigB, sigC, sigD, sigE, sigF, sigG, sigH, sigI, sigJ, sigK, sigL, sigM]
+
+TWO_COMPONENT:
+  description: "Two-component sensor / regulator systems; ~11 pairs orchestrate stress response, virulence, and antibiotic tolerance."
+  genes: [phoP, phoR, dosR, dosS, dosT, prrA, prrB, senX3, regX3, mprA, mprB, kdpD, kdpE, tcrA, tcrX, tcrY, trcS, trcR, mtrA, mtrB]
+
+CELL_WALL_PEPTIDOGLYCAN:
+  description: "Peptidoglycan biosynthesis (Mur ligases, transglycosylases, transpeptidases); β-lactam targets."
+  genes: [murA, murB, murC, murD, murE, murF, murG, murI, murX, ddlA, ldtMt1, ldtMt2, ldtMt3, ldtMt4, ldtMt5]
+
+ARABINOGALACTAN:
+  description: "Arabinogalactan biosynthesis; ethambutol target via EmbA/B/C."
+  genes: [embA, embB, embC, embR, glfT1, glfT2, aftA, aftB, aftC, aftD]
+
+OXIDATIVE_STRESS:
+  description: "Defense against host-derived reactive oxygen and nitrogen species."
+  genes: [katG, ahpC, ahpD, sodA, sodC, trxA, trxB, trxC, mshA, mshB, mshC, mshD, ergA]
+
+DNA_REPAIR:
+  description: "DNA repair including base-excision, mismatch, and translesion synthesis; relevant for mutation rate and drug-resistance emergence."
+  genes: [recA, lexA, mutT1, mutT2, mutT3, mutT4, uvrA, uvrB, uvrC, uvrD1, uvrD2, dnaE1, dnaE2, mfd, ung, nei]
+
+BCG_DELETIONS:
+  description: "Genomic regions absent from BCG vaccine strains relative to virulent H37Rv (RD1, RD2, RD14)."
+  genes: [esxA, esxB, esxH, esxN, esxV, PE35, PPE68, lppX]
+
+FQ_RESISTANCE:
+  description: "Genes implicated in fluoroquinolone resistance (gyrA, gyrB QRDR)."
+  genes: [gyrA, gyrB]
+
+INJECTABLE_RESISTANCE:
+  description: "Aminoglycoside / capreomycin resistance loci."
+  genes: [rrs, rpsL, eis, tlyA, gidB]
+
+LINEZOLID_BEDAQUILINE:
+  description: "Resistance loci for second-line drugs linezolid and bedaquiline (atpE, mmpL5/mmpR5/mmpS5 efflux)."
+  genes: [rrl, rplC, atpE, pepQ, mmpL5, mmpR5, mmpS5, rv0678]

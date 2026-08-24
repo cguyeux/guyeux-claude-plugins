@@ -130,6 +130,30 @@
       }
     },
     {
+      "name": "active-site-check",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/active-site-check",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "script-payload"
+      ],
+      "runtime_issues": [
+        "claude-skill-path"
+      ],
+      "runtime_bucket": "rewrite-claude-skill-paths",
+      "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload.",
+      "audit": {
+        "copied_files_expected": 4,
+        "copied_bytes_expected": 51697,
+        "copied_files_actual": 4,
+        "copied_bytes_actual": 51900,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
       "name": "ancestral-reconstruction",
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/ancestral-reconstruction",
@@ -265,6 +289,149 @@
         "excluded_files": 0,
         "excluded_bytes": 0,
         "excluded_roots": []
+      }
+    },
+    {
+      "name": "lineage-subdivision",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/lineage-subdivision",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "claude-plugin-root",
+        "http-literal"
+      ],
+      "runtime_bucket": "rewrite-claude-skill-paths",
+      "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload.",
+      "audit": {
+        "copied_files_expected": 4,
+        "copied_bytes_expected": 122806,
+        "copied_files_actual": 4,
+        "copied_bytes_actual": 122775,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "mk-ascertainment",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/mk-ascertainment",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "claude-plugin-root"
+      ],
+      "runtime_bucket": "rewrite-claude-skill-paths",
+      "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload.",
+      "audit": {
+        "copied_files_expected": 3,
+        "copied_bytes_expected": 54123,
+        "copied_files_actual": 3,
+        "copied_bytes_actual": 54213,
+        "excluded_files": 4,
+        "excluded_bytes": 107623,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "mtbc-epistasis",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/mtbc-epistasis",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "claude-plugin-root",
+        "claude-knowledge-path"
+      ],
+      "runtime_bucket": "rewrite-claude-skill-paths",
+      "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 28382,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 28474,
+        "excluded_files": 1,
+        "excluded_bytes": 26244,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
+      "name": "mtbc-gene",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/mtbc-gene",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "claude-plugin-root",
+        "claude-knowledge-path",
+        "http-literal"
+      ],
+      "runtime_bucket": "rewrite-claude-skill-paths",
+      "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload.",
+      "audit": {
+        "copied_files_expected": 22,
+        "copied_bytes_expected": 127096,
+        "copied_files_actual": 22,
+        "copied_bytes_actual": 127161,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "mtbc-lineages",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/mtbc-lineages",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "data-payload",
+        "mcp-runtime",
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "claude-plugin-root",
+        "tbannotator-mcp",
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "rewrite-claude-skill-paths",
+      "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload.",
+      "audit": {
+        "copied_files_expected": 15,
+        "copied_bytes_expected": 1191158,
+        "copied_files_actual": 15,
+        "copied_bytes_actual": 1191400,
+        "excluded_files": 6,
+        "excluded_bytes": 1972664,
+        "excluded_roots": [
+          "__pycache__"
+        ]
       }
     },
     {
@@ -544,6 +711,35 @@
       }
     },
     {
+      "name": "sra-geolocate",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/sra-geolocate",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "claude-cache-path",
+        "generic-mcp-mention",
+        "web-tool-name",
+        "http-literal"
+      ],
+      "runtime_bucket": "rewrite-cache-path",
+      "action": "Remplacer le cache Claude par un cache neutre sous ~/.cache ou par une sortie projet explicite.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 43328,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 43561,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
       "name": "tbannotator-mcp",
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/tbannotator-mcp",
@@ -571,6 +767,36 @@
         "excluded_files": 0,
         "excluded_bytes": 0,
         "excluded_roots": []
+      }
+    },
+    {
+      "name": "thd",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/thd",
+      "package_candidate": "bio-pathogens",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "claude-plugin-root",
+        "tbannotator-mcp",
+        "mcp-tool-name"
+      ],
+      "runtime_bucket": "rewrite-claude-skill-paths",
+      "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 29853,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 30164,
+        "excluded_files": 2,
+        "excluded_bytes": 56828,
+        "excluded_roots": [
+          "__pycache__"
+        ]
       }
     },
     {
@@ -792,6 +1018,35 @@
         "excluded_roots": [
           "__pycache__"
         ]
+      }
+    },
+    {
+      "name": "europe-pmc",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/europe-pmc",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "claude-plugin-root",
+        "tbannotator-mcp",
+        "generic-mcp-mention",
+        "web-tool-name",
+        "http-literal"
+      ],
+      "runtime_bucket": "rewrite-claude-skill-paths",
+      "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 18887,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 19297,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
       }
     },
     {
@@ -1232,6 +1487,32 @@
         "copied_bytes_expected": 1987,
         "copied_files_actual": 1,
         "copied_bytes_actual": 2189,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "imdb",
+      "source_plugin": "multimedia",
+      "canonical_path": "multimedia/skills/imdb",
+      "package_candidate": "multimedia",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "claude-plugin-root"
+      ],
+      "runtime_bucket": "rewrite-claude-skill-paths",
+      "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload.",
+      "audit": {
+        "copied_files_expected": 9,
+        "copied_bytes_expected": 48100,
+        "copied_files_actual": 9,
+        "copied_bytes_actual": 48221,
         "excluded_files": 0,
         "excluded_bytes": 0,
         "excluded_roots": []
