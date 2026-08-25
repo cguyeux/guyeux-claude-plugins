@@ -214,7 +214,7 @@
     {
       "name": "init-project",
       "classification": "payload-review-required",
-      "decision": "manual-review-required",
+      "decision": "partial-imported",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -223,12 +223,12 @@
       ],
       "line_delta_claude_to_agents": {
         "SKILL.md": {
-          "added": 8,
-          "removed": 44
+          "added": 18,
+          "removed": 41
         },
         "init_project.py": {
-          "added": 24,
-          "removed": 849
+          "added": 194,
+          "removed": 776
         }
       },
       "claude_skill_md_frontmatter_keys": [
@@ -238,6 +238,16 @@
       "agents_skill_md_frontmatter_keys": [
         "description",
         "name"
+      ],
+      "decision_notes": [
+        "Codex conserve AGENTS.md et les chemins ~/.agents / ~/.Codex.",
+        "Import effectue : etat_des_decouvertes.md, pistes.md, domaine droit, classification conservatrice, discovery ~/.Codex/knowledge et projets freres, echappement LaTeX.",
+        "Non importe a ce stade : --migrate, --from-piste et mutation de registre parent."
+      ],
+      "remaining": [
+        "--migrate Codex-compatible",
+        "--from-piste avec mutation non destructive de pistes.md",
+        "tests automatises versionnes hors profil utilisateur"
       ]
     },
     {

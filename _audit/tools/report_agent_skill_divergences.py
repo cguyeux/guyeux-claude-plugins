@@ -24,6 +24,7 @@ DEFAULT_CLAUDE_ROOT = Path.home() / ".claude" / "skills"
 DEFAULT_AGENTS_ROOT = Path.home() / ".agents" / "skills"
 JSON_OUT = ROOT / "_audit" / "agent_farm_divergence_report.json"
 MD_OUT = ROOT / "_audit" / "agent_farm_divergence_report.md"
+DECISIONS = ROOT / "_audit" / "agent_farm_divergence_decisions.json"
 EXCLUDED_NAMES = {".venv", "venv", "__pycache__"}
 EXCLUDED_SUFFIXES = {".pyc", ".pyo"}
 
@@ -125,6 +126,14 @@ def compare_skill(name: str, claude_root: Path, agents_root: Path) -> dict[str, 
 
 def build_report(claude_root: Path, agents_root: Path, root: Path = ROOT) -> dict[str, Any]:
     rows = [compare_skill(name, claude_root, agents_root) for name in expected_divergent(root)]
+    decisions_path = root / "_audit" / "agent_farm_divergence_decisions.json"
+    decisions = load_json(decisions_path) if decisions_path.is_file() else {}
+    for row in rows:
+        decision = decisions.get(row["name"], {})
+        if isinstance(decision, dict) and decision.get("decision"):
+            row["decision"] = decision["decision"]
+            row["decision_notes"] = decision.get("notes", [])
+            row["remaining"] = decision.get("remaining", [])
     summary: dict[str, int] = {}
     for row in rows:
         summary[row["classification"]] = summary.get(row["classification"], 0) + 1
