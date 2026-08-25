@@ -86,14 +86,12 @@
     "remaining": []
   },
   "memory-management": {
-    "decision": "blocked-by-ccx-04",
+    "decision": "codex-adapted-divergence-justified",
     "notes": [
-      "Divergence liee au modele de memoire global : CLAUDE.md et ~/.claude/knowledge cote Claude, AGENTS.md et ~/.Codex/knowledge cote Codex.",
-      "Ne pas importer en bloc avant reconciliation finale de l'autorite KB et des chemins canoniques."
+      "Divergence liee au modele de memoire global : CLAUDE.md cote Claude, AGENTS.md cote Codex.",
+      "Adaptation CCX-04 appliquee : la KB partagee cible ~/.agents/knowledge et la memoire native ~/.codex/memories reste separee."
     ],
-    "remaining": [
-      "resoudre CCX-04 puis redecider la strategie hot cache et base de connaissances"
-    ]
+    "remaining": []
   },
   "plugin-settings": {
     "decision": "codex-adapted-divergence-justified",
@@ -112,34 +110,28 @@
     "remaining": []
   },
   "recall": {
-    "decision": "blocked-by-ccx-04",
+    "decision": "codex-adapted-divergence-justified",
     "notes": [
-      "Divergence centree sur le chemin de KB globale : ~/.claude/knowledge contre ~/.Codex/knowledge.",
-      "Aucune importation durable ne doit figer ce choix avant CCX-04."
+      "Adaptation CCX-04 appliquee : recall cible la KB neutre ~/.agents/knowledge.",
+      "Les anciennes vues ~/.claude/knowledge et ~/.Codex/knowledge sont conservees comme replis de diagnostic, pas comme autorite premiere."
     ],
-    "remaining": [
-      "resoudre CCX-04 puis verifier le chemin KB a exposer a recall"
-    ]
+    "remaining": []
   },
   "reflect": {
-    "decision": "blocked-by-ccx-04",
+    "decision": "codex-adapted-divergence-justified",
     "notes": [
-      "Divergence centree sur la cible d'ecriture de connaissances : ~/.claude/knowledge contre ~/.Codex/knowledge.",
-      "Ne pas importer le texte Claude avant decision explicite sur la memoire durable Codex."
+      "Adaptation CCX-04 appliquee : reflect ecrit dans la KB neutre ~/.agents/knowledge.",
+      "Le skill interdit de traiter ~/.codex/memories comme substitut de la KB technique partagee."
     ],
-    "remaining": [
-      "resoudre CCX-04 puis verifier la cible d'ecriture de reflect"
-    ]
+    "remaining": []
   },
   "researcher": {
-    "decision": "blocked-by-ccx-04",
+    "decision": "codex-adapted-divergence-justified",
     "notes": [
-      "Divergence non reduite a un renommage : la version Agents pointe vers ~/Documents/docs alors que le contexte courant utilise ~/docs.",
-      "Bloque par la reconciliation des chemins de connaissance et de corpus personnel."
+      "Adaptation CCX-04 appliquee : researcher pointe vers le corpus reel ~/docs et consulte ~/.agents/knowledge.",
+      "Import Claude refuse tel quel car il ne doit pas reintroduire les chemins Claude ou une KB non canonique."
     ],
-    "remaining": [
-      "resoudre CCX-04 puis corriger explicitement les chemins docs/recherche avant de clore la divergence"
-    ]
+    "remaining": []
   },
   "skill-creator": {
     "decision": "codex-adapted-divergence-justified",

@@ -19,12 +19,12 @@ Il compare les skills communs declares divergents dans `_audit/agent_farm_expect
 | hook-development | instruction-review-required | codex-adapted-divergence-justified | 0 | 0 | 1 | SKILL.md:+22/-22 |
 | init-project | payload-review-required | codex-adapted-divergence-justified | 0 | 0 | 2 | SKILL.md:+20/-41, init_project.py:+394/-778 |
 | mcp-integration | instruction-review-required | codex-adapted-divergence-justified | 0 | 0 | 1 | SKILL.md:+13/-13 |
-| memory-management | instruction-review-required | blocked-by-ccx-04 | 0 | 0 | 1 | SKILL.md:+27/-27 |
+| memory-management | instruction-review-required | codex-adapted-divergence-justified | 0 | 0 | 1 | SKILL.md:+34/-33 |
 | plugin-settings | instruction-review-required | codex-adapted-divergence-justified | 0 | 0 | 1 | SKILL.md:+30/-30 |
 | plugin-structure | instruction-review-required | codex-adapted-divergence-justified | 0 | 0 | 1 | SKILL.md:+25/-25 |
-| recall | instruction-review-required | blocked-by-ccx-04 | 0 | 0 | 1 | SKILL.md:+4/-4 |
-| reflect | instruction-review-required | blocked-by-ccx-04 | 0 | 0 | 1 | SKILL.md:+3/-3 |
-| researcher | instruction-review-required | blocked-by-ccx-04 | 0 | 0 | 1 | SKILL.md:+47/-57 |
+| recall | instruction-review-required | codex-adapted-divergence-justified | 0 | 0 | 1 | SKILL.md:+9/-4 |
+| reflect | instruction-review-required | codex-adapted-divergence-justified | 0 | 0 | 1 | SKILL.md:+8/-3 |
+| researcher | instruction-review-required | codex-adapted-divergence-justified | 0 | 0 | 1 | SKILL.md:+21/-31 |
 | skill-creator | instruction-review-required | codex-adapted-divergence-justified | 0 | 0 | 1 | SKILL.md:+21/-21 |
 | skill-development | instruction-review-required | codex-adapted-divergence-justified | 0 | 0 | 1 | SKILL.md:+25/-25 |
 | update | instruction-review-required | codex-adapted-divergence-justified | 0 | 0 | 1 | SKILL.md:+1/-1 |
