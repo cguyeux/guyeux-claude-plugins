@@ -3,18 +3,18 @@
   "scan_root": "/home/christophe/docs/codes",
   "project_doc_max_bytes": 32768,
   "summary": {
-    "discovered_claude_files": 264,
-    "project_claude_files": 231,
+    "discovered_claude_files": 265,
+    "project_claude_files": 232,
     "excluded_internal_or_dependency": 33,
     "agents_local": 17,
     "agents_override_local": 6,
-    "fallback_only": 214,
+    "fallback_only": 215,
     "claude_over_budget": 3,
     "fallback_over_budget": 0,
     "instruction_chains_over_budget": 0,
     "classifications": {
       "agents-local": 17,
-      "fallback-active-signal": 64,
+      "fallback-active-signal": 65,
       "fallback-archive-signal": 19,
       "fallback-review-required": 131
     }
@@ -929,7 +929,7 @@
       "path": "mtbc/Bovis_emergence",
       "claude_bytes": 20241,
       "claude_modified": "2026-07-01",
-      "latest_local_doc_modified": "2026-08-17",
+      "latest_local_doc_modified": "2026-08-25",
       "agents_local": false,
       "agents_override_local": false,
       "claude_over_budget": false,
@@ -2255,7 +2255,7 @@
       "path": "mtbc/Oman",
       "claude_bytes": 5438,
       "claude_modified": "2026-07-17",
-      "latest_local_doc_modified": "2026-08-17",
+      "latest_local_doc_modified": "2026-08-25",
       "agents_local": false,
       "agents_override_local": false,
       "claude_over_budget": false,
@@ -2457,7 +2457,7 @@
       "path": "mtbc/Rv1831",
       "claude_bytes": 3714,
       "claude_modified": "2026-07-31",
-      "latest_local_doc_modified": "2026-07-31",
+      "latest_local_doc_modified": "2026-08-25",
       "agents_local": false,
       "agents_override_local": false,
       "claude_over_budget": false,
@@ -2507,9 +2507,9 @@
     },
     {
       "path": "mtbc/Rv2520c",
-      "claude_bytes": 3725,
-      "claude_modified": "2026-07-31",
-      "latest_local_doc_modified": "2026-07-31",
+      "claude_bytes": 4778,
+      "claude_modified": "2026-08-25",
+      "latest_local_doc_modified": "2026-08-25",
       "agents_local": false,
       "agents_override_local": false,
       "claude_over_budget": false,
@@ -2517,7 +2517,7 @@
       "instruction_chain": [
         "mtbc/Rv2520c/CLAUDE.md"
       ],
-      "instruction_chain_bytes": 3725,
+      "instruction_chain_bytes": 4778,
       "instruction_chain_over_budget": false,
       "registers": [
         "cahier_de_labo.md",
@@ -3581,7 +3581,7 @@
     },
     {
       "path": "mtbc/lineage_navigator",
-      "claude_bytes": 40361,
+      "claude_bytes": 46209,
       "claude_modified": "2026-08-25",
       "latest_local_doc_modified": "2026-08-25",
       "agents_local": true,
@@ -4152,6 +4152,32 @@
         "mtbc/tissue_tropism_mtbc/CLAUDE.md"
       ],
       "instruction_chain_bytes": 11714,
+      "instruction_chain_over_budget": false,
+      "registers": [
+        "cahier_de_labo.md",
+        "etat_des_decouvertes.md",
+        "pistes.md",
+        "JOURNAL.md"
+      ],
+      "open_work_signals": [
+        "pistes.md"
+      ],
+      "archive_path_signal": false,
+      "classification": "fallback-active-signal"
+    },
+    {
+      "path": "mtbc/variant_nucs",
+      "claude_bytes": 8591,
+      "claude_modified": "2026-08-25",
+      "latest_local_doc_modified": "2026-08-25",
+      "agents_local": false,
+      "agents_override_local": false,
+      "claude_over_budget": false,
+      "git_root": "mtbc/variant_nucs",
+      "instruction_chain": [
+        "mtbc/variant_nucs/CLAUDE.md"
+      ],
+      "instruction_chain_bytes": 8591,
       "instruction_chain_over_budget": false,
       "registers": [
         "cahier_de_labo.md",

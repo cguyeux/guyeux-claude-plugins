@@ -62,6 +62,8 @@ python3 _audit/tools/sync_codex_skills.py --inventory --detail
 python3 _audit/tools/sync_agent_skills.py
 python3 _audit/tools/report_agent_skill_divergences.py --check
 python3 _audit/tools/audit_codex_skill_farm.py --profile-root ~/.codex
+python3 _audit/tools/skills_farm.py audit --profile-root ~/.codex
+python3 _audit/tools/skills_farm.py sync --farm ~/docs/.claude/skills --plugin redac --all-missing --dry-run
 python3 _audit/tools/check_all.py --profile-root ~/.codex
 python3 _audit/tools/check_all.py --source git-index --profile-root ~/.codex
 ```
@@ -72,9 +74,16 @@ groupé par plugin source, sans modifier le profil.
 Le synchroniseur ne remplace jamais un fichier, un répertoire ou un lien divergent
 déjà présent dans `~/.codex/skills`.
 
-La dernière commande est l'audit unifié CCX-11 : registre canonique, exports
-directs, paquets Codex, profil Codex réel et écart attendu entre `~/.claude/skills`
-et `~/.agents/skills`.
+`skills_farm.py audit` est l'audit unifié CCX-11 : registre canonique, exports
+directs, paquets Codex, profil réel, fermes personnelles Claude et Agents,
+fermes projet Claude, liens morts, collisions, sources divergentes et poids des
+métadonnées. Il distingue le masquage hiérarchique Claude de la découverte
+Codex par ferme personnelle, exports directs et plugins.
+
+`skills_farm.py sync` est un dry-run par défaut. La ferme cible et les skills
+doivent être sélectionnés explicitement. `--apply` crée uniquement des liens
+symboliques absents depuis `canon_skills.json`, sans remplacement ni suppression.
+Un traitement global d'une ferme mixte exige en plus `--allow-mixed`.
 
 Le dry-run `sync_agent_skills.py` contrôle la ferme personnelle `~/.agents/skills`
 depuis `~/.claude/skills` sans écrire. Il ne crée, avec `--apply`, que des liens
