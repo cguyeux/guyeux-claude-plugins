@@ -59,13 +59,18 @@ synchroniseur crée des liens vers leurs répertoires réels :
 python3 _audit/tools/sync_codex_skills.py --apply
 python3 _audit/tools/sync_codex_skills.py
 python3 _audit/tools/sync_codex_skills.py --inventory --detail
+python3 _audit/tools/audit_codex_skill_farm.py --profile-root ~/.codex
 ```
 
 La seconde commande doit indiquer zéro skill manquant et zéro conflit. Le
 troisième produit l'écart entre le registre canonique et la sélection Codex,
 groupé par plugin source, sans modifier le profil.
-synchroniseur ne remplace jamais un fichier, un répertoire ou un lien divergent
+Le synchroniseur ne remplace jamais un fichier, un répertoire ou un lien divergent
 déjà présent dans `~/.codex/skills`.
+
+La dernière commande est l'audit unifié CCX-11 : registre canonique, exports
+directs, paquets Codex, profil Codex réel et écart attendu entre `~/.claude/skills`
+et `~/.agents/skills`.
 
 ## Architecture des skills partagés
 
