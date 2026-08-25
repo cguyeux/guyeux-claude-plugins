@@ -59,6 +59,7 @@ synchroniseur crée des liens vers leurs répertoires réels :
 python3 _audit/tools/sync_codex_skills.py --apply
 python3 _audit/tools/sync_codex_skills.py
 python3 _audit/tools/sync_codex_skills.py --inventory --detail
+python3 _audit/tools/sync_agent_skills.py
 python3 _audit/tools/audit_codex_skill_farm.py --profile-root ~/.codex
 ```
 
@@ -71,6 +72,11 @@ déjà présent dans `~/.codex/skills`.
 La dernière commande est l'audit unifié CCX-11 : registre canonique, exports
 directs, paquets Codex, profil Codex réel et écart attendu entre `~/.claude/skills`
 et `~/.agents/skills`.
+
+Le dry-run `sync_agent_skills.py` contrôle la ferme personnelle `~/.agents/skills`
+depuis `~/.claude/skills` sans écrire. Il ne crée, avec `--apply`, que des liens
+manquants non whitelistés et ne remplace jamais un skill divergent. Les écarts
+intentionnels vivent dans `_audit/agent_farm_expected_delta.json`.
 
 ## Architecture des skills partagés
 

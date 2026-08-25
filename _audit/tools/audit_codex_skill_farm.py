@@ -18,6 +18,7 @@ Usage :
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -285,28 +286,60 @@ def dead_direct_symlinks(root: Path) -> list[str]:
     return sorted(str(path) for path in root.iterdir() if path.is_symlink() and not path.exists())
 
 
+def tree_digest(root: Path) -> str:
+    digest = hashlib.sha256()
+    files: list[Path] = []
+    for path in root.rglob("*"):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(root)
+        if any(part in EXCLUDED_NAMES for part in relative.parts) or path.suffix in EXCLUDED_SUFFIXES:
+            continue
+        files.append(relative)
+    for relative in sorted(files):
+        digest.update(str(relative).encode("utf-8"))
+        digest.update(b"\0")
+        digest.update((root / relative).read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def divergent_common_skills(claude_root: Path, agents_root: Path, common: set[str]) -> list[str]:
+    divergent: list[str] = []
+    for name in sorted(common):
+        if tree_digest(claude_root / name) != tree_digest(agents_root / name):
+            divergent.append(name)
+    return divergent
+
+
 def audit_agent_farms(claude_root: Path, agents_root: Path, root: Path = ROOT) -> tuple[dict[str, Any], list[str]]:
     problems: list[str] = []
     expected = load_json(root / "_audit" / "agent_farm_expected_delta.json")
+    expected_divergent = set(expected.get("common_divergent_expected", []))
     expected_claude_only = set(expected.get("claude_only_expected", []))
     expected_agents_only = set(expected.get("agents_only_expected", []))
     claude = personal_skill_names(claude_root)
     agents = personal_skill_names(agents_root)
+    common = claude & agents
     claude_only = claude - agents
     agents_only = agents - claude
+    divergent = set(divergent_common_skills(claude_root, agents_root, common))
     if claude_only != expected_claude_only:
         problems.append(f"delta Claude-only inattendu: actuel={sorted(claude_only)} attendu={sorted(expected_claude_only)}")
     if agents_only != expected_agents_only:
         problems.append(f"delta Agents-only inattendu: actuel={sorted(agents_only)} attendu={sorted(expected_agents_only)}")
+    if divergent != expected_divergent:
+        problems.append(f"divergences communes inattendues: actuel={sorted(divergent)} attendu={sorted(expected_divergent)}")
     dead = dead_direct_symlinks(claude_root) + dead_direct_symlinks(agents_root)
     if dead:
         problems.append(f"liens morts dans fermes personnelles: {dead}")
     return {
         "claude_skills": len(claude),
         "agents_skills": len(agents),
-        "common": len(claude & agents),
+        "common": len(common),
         "claude_only": sorted(claude_only),
         "agents_only": sorted(agents_only),
+        "common_divergent": sorted(divergent),
     }, problems
 
 
@@ -350,7 +383,7 @@ def main() -> int:
         print(f"  packaged skills : {repository['packaged_skills']}")
         print(f"  plugins         : {repository['plugins']}")
         print(f"  classifications : {', '.join(repository['classifications'])}")
-        print(f"  Claude/Agents   : {agent_farms['common']} communs, {len(agent_farms['claude_only'])} Claude-only attendus, {len(agent_farms['agents_only'])} Agents-only")
+        print(f"  Claude/Agents   : {agent_farms['common']} communs, {len(agent_farms['common_divergent'])} divergents attendus, {len(agent_farms['claude_only'])} Claude-only attendus, {len(agent_farms['agents_only'])} Agents-only")
         if "profile" in report:
             profile = report["profile"]
             print(f"  profile plugins : {profile['enabled_plugins']}")

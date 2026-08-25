@@ -1,4 +1,5 @@
 import importlib.util
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -99,7 +100,21 @@ class CodexSkillFarmAuditTests(unittest.TestCase):
             base = Path(tmp)
             claude = base / ".claude" / "skills"
             agents = base / ".agents" / "skills"
-            for name in ["common", *self.audit.load_json(ROOT / "_audit" / "agent_farm_expected_delta.json")["claude_only_expected"]]:
+            delta_root = base / "repo"
+            (delta_root / "_audit").mkdir(parents=True)
+            expected_claude_only = ["challenge", "etat"]
+            (delta_root / "_audit" / "agent_farm_expected_delta.json").write_text(
+                json.dumps(
+                    {
+                        "common_divergent_expected": [],
+                        "claude_only_expected": expected_claude_only,
+                        "agents_only_expected": [],
+                    },
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+            for name in ["common", *expected_claude_only]:
                 skill = claude / name
                 skill.mkdir(parents=True)
                 (skill / "SKILL.md").write_text(f"---\nname: {name}\ndescription: x\n---\n", encoding="utf-8")
@@ -107,18 +122,16 @@ class CodexSkillFarmAuditTests(unittest.TestCase):
             common.mkdir(parents=True)
             (common / "SKILL.md").write_text("---\nname: common\ndescription: x\n---\n", encoding="utf-8")
 
-            summary, problems = self.audit.audit_agent_farms(claude, agents, ROOT)
+            summary, problems = self.audit.audit_agent_farms(claude, agents, delta_root)
             self.assertEqual([], problems)
             self.assertEqual(1, summary["common"])
-            self.assertEqual(
-                self.audit.load_json(ROOT / "_audit" / "agent_farm_expected_delta.json")["claude_only_expected"],
-                summary["claude_only"],
-            )
+            self.assertEqual(expected_claude_only, summary["claude_only"])
+            self.assertEqual([], summary["common_divergent"])
 
             extra = agents / "unexpected"
             extra.mkdir()
             (extra / "SKILL.md").write_text("---\nname: unexpected\ndescription: x\n---\n", encoding="utf-8")
-            _summary, problems = self.audit.audit_agent_farms(claude, agents, ROOT)
+            _summary, problems = self.audit.audit_agent_farms(claude, agents, delta_root)
             self.assertTrue(any("Agents-only inattendu" in problem for problem in problems))
 
 
