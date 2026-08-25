@@ -1,4 +1,12 @@
 {
+  "agent-development": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence limitee a l'adaptation de l'instruction au contexte Codex : noms d'agent, declenchement et references de chargement.",
+      "Import Claude refuse tel quel car il reintroduirait des libelles Claude Code dans une ferme Agents exposee a Codex."
+    ],
+    "remaining": []
+  },
   "cahier-de-labo": {
     "decision": "codex-adapted-divergence-justified",
     "notes": [
@@ -10,6 +18,54 @@
       "arbitrage humain separe si un jour l'utilisateur veut une commande explicite d'archivage recoverable"
     ]
   },
+  "claude-api": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence instructionnelle attendue : la skill Agents est rebaptisee Codex-api tout en conservant les declencheurs Anthropic SDK utiles.",
+      "Import Claude refuse tel quel car il decrirait la surface comme Claude API dans les sessions Codex."
+    ],
+    "remaining": []
+  },
+  "command-development": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence limitee a AGENTS.md, .Codex/commands et au vocabulaire Codex.",
+      "Import Claude refuse tel quel car les chemins .claude/commands et CLAUDE.md ne sont pas canoniques sous Codex."
+    ],
+    "remaining": []
+  },
+  "design-doc-mermaid": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence limitee au remplacement CLAUDE.md par AGENTS.md et au mainteneur affiche.",
+      "Adaptation Codex correcte pour les sessions actuelles."
+    ],
+    "remaining": []
+  },
+  "docx": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence limitee a l'auteur des revisions suivies Word : Codex remplace Claude.",
+      "Import Claude refuse tel quel pour eviter une attribution incorrecte des modifications."
+    ],
+    "remaining": []
+  },
+  "find-skills": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence nominale dans une source d'exemples de skills.",
+      "Aucun payload ni comportement runtime Claude a importer."
+    ],
+    "remaining": []
+  },
+  "hook-development": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence instructionnelle autour des libelles Codex, chemins .Codex et messages renvoyes a l'agent.",
+      "Import Claude refuse tel quel car les hooks Codex globaux ne sont pas declares actifs et les chemins .claude ne sont pas canoniques."
+    ],
+    "remaining": []
+  },
   "init-project": {
     "decision": "codex-adapted-divergence-justified",
     "notes": [
@@ -18,6 +74,126 @@
       "Import effectue : --from-piste avec copie exacte de la piste source dans le cahier et mutation locale de la seule piste cible dans le registre parent.",
       "Import effectue : --migrate Codex-compatible, idempotent, sans ecraser les fichiers existants.",
       "Divergence restante justifiee : Claude conserve CLAUDE.md, .claude/settings.json et ~/.claude/knowledge ; Codex conserve AGENTS.md, ~/.agents et ~/.Codex/knowledge."
+    ],
+    "remaining": []
+  },
+  "mcp-integration": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence limitee a la documentation MCP cote Codex : nom de plateforme, cycle de vie, debug et manifeste plugin.",
+      "Import Claude refuse tel quel car il pointerait vers les commandes et chemins Claude Code."
+    ],
+    "remaining": []
+  },
+  "memory-management": {
+    "decision": "blocked-by-ccx-04",
+    "notes": [
+      "Divergence liee au modele de memoire global : CLAUDE.md et ~/.claude/knowledge cote Claude, AGENTS.md et ~/.Codex/knowledge cote Codex.",
+      "Ne pas importer en bloc avant reconciliation finale de l'autorite KB et des chemins canoniques."
+    ],
+    "remaining": [
+      "resoudre CCX-04 puis redecider la strategie hot cache et base de connaissances"
+    ]
+  },
+  "plugin-settings": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence limitee aux chemins de configuration locaux .Codex/*.local.md et au vocabulaire Codex.",
+      "Import Claude refuse tel quel car il reintroduirait .claude/*.local.md comme emplacement utilisateur."
+    ],
+    "remaining": []
+  },
+  "plugin-structure": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence limitee a .Codex-plugin, AGENTS et terminologie Codex.",
+      "Import Claude refuse tel quel car .claude-plugin n'est pas la cible canonique de la ferme Agents."
+    ],
+    "remaining": []
+  },
+  "recall": {
+    "decision": "blocked-by-ccx-04",
+    "notes": [
+      "Divergence centree sur le chemin de KB globale : ~/.claude/knowledge contre ~/.Codex/knowledge.",
+      "Aucune importation durable ne doit figer ce choix avant CCX-04."
+    ],
+    "remaining": [
+      "resoudre CCX-04 puis verifier le chemin KB a exposer a recall"
+    ]
+  },
+  "reflect": {
+    "decision": "blocked-by-ccx-04",
+    "notes": [
+      "Divergence centree sur la cible d'ecriture de connaissances : ~/.claude/knowledge contre ~/.Codex/knowledge.",
+      "Ne pas importer le texte Claude avant decision explicite sur la memoire durable Codex."
+    ],
+    "remaining": [
+      "resoudre CCX-04 puis verifier la cible d'ecriture de reflect"
+    ]
+  },
+  "researcher": {
+    "decision": "blocked-by-ccx-04",
+    "notes": [
+      "Divergence non reduite a un renommage : la version Agents pointe vers ~/Documents/docs alors que le contexte courant utilise ~/docs.",
+      "Bloque par la reconciliation des chemins de connaissance et de corpus personnel."
+    ],
+    "remaining": [
+      "resoudre CCX-04 puis corriger explicitement les chemins docs/recherche avant de clore la divergence"
+    ]
+  },
+  "skill-creator": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence limitee au vocabulaire Codex et a l'exclusion des instructions Claude.ai specifiques.",
+      "Import Claude refuse tel quel car il decrirait l'optimisation et les tests comme Claude-centriques."
+    ],
+    "remaining": []
+  },
+  "skill-development": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence limitee a la documentation de creation de skills pour plugins Codex.",
+      "Import Claude refuse tel quel car il reintroduirait les formulations Claude Code dans l'outillage Agents."
+    ],
+    "remaining": []
+  },
+  "update": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence limitee au remplacement CLAUDE.md par AGENTS.md pour les changements de statut.",
+      "Adaptation Codex correcte."
+    ],
+    "remaining": []
+  },
+  "using-git-worktrees": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence limitee a la lecture de preference dans AGENTS.md au lieu de CLAUDE.md.",
+      "Adaptation Codex correcte pour les sessions actuelles."
+    ],
+    "remaining": []
+  },
+  "web-artifacts-builder": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence nominale claude.ai vers Codex.ai dans le descriptif et les consignes de partage.",
+      "Aucun payload Claude a importer."
+    ],
+    "remaining": []
+  },
+  "write-query": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence nominale : l'assistant mentionne Codex au lieu de Claude.",
+      "Aucun changement fonctionnel Claude a importer."
+    ],
+    "remaining": []
+  },
+  "writing-hookify-rules": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Divergence limitee aux chemins .Codex/hookify.*.local.md et au vocabulaire Codex.",
+      "Import Claude refuse tel quel car il reintroduirait .claude comme emplacement de regles."
     ],
     "remaining": []
   }

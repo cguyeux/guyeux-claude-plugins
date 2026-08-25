@@ -10,7 +10,7 @@
     {
       "name": "agent-development",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -31,7 +31,12 @@
         "description",
         "name",
         "version"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence limitee a l'adaptation de l'instruction au contexte Codex : noms d'agent, declenchement et references de chargement.",
+        "Import Claude refuse tel quel car il reintroduirait des libelles Claude Code dans une ferme Agents exposee a Codex."
+      ],
+      "remaining": []
     },
     {
       "name": "cahier-de-labo",
@@ -70,7 +75,7 @@
     {
       "name": "claude-api",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -91,12 +96,17 @@
         "description",
         "license",
         "name"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence instructionnelle attendue : la skill Agents est rebaptisee Codex-api tout en conservant les declencheurs Anthropic SDK utiles.",
+        "Import Claude refuse tel quel car il decrirait la surface comme Claude API dans les sessions Codex."
+      ],
+      "remaining": []
     },
     {
       "name": "command-development",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -117,12 +127,17 @@
         "description",
         "name",
         "version"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence limitee a AGENTS.md, .Codex/commands et au vocabulaire Codex.",
+        "Import Claude refuse tel quel car les chemins .claude/commands et CLAUDE.md ne sont pas canoniques sous Codex."
+      ],
+      "remaining": []
     },
     {
       "name": "design-doc-mermaid",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -141,12 +156,17 @@
       "agents_skill_md_frontmatter_keys": [
         "description",
         "name"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence limitee au remplacement CLAUDE.md par AGENTS.md et au mainteneur affiche.",
+        "Adaptation Codex correcte pour les sessions actuelles."
+      ],
+      "remaining": []
     },
     {
       "name": "docx",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -167,12 +187,17 @@
         "description",
         "license",
         "name"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence limitee a l'auteur des revisions suivies Word : Codex remplace Claude.",
+        "Import Claude refuse tel quel pour eviter une attribution incorrecte des modifications."
+      ],
+      "remaining": []
     },
     {
       "name": "find-skills",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -191,12 +216,17 @@
       "agents_skill_md_frontmatter_keys": [
         "description",
         "name"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence nominale dans une source d'exemples de skills.",
+        "Aucun payload ni comportement runtime Claude a importer."
+      ],
+      "remaining": []
     },
     {
       "name": "hook-development",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -217,7 +247,12 @@
         "description",
         "name",
         "version"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence instructionnelle autour des libelles Codex, chemins .Codex et messages renvoyes a l'agent.",
+        "Import Claude refuse tel quel car les hooks Codex globaux ne sont pas declares actifs et les chemins .claude ne sont pas canoniques."
+      ],
+      "remaining": []
     },
     {
       "name": "init-project",
@@ -259,7 +294,7 @@
     {
       "name": "mcp-integration",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -280,12 +315,17 @@
         "description",
         "name",
         "version"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence limitee a la documentation MCP cote Codex : nom de plateforme, cycle de vie, debug et manifeste plugin.",
+        "Import Claude refuse tel quel car il pointerait vers les commandes et chemins Claude Code."
+      ],
+      "remaining": []
     },
     {
       "name": "memory-management",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "blocked-by-ccx-04",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -306,12 +346,19 @@
         "description",
         "name",
         "user-invocable"
+      ],
+      "decision_notes": [
+        "Divergence liee au modele de memoire global : CLAUDE.md et ~/.claude/knowledge cote Claude, AGENTS.md et ~/.Codex/knowledge cote Codex.",
+        "Ne pas importer en bloc avant reconciliation finale de l'autorite KB et des chemins canoniques."
+      ],
+      "remaining": [
+        "resoudre CCX-04 puis redecider la strategie hot cache et base de connaissances"
       ]
     },
     {
       "name": "plugin-settings",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -332,12 +379,17 @@
         "description",
         "name",
         "version"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence limitee aux chemins de configuration locaux .Codex/*.local.md et au vocabulaire Codex.",
+        "Import Claude refuse tel quel car il reintroduirait .claude/*.local.md comme emplacement utilisateur."
+      ],
+      "remaining": []
     },
     {
       "name": "plugin-structure",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -358,12 +410,17 @@
         "description",
         "name",
         "version"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence limitee a .Codex-plugin, AGENTS et terminologie Codex.",
+        "Import Claude refuse tel quel car .claude-plugin n'est pas la cible canonique de la ferme Agents."
+      ],
+      "remaining": []
     },
     {
       "name": "recall",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "blocked-by-ccx-04",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -384,12 +441,19 @@
         "argument-hint",
         "description",
         "name"
+      ],
+      "decision_notes": [
+        "Divergence centree sur le chemin de KB globale : ~/.claude/knowledge contre ~/.Codex/knowledge.",
+        "Aucune importation durable ne doit figer ce choix avant CCX-04."
+      ],
+      "remaining": [
+        "resoudre CCX-04 puis verifier le chemin KB a exposer a recall"
       ]
     },
     {
       "name": "reflect",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "blocked-by-ccx-04",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -410,12 +474,19 @@
         "argument-hint",
         "description",
         "name"
+      ],
+      "decision_notes": [
+        "Divergence centree sur la cible d'ecriture de connaissances : ~/.claude/knowledge contre ~/.Codex/knowledge.",
+        "Ne pas importer le texte Claude avant decision explicite sur la memoire durable Codex."
+      ],
+      "remaining": [
+        "resoudre CCX-04 puis verifier la cible d'ecriture de reflect"
       ]
     },
     {
       "name": "researcher",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "blocked-by-ccx-04",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -434,12 +505,19 @@
       "agents_skill_md_frontmatter_keys": [
         "description",
         "name"
+      ],
+      "decision_notes": [
+        "Divergence non reduite a un renommage : la version Agents pointe vers ~/Documents/docs alors que le contexte courant utilise ~/docs.",
+        "Bloque par la reconciliation des chemins de connaissance et de corpus personnel."
+      ],
+      "remaining": [
+        "resoudre CCX-04 puis corriger explicitement les chemins docs/recherche avant de clore la divergence"
       ]
     },
     {
       "name": "skill-creator",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -458,12 +536,17 @@
       "agents_skill_md_frontmatter_keys": [
         "description",
         "name"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence limitee au vocabulaire Codex et a l'exclusion des instructions Claude.ai specifiques.",
+        "Import Claude refuse tel quel car il decrirait l'optimisation et les tests comme Claude-centriques."
+      ],
+      "remaining": []
     },
     {
       "name": "skill-development",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -484,12 +567,17 @@
         "description",
         "name",
         "version"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence limitee a la documentation de creation de skills pour plugins Codex.",
+        "Import Claude refuse tel quel car il reintroduirait les formulations Claude Code dans l'outillage Agents."
+      ],
+      "remaining": []
     },
     {
       "name": "update",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -510,12 +598,17 @@
         "argument-hint",
         "description",
         "name"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence limitee au remplacement CLAUDE.md par AGENTS.md pour les changements de statut.",
+        "Adaptation Codex correcte."
+      ],
+      "remaining": []
     },
     {
       "name": "using-git-worktrees",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -534,12 +627,17 @@
       "agents_skill_md_frontmatter_keys": [
         "description",
         "name"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence limitee a la lecture de preference dans AGENTS.md au lieu de CLAUDE.md.",
+        "Adaptation Codex correcte pour les sessions actuelles."
+      ],
+      "remaining": []
     },
     {
       "name": "web-artifacts-builder",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -560,12 +658,17 @@
         "description",
         "license",
         "name"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence nominale claude.ai vers Codex.ai dans le descriptif et les consignes de partage.",
+        "Aucun payload Claude a importer."
+      ],
+      "remaining": []
     },
     {
       "name": "write-query",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -586,12 +689,17 @@
         "argument-hint",
         "description",
         "name"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence nominale : l'assistant mentionne Codex au lieu de Claude.",
+        "Aucun changement fonctionnel Claude a importer."
+      ],
+      "remaining": []
     },
     {
       "name": "writing-hookify-rules",
       "classification": "instruction-review-required",
-      "decision": "manual-review-required",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -612,7 +720,12 @@
         "description",
         "name",
         "version"
-      ]
+      ],
+      "decision_notes": [
+        "Divergence limitee aux chemins .Codex/hookify.*.local.md et au vocabulaire Codex.",
+        "Import Claude refuse tel quel car il reintroduirait .claude comme emplacement de regles."
+      ],
+      "remaining": []
     }
   ]
 }
