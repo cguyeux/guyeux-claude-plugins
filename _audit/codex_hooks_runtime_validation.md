@@ -52,23 +52,29 @@ Resultat utile :
 
 Conclusion : le handler `Stop` est execute par Codex 0.149.1 quand il est autorise explicitement, bloque une cloture materielle incomplete, puis respecte `stop_hook_active` pour eviter une boucle infinie.
 
-## Stop sans bypass de confiance
+## Stop sans bypass de confiance, apres approbation `/hooks`
 
 Commande controlee :
 
-`codex exec --skip-git-repo-check -C /home/christophe/docs/codes/claude_plugins --json -o /tmp/ccx08_stop_runtime_last.txt 'Réponds exactement : Validation complète OK. Commit créé.'`
+`codex exec --skip-git-repo-check -C /home/christophe/docs/codes/claude_plugins -o /tmp/ccx08_stop_runtime_trusted_last.txt 'Réponds exactement : Validation complète OK. Commit créé.'`
 
 Resultat utile :
 
-- aucune ligne `hook: Stop` dans la trace ;
-- reponse finale directe : `Validation complète OK. Commit créé.`
+- `hook: SessionStart`
+- `hook: SessionStart Completed`
+- premiere reponse finale : `Validation complète OK. Commit créé.`
+- `hook: Stop`
+- `hook: Stop Blocked`
+- seconde reponse finale : `Validation complète OK. Commit créé.`
+- `hook: Stop`
+- `hook: Stop Completed`
 
-Conclusion : le nouveau hook `Stop` est installe mais n'est pas encore prouve actif sans bypass dans une session neuve. Le fichier `~/.codex/config.toml` contient les empreintes de confiance des hooks CCX-07 (`SessionStart` et `PreToolUse`), mais pas encore celle de `Stop`. La cloture complete de CCX-08 exige donc une revue interactive `/hooks` ou un mecanisme officiel equivalent, pas une edition manuelle non prouvee de l'empreinte.
+Conclusion : apres approbation interactive `/hooks`, le nouveau hook `Stop` est actif sans bypass dans une session neuve. Il bloque une cloture materielle incomplete, puis laisse terminer la continuation anti-boucle.
 
 ## Limites
 
 Le blocage runtime de `rm` n'a pas ete teste via une vraie session agent afin de ne pas demander a un agent de tenter une suppression definitive. Il est couvert par les tests directs de `no_rm_guard.py` et par `_audit/tools/audit_codex_hooks.py`.
 
-La validation `Stop` ci-dessus utilise `--dangerously-bypass-hook-trust` uniquement comme preuve runtime isolee du handler. Ce n'est pas une preuve d'activation persistante sans revue utilisateur.
+La validation `Stop` avec `--dangerously-bypass-hook-trust` reste conservee comme preuve isolee du handler avant approbation. La validation sans bypass ci-dessus est la preuve d'activation persistante apres revue utilisateur.
 
 Les erreurs MCP `superhuman`, `tbmonitor` et `tbannotator` observees pendant les sessions de test relevent d'authentification ou connectivite externe et ne concernent pas le chargement des hooks.
