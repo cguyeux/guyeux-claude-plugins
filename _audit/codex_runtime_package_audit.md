@@ -40,6 +40,7 @@ Il couvre les familles runtime materialisees avec une note Codex et sans environ
 | bayesian-skyline | bio-population-genetics | codex-mcp-documentation-only | 1 | 0 | none |
 | beast2-phylogeography | bio-population-genetics | codex-mcp-documentation-only | 1 | 0 | none |
 | bioc-pmc | bio-population-genetics | codex-mcp-documentation-only | 1 | 0 | none |
+| boltz | bio-population-genetics | await-canonical-knowledge-path | 1 | 0 | none |
 | card | bio-population-genetics | codex-mcp-documentation-only | 1 | 0 | none |
 | clinical-trial-protocol-skill | bio-population-genetics | external-mcp-fallback-documented | 11 | 2 | __pycache__ |
 | d-place | bio-population-genetics | codex-mcp-documentation-only | 10 | 14 | __pycache__ |

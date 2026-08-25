@@ -1,4 +1,5 @@
 ---
+
 name: boltz
 description: >
   Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed structural
@@ -82,7 +83,7 @@ sans GPU CUDA utilisable. Avec l'index CPU : venv ≈ 1,5 Go.
 >    télécharge les poids d'affinité AU RUNTIME dans le cache : sans redirection, le job échoue en
 >    quelques secondes (`OSError: Read-only file system`). Toujours passer `--cache
 >    /Work/Users/<user>/boltz_cache` (ou `$BOLTZ_CACHE`), jamais le défaut `~/.boltz`. Détail :
->    `~/.claude/knowledge/remote-compute.md`, entrée du 2026-08-18.
+>    `~/.Codex/knowledge/remote-compute.md`, entrée du 2026-08-18.
 > 2. **Le noyau CUDA fusionné (`triangular_mult`) requiert `cuequivariance_torch`**, absent d'une
 >    installation `pip install boltz` standard : `ModuleNotFoundError: No module named
 >    'cuequivariance_torch'`, qui ne se déclenche QUE sur GPU (le chemin CPU ne passe pas par ce
@@ -253,8 +254,7 @@ boucle sur des échecs de pré-vol mémoire, donc ni OOM ni contention Boltz ne 
 l'expliquer. Un runner strictement identique relancé via `nohup ./run.sh >> log 2>&1
 < /dev/null & disown` (appel Bash ordinaire, PAS `run_in_background: true`) a survécu
 au-delà d'1h sans problème et a fini par lancer un vrai calcul. **Ceci contredit
-directement** une règle plus ancienne et plus fortement établie (`~/.claude/knowledge/
-bash-patterns.md`, incident du 2026-08-04, `mtbc/Rv3222c`) selon laquelle `nohup … &
+directement** une règle plus ancienne et plus fortement établie (`~/.Codex/knowledge/bash-patterns.md`, incident du 2026-08-04, `mtbc/Rv3222c`) selon laquelle `nohup … &
 disown` ne survivrait JAMAIS au retour de l'appel Bash et `run_in_background: true`
 serait la SEULE voie fiable — l'inverse de ce qui vient d'être observé. Un troisième
 facteur, non isolé, pourrait réconcilier les deux : l'incident de 2026-08-04 backgroundait
@@ -301,7 +301,7 @@ background lui-même et surveille la taille de `boltz.log` ; l'absence de croiss
 pendant `STALL_TIMEOUT` (défaut 30 min) déclenche un `SIGKILL` et fait échouer le job
 proprement (repris au cycle suivant), au lieu de laisser un process zombie consommer du
 CPU en silence pendant des jours. Ceci ne résout PAS la cause des `SIGTERM` reçus (encore
-inconnue au 2026-08-17) : voir `~/.claude/knowledge/bash-patterns.md` pour le suivi.
+inconnue au 2026-08-17) : voir `~/.Codex/knowledge/bash-patterns.md` pour le suivi.
 
 **Incident (6), 2026-08-17, quelques heures après (5) (`mtbc/Rv0810c`, P6.1, job déporté sur
 `mp`)** : le watchdog de l'incident (5), jamais encore éprouvé en conditions réelles, a failli
@@ -391,7 +391,7 @@ fi
 #          awk '/^Pss:/{s+=$2} END{printf "%d MB\n", s/1024}' /proc/$p/smaps_rollup; done
 #     Valeurs de depart mesurees sur la machine FEMTO (62 Gio, CPU) : C=5367, a=0.02639
 #     (164 tokens -> 5,3 Go ; 350 -> 8,6 Go ; 568 -> 13,9 Go). Marge x1,2 : le modele estime
-#     deja un pic. Details et chaine causale complete : ~/.claude/knowledge/bioinformatics.md
+#     deja un pic. Details et chaine causale complete : ~/.Codex/knowledge/bioinformatics.md
 #     et linux-desktop.md.
 #
 # Definir TOKENS par job avant l'appel (somme des longueurs de toutes les chaines du YAML).
@@ -702,3 +702,7 @@ Non-régression vérifiée : les jobs AF3 redonnent exactement les valeurs publi
 - Exemple travaillé : `mtbc/Rv1025/analyses/phase21_boltz_homodimer.py` (génère les
   YAML + le runner, réutilise le MSA AF3) et `phase20_homodimer_parse.py` (lecture
   de la coordination inter-chaînes, applicable tel quel aux sorties Boltz).
+
+## Codex knowledge path note
+
+This packaged copy resolves personal knowledge-base references under `~/.Codex/knowledge/`. CCX-04 still tracks the broader Claude/Codex knowledge-base reconciliation, so verify that the referenced note exists before relying on it.

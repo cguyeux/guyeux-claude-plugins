@@ -88,7 +88,7 @@ class CodexPackageMatrixTests(unittest.TestCase):
     def test_runtime_packages_are_marked_after_materialization(self):
         rows = self.matrix.build_rows()
         runtime = [row for row in rows if row["classification"] == "packaged-runtime-adapted"]
-        self.assertEqual(57, len(runtime))
+        self.assertEqual(58, len(runtime))
         self.assertEqual(
             {
                 "bio-bacteria",
@@ -113,8 +113,8 @@ class CodexPackageMatrixTests(unittest.TestCase):
         self.assertIn("project-memory-write", rows["mtbc-bilan"]["signals"])
         self.assertEqual("packaged-workflow-guarded", rows["mtbc-bilan"]["classification"])
         self.assertEqual("packaged-runtime-adapted", rows["active-site-check"]["classification"])
+        self.assertEqual("packaged-runtime-adapted", rows["boltz"]["classification"])
         self.assertEqual("packaged-runtime-adapted", rows["clinical-trial-protocol-skill"]["classification"])
-        self.assertEqual("needs-codex-runtime-adaptation", rows["boltz"]["classification"])
 
 
 if __name__ == "__main__":

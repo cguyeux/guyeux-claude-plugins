@@ -966,6 +966,31 @@
       }
     },
     {
+      "name": "boltz",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/boltz",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "claude-knowledge-path",
+        "http-literal"
+      ],
+      "runtime_bucket": "await-canonical-knowledge-path",
+      "action": "Attendre CCX-04 ou remplacer par le chemin KB Codex actuel avec mention de migration future.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 48277,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 48536,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
       "name": "card",
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/card",

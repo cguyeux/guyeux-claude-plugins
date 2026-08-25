@@ -26,6 +26,7 @@ MATERIALIZABLE_BUCKETS = {
     "rewrite-cache-path",
     "rewrite-claude-skill-paths",
     "external-mcp-fallback-documented",
+    "await-canonical-knowledge-path",
 }
 EXCLUDE_DIRS = {".git", ".mypy_cache", ".pytest_cache", ".ruff_cache", ".venv", "__pycache__", "venv"}
 EXCLUDE_GLOBS = {"*.pyc", "*.pyo"}
@@ -104,6 +105,7 @@ def sanitize_frontmatter_value(line: str) -> str:
 def adapt_runtime_text(text: str, row: dict[str, Any]) -> str:
     text = strip_unsupported_frontmatter(text)
     text = text.replace("Claude Code", "Codex")
+    text = text.replace("~/.claude/knowledge/\n", "~/.Codex/knowledge/")
     text = text.replace("Claude Desktop", "Codex")
     skill_name = re.escape(row["name"])
     text = re.sub(
@@ -128,6 +130,7 @@ def adapt_runtime_text(text: str, row: dict[str, Any]) -> str:
     text = text.replace("~/.claude/cache/sra-geolocate/sra_geo_cache.csv", "~/.cache/codex/sra-geolocate/sra_geo_cache.csv")
     text = text.replace("~/.claude/cache/sra-geolocate/supp/$PMCID/", "~/.cache/codex/sra-geolocate/supp/$PMCID/")
     text = text.replace("~/.claude/knowledge/tuberculosis.md", "~/.Codex/knowledge/tuberculosis.md")
+    text = re.sub(r"~/.claude/knowledge/([A-Za-z0-9_.-]+\.md)", r"~/.Codex/knowledge/\1", text)
     text = re.sub(
         r"claude mcp add --transport http --scope user\s+([A-Za-z0-9_-]+)\s+(https?://\S+)",
         r"codex mcp add \1 --url \2",
@@ -187,12 +190,20 @@ def adapt_runtime_text(text: str, row: dict[str, Any]) -> str:
             "\n\n## Codex cache note\n\n"
             "This packaged copy uses `~/.cache/codex/sra-geolocate/` for reusable cache files instead of Claude-specific cache paths.\n"
         )
+    if row["runtime_bucket"] == "await-canonical-knowledge-path" and "## Codex knowledge path note" not in text:
+        text = text.rstrip() + (
+            "\n\n## Codex knowledge path note\n\n"
+            "This packaged copy resolves personal knowledge-base references under `~/.Codex/knowledge/`. "
+            "CCX-04 still tracks the broader Claude/Codex knowledge-base reconciliation, so verify that the referenced note exists before relying on it.\n"
+        )
     return text
 
 
 def adapt_runtime_payload_text(text: str, row: dict[str, Any]) -> str:
     text = text.replace("Claude Code", "Codex")
     text = text.replace("Claude Desktop", "Codex")
+    text = text.replace("~/.claude/knowledge/\n", "~/.Codex/knowledge/")
+    text = re.sub(r"~/.claude/knowledge/([A-Za-z0-9_.-]+\.md)", r"~/.Codex/knowledge/\1", text)
     text = re.sub(
         r"claude mcp add --transport http --scope user\s+([A-Za-z0-9_-]+)\s+(https?://\S+)",
         r"codex mcp add \1 --url \2",

@@ -18,12 +18,13 @@ def frontmatter(text: str) -> str:
 
 
 class CodexRuntimePackagesTests(unittest.TestCase):
-    def test_runtime_audit_records_the_57_materialized_rows(self):
+    def test_runtime_audit_records_the_58_materialized_rows(self):
         audit = json.loads(AUDIT.read_text(encoding="utf-8"))
         rows = audit["rows"]
-        self.assertEqual(57, len(rows))
+        self.assertEqual(58, len(rows))
         self.assertEqual(
             {
+                "await-canonical-knowledge-path",
                 "claude-branding-only",
                 "codex-mcp-documentation-only",
                 "codex-mcp-tool-prerequisite",
@@ -57,6 +58,15 @@ class CodexRuntimePackagesTests(unittest.TestCase):
                 self.assertNotIn(">", description_value)
                 self.assertNotIn("claude mcp add", text)
                 self.assertNotIn("Claude Code", text)
+
+    def test_codex_knowledge_paths_are_documented(self):
+        audit = json.loads(AUDIT.read_text(encoding="utf-8"))
+        rows = [row for row in audit["rows"] if row["runtime_bucket"] == "await-canonical-knowledge-path"]
+        self.assertEqual(["boltz"], [row["name"] for row in rows])
+        text = (PACKAGES / "bio-population-genetics" / "skills" / "boltz" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("## Codex knowledge path note", text)
+        self.assertIn("~/.Codex/knowledge/", text)
+        self.assertNotIn("~/.claude/knowledge", text)
 
     def test_external_mcp_fallback_is_documented(self):
         audit = json.loads(AUDIT.read_text(encoding="utf-8"))

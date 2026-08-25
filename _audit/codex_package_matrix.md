@@ -7,10 +7,10 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 - Deja materialises dans un paquet pilote : 5
 - Deja materialises dans des paquets directs : 48
 - Deja materialises dans des paquets payload audites : 15
-- Deja materialises avec adaptation runtime Codex : 57
+- Deja materialises avec adaptation runtime Codex : 58
 - Deja materialises avec garde-fou workflow Codex : 10
 - Bloques par workflow personnel d'ecriture : 0
-- Adaptation runtime Claude ou MCP requise : 1
+- Adaptation runtime Claude ou MCP requise : 0
 - Audit de payload requis : 0
 - Candidats directs sans verrou mecanique majeur : 0
 
@@ -52,7 +52,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | biopython | bio_population_genetics | bio-population-genetics | packaged-direct | unsupported-frontmatter, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | bioskills | bio_population_genetics | bio-population-genetics | packaged-payload | script-payload, web-runtime | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
 | bn-control | maboss | maboss | packaged-runtime-adapted | mcp-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
-| boltz | bio_population_genetics | bio-population-genetics | needs-codex-runtime-adaptation | claude-runtime-reference, web-runtime | Remplacer les references Claude et declarer les prerequis MCP Codex. |
+| boltz | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | claude-runtime-reference, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | boolean-attractors | maboss | maboss | packaged-runtime-adapted | mcp-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | bovine-genomics | bio_population_genetics | bio-population-genetics | packaged-direct | web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | card | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
