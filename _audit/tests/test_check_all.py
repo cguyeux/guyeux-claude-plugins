@@ -33,6 +33,7 @@ class CheckAllTests(unittest.TestCase):
         self.assertIn("report_agent_skill_divergences.py --check", joined)
         self.assertIn("audit_personal_workflow_skills.py --check", joined)
         self.assertIn("audit_codex_hooks.py --check", joined)
+        self.assertIn("sync_execpolicy.py", joined)
         self.assertIn("audit_codex_skill_farm.py --profile-root /tmp/codex-profile", joined)
         self.assertIn("skills_farm.py audit --profile-root /tmp/codex-profile", joined)
         self.assertIn("unittest discover -s _audit/tests", joined)

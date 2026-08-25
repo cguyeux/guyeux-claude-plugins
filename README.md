@@ -64,6 +64,8 @@ python3 _audit/tools/report_agent_skill_divergences.py --check
 python3 _audit/tools/audit_codex_skill_farm.py --profile-root ~/.codex
 python3 _audit/tools/skills_farm.py audit --profile-root ~/.codex
 python3 _audit/tools/skills_farm.py sync --farm ~/docs/.claude/skills --plugin redac --all-missing --dry-run
+python3 _audit/tools/audit_execpolicy.py --check
+python3 _audit/tools/sync_execpolicy.py
 python3 _audit/tools/check_all.py --profile-root ~/.codex
 python3 _audit/tools/check_all.py --source git-index --profile-root ~/.codex
 ```
@@ -84,6 +86,13 @@ Codex par ferme personnelle, exports directs et plugins.
 doivent être sélectionnés explicitement. `--apply` crée uniquement des liens
 symboliques absents depuis `canon_skills.json`, sans remplacement ni suppression.
 Un traitement global d'une ferme mixte exige en plus `--allow-mixed`.
+
+La politique de commandes hors sandbox vit dans `codex_rules/default.rules`.
+Elle remplace l'accumulation automatique des approbations historiques par des
+règles `forbidden`, `prompt` et `allow` documentées avec leurs exemples
+`match` et `not_match`. `sync_execpolicy.py` vérifie que le profil utilisateur
+pointe vers cette source Git; toute ancienne politique est déplacée dans une
+sauvegarde récupérable avant installation.
 
 Le dry-run `sync_agent_skills.py` contrôle la ferme personnelle `~/.agents/skills`
 depuis `~/.claude/skills` sans écrire. Il ne crée, avec `--apply`, que des liens

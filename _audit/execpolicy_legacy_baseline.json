@@ -1,0 +1,37 @@
+{
+  "rules": 447,
+  "decisions": {
+    "allow": 447
+  },
+  "categories": {
+    "broad-prefix": 9,
+    "exact-or-long": 354,
+    "legacy-knowledge-path": 89,
+    "other": 78,
+    "remote": 19,
+    "shell-wrapper": 177,
+    "temporary-path": 143
+  },
+  "top_executables": {
+    "bash": 108,
+    "/bin/bash": 69,
+    "python3": 65,
+    "git": 35,
+    "jq": 24,
+    "rg": 17,
+    "file": 13,
+    "grep": 10,
+    "head": 8,
+    "sed": 7,
+    "ollama": 6,
+    "uv": 5,
+    "wc": 4,
+    "scp": 3,
+    "awk": 3
+  },
+  "quality": {
+    "missing_justification": 447,
+    "missing_match": 447,
+    "missing_not_match": 447
+  }
+}

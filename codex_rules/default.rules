@@ -1,0 +1,124 @@
+# Politique canonique personnelle Codex.
+#
+# Les commandes ordinaires restent dans le sandbox. Ces règles ne décident que
+# ce qui peut être exécuté hors sandbox. La décision la plus restrictive gagne.
+
+prefix_rule(
+    pattern = [["rm", "rmdir", "unlink", "shred"]],
+    decision = "forbidden",
+    justification = "Suppression permanente interdite; utiliser `gio trash` ou conserver le chemin.",
+    match = ["rm fichier", "rm -rf repertoire", "rmdir repertoire", "unlink lien", "shred secret"],
+    not_match = ["gio trash fichier", "find repertoire -type f"],
+)
+
+prefix_rule(
+    pattern = ["git", "clean"],
+    decision = "forbidden",
+    justification = "`git clean` supprime définitivement les fichiers non suivis; inventorier puis utiliser `gio trash`.",
+    match = ["git clean -n", "git clean -fd", "git clean -xffd"],
+    not_match = ["git status --short", "git diff --check"],
+)
+
+prefix_rule(
+    pattern = ["git", "reset", "--hard"],
+    decision = "forbidden",
+    justification = "Le reset dur peut écraser le travail local; préférer une opération non destructive et explicitement ciblée.",
+    match = ["git reset --hard", "git reset --hard HEAD~1"],
+    not_match = ["git reset --soft HEAD~1", "git restore --staged fichier"],
+)
+
+prefix_rule(
+    pattern = ["git", "push", ["--force", "-f", "--force-with-lease"]],
+    decision = "forbidden",
+    justification = "La réécriture distante est interdite par défaut; préparer la commande et demander une autorisation exceptionnelle.",
+    match = ["git push --force origin main", "git push -f", "git push --force-with-lease origin branche"],
+    not_match = ["git push origin main", "git fetch origin"],
+)
+
+prefix_rule(
+    pattern = ["git", "push"],
+    decision = "prompt",
+    justification = "Un push modifie un dépôt distant et exige une approbation explicite.",
+    match = ["git push", "git push origin main", "git push -u origin branche"],
+    not_match = ["git status", "git fetch origin"],
+)
+
+prefix_rule(
+    pattern = ["git", ["fetch", "pull"]],
+    decision = "prompt",
+    justification = "Le réseau et la mise à jour des références Git doivent être approuvés hors sandbox.",
+    match = ["git fetch origin", "git pull --ff-only"],
+    not_match = ["git status", "git log -1"],
+)
+
+prefix_rule(
+    pattern = [["ssh", "scp", "rsync"]],
+    decision = "prompt",
+    justification = "Une connexion distante ou un transfert peut modifier un système externe.",
+    match = ["ssh serveur hostname", "scp fichier serveur:/tmp/", "rsync -a source/ serveur:/data/"],
+    not_match = ["git status", "cp source cible"],
+)
+
+prefix_rule(
+    pattern = [["sudo", "su", "doas"]],
+    decision = "prompt",
+    justification = "Une élévation de privilèges exige une approbation explicite.",
+    match = ["sudo systemctl restart service", "su root", "doas id"],
+    not_match = ["id", "systemctl status service"],
+)
+
+prefix_rule(
+    pattern = [["curl", "wget"]],
+    decision = "prompt",
+    justification = "L'accès réseau direct peut télécharger, téléverser ou déclencher une action distante.",
+    match = ["curl https://example.org", "curl -X POST https://example.org/api", "wget https://example.org/file"],
+    not_match = ["file document.pdf", "rg motif fichier"],
+)
+
+prefix_rule(
+    pattern = [["bash", "/bin/bash", "sh", "/bin/sh", "zsh", "/bin/zsh"], ["-c", "-lc"]],
+    decision = "prompt",
+    justification = "Un wrapper shell opaque peut cacher plusieurs opérations; les chaînes simples restent décomposées par Codex.",
+    match = ["bash -lc 'commande complexe'", "sh -c 'commande'", "/bin/bash -lc 'commande'"],
+    not_match = ["bash script.sh", "python3 script.py"],
+)
+
+prefix_rule(
+    pattern = [["kill", "killall", "pkill", "systemctl", "service"]],
+    decision = "prompt",
+    justification = "Arrêter un processus ou modifier un service peut interrompre un travail en cours.",
+    match = ["kill 1234", "pkill serveur", "systemctl restart service", "service nginx stop"],
+    not_match = ["ps aux", "systemctl-is-active service"],
+)
+
+prefix_rule(
+    pattern = [["docker", "podman", "kubectl", "terraform", "scw"]],
+    decision = "prompt",
+    justification = "Les outils d'infrastructure peuvent modifier des conteneurs, clusters ou ressources distantes.",
+    match = ["docker ps", "kubectl get pods", "terraform plan", "scw container container list"],
+    not_match = ["git status", "python3 script.py"],
+)
+
+prefix_rule(
+    pattern = ["gh", ["pr", "repo", "release", "workflow", "api"]],
+    decision = "prompt",
+    justification = "Les commandes GitHub peuvent lire des données privées ou modifier des ressources distantes.",
+    match = ["gh pr view 12", "gh repo view", "gh api repos/openai/codex"],
+    not_match = ["gh --version", "git status"],
+)
+
+prefix_rule(
+    pattern = [["xdg-open", "firefox", "google-chrome", "google-chrome-stable", "chromium"]],
+    decision = "prompt",
+    justification = "L'ouverture d'une application graphique ou d'un navigateur agit hors sandbox.",
+    match = ["xdg-open https://example.org", "firefox --headless https://example.org", "google-chrome-stable --version"],
+    not_match = ["file image.png", "python3 script.py"],
+)
+
+prefix_rule(
+    pattern = ["gio", "trash"],
+    decision = "allow",
+    justification = "La mise à la corbeille est la méthode récupérable obligatoire pour retirer un fichier.",
+    match = ["gio trash fichier", "gio trash repertoire"],
+    not_match = ["gio open fichier", "rm fichier"],
+)
