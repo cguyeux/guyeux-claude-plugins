@@ -1,0 +1,109 @@
+{
+  "agents_root": "/home/christophe/.agents/skills",
+  "expected_total": 7,
+  "ok_total": 7,
+  "problems": [],
+  "forbidden_patterns": [
+    "~/.claude/skills",
+    "~/.claude/knowledge",
+    "~/.Codex/knowledge",
+    ".claude/settings.json",
+    "CLAUDE.md"
+  ],
+  "rows": [
+    {
+      "name": "challenge",
+      "present": true,
+      "expected_files": [
+        "SKILL.md"
+      ],
+      "missing_files": [],
+      "pyc_or_cache_files": [],
+      "forbidden_references": {},
+      "python_syntax_errors": {},
+      "ok": true
+    },
+    {
+      "name": "cycle-projet",
+      "present": true,
+      "expected_files": [
+        "SKILL.md",
+        "cycle_status.py",
+        "references/plugins.md",
+        "references/soumission.md"
+      ],
+      "missing_files": [],
+      "pyc_or_cache_files": [],
+      "forbidden_references": {},
+      "python_syntax_errors": {},
+      "ok": true
+    },
+    {
+      "name": "etat",
+      "present": true,
+      "expected_files": [
+        "SKILL.md"
+      ],
+      "missing_files": [],
+      "pyc_or_cache_files": [],
+      "forbidden_references": {},
+      "python_syntax_errors": {},
+      "ok": true
+    },
+    {
+      "name": "legifrance-query",
+      "present": true,
+      "expected_files": [
+        "SKILL.md",
+        "scripts/legifrance.py"
+      ],
+      "missing_files": [],
+      "pyc_or_cache_files": [],
+      "forbidden_references": {},
+      "python_syntax_errors": {},
+      "ok": true
+    },
+    {
+      "name": "pistes",
+      "present": true,
+      "expected_files": [
+        "SKILL.md",
+        "archive_closed_pistes.py",
+        "split_pistes_files.py"
+      ],
+      "missing_files": [],
+      "pyc_or_cache_files": [],
+      "forbidden_references": {},
+      "python_syntax_errors": {},
+      "ok": true
+    },
+    {
+      "name": "qcm-generator",
+      "present": true,
+      "expected_files": [
+        "SKILL.md",
+        "references/question-design.md",
+        "scripts/build_qcm.py"
+      ],
+      "missing_files": [],
+      "pyc_or_cache_files": [],
+      "forbidden_references": {},
+      "python_syntax_errors": {},
+      "ok": true
+    },
+    {
+      "name": "recadrage",
+      "present": true,
+      "expected_files": [
+        "SKILL.md",
+        "recadrage_signals.py"
+      ],
+      "missing_files": [],
+      "pyc_or_cache_files": [],
+      "forbidden_references": {},
+      "python_syntax_errors": {},
+      "ok": true
+    }
+  ],
+  "ok": true
+}

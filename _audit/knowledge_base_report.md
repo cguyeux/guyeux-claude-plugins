@@ -3,9 +3,9 @@
 Ce fichier est genere par `_audit/tools/sync_knowledge_base.py`.
 Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle la source neutre `~/.agents/knowledge`.
 
-- Total union : 85
-- common-identical : 85
-- Fichiers canoniques : 85
+- Total union : 87
+- common-identical : 87
+- Fichiers canoniques : 87
 - Manquants du canonique : 0
 - Extras dans le canonique : 0
 - Fichiers canoniques à dédupliquer : 0
@@ -16,13 +16,13 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | KNOWLEDGE.md.full-2026-08-05 | common-identical | None | None |
 | KNOWLEDGE_DETAIL.md | common-identical | 255 | 255 |
 | agent-background-orchestration.md | common-identical | 293 | 293 |
-| agent-tooling.md | common-identical | 271 | 271 |
+| agent-tooling.md | common-identical | 281 | 281 |
 | ars.md | common-identical | 115 | 115 |
 | audition-recrutement-public.md | common-identical | 121 | 121 |
 | bash-patterns.md | common-identical | 924 | 924 |
 | bioinformatics.md | common-identical | 2006 | 2006 |
 | brilliant-ideas.md | common-identical | 159 | 159 |
-| cahier-de-labo-archive-header-regex.md | common-identical | 44 | 44 |
+| cahier-de-labo-archive-header-regex.md | common-identical | 74 | 74 |
 | claude-in-chrome-automation.md | common-identical | 304 | 304 |
 | claude-plugins-aup.md | common-identical | 773 | 773 |
 | claude-workflow-tool.md | common-identical | 58 | 58 |
@@ -43,17 +43,19 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | journals/README.md | common-identical | 51 | 51 |
 | journals/SCHEMA.md | common-identical | 38 | 38 |
 | journals/author_profile.json | common-identical | 66 | 66 |
-| journals/journals.tsv | common-identical | 126 | 126 |
+| journals/journals.tsv | common-identical | 127 | 127 |
+| journals/journals.tsv.lock | common-identical | None | None |
 | journals/parts/ai_securite.tsv | common-identical | 27 | 27 |
 | journals/parts/elsevier.tsv | common-identical | 22 | 22 |
 | journals/parts/gratuit.tsv | common-identical | 36 | 36 |
 | journals/parts/societies.tsv | common-identical | 38 | 38 |
 | journals/parts/springer.tsv | common-identical | 22 | 22 |
-| journals/portal_lessons.md | common-identical | 291 | 291 |
+| journals/portal_lessons.md | common-identical | 374 | 374 |
 | journals/portals.tsv | common-identical | 11 | 11 |
 | journals/preprints_et_delais.md | common-identical | 797 | 797 |
 | journals/rejections.md | common-identical | 29 | 29 |
-| journals/submissions.tsv | common-identical | 9 | 9 |
+| journals/submissions.tsv | common-identical | 11 | 11 |
+| journals/submissions.tsv.lock | common-identical | None | None |
 | latex-babel-french-bibtex-colon.md | common-identical | 38 | 38 |
 | latex-elsevier-elsarticle.md | common-identical | 110 | 110 |
 | legifrance-api.md | common-identical | 185 | 185 |
@@ -95,5 +97,5 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | taxonomy-node-validation.md | common-identical | 1173 | 1173 |
 | tikz-beamer-patterns.md | common-identical | 368 | 368 |
 | toolkit-transfer-clonal-bacteria.md | common-identical | 69 | 69 |
-| tuberculosis.md | common-identical | 14280 | 14280 |
+| tuberculosis.md | common-identical | 14337 | 14337 |
 | verif-stats-sources.md | common-identical | 385 | 385 |

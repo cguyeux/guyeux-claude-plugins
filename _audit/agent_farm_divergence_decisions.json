@@ -18,6 +18,14 @@
       "arbitrage humain separe si un jour l'utilisateur veut une commande explicite d'archivage recoverable"
     ]
   },
+  "challenge": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/challenge.",
+      "Adaptation appliquee : le declenchement par hook PreToolUse Claude devient un crible manuel Codex tant qu'aucun hook global n'est actif."
+    ],
+    "remaining": []
+  },
   "claude-api": {
     "decision": "codex-adapted-divergence-justified",
     "notes": [
@@ -34,6 +42,15 @@
     ],
     "remaining": []
   },
+  "cycle-projet": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/cycle-projet avec ses references et son script.",
+      "Adaptation appliquee : AGENTS.md remplace CLAUDE.md, la KB canonique devient ~/.agents/knowledge, les hooks Codex sont decrits comme controles manuels ou locaux non globaux.",
+      "La detection de declaration IA est generalisee aux agents IA/Codex/Claude au lieu d'exiger Claude Code."
+    ],
+    "remaining": []
+  },
   "design-doc-mermaid": {
     "decision": "codex-adapted-divergence-justified",
     "notes": [
@@ -47,6 +64,14 @@
     "notes": [
       "Divergence limitee a l'auteur des revisions suivies Word : Codex remplace Claude.",
       "Import Claude refuse tel quel pour eviter une attribution incorrecte des modifications."
+    ],
+    "remaining": []
+  },
+  "etat": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/etat.",
+      "Adaptation appliquee : AGENTS.md remplace CLAUDE.md comme artefact operationnel de projet."
     ],
     "remaining": []
   },
@@ -93,6 +118,14 @@
     ],
     "remaining": []
   },
+  "pistes": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/pistes avec les scripts de scission et d'archivage.",
+      "Adaptation appliquee : chemins ~/.agents/skills, vigilance manuelle Codex en remplacement du hook Stop global Claude, et renvois recadrage vers la ferme Agents."
+    ],
+    "remaining": []
+  },
   "plugin-settings": {
     "decision": "codex-adapted-divergence-justified",
     "notes": [
@@ -109,11 +142,27 @@
     ],
     "remaining": []
   },
+  "qcm-generator": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/qcm-generator avec sa reference pedagogique et son generateur.",
+      "Adaptation appliquee : le chemin du script de build cible ~/.agents/skills."
+    ],
+    "remaining": []
+  },
   "recall": {
     "decision": "codex-adapted-divergence-justified",
     "notes": [
       "Adaptation CCX-04 appliquee : recall cible la KB neutre ~/.agents/knowledge.",
       "Les anciennes vues ~/.claude/knowledge et ~/.Codex/knowledge sont conservees comme replis de diagnostic, pas comme autorite premiere."
+    ],
+    "remaining": []
+  },
+  "recadrage": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/recadrage avec son script de signaux.",
+      "Adaptation appliquee : AGENTS.md remplace CLAUDE.md, les scripts pointent vers ~/.agents/skills, les hooks sont limites a des hooks locaux eventuels et jamais presentes comme actifs globalement sous Codex."
     ],
     "remaining": []
   },

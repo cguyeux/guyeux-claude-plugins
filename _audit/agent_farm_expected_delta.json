@@ -2,18 +2,24 @@
   "common_divergent_expected": [
     "agent-development",
     "cahier-de-labo",
+    "challenge",
     "claude-api",
     "command-development",
+    "cycle-projet",
     "design-doc-mermaid",
     "docx",
+    "etat",
     "find-skills",
     "hook-development",
     "init-project",
     "mcp-integration",
     "memory-management",
+    "pistes",
     "plugin-settings",
     "plugin-structure",
+    "qcm-generator",
     "recall",
+    "recadrage",
     "reflect",
     "researcher",
     "skill-creator",
@@ -24,14 +30,6 @@
     "write-query",
     "writing-hookify-rules"
   ],
-  "claude_only_expected": [
-    "challenge",
-    "cycle-projet",
-    "etat",
-    "legifrance-query",
-    "pistes",
-    "qcm-generator",
-    "recadrage"
-  ],
+  "claude_only_expected": [],
   "agents_only_expected": []
 }

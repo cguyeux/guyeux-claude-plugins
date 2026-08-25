@@ -31,6 +31,7 @@ class CheckAllTests(unittest.TestCase):
         self.assertIn("sync_codex_skills.py", joined)
         self.assertIn("sync_agent_skills.py", joined)
         self.assertIn("report_agent_skill_divergences.py --check", joined)
+        self.assertIn("audit_personal_workflow_skills.py --check", joined)
         self.assertIn("audit_codex_skill_farm.py --profile-root /tmp/codex-profile", joined)
         self.assertIn("unittest discover -s _audit/tests", joined)
 

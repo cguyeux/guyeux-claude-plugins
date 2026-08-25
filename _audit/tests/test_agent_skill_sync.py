@@ -53,8 +53,8 @@ class AgentSkillSyncTests(unittest.TestCase):
         )
         self.assertEqual([], problems)
         self.assertEqual([], summary["missing"])
-        self.assertEqual(23, len(summary["expected_divergent"]))
-        self.assertEqual(7, len(summary["expected_claude_only"]))
+        self.assertEqual(29, len(summary["expected_divergent"]))
+        self.assertEqual(0, len(summary["expected_claude_only"]))
 
     def test_missing_skill_is_actionable_and_apply_creates_link(self):
         with tempfile.TemporaryDirectory() as tmp:

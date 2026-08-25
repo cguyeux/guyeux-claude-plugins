@@ -1,10 +1,10 @@
 {
   "claude_root": "/home/christophe/.claude/skills",
   "agents_root": "/home/christophe/.agents/skills",
-  "total": 23,
+  "total": 29,
   "summary": {
-    "instruction-review-required": 21,
-    "payload-review-required": 2
+    "instruction-review-required": 25,
+    "payload-review-required": 4
   },
   "rows": [
     {
@@ -73,6 +73,37 @@
       ]
     },
     {
+      "name": "challenge",
+      "classification": "instruction-review-required",
+      "decision": "codex-adapted-divergence-justified",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 3,
+          "removed": 3
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "decision_notes": [
+        "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/challenge.",
+        "Adaptation appliquee : le declenchement par hook PreToolUse Claude devient un crible manuel Codex tant qu'aucun hook global n'est actif."
+      ],
+      "remaining": []
+    },
+    {
       "name": "claude-api",
       "classification": "instruction-review-required",
       "decision": "codex-adapted-divergence-justified",
@@ -135,6 +166,53 @@
       "remaining": []
     },
     {
+      "name": "cycle-projet",
+      "classification": "payload-review-required",
+      "decision": "codex-adapted-divergence-justified",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md",
+        "cycle_status.py",
+        "references/plugins.md",
+        "references/soumission.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 8,
+          "removed": 6
+        },
+        "cycle_status.py": {
+          "added": 3,
+          "removed": 1
+        },
+        "references/plugins.md": {
+          "added": 1,
+          "removed": 1
+        },
+        "references/soumission.md": {
+          "added": 10,
+          "removed": 10
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "decision_notes": [
+        "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/cycle-projet avec ses references et son script.",
+        "Adaptation appliquee : AGENTS.md remplace CLAUDE.md, la KB canonique devient ~/.agents/knowledge, les hooks Codex sont decrits comme controles manuels ou locaux non globaux.",
+        "La detection de declaration IA est generalisee aux agents IA/Codex/Claude au lieu d'exiger Claude Code."
+      ],
+      "remaining": []
+    },
+    {
       "name": "design-doc-mermaid",
       "classification": "instruction-review-required",
       "decision": "codex-adapted-divergence-justified",
@@ -191,6 +269,37 @@
       "decision_notes": [
         "Divergence limitee a l'auteur des revisions suivies Word : Codex remplace Claude.",
         "Import Claude refuse tel quel pour eviter une attribution incorrecte des modifications."
+      ],
+      "remaining": []
+    },
+    {
+      "name": "etat",
+      "classification": "instruction-review-required",
+      "decision": "codex-adapted-divergence-justified",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 3,
+          "removed": 3
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "decision_notes": [
+        "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/etat.",
+        "Adaptation appliquee : AGENTS.md remplace CLAUDE.md comme artefact operationnel de projet."
       ],
       "remaining": []
     },
@@ -354,6 +463,42 @@
       "remaining": []
     },
     {
+      "name": "pistes",
+      "classification": "payload-review-required",
+      "decision": "codex-adapted-divergence-justified",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md",
+        "split_pistes_files.py"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 10,
+          "removed": 11
+        },
+        "split_pistes_files.py": {
+          "added": 1,
+          "removed": 1
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "decision_notes": [
+        "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/pistes avec les scripts de scission et d'archivage.",
+        "Adaptation appliquee : chemins ~/.agents/skills, vigilance manuelle Codex en remplacement du hook Stop global Claude, et renvois recadrage vers la ferme Agents."
+      ],
+      "remaining": []
+    },
+    {
       "name": "plugin-settings",
       "classification": "instruction-review-required",
       "decision": "codex-adapted-divergence-justified",
@@ -412,6 +557,66 @@
       "decision_notes": [
         "Divergence limitee a .Codex-plugin, AGENTS et terminologie Codex.",
         "Import Claude refuse tel quel car .claude-plugin n'est pas la cible canonique de la ferme Agents."
+      ],
+      "remaining": []
+    },
+    {
+      "name": "qcm-generator",
+      "classification": "instruction-review-required",
+      "decision": "codex-adapted-divergence-justified",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 1,
+          "removed": 1
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ],
+      "decision_notes": [
+        "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/qcm-generator avec sa reference pedagogique et son generateur.",
+        "Adaptation appliquee : le chemin du script de build cible ~/.agents/skills."
+      ],
+      "remaining": []
+    },
+    {
+      "name": "recadrage",
+      "classification": "instruction-review-required",
+      "decision": "codex-adapted-divergence-justified",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 12,
+          "removed": 10
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "decision_notes": [
+        "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/recadrage avec son script de signaux.",
+        "Adaptation appliquee : AGENTS.md remplace CLAUDE.md, les scripts pointent vers ~/.agents/skills, les hooks sont limites a des hooks locaux eventuels et jamais presentes comme actifs globalement sous Codex."
       ],
       "remaining": []
     },
