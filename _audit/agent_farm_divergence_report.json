@@ -1,0 +1,602 @@
+{
+  "claude_root": "/home/christophe/.claude/skills",
+  "agents_root": "/home/christophe/.agents/skills",
+  "total": 23,
+  "summary": {
+    "instruction-review-required": 21,
+    "payload-review-required": 2
+  },
+  "rows": [
+    {
+      "name": "agent-development",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 10,
+          "removed": 10
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ]
+    },
+    {
+      "name": "cahier-de-labo",
+      "classification": "payload-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [
+        "archive_old_entries.py"
+      ],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 7,
+          "removed": 62
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ]
+    },
+    {
+      "name": "claude-api",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 50,
+          "removed": 50
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "license",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "license",
+        "name"
+      ]
+    },
+    {
+      "name": "command-development",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 19,
+          "removed": 19
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ]
+    },
+    {
+      "name": "design-doc-mermaid",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 2,
+          "removed": 2
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ]
+    },
+    {
+      "name": "docx",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 10,
+          "removed": 10
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "license",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "license",
+        "name"
+      ]
+    },
+    {
+      "name": "find-skills",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 1,
+          "removed": 1
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ]
+    },
+    {
+      "name": "hook-development",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 22,
+          "removed": 22
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ]
+    },
+    {
+      "name": "init-project",
+      "classification": "payload-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md",
+        "init_project.py"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 8,
+          "removed": 44
+        },
+        "init_project.py": {
+          "added": 24,
+          "removed": 849
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ]
+    },
+    {
+      "name": "mcp-integration",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 13,
+          "removed": 13
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ]
+    },
+    {
+      "name": "memory-management",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 27,
+          "removed": 27
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "user-invocable"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "user-invocable"
+      ]
+    },
+    {
+      "name": "plugin-settings",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 30,
+          "removed": 30
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ]
+    },
+    {
+      "name": "plugin-structure",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 25,
+          "removed": 25
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ]
+    },
+    {
+      "name": "recall",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 4,
+          "removed": 4
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ]
+    },
+    {
+      "name": "reflect",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 3,
+          "removed": 3
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ]
+    },
+    {
+      "name": "researcher",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 47,
+          "removed": 57
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ]
+    },
+    {
+      "name": "skill-creator",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 21,
+          "removed": 21
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ]
+    },
+    {
+      "name": "skill-development",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 25,
+          "removed": 25
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ]
+    },
+    {
+      "name": "update",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 1,
+          "removed": 1
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ]
+    },
+    {
+      "name": "using-git-worktrees",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 9,
+          "removed": 9
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name"
+      ]
+    },
+    {
+      "name": "web-artifacts-builder",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 3,
+          "removed": 3
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "license",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "license",
+        "name"
+      ]
+    },
+    {
+      "name": "write-query",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 1,
+          "removed": 1
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "argument-hint",
+        "description",
+        "name"
+      ]
+    },
+    {
+      "name": "writing-hookify-rules",
+      "classification": "instruction-review-required",
+      "decision": "manual-review-required",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 7,
+          "removed": 7
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "description",
+        "name",
+        "version"
+      ]
+    }
+  ]
+}

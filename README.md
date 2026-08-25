@@ -60,6 +60,7 @@ python3 _audit/tools/sync_codex_skills.py --apply
 python3 _audit/tools/sync_codex_skills.py
 python3 _audit/tools/sync_codex_skills.py --inventory --detail
 python3 _audit/tools/sync_agent_skills.py
+python3 _audit/tools/report_agent_skill_divergences.py --check
 python3 _audit/tools/audit_codex_skill_farm.py --profile-root ~/.codex
 python3 _audit/tools/check_all.py --profile-root ~/.codex
 python3 _audit/tools/check_all.py --source git-index --profile-root ~/.codex
@@ -85,6 +86,10 @@ documentation, audit des skills, fermes Codex et Agents, profil Codex réel et
 tests unitaires. Sur un worktree contenant des brouillons locaux hors index,
 utiliser `--source git-index` pour valider exactement le candidat staged dans
 une projection temporaire mise à la corbeille en fin d'exécution.
+
+Le rapport CCX-06 `_audit/agent_farm_divergence_report.md` détaille les
+divergences de contenu entre skills communs Claude et Agents. Il est régénéré
+par `report_agent_skill_divergences.py` et contrôlé par `check_all.py`.
 
 ## Architecture des skills partagés
 
