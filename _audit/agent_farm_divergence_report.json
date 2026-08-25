@@ -214,7 +214,7 @@
     {
       "name": "init-project",
       "classification": "payload-review-required",
-      "decision": "partial-imported",
+      "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
@@ -223,12 +223,12 @@
       ],
       "line_delta_claude_to_agents": {
         "SKILL.md": {
-          "added": 19,
+          "added": 20,
           "removed": 41
         },
         "init_project.py": {
-          "added": 293,
-          "removed": 786
+          "added": 394,
+          "removed": 778
         }
       },
       "claude_skill_md_frontmatter_keys": [
@@ -243,12 +243,10 @@
         "Codex conserve AGENTS.md et les chemins ~/.agents / ~/.Codex.",
         "Import effectue : etat_des_decouvertes.md, pistes.md, domaine droit, classification conservatrice, discovery ~/.Codex/knowledge et projets freres, echappement LaTeX.",
         "Import effectue : --from-piste avec copie exacte de la piste source dans le cahier et mutation locale de la seule piste cible dans le registre parent.",
-        "Non importe a ce stade : --migrate."
+        "Import effectue : --migrate Codex-compatible, idempotent, sans ecraser les fichiers existants.",
+        "Divergence restante justifiee : Claude conserve CLAUDE.md, .claude/settings.json et ~/.claude/knowledge ; Codex conserve AGENTS.md, ~/.agents et ~/.Codex/knowledge."
       ],
-      "remaining": [
-        "--migrate Codex-compatible",
-        "tests automatises versionnes hors profil utilisateur"
-      ]
+      "remaining": []
     },
     {
       "name": "mcp-integration",

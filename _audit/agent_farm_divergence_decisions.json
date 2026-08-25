@@ -1,15 +1,13 @@
 {
   "init-project": {
-    "decision": "partial-imported",
+    "decision": "codex-adapted-divergence-justified",
     "notes": [
       "Codex conserve AGENTS.md et les chemins ~/.agents / ~/.Codex.",
       "Import effectue : etat_des_decouvertes.md, pistes.md, domaine droit, classification conservatrice, discovery ~/.Codex/knowledge et projets freres, echappement LaTeX.",
       "Import effectue : --from-piste avec copie exacte de la piste source dans le cahier et mutation locale de la seule piste cible dans le registre parent.",
-      "Non importe a ce stade : --migrate."
+      "Import effectue : --migrate Codex-compatible, idempotent, sans ecraser les fichiers existants.",
+      "Divergence restante justifiee : Claude conserve CLAUDE.md, .claude/settings.json et ~/.claude/knowledge ; Codex conserve AGENTS.md, ~/.agents et ~/.Codex/knowledge."
     ],
-    "remaining": [
-      "--migrate Codex-compatible",
-      "tests automatises versionnes hors profil utilisateur"
-    ]
+    "remaining": []
   }
 }
