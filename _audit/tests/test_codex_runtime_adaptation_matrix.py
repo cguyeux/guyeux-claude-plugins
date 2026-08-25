@@ -32,7 +32,7 @@ class CodexRuntimeAdaptationMatrixTests(unittest.TestCase):
                 "claude-branding-only": 1,
                 "codex-mcp-documentation-only": 24,
                 "codex-mcp-tool-prerequisite": 12,
-                "external-mcp-required": 1,
+                "external-mcp-fallback-documented": 1,
                 "mcp-narrative-only": 9,
                 "rewrite-cache-path": 1,
                 "rewrite-claude-skill-paths": 9,
@@ -41,7 +41,7 @@ class CodexRuntimeAdaptationMatrixTests(unittest.TestCase):
 
     def test_high_risk_runtime_cases_are_named(self):
         by_name = {row["name"]: row["runtime_bucket"] for row in self.rows}
-        self.assertEqual(by_name["clinical-trial-protocol-skill"], "external-mcp-required")
+        self.assertEqual(by_name["clinical-trial-protocol-skill"], "external-mcp-fallback-documented")
         self.assertEqual(by_name["sra-geolocate"], "rewrite-cache-path")
         self.assertEqual(by_name["boltz"], "await-canonical-knowledge-path")
         self.assertEqual(by_name["imdb"], "rewrite-claude-skill-paths")

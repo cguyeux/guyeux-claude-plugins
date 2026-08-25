@@ -9,7 +9,7 @@
   "interface": {
     "displayName": "Bio Pathogens Direct",
     "shortDescription": "Direct pathogen research skills.",
-    "longDescription": "Codex package for pathogen research skills already audited for direct, payload, runtime, or guarded workflow packaging.",
+    "longDescription": "Codex package for pathogen research skills already audited for direct, payload, runtime-adapted, or guarded workflow packaging.",
     "developerName": "Christophe Guyeux",
     "category": "Developer tools",
     "capabilities": [],

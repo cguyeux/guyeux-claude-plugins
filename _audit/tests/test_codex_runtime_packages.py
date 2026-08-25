@@ -18,15 +18,16 @@ def frontmatter(text: str) -> str:
 
 
 class CodexRuntimePackagesTests(unittest.TestCase):
-    def test_runtime_audit_records_the_46_low_risk_rows(self):
+    def test_runtime_audit_records_the_57_materialized_rows(self):
         audit = json.loads(AUDIT.read_text(encoding="utf-8"))
         rows = audit["rows"]
-        self.assertEqual(56, len(rows))
+        self.assertEqual(57, len(rows))
         self.assertEqual(
             {
                 "claude-branding-only",
                 "codex-mcp-documentation-only",
                 "codex-mcp-tool-prerequisite",
+                "external-mcp-fallback-documented",
                 "mcp-narrative-only",
                 "rewrite-cache-path",
                 "rewrite-claude-skill-paths",
@@ -56,6 +57,16 @@ class CodexRuntimePackagesTests(unittest.TestCase):
                 self.assertNotIn(">", description_value)
                 self.assertNotIn("claude mcp add", text)
                 self.assertNotIn("Claude Code", text)
+
+    def test_external_mcp_fallback_is_documented(self):
+        audit = json.loads(AUDIT.read_text(encoding="utf-8"))
+        rows = [row for row in audit["rows"] if row["runtime_bucket"] == "external-mcp-fallback-documented"]
+        self.assertEqual(["clinical-trial-protocol-skill"], [row["name"] for row in rows])
+        text = (PACKAGES / "bio-population-genetics" / "skills" / "clinical-trial-protocol-skill" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("## Codex external clinical-trials fallback", text)
+        self.assertIn("source-limited mode", text)
+        self.assertIn("Do not invent comparable trials", text)
+        self.assertIn("codex mcp list", text)
 
     def test_runtime_mcp_tool_prerequisites_get_codex_note(self):
         audit = json.loads(AUDIT.read_text(encoding="utf-8"))

@@ -25,6 +25,7 @@ MATERIALIZABLE_BUCKETS = {
     "claude-branding-only",
     "rewrite-cache-path",
     "rewrite-claude-skill-paths",
+    "external-mcp-fallback-documented",
 }
 EXCLUDE_DIRS = {".git", ".mypy_cache", ".pytest_cache", ".ruff_cache", ".venv", "__pycache__", "venv"}
 EXCLUDE_GLOBS = {"*.pyc", "*.pyo"}
@@ -51,7 +52,7 @@ PACKAGE_METADATA = {
     "bio-pathogens": {
         "display": "Bio Pathogens Direct",
         "short": "Direct pathogen research skills.",
-        "long": "Codex package for pathogen research skills already audited for direct, payload, or runtime-adapted packaging.",
+        "long": "Codex package for pathogen research skills already audited for direct, payload, runtime-adapted, or guarded workflow packaging.",
     },
     "bio-population-genetics": {
         "display": "Bio Population Genetics Direct",
@@ -103,6 +104,7 @@ def sanitize_frontmatter_value(line: str) -> str:
 def adapt_runtime_text(text: str, row: dict[str, Any]) -> str:
     text = strip_unsupported_frontmatter(text)
     text = text.replace("Claude Code", "Codex")
+    text = text.replace("Claude Desktop", "Codex")
     skill_name = re.escape(row["name"])
     text = re.sub(
         rf"\$\{{CLAUDE_PLUGIN_ROOT\}}/skills/{skill_name}/",
@@ -137,6 +139,35 @@ def adapt_runtime_text(text: str, row: dict[str, Any]) -> str:
         text,
     )
     text = text.replace("claude mcp list", "codex mcp list")
+    if row["runtime_bucket"] == "external-mcp-fallback-documented":
+        text = text.replace(
+            "Install via drag-and-drop `.mcpb` file into Codex",
+            "Install or configure an equivalent ClinicalTrials.gov MCP server in the active Codex profile",
+        )
+        text = text.replace(
+            "Or configure manually in Codex settings",
+            "Or provide exported ClinicalTrials.gov/FDA source records for offline analysis",
+        )
+        text = text.replace(
+            "**Verification:** Step 1 will automatically test MCP connectivity at startup.",
+            "**Verification:** Step 1 must verify MCP connectivity with `codex mcp list` before live trial queries, or switch to the offline source-record fallback below.",
+        )
+        text = text.replace(
+            "- No fallback available - MCP server is required for protocol research",
+            "- Fallback available: if no ClinicalTrials.gov MCP server is configured, use only user-provided NCT IDs, exported ClinicalTrials.gov records, protocol PDFs, FDA guidance URLs, or other primary source records; mark the research stage as `source-limited` and do not claim a comprehensive trial search.",
+        )
+        text = text.replace(
+            "**CONSTRAINT: Use ONLY ClinicalTrials.gov MCP Server** - Do not perform generic web searches.",
+            "**CONSTRAINT:** Prefer the ClinicalTrials.gov MCP server. If unavailable, use only user-provided or explicitly retrieved primary source records; do not perform generic unsourced web searches.",
+        )
+        note = (
+            "\n## Codex external clinical-trials fallback\n\n"
+            "This packaged copy does not bundle a ClinicalTrials.gov MCP server. Before live trial research, verify an equivalent Codex MCP server with `codex mcp list`. "
+            "If no such server is available, continue only in source-limited mode using user-provided NCT IDs, ClinicalTrials.gov exports, protocol PDFs, FDA database records, or other primary source documents. "
+            "Do not invent comparable trials, eligibility criteria, outcomes, regulatory pathways, or sample-size assumptions. Mark every generated protocol artifact as draft support requiring qualified clinical, regulatory, statistical, and ethics review before any real-world use.\n"
+        )
+        if "## Codex external clinical-trials fallback" not in text:
+            text = text.rstrip() + "\n" + note
     if "mcp" in " ".join(row["runtime_issues"]).lower():
         note = (
             "\n## Codex packaging note\n\n"
@@ -159,11 +190,45 @@ def adapt_runtime_text(text: str, row: dict[str, Any]) -> str:
     return text
 
 
-def clean_text_payload(target: Path) -> None:
+def adapt_runtime_payload_text(text: str, row: dict[str, Any]) -> str:
+    text = text.replace("Claude Code", "Codex")
+    text = text.replace("Claude Desktop", "Codex")
+    text = re.sub(
+        r"claude mcp add --transport http --scope user\s+([A-Za-z0-9_-]+)\s+(https?://\S+)",
+        r"codex mcp add \1 --url \2",
+        text,
+    )
+    text = re.sub(
+        r"claude mcp add --scope user\s+([A-Za-z0-9_-]+)\s+(https?://\S+)",
+        r"codex mcp add \1 --url \2",
+        text,
+    )
+    text = text.replace("claude mcp list", "codex mcp list")
+    if row["runtime_bucket"] == "external-mcp-fallback-documented":
+        text = text.replace(
+            "**Required Tools:** ClinicalTrials.gov MCP Server",
+            "**Required Tools:** ClinicalTrials.gov MCP Server in the active Codex profile, or source-limited offline records supplied by the user.",
+        )
+        text = text.replace(
+            "Use ClinicalTrials.gov MCP Server:",
+            "Use a ClinicalTrials.gov MCP Server when available; otherwise use only source-limited offline records supplied by the user:",
+        )
+        text = text.replace(
+            "**CONSTRAINT: Use ONLY ClinicalTrials.gov MCP Server** - Do not perform generic web searches.",
+            "**CONSTRAINT:** Prefer the ClinicalTrials.gov MCP server. If unavailable, use only user-provided or explicitly retrieved primary source records; do not perform generic unsourced web searches.",
+        )
+        text = text.replace(
+            "**Primary Source:** ClinicalTrials.gov MCP Server (see Step 3 for MCP tool usage)",
+            "**Primary Source:** ClinicalTrials.gov MCP Server when configured, or user-provided ClinicalTrials.gov/FDA primary source records in source-limited mode.",
+        )
+    return text
+
+
+def clean_text_payload(target: Path, row: dict[str, Any]) -> None:
     for path in target.rglob("*"):
         if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
             continue
-        text = path.read_text(encoding="utf-8")
+        text = adapt_runtime_payload_text(path.read_text(encoding="utf-8"), row)
         lines = [line.rstrip(" \t\r") for line in text.splitlines()]
         while lines and lines[-1] == "":
             lines.pop()
@@ -232,7 +297,7 @@ def copy_skill(source: Path, target: Path, row: dict[str, Any]) -> None:
     shutil.copytree(source, target, dirs_exist_ok=True, ignore=ignore)
     skill_md = target / "SKILL.md"
     skill_md.write_text(adapt_runtime_text(skill_md.read_text(encoding="utf-8"), row), encoding="utf-8")
-    clean_text_payload(target)
+    clean_text_payload(target, row)
 
 
 def all_package_skill_counts() -> dict[str, int]:
@@ -246,6 +311,9 @@ def all_package_skill_counts() -> dict[str, int]:
 
 def manifest(package_name: str, skill_count: int) -> dict[str, Any]:
     meta = PACKAGE_METADATA[package_name]
+    default_prompt = "Use the installed skills with their documented prerequisites and evidence boundaries."
+    if package_name == "bio-pathogens":
+        default_prompt = "Use the installed skills with their documented prerequisites, guardrails, and evidence boundaries."
     return {
         "name": package_name,
         "version": "0.1.0",
@@ -259,7 +327,7 @@ def manifest(package_name: str, skill_count: int) -> dict[str, Any]:
             "developerName": "Christophe Guyeux",
             "category": "Developer tools",
             "capabilities": [],
-            "defaultPrompt": "Use the installed skills with their documented prerequisites and evidence boundaries.",
+            "defaultPrompt": default_prompt,
         },
     }
 
@@ -335,6 +403,11 @@ def materialize() -> list[dict[str, Any]]:
                 "The skills in this package are materialized copies of the canonical Claude plugin repository.",
                 "Package-only adaptation removes Codex-incompatible Claude frontmatter fields.",
                 "Runtime packaging adds Codex MCP prerequisite notes and neutralizes Claude-specific wording in generated copies.",
+                *(
+                    ["Workflow packaging adds explicit Codex guardrails for project, Atlas, BDD, remote queue and archive mutations."]
+                    if package_name == "bio-pathogens"
+                    else []
+                ),
                 "Local virtual environments, bytecode caches and compiled Python files are excluded.",
                 "",
                 "Canonical source remains the repository root, not this generated package copy.",

@@ -13,7 +13,7 @@ Il decompose les skills classes `needs-codex-runtime-adaptation` par la matrice 
 | claude-branding-only | 1 |
 | codex-mcp-documentation-only | 24 |
 | codex-mcp-tool-prerequisite | 12 |
-| external-mcp-required | 1 |
+| external-mcp-fallback-documented | 1 |
 | mcp-narrative-only | 9 |
 | rewrite-cache-path | 1 |
 | rewrite-claude-skill-paths | 9 |
@@ -35,7 +35,7 @@ Il decompose les skills classes `needs-codex-runtime-adaptation` par la matrice 
 | boltz | bio_population_genetics | bio-population-genetics | await-canonical-knowledge-path | claude-knowledge-path, http-literal | Attendre CCX-04 ou remplacer par le chemin KB Codex actuel avec mention de migration future. |
 | boolean-attractors | maboss | maboss | mcp-narrative-only | generic-mcp-mention | Emballage possible ; la mention MCP n'est pas un appel runtime direct. |
 | card | bio_population_genetics | bio-population-genetics | codex-mcp-documentation-only | tbannotator-mcp, generic-mcp-mention, http-literal | Emballage possible ; conserver la mention comme prerequis ou comparaison documentee. |
-| clinical-trial-protocol-skill | bio_population_genetics | bio-population-genetics | external-mcp-required | generic-mcp-mention | Ne pas empaqueter sans serveur MCP Codex equivalent ou fallback documente. |
+| clinical-trial-protocol-skill | bio_population_genetics | bio-population-genetics | external-mcp-fallback-documented | generic-mcp-mention | Emballer seulement avec prerequis MCP Codex explicite et fallback hors-ligne documente, sans inventer de resultats d'essais. |
 | coevolution | bio_pathogens | bio-pathogens | codex-mcp-tool-prerequisite | tbannotator-mcp, mcp-tool-name | Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire. |
 | colomoto-run | maboss | maboss | mcp-narrative-only | generic-mcp-mention, http-literal | Emballage possible ; la mention MCP n'est pas un appel runtime direct. |
 | convergent-evolution | bio_pathogens | bio-pathogens | codex-mcp-tool-prerequisite | tbannotator-mcp, mcp-tool-name, generic-mcp-mention | Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire. |

@@ -5,7 +5,7 @@
       "claude-branding-only": 1,
       "codex-mcp-documentation-only": 24,
       "codex-mcp-tool-prerequisite": 12,
-      "external-mcp-required": 1,
+      "external-mcp-fallback-documented": 1,
       "mcp-narrative-only": 9,
       "rewrite-cache-path": 1,
       "rewrite-claude-skill-paths": 9
@@ -252,8 +252,8 @@
       "runtime_issues": [
         "generic-mcp-mention"
       ],
-      "runtime_bucket": "external-mcp-required",
-      "action": "Ne pas empaqueter sans serveur MCP Codex equivalent ou fallback documente."
+      "runtime_bucket": "external-mcp-fallback-documented",
+      "action": "Emballer seulement avec prerequis MCP Codex explicite et fallback hors-ligne documente, sans inventer de resultats d'essais."
     },
     {
       "name": "coevolution",

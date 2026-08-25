@@ -992,6 +992,34 @@
       }
     },
     {
+      "name": "clinical-trial-protocol-skill",
+      "source_plugin": "bio_population_genetics",
+      "canonical_path": "bio_population_genetics/skills/clinical-trial-protocol-skill",
+      "package_candidate": "bio-population-genetics",
+      "coarse_signals": [
+        "data-payload",
+        "mcp-runtime",
+        "script-payload",
+        "supporting-resources"
+      ],
+      "runtime_issues": [
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "external-mcp-fallback-documented",
+      "action": "Emballer seulement avec prerequis MCP Codex explicite et fallback hors-ligne documente, sans inventer de resultats d'essais.",
+      "audit": {
+        "copied_files_expected": 11,
+        "copied_bytes_expected": 420559,
+        "copied_files_actual": 11,
+        "copied_bytes_actual": 422137,
+        "excluded_files": 2,
+        "excluded_bytes": 31812,
+        "excluded_roots": [
+          "__pycache__"
+        ]
+      }
+    },
+    {
       "name": "d-place",
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/d-place",

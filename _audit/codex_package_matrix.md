@@ -7,10 +7,10 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 - Deja materialises dans un paquet pilote : 5
 - Deja materialises dans des paquets directs : 48
 - Deja materialises dans des paquets payload audites : 15
-- Deja materialises avec adaptation runtime Codex : 56
+- Deja materialises avec adaptation runtime Codex : 57
 - Deja materialises avec garde-fou workflow Codex : 10
 - Bloques par workflow personnel d'ecriture : 0
-- Adaptation runtime Claude ou MCP requise : 2
+- Adaptation runtime Claude ou MCP requise : 1
 - Audit de payload requis : 0
 - Candidats directs sans verrou mecanique majeur : 0
 
@@ -57,7 +57,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | bovine-genomics | bio_population_genetics | bio-population-genetics | packaged-direct | web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | card | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | causal-inference | ia | ia | packaged-direct | unsupported-frontmatter, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
-| clinical-trial-protocol-skill | bio_population_genetics | bio-population-genetics | needs-codex-runtime-adaptation | data-payload, mcp-runtime, script-payload, supporting-resources | Remplacer les references Claude et declarer les prerequis MCP Codex. |
+| clinical-trial-protocol-skill | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | data-payload, mcp-runtime, script-payload, supporting-resources | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | coevolution | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | colomoto-run | maboss | maboss | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | convergent-evolution | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |

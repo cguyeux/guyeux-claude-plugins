@@ -82,7 +82,7 @@ def bucket_for(row: dict[str, Any], issues: list[str], text: str) -> str:
     if "claude-cache-path" in issues:
         return "rewrite-cache-path"
     if re.search(r"clinical trials MCP|MCP Server Unavailable|MCP server is required", text, re.I):
-        return "external-mcp-required"
+        return "external-mcp-fallback-documented"
     if "mcp-tool-name" in issues:
         return "codex-mcp-tool-prerequisite"
     if "tbannotator-mcp" in issues or "tbmonitor-mcp" in issues:
@@ -104,6 +104,7 @@ def action_for(bucket: str) -> str:
         "blocked-claude-project-memory": "Reporter vers CCX-13 ou reformuler sans dependance a ~/.claude/projects avant empaquetage.",
         "await-canonical-knowledge-path": "Attendre CCX-04 ou remplacer par le chemin KB Codex actuel avec mention de migration future.",
         "rewrite-cache-path": "Remplacer le cache Claude par un cache neutre sous ~/.cache ou par une sortie projet explicite.",
+        "external-mcp-fallback-documented": "Emballer seulement avec prerequis MCP Codex explicite et fallback hors-ligne documente, sans inventer de resultats d'essais.",
         "external-mcp-required": "Ne pas empaqueter sans serveur MCP Codex equivalent ou fallback documente.",
         "codex-mcp-tool-prerequisite": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire.",
         "codex-mcp-documentation-only": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee.",

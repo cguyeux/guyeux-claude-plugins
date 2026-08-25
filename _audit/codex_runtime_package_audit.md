@@ -41,6 +41,7 @@ Il couvre les familles runtime materialisees avec une note Codex et sans environ
 | beast2-phylogeography | bio-population-genetics | codex-mcp-documentation-only | 1 | 0 | none |
 | bioc-pmc | bio-population-genetics | codex-mcp-documentation-only | 1 | 0 | none |
 | card | bio-population-genetics | codex-mcp-documentation-only | 1 | 0 | none |
+| clinical-trial-protocol-skill | bio-population-genetics | external-mcp-fallback-documented | 11 | 2 | __pycache__ |
 | d-place | bio-population-genetics | codex-mcp-documentation-only | 10 | 14 | __pycache__ |
 | europe-pmc | bio-population-genetics | rewrite-claude-skill-paths | 1 | 0 | none |
 | nextflow-development | bio-population-genetics | claude-branding-only | 22 | 20 | __pycache__ |

@@ -25,11 +25,11 @@
       "web": 2
     },
     "classification": {
-      "needs-codex-runtime-adaptation": 2,
+      "needs-codex-runtime-adaptation": 1,
       "packaged-direct": 48,
       "packaged-payload": 15,
       "packaged-pilot": 5,
-      "packaged-runtime-adapted": 56,
+      "packaged-runtime-adapted": 57,
       "packaged-workflow-guarded": 10
     }
   },
@@ -467,8 +467,10 @@
       "source_plugin": "bio_population_genetics",
       "canonical_path": "bio_population_genetics/skills/clinical-trial-protocol-skill",
       "package_candidate": "bio-population-genetics",
-      "packaged_in": [],
-      "classification": "needs-codex-runtime-adaptation",
+      "packaged_in": [
+        "bio-population-genetics"
+      ],
+      "classification": "packaged-runtime-adapted",
       "signals": [
         "data-payload",
         "mcp-runtime",
@@ -477,7 +479,7 @@
       ],
       "unsupported_frontmatter": [],
       "file_count": 13,
-      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+      "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
       "name": "coevolution",
