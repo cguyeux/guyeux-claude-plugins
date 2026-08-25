@@ -7,19 +7,22 @@
     "python3 /home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/no_rm_guard.py",
     "python3 /home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/precompute_reminder.py",
     "python3 /home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/remote_compute_reminder.py",
-    "python3 /home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/session_context.py"
+    "python3 /home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/session_context.py",
+    "python3 /home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/stop_guard.py"
   ],
   "scripts_referenced": [
     "/home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/no_rm_guard.py",
     "/home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/precompute_reminder.py",
     "/home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/remote_compute_reminder.py",
-    "/home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/session_context.py"
+    "/home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/session_context.py",
+    "/home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/stop_guard.py"
   ],
   "syntax": {
     "no_rm_guard.py": true,
     "precompute_reminder.py": true,
     "remote_compute_reminder.py": true,
-    "session_context.py": true
+    "session_context.py": true,
+    "stop_guard.py": true
   },
   "scenarios": {
     "block_rm": true,
@@ -33,7 +36,11 @@
     "allow_heredoc_body": true,
     "precompute_apply_patch": true,
     "remote_compute_local_heavy": true,
-    "remote_compute_silent_remote": true
+    "remote_compute_silent_remote": true,
+    "stop_blocks_material_without_tracks": true,
+    "stop_allows_material_with_tracks": true,
+    "stop_blocks_open_ccx_claim": true,
+    "stop_anti_loop_allows": true
   },
   "ok": true
 }

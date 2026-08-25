@@ -46,6 +46,18 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/stop_guard.py",
+            "statusMessage": "Contrôle de fin de session (pistes, état, cahier)...",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   }
 }

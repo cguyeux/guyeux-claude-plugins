@@ -14,6 +14,7 @@ Ce fichier est genere par `_audit/tools/audit_codex_hooks.py`.
 | syntaxe precompute_reminder.py | OK |
 | syntaxe remote_compute_reminder.py | OK |
 | syntaxe session_context.py | OK |
+| syntaxe stop_guard.py | OK |
 | scenario allow_docker_rm_flag | OK |
 | scenario allow_git_rm | OK |
 | scenario allow_grep_rm | OK |
@@ -26,3 +27,7 @@ Ce fichier est genere par `_audit/tools/audit_codex_hooks.py`.
 | scenario precompute_apply_patch | OK |
 | scenario remote_compute_local_heavy | OK |
 | scenario remote_compute_silent_remote | OK |
+| scenario stop_allows_material_with_tracks | OK |
+| scenario stop_anti_loop_allows | OK |
+| scenario stop_blocks_material_without_tracks | OK |
+| scenario stop_blocks_open_ccx_claim | OK |

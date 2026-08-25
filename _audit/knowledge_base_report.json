@@ -73,14 +73,14 @@
       "path": "agent-tooling.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "daae5a45ac1381eda34e5759ddf43e4b1d5b6a93caf4989615862179e81ea039",
-        "size": 44837,
-        "lines": 293
+        "sha256": "d58c9b7e87181a7b346e9bb1ba2686877be6a5d44240edd87906912738e6cf3c",
+        "size": 46291,
+        "lines": 303
       },
       "codex": {
-        "sha256": "daae5a45ac1381eda34e5759ddf43e4b1d5b6a93caf4989615862179e81ea039",
-        "size": 44837,
-        "lines": 293
+        "sha256": "d58c9b7e87181a7b346e9bb1ba2686877be6a5d44240edd87906912738e6cf3c",
+        "size": 46291,
+        "lines": 303
       }
     },
     {
@@ -213,14 +213,14 @@
       "path": "collaborators.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "1a50c8dce73f2b91c0d1425250bb3c2b04b9497adfc2f1d6d4e06993e5bcf71d",
-        "size": 136841,
-        "lines": 2091
+        "sha256": "eea0824a634e7aa898f4596030c650231e51d7e6bb088cea4b8ddacb71322ce9",
+        "size": 139635,
+        "lines": 2123
       },
       "codex": {
-        "sha256": "1a50c8dce73f2b91c0d1425250bb3c2b04b9497adfc2f1d6d4e06993e5bcf71d",
-        "size": 136841,
-        "lines": 2091
+        "sha256": "eea0824a634e7aa898f4596030c650231e51d7e6bb088cea4b8ddacb71322ce9",
+        "size": 139635,
+        "lines": 2123
       }
     },
     {
@@ -423,14 +423,14 @@
       "path": "journals/SCHEMA.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "61fc882495e467739fd5a748abf18b3af4ebbf0e2e3537d8c08618a7ba9430de",
-        "size": 4495,
-        "lines": 38
+        "sha256": "9cb78bed8200a31051bfbb99d97bb49547af2556d7ce11dc4d3dcf649eedf3b0",
+        "size": 6154,
+        "lines": 39
       },
       "codex": {
-        "sha256": "61fc882495e467739fd5a748abf18b3af4ebbf0e2e3537d8c08618a7ba9430de",
-        "size": 4495,
-        "lines": 38
+        "sha256": "9cb78bed8200a31051bfbb99d97bb49547af2556d7ce11dc4d3dcf649eedf3b0",
+        "size": 6154,
+        "lines": 39
       }
     },
     {
@@ -451,14 +451,14 @@
       "path": "journals/journals.tsv",
       "status": "common-identical",
       "claude": {
-        "sha256": "b85d022d4ed17a5c80871565136dbf4200183163831151faac67c6542ce8f1f5",
-        "size": 171001,
-        "lines": 128
+        "sha256": "757c37cb123d3ec2e0276921fdb6299b62f5e62f34379240d88ac1a1ba385220",
+        "size": 174177,
+        "lines": 129
       },
       "codex": {
-        "sha256": "b85d022d4ed17a5c80871565136dbf4200183163831151faac67c6542ce8f1f5",
-        "size": 171001,
-        "lines": 128
+        "sha256": "757c37cb123d3ec2e0276921fdb6299b62f5e62f34379240d88ac1a1ba385220",
+        "size": 174177,
+        "lines": 129
       }
     },
     {
@@ -549,14 +549,14 @@
       "path": "journals/portal_lessons.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "1135f3d361a987a38f00956462a179e2c1ef941a129a1398f97a20e121a42c7a",
-        "size": 20826,
-        "lines": 374
+        "sha256": "655d9e53785a713dc290999bc4bedb97ce1ccfe23a663eac01d3301ce24dee3c",
+        "size": 23142,
+        "lines": 409
       },
       "codex": {
-        "sha256": "1135f3d361a987a38f00956462a179e2c1ef941a129a1398f97a20e121a42c7a",
-        "size": 20826,
-        "lines": 374
+        "sha256": "655d9e53785a713dc290999bc4bedb97ce1ccfe23a663eac01d3301ce24dee3c",
+        "size": 23142,
+        "lines": 409
       }
     },
     {
@@ -605,14 +605,14 @@
       "path": "journals/submissions.tsv",
       "status": "common-identical",
       "claude": {
-        "sha256": "0e113da7f5a6fd6e611f34a80d7d5ae9bef377dc82c184125580f57ad117c9c7",
-        "size": 6781,
-        "lines": 11
+        "sha256": "0c2e22df782360e29d51063c2a364b1035b0f85328b047869b1531960115925a",
+        "size": 7876,
+        "lines": 12
       },
       "codex": {
-        "sha256": "0e113da7f5a6fd6e611f34a80d7d5ae9bef377dc82c184125580f57ad117c9c7",
-        "size": 6781,
-        "lines": 11
+        "sha256": "0c2e22df782360e29d51063c2a364b1035b0f85328b047869b1531960115925a",
+        "size": 7876,
+        "lines": 12
       }
     },
     {
@@ -1081,14 +1081,14 @@
       "path": "scientific-journals.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "1d57c3f8021f65ce306cb9fce50f1f54ac2774e9a24485cceafdc62522c28a67",
-        "size": 57340,
-        "lines": 795
+        "sha256": "fbffd95db1405c76af3fa5238cd0fbc5d024902226f3d63ed143f164e3d7df5d",
+        "size": 59753,
+        "lines": 828
       },
       "codex": {
-        "sha256": "1d57c3f8021f65ce306cb9fce50f1f54ac2774e9a24485cceafdc62522c28a67",
-        "size": 57340,
-        "lines": 795
+        "sha256": "fbffd95db1405c76af3fa5238cd0fbc5d024902226f3d63ed143f164e3d7df5d",
+        "size": 59753,
+        "lines": 828
       }
     },
     {

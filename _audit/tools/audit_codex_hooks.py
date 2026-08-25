@@ -6,6 +6,7 @@ import argparse
 import json
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -37,6 +38,15 @@ def bash(command: str) -> dict[str, Any]:
     return {"hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": {"command": command}}
 
 
+def stop(cwd: Path, message: str, *, active: bool = False) -> dict[str, Any]:
+    return {
+        "hook_event_name": "Stop",
+        "cwd": str(cwd),
+        "stop_hook_active": active,
+        "last_assistant_message": message,
+    }
+
+
 def scenario_results() -> dict[str, bool]:
     cases: dict[str, bool] = {}
     for name, command in {
@@ -66,6 +76,25 @@ def scenario_results() -> dict[str, bool]:
     cases["remote_compute_local_heavy"] = remote.returncode == 0 and "mp" in remote.stdout
     silent = run_hook("remote_compute_reminder.py", bash("ssh mp iqtree2 -s aln.fasta"))
     cases["remote_compute_silent_remote"] = silent.returncode == 0 and silent.stdout == ""
+
+    with tempfile.TemporaryDirectory(prefix="codex_stop_guard_") as tmp_name:
+        tmp = Path(tmp_name)
+        tasks = tmp / "TASKS.md"
+        tasks.write_text("- [ ] **CCX-08 Refaire le controle**\n", encoding="utf-8")
+        material_missing = run_hook("stop_guard.py", stop(tmp, "Validation complète OK. Commit créé."))
+        cases["stop_blocks_material_without_tracks"] = '"decision": "block"' in material_missing.stdout
+        with_tracks = run_hook(
+            "stop_guard.py",
+            stop(tmp, "Validation complète OK.\n\nPistes ouvertes : CCX-08.\n\n## Enchaînement proposé\n\nSuite."),
+        )
+        cases["stop_allows_material_with_tracks"] = '"continue": true' in with_tracks.stdout
+        ccx_open = run_hook(
+            "stop_guard.py",
+            stop(tmp, "CCX-08 est terminé.\n\nPistes ouvertes : CCX-08.\n\n## Enchaînement proposé\n\nSuite."),
+        )
+        cases["stop_blocks_open_ccx_claim"] = "CCX-08" in ccx_open.stdout and '"decision": "block"' in ccx_open.stdout
+        anti_loop = run_hook("stop_guard.py", stop(tmp, "Validation complète OK.", active=True))
+        cases["stop_anti_loop_allows"] = '"continue": true' in anti_loop.stdout
     return cases
 
 
