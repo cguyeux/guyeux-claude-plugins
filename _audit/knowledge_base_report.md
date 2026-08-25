@@ -10,6 +10,7 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 - Fichiers canoniques : 85
 - Manquants du canonique : 0
 - Extras dans le canonique : 0
+- Fichiers canoniques à dédupliquer : 0
 
 | chemin | statut | lignes Claude | lignes Codex |
 |---|---|---:|---:|
@@ -17,7 +18,7 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | KNOWLEDGE.md.full-2026-08-05 | claude-only | None |  |
 | KNOWLEDGE_DETAIL.md | claude-only | 255 |  |
 | agent-background-orchestration.md | claude-only | 293 |  |
-| agent-tooling.md | codex-only |  | 251 |
+| agent-tooling.md | codex-only |  | 271 |
 | ars.md | claude-only | 115 |  |
 | audition-recrutement-public.md | claude-only | 121 |  |
 | bash-patterns.md | claude-only | 924 |  |
@@ -44,7 +45,7 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | journals/README.md | claude-only | 51 |  |
 | journals/SCHEMA.md | claude-only | 38 |  |
 | journals/author_profile.json | claude-only | 66 |  |
-| journals/journals.tsv | claude-only | 126 |  |
+| journals/journals.tsv | claude-only | 127 |  |
 | journals/parts/ai_securite.tsv | claude-only | 27 |  |
 | journals/parts/elsevier.tsv | claude-only | 22 |  |
 | journals/parts/gratuit.tsv | claude-only | 36 |  |
@@ -54,7 +55,7 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | journals/portals.tsv | claude-only | 10 |  |
 | journals/preprints_et_delais.md | claude-only | 797 |  |
 | journals/rejections.md | claude-only | 29 |  |
-| journals/submissions.tsv | claude-only | 9 |  |
+| journals/submissions.tsv | claude-only | 10 |  |
 | latex-babel-french-bibtex-colon.md | claude-only | 38 |  |
 | latex-elsevier-elsarticle.md | claude-only | 110 |  |
 | legifrance-api.md | claude-only | 185 |  |
@@ -87,7 +88,7 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | remote-compute.md | claude-only | 414 |  |
 | research-guardrails.md | claude-only | 3988 |  |
 | research-interfaces.md | codex-only |  | 993 |
-| scientific-journals.md | common-divergent | 571 | 80 |
+| scientific-journals.md | common-divergent | 650 | 80 |
 | scientific-writing-en.md | claude-only | 831 |  |
 | server-access.md | claude-only | 152 |  |
 | slides-build-system.md | claude-only | 139 |  |

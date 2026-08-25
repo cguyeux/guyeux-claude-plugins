@@ -11,7 +11,8 @@
   "canonical": {
     "files": 85,
     "missing_from_canonical": [],
-    "extra_in_canonical": []
+    "extra_in_canonical": [],
+    "needs_human_dedup": []
   },
   "rows": [
     {
@@ -63,9 +64,9 @@
       "status": "codex-only",
       "claude": null,
       "codex": {
-        "sha256": "6721a3c4bae88947f8c5bae030a3e848bd27a5e4741cea9072d9defb04fb862b",
-        "size": 38741,
-        "lines": 251
+        "sha256": "20150202471f4cb653c3690c11ddeaaf39e3a28b938f653ad3a4d9e78c3429eb",
+        "size": 41589,
+        "lines": 271
       }
     },
     {
@@ -340,9 +341,9 @@
       "path": "journals/journals.tsv",
       "status": "claude-only",
       "claude": {
-        "sha256": "a4bec93b847f016146490cb73dc2a28918391e647de52981e7791c3997e82642",
-        "size": 167041,
-        "lines": 126
+        "sha256": "f73627c6d02bb069b30d4f04947d1d9c75faed53dc6f82de83ae1d5014bf1946",
+        "size": 167084,
+        "lines": 127
       },
       "codex": null
     },
@@ -440,9 +441,9 @@
       "path": "journals/submissions.tsv",
       "status": "claude-only",
       "claude": {
-        "sha256": "2f875ee079c934469125fc2ecc3b3c8eddfe3a0c18bc6ffa53eda8919c25699e",
-        "size": 4849,
-        "lines": 9
+        "sha256": "a8fb211129ce7b1c979dc95e70ce10af592c82ca1b64179496979acd9b8b0e33",
+        "size": 6395,
+        "lines": 10
       },
       "codex": null
     },
@@ -782,9 +783,9 @@
       "path": "scientific-journals.md",
       "status": "common-divergent",
       "claude": {
-        "sha256": "4a7cf866f680b4126415f68992ba15a2560fc47834e48337cd8ae27f75ce9cf9",
-        "size": 42061,
-        "lines": 571
+        "sha256": "3c8bd7026b4232bf0f3c5189a2ab1c7cda310bf9c04061fbbd51433b0f31e756",
+        "size": 47419,
+        "lines": 650
       },
       "codex": {
         "sha256": "7cddefd5716310bed30a8f3f4b6f91429fd0d130566e1bf517a0e439855c9b58",

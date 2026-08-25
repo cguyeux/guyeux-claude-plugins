@@ -90,6 +90,18 @@ def build_report(claude_root: Path, codex_root: Path, canonical_root: Path) -> d
         summary[row["status"]] = summary.get(row["status"], 0) + 1
     canonical_missing = sorted({row["path"] for row in rows} - set(canonical_files))
     canonical_extra = sorted(set(canonical_files) - {row["path"] for row in rows})
+    canonical_needs_dedup = sorted(
+        relative
+        for relative, path in canonical_files.items()
+        if any(
+            marker in path.read_text(encoding="utf-8", errors="replace")
+            for marker in (
+                "status: needs-human-dedup",
+                "<!-- BEGIN CLAUDE KNOWLEDGE SOURCE -->",
+                "<!-- BEGIN CODEX KNOWLEDGE SOURCE -->",
+            )
+        )
+    )
     return {
         "claude_root": str(claude_root),
         "codex_root": str(codex_root),
@@ -100,6 +112,7 @@ def build_report(claude_root: Path, codex_root: Path, canonical_root: Path) -> d
             "files": len(canonical_files),
             "missing_from_canonical": canonical_missing,
             "extra_in_canonical": canonical_extra,
+            "needs_human_dedup": canonical_needs_dedup,
         },
         "rows": rows,
     }
@@ -121,6 +134,7 @@ def markdown(report: dict[str, Any]) -> str:
             f"- Fichiers canoniques : {report['canonical']['files']}",
             f"- Manquants du canonique : {len(report['canonical']['missing_from_canonical'])}",
             f"- Extras dans le canonique : {len(report['canonical']['extra_in_canonical'])}",
+            f"- Fichiers canoniques à dédupliquer : {len(report['canonical']['needs_human_dedup'])}",
             "",
             "| chemin | statut | lignes Claude | lignes Codex |",
             "|---|---|---:|---:|",
