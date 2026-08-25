@@ -34,6 +34,7 @@ def build_internal_commands() -> list[list[str]]:
         [sys.executable, "_audit/tools/generate_codex_runtime_adaptation_matrix.py", "--check"],
         [sys.executable, "docs/build_docs.py", "--check"],
         [sys.executable, "_audit/tools/audit_skills.py", "--detail"],
+        [sys.executable, "_audit/tools/audit_project_instructions.py", "--check"],
         [sys.executable, "-m", "unittest", "discover", "-s", "_audit/tests"],
     ]
 

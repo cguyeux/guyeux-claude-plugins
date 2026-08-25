@@ -73,14 +73,14 @@
       "path": "agent-tooling.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "d8b33aa9b11a4b924f6b0b070a05de63ced38a4ffc8f350cdd0d8ffdedda8523",
-        "size": 48055,
-        "lines": 330
+        "sha256": "da17f23760218aba4b152df486e95a7f36f81f8ea404dc5348fe78f8f23bd046",
+        "size": 49713,
+        "lines": 357
       },
       "codex": {
-        "sha256": "d8b33aa9b11a4b924f6b0b070a05de63ced38a4ffc8f350cdd0d8ffdedda8523",
-        "size": 48055,
-        "lines": 330
+        "sha256": "da17f23760218aba4b152df486e95a7f36f81f8ea404dc5348fe78f8f23bd046",
+        "size": 49713,
+        "lines": 357
       }
     },
     {

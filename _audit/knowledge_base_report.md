@@ -16,7 +16,7 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | KNOWLEDGE.md.full-2026-08-05 | common-identical | None | None |
 | KNOWLEDGE_DETAIL.md | common-identical | 255 | 255 |
 | agent-background-orchestration.md | common-identical | 293 | 293 |
-| agent-tooling.md | common-identical | 330 | 330 |
+| agent-tooling.md | common-identical | 357 | 357 |
 | ars.md | common-identical | 115 | 115 |
 | audition-recrutement-public.md | common-identical | 121 | 121 |
 | bash-patterns.md | common-identical | 924 | 924 |
