@@ -61,6 +61,8 @@ python3 _audit/tools/sync_codex_skills.py
 python3 _audit/tools/sync_codex_skills.py --inventory --detail
 python3 _audit/tools/sync_agent_skills.py
 python3 _audit/tools/audit_codex_skill_farm.py --profile-root ~/.codex
+python3 _audit/tools/check_all.py --profile-root ~/.codex
+python3 _audit/tools/check_all.py --source git-index --profile-root ~/.codex
 ```
 
 La seconde commande doit indiquer zéro skill manquant et zéro conflit. Le
@@ -77,6 +79,12 @@ Le dry-run `sync_agent_skills.py` contrôle la ferme personnelle `~/.agents/skil
 depuis `~/.claude/skills` sans écrire. Il ne crée, avec `--apply`, que des liens
 manquants non whitelistés et ne remplace jamais un skill divergent. Les écarts
 intentionnels vivent dans `_audit/agent_farm_expected_delta.json`.
+
+`check_all.py` regroupe les contrôles de non-dérive : registres générés,
+documentation, audit des skills, fermes Codex et Agents, profil Codex réel et
+tests unitaires. Sur un worktree contenant des brouillons locaux hors index,
+utiliser `--source git-index` pour valider exactement le candidat staged dans
+une projection temporaire mise à la corbeille en fin d'exécution.
 
 ## Architecture des skills partagés
 

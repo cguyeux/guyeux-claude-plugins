@@ -48,7 +48,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 24,
+      "file_count": 10,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -64,7 +64,7 @@
         "supporting-resources"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 26,
+      "file_count": 8,
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
@@ -99,7 +99,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 24,
+      "file_count": 10,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -120,7 +120,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 4,
+      "file_count": 2,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -157,7 +157,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 5,
+      "file_count": 3,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
     },
     {
@@ -479,7 +479,7 @@
         "supporting-resources"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 13,
+      "file_count": 11,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -500,7 +500,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 7,
+      "file_count": 3,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -538,7 +538,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 4,
+      "file_count": 2,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -556,7 +556,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 24,
+      "file_count": 10,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -573,7 +573,7 @@
         "script-payload"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 5,
+      "file_count": 4,
       "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
@@ -628,7 +628,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 4,
+      "file_count": 2,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
     },
     {
@@ -666,7 +666,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 14,
+      "file_count": 6,
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
@@ -709,7 +709,7 @@
         "disable-model-invocation",
         "user-invocable"
       ],
-      "file_count": 4,
+      "file_count": 3,
       "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
@@ -735,7 +735,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 16,
+      "file_count": 15,
       "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
@@ -785,7 +785,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 24,
+      "file_count": 10,
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
@@ -819,7 +819,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 4,
+      "file_count": 2,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
     },
     {
@@ -879,7 +879,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 4,
+      "file_count": 2,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
     },
     {
@@ -912,7 +912,7 @@
         "script-payload"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 9,
+      "file_count": 4,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
     },
     {
@@ -1030,7 +1030,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 4,
+      "file_count": 2,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
     },
     {
@@ -1051,7 +1051,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 7,
+      "file_count": 3,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -1067,7 +1067,7 @@
         "script-payload"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 5,
+      "file_count": 3,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
     },
     {
@@ -1116,7 +1116,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 28,
+      "file_count": 12,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
     },
     {
@@ -1182,7 +1182,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 3,
+      "file_count": 2,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -1249,7 +1249,7 @@
       "unsupported_frontmatter": [
         "user-invocable"
       ],
-      "file_count": 21,
+      "file_count": 15,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -1346,7 +1346,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 24,
+      "file_count": 10,
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
@@ -1384,7 +1384,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 42,
+      "file_count": 22,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -1511,7 +1511,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 25,
+      "file_count": 11,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -1528,7 +1528,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 21,
+      "file_count": 9,
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
@@ -1546,7 +1546,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 24,
+      "file_count": 10,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -1563,7 +1563,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 30,
+      "file_count": 12,
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
@@ -1604,7 +1604,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 4,
+      "file_count": 2,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -1701,7 +1701,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 4,
+      "file_count": 2,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -1718,7 +1718,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 24,
+      "file_count": 10,
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
@@ -1894,7 +1894,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 16,
+      "file_count": 7,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -2038,7 +2038,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 24,
+      "file_count": 10,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -2074,7 +2074,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 6,
+      "file_count": 4,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
     },
     {
@@ -2095,7 +2095,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 5,
+      "file_count": 3,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
     },
     {
@@ -2150,7 +2150,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 24,
+      "file_count": 10,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -2227,7 +2227,7 @@
         "disable-model-invocation",
         "user-invocable"
       ],
-      "file_count": 4,
+      "file_count": 2,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -2348,7 +2348,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 14,
+      "file_count": 6,
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
@@ -2428,7 +2428,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 11430,
+      "file_count": 14,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
     },
     {
@@ -2450,7 +2450,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 4,
+      "file_count": 2,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -2487,7 +2487,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 4,
+      "file_count": 2,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -2520,7 +2520,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 24,
+      "file_count": 10,
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
@@ -2537,7 +2537,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 10,
+      "file_count": 6,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
     },
     {
@@ -2554,7 +2554,7 @@
         "web-runtime"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 28,
+      "file_count": 10,
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {

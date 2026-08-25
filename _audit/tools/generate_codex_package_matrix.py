@@ -33,6 +33,8 @@ WRITE_WORDS = re.compile(
 )
 MCP_RUNTIME = re.compile(r"(mcp__|\.mcp\.json|\bMCP\b|codex mcp|claude mcp)", re.I)
 WEB_RUNTIME = re.compile(r"\b(WebSearch|WebFetch|curl|requests\.|https?://)", re.I)
+EXCLUDED_COUNT_NAMES = {".venv", "venv", "__pycache__"}
+EXCLUDED_COUNT_SUFFIXES = {".pyc", ".pyo"}
 
 PACKAGE_BY_PLUGIN = {
     "bio_bacteria": "bio-bacteria",
@@ -87,7 +89,15 @@ def packaged_skills(root: Path = ROOT) -> dict[str, list[str]]:
 
 
 def file_count(path: Path) -> int:
-    return sum(1 for entry in path.rglob("*") if entry.is_file())
+    total = 0
+    for entry in path.rglob("*"):
+        if not entry.is_file():
+            continue
+        relative = entry.relative_to(path)
+        if any(part in EXCLUDED_COUNT_NAMES for part in relative.parts) or entry.suffix in EXCLUDED_COUNT_SUFFIXES:
+            continue
+        total += 1
+    return total
 
 
 def has_support_dir(path: Path, dirname: str) -> bool:
