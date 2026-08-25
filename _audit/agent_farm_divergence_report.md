@@ -10,7 +10,7 @@ Il compare les skills communs declares divergents dans `_audit/agent_farm_expect
 | skill | classification | decision | fichiers Claude-only | fichiers Agents-only | fichiers modifies | delta lignes |
 |---|---|---|---:|---:|---:|---|
 | agent-development | instruction-review-required | manual-review-required | 0 | 0 | 1 | SKILL.md:+10/-10 |
-| cahier-de-labo | payload-review-required | manual-review-required | 1 | 0 | 1 | SKILL.md:+7/-62 |
+| cahier-de-labo | payload-review-required | codex-adapted-divergence-justified | 1 | 0 | 1 | SKILL.md:+26/-56 |
 | claude-api | instruction-review-required | manual-review-required | 0 | 0 | 1 | SKILL.md:+50/-50 |
 | command-development | instruction-review-required | manual-review-required | 0 | 0 | 1 | SKILL.md:+19/-19 |
 | design-doc-mermaid | instruction-review-required | manual-review-required | 0 | 0 | 1 | SKILL.md:+2/-2 |

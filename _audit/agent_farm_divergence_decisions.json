@@ -1,4 +1,15 @@
 {
+  "cahier-de-labo": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Codex conserve le cahier_de_labo.md comme registre append-only strict.",
+      "Import effectue : champ piste: obligatoire, recherche ciblee dans cahier_de_labo_archive.md si une archive legacy existe, clarification qu'aucun hook Stop Codex global n'est garanti actif.",
+      "Non importe volontairement : archive_old_entries.py et archivage automatique apres update."
+    ],
+    "remaining": [
+      "arbitrage humain separe si un jour l'utilisateur veut une commande explicite d'archivage recoverable"
+    ]
+  },
   "init-project": {
     "decision": "codex-adapted-divergence-justified",
     "notes": [
