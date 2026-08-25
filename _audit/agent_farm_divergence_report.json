@@ -223,12 +223,12 @@
       ],
       "line_delta_claude_to_agents": {
         "SKILL.md": {
-          "added": 18,
+          "added": 19,
           "removed": 41
         },
         "init_project.py": {
-          "added": 194,
-          "removed": 776
+          "added": 293,
+          "removed": 786
         }
       },
       "claude_skill_md_frontmatter_keys": [
@@ -242,11 +242,11 @@
       "decision_notes": [
         "Codex conserve AGENTS.md et les chemins ~/.agents / ~/.Codex.",
         "Import effectue : etat_des_decouvertes.md, pistes.md, domaine droit, classification conservatrice, discovery ~/.Codex/knowledge et projets freres, echappement LaTeX.",
-        "Non importe a ce stade : --migrate, --from-piste et mutation de registre parent."
+        "Import effectue : --from-piste avec copie exacte de la piste source dans le cahier et mutation locale de la seule piste cible dans le registre parent.",
+        "Non importe a ce stade : --migrate."
       ],
       "remaining": [
         "--migrate Codex-compatible",
-        "--from-piste avec mutation non destructive de pistes.md",
         "tests automatises versionnes hors profil utilisateur"
       ]
     },

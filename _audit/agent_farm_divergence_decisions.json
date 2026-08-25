@@ -4,11 +4,11 @@
     "notes": [
       "Codex conserve AGENTS.md et les chemins ~/.agents / ~/.Codex.",
       "Import effectue : etat_des_decouvertes.md, pistes.md, domaine droit, classification conservatrice, discovery ~/.Codex/knowledge et projets freres, echappement LaTeX.",
-      "Non importe a ce stade : --migrate, --from-piste et mutation de registre parent."
+      "Import effectue : --from-piste avec copie exacte de la piste source dans le cahier et mutation locale de la seule piste cible dans le registre parent.",
+      "Non importe a ce stade : --migrate."
     ],
     "remaining": [
       "--migrate Codex-compatible",
-      "--from-piste avec mutation non destructive de pistes.md",
       "tests automatises versionnes hors profil utilisateur"
     ]
   }

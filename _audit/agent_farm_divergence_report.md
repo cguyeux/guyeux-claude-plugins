@@ -17,7 +17,7 @@ Il compare les skills communs declares divergents dans `_audit/agent_farm_expect
 | docx | instruction-review-required | manual-review-required | 0 | 0 | 1 | SKILL.md:+10/-10 |
 | find-skills | instruction-review-required | manual-review-required | 0 | 0 | 1 | SKILL.md:+1/-1 |
 | hook-development | instruction-review-required | manual-review-required | 0 | 0 | 1 | SKILL.md:+22/-22 |
-| init-project | payload-review-required | partial-imported | 0 | 0 | 2 | SKILL.md:+18/-41, init_project.py:+194/-776 |
+| init-project | payload-review-required | partial-imported | 0 | 0 | 2 | SKILL.md:+19/-41, init_project.py:+293/-786 |
 | mcp-integration | instruction-review-required | manual-review-required | 0 | 0 | 1 | SKILL.md:+13/-13 |
 | memory-management | instruction-review-required | manual-review-required | 0 | 0 | 1 | SKILL.md:+27/-27 |
 | plugin-settings | instruction-review-required | manual-review-required | 0 | 0 | 1 | SKILL.md:+30/-30 |
