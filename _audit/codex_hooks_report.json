@@ -1,0 +1,39 @@
+{
+  "source": "/home/christophe/docs/codes/claude_plugins/codex_hooks/hooks.json",
+  "installed": "/home/christophe/.codex/hooks.json",
+  "installed_present": true,
+  "installed_matches_source": true,
+  "source_commands": [
+    "python3 /home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/no_rm_guard.py",
+    "python3 /home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/precompute_reminder.py",
+    "python3 /home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/remote_compute_reminder.py",
+    "python3 /home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/session_context.py"
+  ],
+  "scripts_referenced": [
+    "/home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/no_rm_guard.py",
+    "/home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/precompute_reminder.py",
+    "/home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/remote_compute_reminder.py",
+    "/home/christophe/docs/codes/claude_plugins/codex_hooks/scripts/session_context.py"
+  ],
+  "syntax": {
+    "no_rm_guard.py": true,
+    "precompute_reminder.py": true,
+    "remote_compute_reminder.py": true,
+    "session_context.py": true
+  },
+  "scenarios": {
+    "block_rm": true,
+    "block_unlink": true,
+    "block_shred": true,
+    "block_find_delete": true,
+    "block_xargs_rm": true,
+    "allow_git_rm": true,
+    "allow_docker_rm_flag": true,
+    "allow_grep_rm": true,
+    "allow_heredoc_body": true,
+    "precompute_apply_patch": true,
+    "remote_compute_local_heavy": true,
+    "remote_compute_silent_remote": true
+  },
+  "ok": true
+}

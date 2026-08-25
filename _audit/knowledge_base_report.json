@@ -73,14 +73,14 @@
       "path": "agent-tooling.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "e73156181501138da27c5b350c1f211879566e185bd32afc3411dbb87e11c8f6",
-        "size": 42782,
-        "lines": 281
+        "sha256": "8ae59eb5fe400c3e35a406773ca96bc375ccff29eedbcf81963e60a31b61eae4",
+        "size": 44333,
+        "lines": 291
       },
       "codex": {
-        "sha256": "e73156181501138da27c5b350c1f211879566e185bd32afc3411dbb87e11c8f6",
-        "size": 42782,
-        "lines": 281
+        "sha256": "8ae59eb5fe400c3e35a406773ca96bc375ccff29eedbcf81963e60a31b61eae4",
+        "size": 44333,
+        "lines": 291
       }
     },
     {
@@ -451,13 +451,13 @@
       "path": "journals/journals.tsv",
       "status": "common-identical",
       "claude": {
-        "sha256": "6898f656505c9f8656fca0fb7e867c50d7a14a09224f9960461cd34a64d45509",
-        "size": 168712,
+        "sha256": "f7e89dbfafaa5ecd12e7efc177ec5c55bc9a91c37d0e795a510ce8833ceac660",
+        "size": 168720,
         "lines": 127
       },
       "codex": {
-        "sha256": "6898f656505c9f8656fca0fb7e867c50d7a14a09224f9960461cd34a64d45509",
-        "size": 168712,
+        "sha256": "f7e89dbfafaa5ecd12e7efc177ec5c55bc9a91c37d0e795a510ce8833ceac660",
+        "size": 168720,
         "lines": 127
       }
     },

@@ -44,6 +44,7 @@ def build_external_farm_commands(profile_root: Path) -> list[list[str]]:
         [sys.executable, "_audit/tools/sync_agent_skills.py"],
         [sys.executable, "_audit/tools/report_agent_skill_divergences.py", "--check"],
         [sys.executable, "_audit/tools/audit_personal_workflow_skills.py", "--check"],
+        [sys.executable, "_audit/tools/audit_codex_hooks.py", "--check"],
         [sys.executable, "_audit/tools/sync_knowledge_base.py", "--check"],
         [sys.executable, "_audit/tools/publish_knowledge_views.py", "--check"],
         [sys.executable, "_audit/tools/audit_codex_skill_farm.py", "--profile-root", str(profile_root)],
