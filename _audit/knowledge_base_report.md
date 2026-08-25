@@ -16,14 +16,14 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | KNOWLEDGE.md.full-2026-08-05 | common-identical | None | None |
 | KNOWLEDGE_DETAIL.md | common-identical | 255 | 255 |
 | agent-background-orchestration.md | common-identical | 293 | 293 |
-| agent-tooling.md | common-identical | 291 | 291 |
+| agent-tooling.md | common-identical | 293 | 293 |
 | ars.md | common-identical | 115 | 115 |
 | audition-recrutement-public.md | common-identical | 121 | 121 |
 | bash-patterns.md | common-identical | 924 | 924 |
 | bioinformatics.md | common-identical | 2006 | 2006 |
 | brilliant-ideas.md | common-identical | 159 | 159 |
 | cahier-de-labo-archive-header-regex.md | common-identical | 74 | 74 |
-| claude-in-chrome-automation.md | common-identical | 304 | 304 |
+| claude-in-chrome-automation.md | common-identical | 342 | 342 |
 | claude-plugins-aup.md | common-identical | 773 | 773 |
 | claude-workflow-tool.md | common-identical | 58 | 58 |
 | collaborators.md | common-identical | 2091 | 2091 |
@@ -43,7 +43,7 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | journals/README.md | common-identical | 51 | 51 |
 | journals/SCHEMA.md | common-identical | 38 | 38 |
 | journals/author_profile.json | common-identical | 66 | 66 |
-| journals/journals.tsv | common-identical | 127 | 127 |
+| journals/journals.tsv | common-identical | 128 | 128 |
 | journals/journals.tsv.lock | common-identical | None | None |
 | journals/parts/ai_securite.tsv | common-identical | 27 | 27 |
 | journals/parts/elsevier.tsv | common-identical | 22 | 22 |
@@ -66,7 +66,7 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | maboss.md | common-identical | 646 | 646 |
 | manuscript-review-llm-eval.md | common-identical | 667 | 667 |
 | marker-compatibility-laminarity.md | common-identical | 387 | 387 |
-| micwatch-pipeline.md | common-identical | 395 | 395 |
+| micwatch-pipeline.md | common-identical | 420 | 420 |
 | micwatch-pipeline.md.bak_20260821_before_long_stt_incident | common-identical | None | None |
 | multiagent-skills-eval.md | common-identical | 164 | 164 |
 | multimedia-tts.md | common-identical | 143 | 143 |
@@ -88,7 +88,7 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | remote-compute.md | common-identical | 414 | 414 |
 | research-guardrails.md | common-identical | 3988 | 3988 |
 | research-interfaces.md | common-identical | 993 | 993 |
-| scientific-journals.md | common-identical | 732 | 732 |
+| scientific-journals.md | common-identical | 795 | 795 |
 | scientific-writing-en.md | common-identical | 831 | 831 |
 | server-access.md | common-identical | 152 | 152 |
 | slides-build-system.md | common-identical | 139 | 139 |
@@ -97,5 +97,5 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | taxonomy-node-validation.md | common-identical | 1173 | 1173 |
 | tikz-beamer-patterns.md | common-identical | 368 | 368 |
 | toolkit-transfer-clonal-bacteria.md | common-identical | 69 | 69 |
-| tuberculosis.md | common-identical | 14337 | 14337 |
+| tuberculosis.md | common-identical | 14434 | 14434 |
 | verif-stats-sources.md | common-identical | 385 | 385 |

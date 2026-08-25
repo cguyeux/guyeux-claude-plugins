@@ -73,14 +73,14 @@
       "path": "agent-tooling.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "8ae59eb5fe400c3e35a406773ca96bc375ccff29eedbcf81963e60a31b61eae4",
-        "size": 44333,
-        "lines": 291
+        "sha256": "daae5a45ac1381eda34e5759ddf43e4b1d5b6a93caf4989615862179e81ea039",
+        "size": 44837,
+        "lines": 293
       },
       "codex": {
-        "sha256": "8ae59eb5fe400c3e35a406773ca96bc375ccff29eedbcf81963e60a31b61eae4",
-        "size": 44333,
-        "lines": 291
+        "sha256": "daae5a45ac1381eda34e5759ddf43e4b1d5b6a93caf4989615862179e81ea039",
+        "size": 44837,
+        "lines": 293
       }
     },
     {
@@ -171,14 +171,14 @@
       "path": "claude-in-chrome-automation.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "d4d63d45abaedd8312302bde4480c2a52286eb4d167db7834625f0beaff86726",
-        "size": 22311,
-        "lines": 304
+        "sha256": "83e01a01d1aaea5f1ae10346a4d10531ed83492aafaf24e5294b67bcd16e1d96",
+        "size": 25322,
+        "lines": 342
       },
       "codex": {
-        "sha256": "d4d63d45abaedd8312302bde4480c2a52286eb4d167db7834625f0beaff86726",
-        "size": 22311,
-        "lines": 304
+        "sha256": "83e01a01d1aaea5f1ae10346a4d10531ed83492aafaf24e5294b67bcd16e1d96",
+        "size": 25322,
+        "lines": 342
       }
     },
     {
@@ -423,13 +423,13 @@
       "path": "journals/SCHEMA.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "7d193c43a4416d9c909bfc5d64d769d6b971a4af3acd9d53e6f656e4141b7cf6",
-        "size": 3868,
+        "sha256": "61fc882495e467739fd5a748abf18b3af4ebbf0e2e3537d8c08618a7ba9430de",
+        "size": 4495,
         "lines": 38
       },
       "codex": {
-        "sha256": "7d193c43a4416d9c909bfc5d64d769d6b971a4af3acd9d53e6f656e4141b7cf6",
-        "size": 3868,
+        "sha256": "61fc882495e467739fd5a748abf18b3af4ebbf0e2e3537d8c08618a7ba9430de",
+        "size": 4495,
         "lines": 38
       }
     },
@@ -451,14 +451,14 @@
       "path": "journals/journals.tsv",
       "status": "common-identical",
       "claude": {
-        "sha256": "f7e89dbfafaa5ecd12e7efc177ec5c55bc9a91c37d0e795a510ce8833ceac660",
-        "size": 168720,
-        "lines": 127
+        "sha256": "b85d022d4ed17a5c80871565136dbf4200183163831151faac67c6542ce8f1f5",
+        "size": 171001,
+        "lines": 128
       },
       "codex": {
-        "sha256": "f7e89dbfafaa5ecd12e7efc177ec5c55bc9a91c37d0e795a510ce8833ceac660",
-        "size": 168720,
-        "lines": 127
+        "sha256": "b85d022d4ed17a5c80871565136dbf4200183163831151faac67c6542ce8f1f5",
+        "size": 171001,
+        "lines": 128
       }
     },
     {
@@ -605,13 +605,13 @@
       "path": "journals/submissions.tsv",
       "status": "common-identical",
       "claude": {
-        "sha256": "50e2feaf3c741ccf10cd8bcb332331ec72624fafa39f44e6f7ff3d9118985b10",
-        "size": 6695,
+        "sha256": "0e113da7f5a6fd6e611f34a80d7d5ae9bef377dc82c184125580f57ad117c9c7",
+        "size": 6781,
         "lines": 11
       },
       "codex": {
-        "sha256": "50e2feaf3c741ccf10cd8bcb332331ec72624fafa39f44e6f7ff3d9118985b10",
-        "size": 6695,
+        "sha256": "0e113da7f5a6fd6e611f34a80d7d5ae9bef377dc82c184125580f57ad117c9c7",
+        "size": 6781,
         "lines": 11
       }
     },
@@ -773,14 +773,14 @@
       "path": "micwatch-pipeline.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "ba0cbf8761ac4f456250698309bb7a95c10ad737a13b94c5657b7de30aee4f5b",
-        "size": 30403,
-        "lines": 395
+        "sha256": "defdb53ae4390a404c0db2c4e76a1aaa4d9934e3e93cbfbd59bf160638086de4",
+        "size": 32167,
+        "lines": 420
       },
       "codex": {
-        "sha256": "ba0cbf8761ac4f456250698309bb7a95c10ad737a13b94c5657b7de30aee4f5b",
-        "size": 30403,
-        "lines": 395
+        "sha256": "defdb53ae4390a404c0db2c4e76a1aaa4d9934e3e93cbfbd59bf160638086de4",
+        "size": 32167,
+        "lines": 420
       }
     },
     {
@@ -1081,14 +1081,14 @@
       "path": "scientific-journals.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "c1968d08f51efcfc111bea26a7c8b82ab6d8783b7243e6181c8b7abb9cdd3880",
-        "size": 53109,
-        "lines": 732
+        "sha256": "1d57c3f8021f65ce306cb9fce50f1f54ac2774e9a24485cceafdc62522c28a67",
+        "size": 57340,
+        "lines": 795
       },
       "codex": {
-        "sha256": "c1968d08f51efcfc111bea26a7c8b82ab6d8783b7243e6181c8b7abb9cdd3880",
-        "size": 53109,
-        "lines": 732
+        "sha256": "1d57c3f8021f65ce306cb9fce50f1f54ac2774e9a24485cceafdc62522c28a67",
+        "size": 57340,
+        "lines": 795
       }
     },
     {
@@ -1207,14 +1207,14 @@
       "path": "tuberculosis.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "c3c4de2e9b543629a53c6434fe0eb38ac09ca22e8272ee4491439f0c56e0963d",
-        "size": 2086894,
-        "lines": 14337
+        "sha256": "2c52f525692a7375fec3354c9a1120eba72c13a87b3bf9d5ec84e2b5ccf89b89",
+        "size": 2094590,
+        "lines": 14434
       },
       "codex": {
-        "sha256": "c3c4de2e9b543629a53c6434fe0eb38ac09ca22e8272ee4491439f0c56e0963d",
-        "size": 2086894,
-        "lines": 14337
+        "sha256": "2c52f525692a7375fec3354c9a1120eba72c13a87b3bf9d5ec84e2b5ccf89b89",
+        "size": 2094590,
+        "lines": 14434
       }
     },
     {
