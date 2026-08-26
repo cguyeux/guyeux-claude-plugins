@@ -7,10 +7,10 @@ et ne ferment ni n'archivent automatiquement aucun projet.
 
 - Racine auditee : `/home/christophe/docs/codes`
 - Budget par fichier : 32768 octets
-- `CLAUDE.md` bruts decouverts : 265
-- Instructions de projets retenues : 232
+- `CLAUDE.md` bruts decouverts : 266
+- Instructions de projets retenues : 233
 - Copies internes ou dependances exclues : 33
-- Avec `AGENTS.md` local : 17
+- Avec `AGENTS.md` local : 18
 - Avec `AGENTS.override.md` local : 6
 - Fallback seul : 215
 - `CLAUDE.md` au-dessus du budget : 3
@@ -21,7 +21,7 @@ et ne ferment ni n'archivent automatiquement aucun projet.
 
 | Classe | Nombre | Portee |
 |---|---:|---|
-| `agents-local` | 17 | Couche Codex locale presente |
+| `agents-local` | 18 | Couche Codex locale presente |
 | `instruction-chain-over-budget` | 0 | Remediation prioritaire |
 | `fallback-active-signal` | 65 | Travail ouvert explicitement signale |
 | `fallback-archive-signal` | 19 | Chemin d'archive, a confirmer |
@@ -37,9 +37,10 @@ et ne ferment ni n'archivent automatiquement aucun projet.
 | `bi-clustering` | 12616 | 12616 | non | - | - | 2026-08-10 | `fallback-review-required` |
 | `claude-code` | 1691 | 1691 | non | cahier_de_labo.md | - | 2026-05-12 | `fallback-review-required` |
 | `claude_plugins` | 19871 | 19871 | non | - | - | 2026-08-22 | `fallback-review-required` |
+| `claude_plugins/_audit/fixtures/parity/project with spaces` | 316 | 20184 | oui | - | - | 2026-08-26 | `agents-local` |
 | `decheance-le-pen` | 6330 | 6330 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-07-08 | `fallback-active-signal` |
 | `doctrinops` | 3234 | 927 | oui | cahier_de_labo.md | - | 2026-07-01 | `agents-local` |
-| `gis` | 5202 | 5202 | non | cahier_de_labo.md, pistes.md | pistes.md | 2026-08-25 | `fallback-active-signal` |
+| `gis` | 5202 | 5202 | non | cahier_de_labo.md, pistes.md | pistes.md | 2026-08-26 | `fallback-active-signal` |
 | `iappels` | 11242 | 11242 | non | cahier_de_labo.md | - | 2026-08-16 | `fallback-review-required` |
 | `iappels/adversarial-conversational-emergency-ai` | 2969 | 14211 | non | - | - | 2026-04-30 | `fallback-review-required` |
 | `iappels/asr-benchmark-uncertainty-emergency` | 2956 | 14198 | non | - | - | 2026-04-30 | `fallback-review-required` |
@@ -63,7 +64,7 @@ et ne ferment ni n'archivent automatiquement aucun projet.
 | `isfinder_ng` | 7395 | 7395 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-09 | `fallback-active-signal` |
 | `langchain` | 3120 | 3120 | non | cahier_de_labo.md | - | 2026-05-10 | `fallback-review-required` |
 | `lepoutre` | 21707 | 9899 | oui | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-23 | `agents-local` |
-| `lineaire_a` | 229987 | 1070 | oui | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-25 | `agents-local` |
+| `lineaire_a` | 230827 | 1070 | oui | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-26 | `agents-local` |
 | `mabossDemo` | 12366 | 5830 | oui | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-07-21 | `agents-local` |
 | `mnhn-musee-homme-ia-multimodale` | 2848 | 2840 | oui | cahier_de_labo.md, pistes.md, JOURNAL.md | - | 2026-08-08 | `agents-local` |
 | `mtbc/Borstel` | 11260 | 11260 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-07-07 | `fallback-active-signal` |
@@ -126,7 +127,7 @@ et ne ferment ni n'archivent automatiquement aucun projet.
 | `mtbc/MKC_sp_identification` | 3820 | 3820 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-18 | `fallback-active-signal` |
 | `mtbc/MTBC-constrained-node-dating` | 5353 | 5353 | non | cahier_de_labo.md, JOURNAL.md | - | 2026-06-08 | `fallback-review-required` |
 | `mtbc/MTBC-roman-expansion-skyline` | 11127 | 11127 | non | cahier_de_labo.md | - | 2026-06-26 | `fallback-review-required` |
-| `mtbc/NTM_unidentified` | 8957 | 8957 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-20 | `fallback-active-signal` |
+| `mtbc/NTM_unidentified` | 8957 | 8957 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-26 | `fallback-active-signal` |
 | `mtbc/Oman` | 5438 | 5438 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-25 | `fallback-active-signal` |
 | `mtbc/Resistance_antibio` | 21588 | 21588 | non | cahier_de_labo.md | - | 2026-06-16 | `fallback-review-required` |
 | `mtbc/Rv0007` | 4952 | 4952 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-11 | `fallback-active-signal` |
@@ -153,13 +154,13 @@ et ne ferment ni n'archivent automatiquement aucun projet.
 | `mtbc/Rv3604c` | 3725 | 3725 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-07-31 | `fallback-active-signal` |
 | `mtbc/Rv3656c` | 3771 | 3771 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-07-31 | `fallback-active-signal` |
 | `mtbc/Rv3909` | 6312 | 6312 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-18 | `fallback-active-signal` |
-| `mtbc/SpacerEgalVirus` | 3391 | 3391 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-25 | `fallback-active-signal` |
+| `mtbc/SpacerEgalVirus` | 3391 | 3391 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-26 | `fallback-active-signal` |
 | `mtbc/TYK2-MTBC-coevolution` | 8910 | 8910 | non | cahier_de_labo.md | - | 2026-05-17 | `fallback-review-required` |
 | `mtbc/a_ranger_phylo` | 2916 | 2916 | non | cahier_de_labo.md, JOURNAL.md | - | 2026-06-04 | `fallback-review-required` |
 | `mtbc/abandonne/clustering_sola` | 9841 | 9841 | non | cahier_de_labo.md, pistes.md | pistes.md | 2026-08-17 | `fallback-archive-signal` |
 | `mtbc/ancient_pathogens_tracer_ranking` | 6435 | 6435 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-12 | `fallback-active-signal` |
 | `mtbc/animal_vs_human` | 4227 | 4227 | non | cahier_de_labo.md | - | 2026-08-25 | `fallback-review-required` |
-| `mtbc/annotation_mtbc` | 7282 | 7282 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-25 | `fallback-active-signal` |
+| `mtbc/annotation_mtbc` | 7282 | 7282 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-26 | `fallback-active-signal` |
 | `mtbc/archeo_crispr` | 3720 | 3720 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-20 | `fallback-active-signal` |
 | `mtbc/atlas_mtbc` | 11307 | 11307 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-07-30 | `fallback-active-signal` |
 | `mtbc/bdd` | 3939 | 3939 | non | - | - | 2026-08-10 | `fallback-review-required` |
@@ -181,7 +182,7 @@ et ne ferment ni n'archivent automatiquement aucun projet.
 | `mtbc/holdout_benchmark` | 7425 | 7425 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-01 | `fallback-active-signal` |
 | `mtbc/investigate_phylo` | 4393 | 4393 | non | cahier_de_labo.md | - | 2026-08-10 | `fallback-review-required` |
 | `mtbc/lineage_markers_who_catalogue` | 4302 | 4302 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-18 | `fallback-active-signal` |
-| `mtbc/lineage_navigator` | 46209 | 1924 | oui | cahier_de_labo.md, pistes.md | pistes.md | 2026-08-25 | `agents-local` |
+| `mtbc/lineage_navigator` | 52652 | 1924 | oui | cahier_de_labo.md, pistes.md | pistes.md | 2026-08-26 | `agents-local` |
 | `mtbc/methodology` | 2124 | 2124 | non | cahier_de_labo.md, JOURNAL.md | - | 2026-05-15 | `fallback-review-required` |
 | `mtbc/mixed_clade_synapomorphies` | 5863 | 5863 | non | cahier_de_labo.md, JOURNAL.md | - | 2026-05-24 | `fallback-review-required` |
 | `mtbc/mixed_infections_multimarker` | 5514 | 5514 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-20 | `fallback-active-signal` |
@@ -207,16 +208,16 @@ et ne ferment ni n'archivent automatiquement aucun projet.
 | `mtbc/structural_variation_is_rd` | 3368 | 3368 | non | cahier_de_labo.md | - | 2026-06-14 | `fallback-review-required` |
 | `mtbc/tbannotator_local` | 1744 | 1744 | non | cahier_de_labo.md | - | 2026-07-31 | `fallback-review-required` |
 | `mtbc/tissue_tropism_mtbc` | 11714 | 11714 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-17 | `fallback-active-signal` |
-| `mtbc/variant_nucs` | 8591 | 8591 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-25 | `fallback-active-signal` |
+| `mtbc/variant_nucs` | 8591 | 8591 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-26 | `fallback-active-signal` |
 | `mtbc/yersinia_atlas` | 6349 | 6349 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-12 | `fallback-active-signal` |
 | `mtbc/yersinia_pestis_grands_lacs` | 7438 | 7438 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-17 | `fallback-active-signal` |
 | `mtbc/yersiniomics` | 6537 | 6537 | non | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-12 | `fallback-active-signal` |
 | `old/Michaël` | 9161 | 9161 | non | - | - | 2026-07-29 | `fallback-review-required` |
 | `optimops` | 73136 | 2704 | oui | cahier_de_labo.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-24 | `agents-local` |
-| `oxyrhynque-papyrologie-ia` | 2911 | 1009 | oui | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-25 | `agents-local` |
+| `oxyrhynque-papyrologie-ia` | 2911 | 1009 | oui | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-26 | `agents-local` |
 | `pomologie` | 16156 | 16156 | non | - | - | 2026-04-05 | `fallback-review-required` |
 | `pompiers_croyances` | 14702 | 14702 | non | cahier_de_labo.md | - | 2026-06-16 | `fallback-review-required` |
-| `predictops` | 5101 | 1044 | oui | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-25 | `agents-local` |
+| `predictops` | 5101 | 1044 | oui | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md | pistes.md | 2026-08-26 | `agents-local` |
 | `predictops-mcp/.worktrees/master-release/example_prompts` | 10524 | 20804 | non | - | - | 2026-08-07 | `fallback-review-required` |
 | `predictops-mcp/.worktrees/master-release/external_mcps/static_plotting_mcp` | 947 | 11227 | non | - | - | 2026-08-07 | `fallback-review-required` |
 | `predictops-mcp/.worktrees/master-release/mymcps` | 10410 | 20690 | non | - | - | 2026-08-07 | `fallback-review-required` |
@@ -260,9 +261,9 @@ et ne ferment ni n'archivent automatiquement aucun projet.
 | `predictops-mcp-merge/example_prompts` | 10524 | 10524 | non | - | - | 2026-06-17 | `fallback-review-required` |
 | `predictops-mcp-merge/external_mcps/static_plotting_mcp` | 947 | 947 | non | - | - | 2026-06-17 | `fallback-review-required` |
 | `predictops-mcp-merge/mymcps` | 10410 | 10410 | non | - | - | 2026-06-17 | `fallback-review-required` |
-| `rohonczi` | 23850 | 1043 | oui | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | - | 2026-08-25 | `agents-local` |
+| `rohonczi` | 23850 | 1043 | oui | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | - | 2026-08-26 | `agents-local` |
 | `veille_llm` | 9697 | 31783 | oui | cahier_de_labo.md | - | 2026-08-09 | `agents-local` |
-| `voynich` | 7951 | 1100 | oui | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-25 | `agents-local` |
+| `voynich` | 7951 | 1100 | oui | cahier_de_labo.md, etat_des_decouvertes.md, pistes.md, JOURNAL.md | pistes.md | 2026-08-26 | `agents-local` |
 
 ## Exclusions de perimetre
 

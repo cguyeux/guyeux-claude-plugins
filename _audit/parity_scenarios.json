@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "scenarios": [
+    {
+      "id": "instructions-globales",
+      "family": "instructions",
+      "invariant": "Les deux rendus globaux proviennent de la source commune et sont synchronisés.",
+      "check": "global-instructions",
+      "owner": "CCX-15"
+    },
+    {
+      "id": "doctrine-globale-session-neuve",
+      "family": "instructions",
+      "invariant": "Une session neuve restitue les cinq artefacts, cinq phases, trois contrôles pré-calcul et les deux hôtes distants.",
+      "check": "runtime-doctrine",
+      "owner": "CCX-02/15"
+    },
+    {
+      "id": "projet-racine-espace",
+      "family": "instructions",
+      "invariant": "Une session neuve charge le document propre à sa plateforme depuis un chemin avec espaces.",
+      "check": "runtime-root",
+      "owner": "CCX-15"
+    },
+    {
+      "id": "projet-sous-repertoire",
+      "family": "instructions",
+      "invariant": "La même instruction projet est retrouvée depuis un sous-répertoire imbriqué.",
+      "check": "runtime-nested",
+      "owner": "CCX-15"
+    },
+    {
+      "id": "chaine-instructions-volumineuse",
+      "family": "instructions",
+      "invariant": "Aucune chaîne d'instructions projet effective ne dépasse le budget Codex.",
+      "check": "instruction-budget",
+      "owner": "CCX-03"
+    },
+    {
+      "id": "projet-sans-registre",
+      "family": "project-memory",
+      "invariant": "Un projet sans cahier, état ou pistes ne provoque aucune invention d'artefact.",
+      "check": "runtime-no-register",
+      "owner": "CCX-15"
+    },
+    {
+      "id": "kb-partagee",
+      "family": "knowledge",
+      "invariant": "Claude et Codex voient la même KB canonique sous ~/.agents/knowledge.",
+      "check": "knowledge-views",
+      "owner": "CCX-04"
+    },
+    {
+      "id": "memoire-native-separee",
+      "family": "memory",
+      "invariant": "La mémoire Codex, la KB et les registres projet restent trois couches distinctes.",
+      "check": "memory-boundary",
+      "owner": "CCX-13"
+    },
+    {
+      "id": "skills-canoniques",
+      "family": "skills",
+      "invariant": "Les fermes personnelles n'ont aucun manque ou écart non déclaré.",
+      "check": "skill-farms",
+      "owner": "CCX-11"
+    },
+    {
+      "id": "skill-challenge-declenche",
+      "family": "skills",
+      "invariant": "Le skill challenge est réellement invoqué et rend un verdict falsifiable dans une session neuve.",
+      "check": "runtime-skill",
+      "owner": "CCX-05/15"
+    },
+    {
+      "id": "skill-desactive-absent",
+      "family": "skills",
+      "invariant": "mbovis n'est pas exposé comme skill actif dans les sessions sondées.",
+      "check": "runtime-disabled-skill",
+      "owner": "CCX-15"
+    },
+    {
+      "id": "plugins-personnels",
+      "family": "plugins",
+      "invariant": "Les plugins voulus sont activés et les plugins explicitement désactivés le restent.",
+      "check": "plugins",
+      "owner": "CCX-10"
+    },
+    {
+      "id": "hooks-demarrage-arret",
+      "family": "hooks",
+      "invariant": "Les sessions neuves exécutent leurs hooks de démarrage et d'arrêt sans boucle.",
+      "check": "runtime-hooks",
+      "owner": "CCX-07/08"
+    },
+    {
+      "id": "suppression-bloquee",
+      "family": "hooks",
+      "invariant": "Une commande rm témoin est refusée par les garde-fous des deux plateformes sans être exécutée.",
+      "check": "deletion-guards",
+      "owner": "CCX-07"
+    },
+    {
+      "id": "permissions-minimales",
+      "family": "rules",
+      "invariant": "La politique Codex active reste minimale et les permissions Claude ne sont pas copiées en bloc.",
+      "check": "execpolicy",
+      "owner": "CCX-12"
+    },
+    {
+      "id": "mcp-configures",
+      "family": "mcp",
+      "invariant": "Les quatre MCP attendus sont configurés sans valeur secrète dans les rapports.",
+      "check": "mcp",
+      "owner": "CCX-14"
+    },
+    {
+      "id": "interface-native",
+      "family": "interface",
+      "invariant": "Codex utilise ses réglages TUI natifs et aucun script statusline Claude n'est copié.",
+      "check": "interface",
+      "owner": "CCX-14"
+    },
+    {
+      "id": "secrets-non-importes",
+      "family": "negative",
+      "invariant": "Les rapports de migration ne sérialisent aucune valeur secrète de profil.",
+      "check": "secret-negative",
+      "owner": "CCX-01/15"
+    }
+  ]
+}

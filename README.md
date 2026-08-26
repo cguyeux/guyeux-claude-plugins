@@ -69,6 +69,7 @@ python3 _audit/tools/sync_execpolicy.py
 python3 _audit/tools/audit_claude_memories.py --check
 python3 _audit/tools/import_claude_memories.py --check
 python3 _audit/tools/audit_auxiliary_surfaces.py --check
+python3 _audit/tools/validate_parity.py --check
 python3 _audit/tools/check_all.py --profile-root ~/.codex
 python3 _audit/tools/check_all.py --source git-index --profile-root ~/.codex
 ```
@@ -115,6 +116,13 @@ auxiliaires, agents, commandes, MCP et réglages d'interface. Il vérifie le
 statusline TUI natif, les quatre MCP déjà présents, le runtime Pyright et
 l'installation Graphify adaptée sous `~/.agents/skills`, sans sérialiser les
 valeurs secrètes de configuration.
+
+`validate_parity.py` porte le harnais CCX-15. Sa matrice couvre instructions,
+mémoire projet, KB, mémoire native, skills, plugins, hooks, règles, MCP,
+interface et contrôles négatifs. Les sondes runtime s'exécutent séparément avec
+`--run-runtime claude|codex --location global|root|nested|skill`. Seuls les
+résultats structurés, événements de hooks et coûts agrégés sont conservés ; les
+transcripts, identifiants de session et valeurs de configuration ne le sont pas.
 
 `check_all.py` regroupe les contrôles de non-dérive : registres générés,
 documentation, audit des skills, fermes Codex et Agents, profil Codex réel et

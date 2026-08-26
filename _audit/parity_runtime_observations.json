@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-26T07:02:21.651977+00:00",
+  "records": [
+    {
+      "platform": "claude",
+      "location": "global",
+      "status": "completed",
+      "exit_code": 0,
+      "answer": {
+        "canonical_project_artifact_count": 5,
+        "project_cycle_phase_count": 5,
+        "precompute_control_count": 3,
+        "remote_hosts": [
+          "mh",
+          "mp"
+        ],
+        "deletion_rule": "gio trash",
+        "knowledge_root": "~/.agents/knowledge"
+      },
+      "hooks": {
+        "session_start": true,
+        "stop": false,
+        "stop_count": 0
+      },
+      "cost_usd": 0.09467719999999999,
+      "error_category": "none"
+    },
+    {
+      "platform": "claude",
+      "location": "nested",
+      "status": "completed",
+      "exit_code": 0,
+      "answer": {
+        "project_marker": "PARITY_CLAUDE_PROJECT_ROOT",
+        "deletion_rule": "gio trash",
+        "knowledge_root": "~/.agents/knowledge",
+        "project_artifact_count": 0,
+        "project_has_registers": false,
+        "challenge_visible": false,
+        "graphify_visible": false,
+        "mbovis_visible": false
+      },
+      "hooks": {
+        "session_start": true,
+        "stop": false,
+        "stop_count": 0
+      },
+      "cost_usd": 0.10458735,
+      "error_category": "none"
+    },
+    {
+      "platform": "claude",
+      "location": "root",
+      "status": "completed",
+      "exit_code": 0,
+      "answer": {
+        "project_marker": "PARITY_CLAUDE_PROJECT_ROOT",
+        "deletion_rule": "gio trash",
+        "knowledge_root": "~/.agents/knowledge",
+        "project_artifact_count": 0,
+        "project_has_registers": false,
+        "challenge_visible": false,
+        "graphify_visible": false,
+        "mbovis_visible": false
+      },
+      "hooks": {
+        "session_start": true,
+        "stop": false,
+        "stop_count": 0
+      },
+      "cost_usd": 0.20565275,
+      "error_category": "none"
+    },
+    {
+      "platform": "claude",
+      "location": "skill",
+      "status": "completed",
+      "exit_code": 0,
+      "answer": {
+        "skill_name": "challenge",
+        "skill_triggered": true,
+        "verdict": "Reformuler",
+        "contre_argument": "Formulation textuelle identique = condition nécessaire, non suffisante. Ne valide que la surface (absence de typos), pas l'équivalence fonctionnelle (effets secondaires, ordre opération, état, timing). Deux systèmes produisent identique texte par chemins radicalement différents.",
+        "test_falsifiable": "Tests fonctionnels critiques manquent : invocation réelle, vérification état final, audit traces exécution. Définir explicitement périmètre d'« équivalence ».",
+        "reformulation": "Couche 1 : textualité stricte (filtre régression) + Couche 2 : tests fonctionnels (appels, état, side-effects) + Couche 3 : audit traces. Préciser : textualité totale ou textualité + invariants sémantiques ?",
+        "gain_cout": "Gain : validation rapide. Coût caché : fausse confiance, bugs invisibles en surface mais présents à l'exécution."
+      },
+      "hooks": {
+        "session_start": true,
+        "stop": false,
+        "stop_count": 0
+      },
+      "cost_usd": 0.11803440000000001,
+      "error_category": "none"
+    },
+    {
+      "platform": "codex",
+      "location": "global",
+      "status": "completed",
+      "exit_code": 0,
+      "answer": {
+        "canonical_project_artifact_count": 5,
+        "project_cycle_phase_count": 5,
+        "precompute_control_count": 3,
+        "remote_hosts": [
+          "mh",
+          "mp"
+        ],
+        "deletion_rule": "gio trash",
+        "knowledge_root": "~/.agents/knowledge"
+      },
+      "hooks": {
+        "session_start": true,
+        "stop": true,
+        "stop_count": 1
+      },
+      "error_category": "none"
+    },
+    {
+      "platform": "codex",
+      "location": "nested",
+      "status": "completed",
+      "exit_code": 0,
+      "answer": {
+        "project_marker": "PARITY_CODEX_PROJECT_ROOT",
+        "deletion_rule": "gio trash",
+        "knowledge_root": "~/.agents/knowledge",
+        "project_artifact_count": 5,
+        "project_has_registers": false,
+        "challenge_visible": true,
+        "graphify_visible": true,
+        "mbovis_visible": false
+      },
+      "hooks": {
+        "session_start": true,
+        "stop": true,
+        "stop_count": 1
+      },
+      "error_category": "none"
+    },
+    {
+      "platform": "codex",
+      "location": "root",
+      "status": "completed",
+      "exit_code": 0,
+      "answer": {
+        "project_marker": "PARITY_CODEX_PROJECT_ROOT",
+        "deletion_rule": "gio trash",
+        "knowledge_root": "~/.agents/knowledge",
+        "project_artifact_count": 5,
+        "project_has_registers": false,
+        "challenge_visible": true,
+        "graphify_visible": true,
+        "mbovis_visible": false
+      },
+      "hooks": {
+        "session_start": true,
+        "stop": true,
+        "stop_count": 1
+      },
+      "error_category": "none"
+    },
+    {
+      "platform": "codex",
+      "location": "skill",
+      "status": "completed",
+      "exit_code": 0,
+      "answer": {
+        "skill_name": "challenge",
+        "skill_triggered": true,
+        "verdict": "Reformuler"
+      },
+      "hooks": {
+        "session_start": true,
+        "stop": true,
+        "stop_count": 1
+      },
+      "error_category": "none"
+    }
+  ]
+}
