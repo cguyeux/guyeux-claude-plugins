@@ -35,6 +35,7 @@ def build_internal_commands() -> list[list[str]]:
         [sys.executable, "docs/build_docs.py", "--check"],
         [sys.executable, "_audit/tools/audit_skills.py", "--detail"],
         [sys.executable, "_audit/tools/audit_project_instructions.py", "--check"],
+        [sys.executable, "_audit/tools/audit_claude_memories.py", "--check"],
         [sys.executable, "-m", "unittest", "discover", "-s", "_audit/tests"],
     ]
 
@@ -47,6 +48,7 @@ def build_external_farm_commands(profile_root: Path) -> list[list[str]]:
         [sys.executable, "_audit/tools/audit_personal_workflow_skills.py", "--check"],
         [sys.executable, "_audit/tools/audit_codex_hooks.py", "--check"],
         [sys.executable, "_audit/tools/sync_execpolicy.py"],
+        [sys.executable, "_audit/tools/import_claude_memories.py", "--check"],
         [sys.executable, "_audit/tools/sync_knowledge_base.py", "--check"],
         [sys.executable, "_audit/tools/publish_knowledge_views.py", "--check"],
         [sys.executable, "_audit/tools/audit_codex_skill_farm.py", "--profile-root", str(profile_root)],

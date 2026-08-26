@@ -1,0 +1,2839 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-26T05:58:03.898340+00:00",
+  "source": "/home/christophe/.claude/projects",
+  "codex_memories": "/home/christophe/.codex/memories",
+  "summary": {
+    "markdown_files": 124,
+    "technical_locks": 3,
+    "bytes": 362100,
+    "projects": 15,
+    "source_types": {
+      "feedback": 49,
+      "index": 15,
+      "project": 39,
+      "reference": 17,
+      "user": 4
+    },
+    "decisions": {
+      "exclude-sensitive": 15,
+      "index-only": 12,
+      "route-durable-knowledge": 62,
+      "verify-current-state": 35
+    },
+    "destinations": {
+      "native-extension-index": 12,
+      "private-review": 15,
+      "project-registers": 35,
+      "shared-kb": 62
+    },
+    "freshness": {
+      "durable-candidate": 64,
+      "potentially-stale-verify-live": 45,
+      "routing-index": 15
+    },
+    "personal_identifier_files": 15,
+    "secret_material_files": 0,
+    "infrastructure_locator_files": 13,
+    "broken_local_link_files": 2,
+    "exact_duplicate_groups": 0
+  },
+  "projects": {
+    "-home-christophe": {
+      "files": 8,
+      "bytes": 12664,
+      "source_types": {
+        "feedback": 1,
+        "index": 1,
+        "project": 2,
+        "reference": 3,
+        "user": 1
+      },
+      "sensitive_files": 1,
+      "broken_link_files": 0,
+      "official_import_candidate": false
+    },
+    "-home-christophe-Documents-codes-MTBC-TBannotator-articles-animal-vs-human": {
+      "files": 4,
+      "bytes": 8111,
+      "source_types": {
+        "feedback": 2,
+        "index": 1,
+        "project": 1
+      },
+      "sensitive_files": 0,
+      "broken_link_files": 0,
+      "official_import_candidate": true
+    },
+    "-home-christophe-Documents-docs": {
+      "files": 24,
+      "bytes": 44401,
+      "source_types": {
+        "feedback": 9,
+        "index": 1,
+        "project": 9,
+        "reference": 4,
+        "user": 1
+      },
+      "sensitive_files": 1,
+      "broken_link_files": 0,
+      "official_import_candidate": false
+    },
+    "-home-christophe-Documents-docs-codes-predictops": {
+      "files": 10,
+      "bytes": 11902,
+      "source_types": {
+        "feedback": 4,
+        "index": 1,
+        "project": 4,
+        "reference": 1
+      },
+      "sensitive_files": 0,
+      "broken_link_files": 0,
+      "official_import_candidate": true
+    },
+    "-home-christophe-docs": {
+      "files": 4,
+      "bytes": 6879,
+      "source_types": {
+        "feedback": 2,
+        "index": 1,
+        "reference": 1
+      },
+      "sensitive_files": 1,
+      "broken_link_files": 0,
+      "official_import_candidate": false
+    },
+    "-home-christophe-docs-admin-suivi-carriere": {
+      "files": 2,
+      "bytes": 661,
+      "source_types": {
+        "index": 1,
+        "user": 1
+      },
+      "sensitive_files": 2,
+      "broken_link_files": 0,
+      "official_import_candidate": false
+    },
+    "-home-christophe-docs-codes": {
+      "files": 8,
+      "bytes": 14382,
+      "source_types": {
+        "feedback": 6,
+        "index": 1,
+        "project": 1
+      },
+      "sensitive_files": 3,
+      "broken_link_files": 0,
+      "official_import_candidate": false
+    },
+    "-home-christophe-docs-codes-claude-plugins-bio": {
+      "files": 2,
+      "bytes": 3933,
+      "source_types": {
+        "index": 1,
+        "project": 1
+      },
+      "sensitive_files": 0,
+      "broken_link_files": 0,
+      "official_import_candidate": true
+    },
+    "-home-christophe-docs-codes-mtbc": {
+      "files": 48,
+      "bytes": 244130,
+      "source_types": {
+        "feedback": 21,
+        "index": 1,
+        "project": 17,
+        "reference": 8,
+        "user": 1
+      },
+      "sensitive_files": 5,
+      "broken_link_files": 1,
+      "official_import_candidate": false
+    },
+    "-home-christophe-docs-codes-mtbc-L5L6-codivergence-ethnies-ouest-afrique": {
+      "files": 2,
+      "bytes": 1300,
+      "source_types": {
+        "feedback": 1,
+        "index": 1
+      },
+      "sensitive_files": 0,
+      "broken_link_files": 0,
+      "official_import_candidate": true
+    },
+    "-home-christophe-docs-codes-predictops": {
+      "files": 3,
+      "bytes": 6122,
+      "source_types": {
+        "feedback": 2,
+        "index": 1
+      },
+      "sensitive_files": 0,
+      "broken_link_files": 0,
+      "official_import_candidate": true
+    },
+    "-home-christophe-docs-codes-predictops-mcp": {
+      "files": 2,
+      "bytes": 1665,
+      "source_types": {
+        "index": 1,
+        "project": 1
+      },
+      "sensitive_files": 0,
+      "broken_link_files": 0,
+      "official_import_candidate": true
+    },
+    "-home-christophe-docs-codes-voynich": {
+      "files": 2,
+      "bytes": 1371,
+      "source_types": {
+        "feedback": 1,
+        "index": 1
+      },
+      "sensitive_files": 0,
+      "broken_link_files": 0,
+      "official_import_candidate": true
+    },
+    "-home-christophe-docs-projects-AMI-Smart-MI-2026": {
+      "files": 4,
+      "bytes": 4413,
+      "source_types": {
+        "index": 1,
+        "project": 3
+      },
+      "sensitive_files": 2,
+      "broken_link_files": 0,
+      "official_import_candidate": false
+    },
+    "-home-christophe-docs-publis": {
+      "files": 1,
+      "bytes": 166,
+      "source_types": {
+        "index": 1
+      },
+      "sensitive_files": 0,
+      "broken_link_files": 1,
+      "official_import_candidate": false
+    }
+  },
+  "imported_projects": {
+    "-home-christophe-docs-codes-predictops": {
+      "cwd": "/home/christophe/docs/codes/predictops",
+      "files": [
+        "MEMORY.md",
+        "feedback_perimetre_agent_predictops.md",
+        "feedback_seuils_alerte_page_parametres.md"
+      ]
+    }
+  },
+  "exact_duplicate_groups": [],
+  "files": [
+    {
+      "path": "-home-christophe/memory/MEMORY.md",
+      "project_key": "-home-christophe",
+      "filename": "MEMORY.md",
+      "bytes": 1087,
+      "modified_at": "2026-05-13T08:49:11.553995+00:00",
+      "sha256": "7b3f36bb633f4824e08487d7f0ae2c09b185ed048e8557d1f05d5fda9147d6b4",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": true,
+        "broken_local_links": false
+      },
+      "local_links": 7,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe/memory/feedback_frugality.md",
+      "project_key": "-home-christophe",
+      "filename": "feedback_frugality.md",
+      "bytes": 1077,
+      "modified_at": "2026-04-29T13:37:21.318262+00:00",
+      "sha256": "3e08ef51f7d84a61d8ee6c934a47882260e2828fd9e16bde526e903c778777e5",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe/memory/project_predictops_ovh1_oom.md",
+      "project_key": "-home-christophe",
+      "filename": "project_predictops_ovh1_oom.md",
+      "bytes": 1628,
+      "modified_at": "2026-04-29T13:37:21.318901+00:00",
+      "sha256": "50ab73c2195ad070789aacbe1cfe0719ca5cfe2bdb249e42ba0634ea9ba1a2b5",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": true,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe/memory/project_skill_ecosystem.md",
+      "project_key": "-home-christophe",
+      "filename": "project_skill_ecosystem.md",
+      "bytes": 1298,
+      "modified_at": "2026-04-29T13:37:21.318468+00:00",
+      "sha256": "30312e89249059bee91b7695560c655461b23246423a0b84bf8051b2672d7613",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe/memory/reference_collaborators_kb.md",
+      "project_key": "-home-christophe",
+      "filename": "reference_collaborators_kb.md",
+      "bytes": 2919,
+      "modified_at": "2026-05-08T15:44:03.513440+00:00",
+      "sha256": "9e0f5433560808bfc01c0eeaa372f985559849209c4cf074f9ddca916930b32d",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe/memory/reference_ovh1_infra.md",
+      "project_key": "-home-christophe",
+      "filename": "reference_ovh1_infra.md",
+      "bytes": 1955,
+      "modified_at": "2026-04-29T13:37:21.316844+00:00",
+      "sha256": "1219b1c25a9a086e076b9db856c118d5aa9fde8c763746d0103c39fb9bfc039e",
+      "source_type": "reference",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": true,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe/memory/reference_umlp.md",
+      "project_key": "-home-christophe",
+      "filename": "reference_umlp.md",
+      "bytes": 1194,
+      "modified_at": "2026-05-13T08:48:52.520123+00:00",
+      "sha256": "2594ce30ff5d753b0066347a2d37a1927e8c7fb2ccd0b7c1fff149eb19f0b755",
+      "source_type": "reference",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": true,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe/memory/user_profile.md",
+      "project_key": "-home-christophe",
+      "filename": "user_profile.md",
+      "bytes": 1506,
+      "modified_at": "2026-05-13T08:49:09.700007+00:00",
+      "sha256": "9ab538b2df53d773192a5fd27b7ba96f85050005a23835e8e39fe668250e9280",
+      "source_type": "user",
+      "freshness": "durable-candidate",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-codes-MTBC-TBannotator-articles-animal-vs-human/memory/MEMORY.md",
+      "project_key": "-home-christophe-Documents-codes-MTBC-TBannotator-articles-animal-vs-human",
+      "filename": "MEMORY.md",
+      "bytes": 411,
+      "modified_at": "2026-04-29T13:37:21.523753+00:00",
+      "sha256": "374da35234f68eb0d1763d34835bb2383fb92c8b6f57467adfb714ec9c01a198",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 3,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-codes-MTBC-TBannotator-articles-animal-vs-human/memory/feedback_skill_improvements.md",
+      "project_key": "-home-christophe-Documents-codes-MTBC-TBannotator-articles-animal-vs-human",
+      "filename": "feedback_skill_improvements.md",
+      "bytes": 1351,
+      "modified_at": "2026-04-29T13:37:21.523222+00:00",
+      "sha256": "f7468302d95a96e82138d3703f8c9d4f2e6c4aa20d5d2d05e6808ed390879859",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-codes-MTBC-TBannotator-articles-animal-vs-human/memory/feedback_tbannotator_availability.md",
+      "project_key": "-home-christophe-Documents-codes-MTBC-TBannotator-articles-animal-vs-human",
+      "filename": "feedback_tbannotator_availability.md",
+      "bytes": 865,
+      "modified_at": "2026-04-29T13:37:21.522418+00:00",
+      "sha256": "9307d623819293b135075e7ecfcd88105bfd332a8a8aad8aec24ca7f729b850c",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-codes-MTBC-TBannotator-articles-animal-vs-human/memory/project_animal_vs_human_progress.md",
+      "project_key": "-home-christophe-Documents-codes-MTBC-TBannotator-articles-animal-vs-human",
+      "filename": "project_animal_vs_human_progress.md",
+      "bytes": 5484,
+      "modified_at": "2026-04-29T13:37:21.523444+00:00",
+      "sha256": "5294baa8bafad6c58a227b6cc4bc101fbbfdf37738087b5981ca10ece47ebce4",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/MEMORY.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "MEMORY.md",
+      "bytes": 3135,
+      "modified_at": "2026-04-29T13:37:22.387618+00:00",
+      "sha256": "6199788d13535f794f80e509b78b95276c81b26ba82d4b319a64869b479876d5",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 23,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/feedback_bdd_actuelle_truth.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "feedback_bdd_actuelle_truth.md",
+      "bytes": 1875,
+      "modified_at": "2026-04-29T13:37:22.393758+00:00",
+      "sha256": "459f1c0fde26f9408f549428a428170b734c039c2d2e82ced14ffac7b7cd14d3",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/feedback_bilan_narratif.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "feedback_bilan_narratif.md",
+      "bytes": 1153,
+      "modified_at": "2026-04-29T13:37:22.389871+00:00",
+      "sha256": "32085b50900a255614dcba54de4e2cb733bb5d9c7072b97f3e077908a833ce9c",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/feedback_dell_touchpad_suspend.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "feedback_dell_touchpad_suspend.md",
+      "bytes": 2183,
+      "modified_at": "2026-04-29T13:37:22.385947+00:00",
+      "sha256": "486eb574fbd4a34f9312f4708e8a67c1432095fd3b4cce36fd07d2dc545506e6",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/feedback_fast_production.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "feedback_fast_production.md",
+      "bytes": 875,
+      "modified_at": "2026-04-29T13:37:22.392147+00:00",
+      "sha256": "934329f1d0e5077b0d3a46eac9b50b491ac12329ecb8f64d888c89665a64d734",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/feedback_no_home_tools_in_manuscripts.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "feedback_no_home_tools_in_manuscripts.md",
+      "bytes": 1950,
+      "modified_at": "2026-04-29T13:37:22.387399+00:00",
+      "sha256": "91871b98fc3b2393b357dede7bb03a46d26d769bfe920f27f4a673f2674d5645",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/feedback_no_key_figures.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "feedback_no_key_figures.md",
+      "bytes": 596,
+      "modified_at": "2026-04-29T13:37:22.391586+00:00",
+      "sha256": "2c7ff8083a7f39c2e3f5c1c59ed69e87390eeb01c0a2a35ead57d8a6ff259019",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/feedback_optimops_recommander.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "feedback_optimops_recommander.md",
+      "bytes": 1287,
+      "modified_at": "2026-04-29T13:37:22.387209+00:00",
+      "sha256": "b6709d336b6dea4c7606a6ac61bfa7873c46577cca3c3f04fea1a8668294f2a7",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/feedback_plugin_sync.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "feedback_plugin_sync.md",
+      "bytes": 1055,
+      "modified_at": "2026-04-29T13:37:22.390087+00:00",
+      "sha256": "c413ba35430b8488d800e8b4366676d30f954ddcc753d7248b91f0ed49248e42",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/feedback_rangement_pkl.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "feedback_rangement_pkl.md",
+      "bytes": 829,
+      "modified_at": "2026-04-29T13:37:22.391104+00:00",
+      "sha256": "76d5a55e96736dcf9f8715031905d5e518060692c284a76db3e094fc474241cb",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/project_2200spdi_inconnu.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "project_2200spdi_inconnu.md",
+      "bytes": 911,
+      "modified_at": "2026-04-29T13:37:22.388724+00:00",
+      "sha256": "7c6e00d392faedbadbb591fc2fcd17f1dd6633f7bcf9adc9dce14f3529c0768e",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/project_dassie_suricattae.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "project_dassie_suricattae.md",
+      "bytes": 2568,
+      "modified_at": "2026-04-29T13:37:22.385762+00:00",
+      "sha256": "db455f731e90cda102645f5f151137287e334a12a6b534ebf9c64df2812ae1ab",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/project_inconnu_strains.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "project_inconnu_strains.md",
+      "bytes": 1315,
+      "modified_at": "2026-04-29T13:37:22.390883+00:00",
+      "sha256": "915e3b938e10d267ad4ae3653c7e327ed0b518fce48e188efa6b9182caeb64f9",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/project_l415_reboot.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "project_l415_reboot.md",
+      "bytes": 1120,
+      "modified_at": "2026-04-29T13:37:22.393540+00:00",
+      "sha256": "15e70a211be26520856693b57bc82c78bffcda0e8f4eb07cbe71a5cc3eed73db",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/project_l49_research.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "project_l49_research.md",
+      "bytes": 2238,
+      "modified_at": "2026-04-29T13:37:22.389051+00:00",
+      "sha256": "c61284717c167562ba26d549d0dbf0b7161fc5d796ec16e312ffe870f8381cb2",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/project_methodology_article.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "project_methodology_article.md",
+      "bytes": 3881,
+      "modified_at": "2026-04-29T13:37:22.388150+00:00",
+      "sha256": "77582adacc948c23aabd58132a88a28ead6d837823ca1c3682bb9848aab91273",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/project_optimops_commande_sdis25.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "project_optimops_commande_sdis25.md",
+      "bytes": 2352,
+      "modified_at": "2026-04-29T13:37:22.386731+00:00",
+      "sha256": "be253bb73a06335dce31ba598c91cb691bcd0d9444002207da2eef0b6ce74528",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/project_renommages_etablissements.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "project_renommages_etablissements.md",
+      "bytes": 780,
+      "modified_at": "2026-04-29T13:37:22.393057+00:00",
+      "sha256": "ffe72727de13fa68cdb2577d132b88d61b58997de86e9bafaae78e5604a4844b",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/project_tbannotator_v3.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "project_tbannotator_v3.md",
+      "bytes": 5348,
+      "modified_at": "2026-04-29T13:37:22.392568+00:00",
+      "sha256": "523f27369ecd8610fc333d354ef1895f938d9bc14bf6e9ae55261d8cd84f0482",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/reference_femtost_admin.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "reference_femtost_admin.md",
+      "bytes": 2049,
+      "modified_at": "2026-04-29T13:37:22.389271+00:00",
+      "sha256": "4b80bf0fcddfdfb88c61a0dadff8c507855124bc15de09906151e98f09c685c1",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/reference_phylo_history.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "reference_phylo_history.md",
+      "bytes": 2088,
+      "modified_at": "2026-04-29T13:37:22.389681+00:00",
+      "sha256": "9fdbabac5a8d893e9d8d4146fb97d7cae761ef6a7e0348c0d0aad6c16c793817",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/reference_tbannotator_meetings.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "reference_tbannotator_meetings.md",
+      "bytes": 1494,
+      "modified_at": "2026-04-29T13:37:22.392863+00:00",
+      "sha256": "8b640c5ed287475342441ba67af14fbb7538b9f2de8003454f11a25dcf78618b",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/skill_mtbc_lineages.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "skill_mtbc_lineages.md",
+      "bytes": 1570,
+      "modified_at": "2026-04-29T13:37:22.389486+00:00",
+      "sha256": "5f46175767f61d5c1ce90f31e3020aa6b7517dc303092ff1262930a6d948b1f7",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs/memory/user_profile.md",
+      "project_key": "-home-christophe-Documents-docs",
+      "filename": "user_profile.md",
+      "bytes": 1749,
+      "modified_at": "2026-04-29T13:37:22.393313+00:00",
+      "sha256": "51a4be242e8cccbca4b3847843b2b04363e7eeaf93ea165d76b81e78cb0d214a",
+      "source_type": "user",
+      "freshness": "durable-candidate",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs-codes-predictops/memory/MEMORY.md",
+      "project_key": "-home-christophe-Documents-docs-codes-predictops",
+      "filename": "MEMORY.md",
+      "bytes": 1389,
+      "modified_at": "2026-04-29T13:37:22.138360+00:00",
+      "sha256": "af56e1b460b34f43df273d27526c3dfa0fd4e8a19ef8a68c04ed54dd20822545",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 9,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs-codes-predictops/memory/feedback_full_mode_manual.md",
+      "project_key": "-home-christophe-Documents-docs-codes-predictops",
+      "filename": "feedback_full_mode_manual.md",
+      "bytes": 1196,
+      "modified_at": "2026-04-29T13:37:22.137324+00:00",
+      "sha256": "74e02ae49fba71de00eb777ae8434dfa91bb548c2ebae3e833560d18457cc973",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs-codes-predictops/memory/feedback_kb_script_alignment.md",
+      "project_key": "-home-christophe-Documents-docs-codes-predictops",
+      "filename": "feedback_kb_script_alignment.md",
+      "bytes": 1109,
+      "modified_at": "2026-04-29T13:37:22.137062+00:00",
+      "sha256": "f5c57d367d88c507d07b0093cd9a920cabea95b9d76250146335c88aa57c52c7",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs-codes-predictops/memory/feedback_reflect_skill.md",
+      "project_key": "-home-christophe-Documents-docs-codes-predictops",
+      "filename": "feedback_reflect_skill.md",
+      "bytes": 762,
+      "modified_at": "2026-04-29T13:37:22.136800+00:00",
+      "sha256": "f442527edd1ffcec9fee38d27ff5a1763d76faf249ba661ce8fc064cd17d46b6",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs-codes-predictops/memory/feedback_xgboost_preferences.md",
+      "project_key": "-home-christophe-Documents-docs-codes-predictops",
+      "filename": "feedback_xgboost_preferences.md",
+      "bytes": 812,
+      "modified_at": "2026-04-29T13:37:22.135947+00:00",
+      "sha256": "46a36be57ec3383e1cd2e80932fe0b3f950bad1981fcf7bbd94f8093f967dec6",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs-codes-predictops/memory/project_appels_25_optimization.md",
+      "project_key": "-home-christophe-Documents-docs-codes-predictops",
+      "filename": "project_appels_25_optimization.md",
+      "bytes": 1265,
+      "modified_at": "2026-04-29T13:37:22.135839+00:00",
+      "sha256": "e63c9dc9de270464cec4c5979117588f745f420e63e43c519f2f5b7905231511",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs-codes-predictops/memory/project_nexsis_01.md",
+      "project_key": "-home-christophe-Documents-docs-codes-predictops",
+      "filename": "project_nexsis_01.md",
+      "bytes": 951,
+      "modified_at": "2026-04-29T13:37:22.137700+00:00",
+      "sha256": "f52d2655d3f800b8d6dddf7ccf5df6a04e926e6b48f5c32e69fd27e3ff97f3e1",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs-codes-predictops/memory/project_panneau_camembert_staleness.md",
+      "project_key": "-home-christophe-Documents-docs-codes-predictops",
+      "filename": "project_panneau_camembert_staleness.md",
+      "bytes": 1786,
+      "modified_at": "2026-04-29T13:37:22.138127+00:00",
+      "sha256": "8abdbeafcb61e193f084acd21312ec4c8dda552f6de5f2f7f9652990431fc933",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs-codes-predictops/memory/project_sap_06_retrained.md",
+      "project_key": "-home-christophe-Documents-docs-codes-predictops",
+      "filename": "project_sap_06_retrained.md",
+      "bytes": 1979,
+      "modified_at": "2026-04-29T13:37:22.137920+00:00",
+      "sha256": "7798289e253602cc33d6735c3f84e51bddb2cebd847a8d810cc1bba763918150",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-Documents-docs-codes-predictops/memory/reference_server_paths.md",
+      "project_key": "-home-christophe-Documents-docs-codes-predictops",
+      "filename": "reference_server_paths.md",
+      "bytes": 653,
+      "modified_at": "2026-04-29T13:37:22.135375+00:00",
+      "sha256": "e21960cc9c7f52b2a7da86f4aab79ddfac4a46f4e66c4dadcbd6cec01bf60622",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "MEMORY.md",
+      "bytes": 625,
+      "modified_at": "2026-08-25T11:53:16.900320+00:00",
+      "sha256": "cea5824191b3c3b0e20a52a63728c49dd03692ef4c4db2a0699a94c45ceea927",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 3,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/feedback_resoudre_sur_pieces_pas_par_mail.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "feedback_resoudre_sur_pieces_pas_par_mail.md",
+      "bytes": 1531,
+      "modified_at": "2026-08-17T16:10:42.537168+00:00",
+      "sha256": "babe647a938ceea4f1b5f1c25aaf294cccfb04b021908155fba7233e1f90f1e2",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/feedback_trust_codex_output.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "feedback_trust_codex_output.md",
+      "bytes": 1686,
+      "modified_at": "2026-08-17T14:14:09.899755+00:00",
+      "sha256": "f709cc6d92fa5c3eec7e64bdcafb302ddef1e17eb838302b177d10ee321aae61",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/reference_filtrage_mail_institutionnel.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "reference_filtrage_mail_institutionnel.md",
+      "bytes": 3037,
+      "modified_at": "2026-08-25T15:18:38.327906+00:00",
+      "sha256": "663143cab7de747fadebf38efa0daf743156c5b1a6c149a180e429165e405698",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-admin-suivi-carriere/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-admin-suivi-carriere",
+      "filename": "MEMORY.md",
+      "bytes": 109,
+      "modified_at": "2026-04-30T07:44:42.851727+00:00",
+      "sha256": "ad2816ffb62309a4f0d4e9e24a67c311d62c3ea1b6ffa456e2de29f05bca75cb",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 1,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-admin-suivi-carriere/memory/user_numen.md",
+      "project_key": "-home-christophe-docs-admin-suivi-carriere",
+      "filename": "user_numen.md",
+      "bytes": 552,
+      "modified_at": "2026-04-30T07:44:35.544737+00:00",
+      "sha256": "559d91f414848bb9485e46f9c9e3d231e972ae57cec701849d2182fbe26da36a",
+      "source_type": "user",
+      "freshness": "durable-candidate",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "MEMORY.md",
+      "bytes": 1151,
+      "modified_at": "2026-08-26T05:51:31.368283+00:00",
+      "sha256": "4d7158d0a51ce53757c39160c7e0fb415b75f1ccd5159f9ad7996650c6e135ee",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 7,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/mabossdemo-project.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "mabossdemo-project.md",
+      "bytes": 2287,
+      "modified_at": "2026-06-25T14:15:09.037701+00:00",
+      "sha256": "7d3f1a157199eef65f94ab85729252d7b2bb3ba59e7caa7ac0c48aac74621a46",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/no-wetlab-access.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "no-wetlab-access.md",
+      "bytes": 2113,
+      "modified_at": "2026-08-18T11:57:55.629953+00:00",
+      "sha256": "b38ddb7207b814bd573e0fa6a69642ac194197de467e18099b032c31cf118090",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/prefers-defaults-over-multiple-choice.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "prefers-defaults-over-multiple-choice.md",
+      "bytes": 1234,
+      "modified_at": "2026-06-25T12:09:12.981800+00:00",
+      "sha256": "d6f2f1631fda34f98c6d876e4c136563aa4ced1b36590a75508613686581cccc",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/resume-etat-decouvertes-apres-pistes.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "resume-etat-decouvertes-apres-pistes.md",
+      "bytes": 1655,
+      "modified_at": "2026-08-26T05:51:23.174249+00:00",
+      "sha256": "a8dc22e5abbf6446d3cbbaf936c3e8af26a36c4f5d9202187ac894b557460cb0",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/soumission-perimetre-autorise.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "soumission-perimetre-autorise.md",
+      "bytes": 1850,
+      "modified_at": "2026-08-25T07:15:21.986826+00:00",
+      "sha256": "2d38b20801f31fee8eea94a176e7e701195718c7548f5da462dfc2feb99233cd",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/use-correspondent-title-if-self-signed.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "use-correspondent-title-if-self-signed.md",
+      "bytes": 1489,
+      "modified_at": "2026-08-25T10:26:23.309419+00:00",
+      "sha256": "bf7b9f26663720cdfef027cf3484960f125f2c6013a5c093ab82bcc01dda9afb",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/verify-piste-status-on-disk.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "verify-piste-status-on-disk.md",
+      "bytes": 2603,
+      "modified_at": "2026-08-20T14:49:50.162294+00:00",
+      "sha256": "ffc02f4756cc8b0f4e3700557fa29b71e4216873163877b3616f4c2a2a12d2f4",
+      "source_type": "feedback",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": true,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-claude-plugins-bio/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-codes-claude-plugins-bio",
+      "filename": "MEMORY.md",
+      "bytes": 219,
+      "modified_at": "2026-05-08T10:54:42.785483+00:00",
+      "sha256": "84bc019a89523fe745f492e511637e4577f2cf35eefa5d929757da0e622e7470",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 1,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-claude-plugins-bio/memory/project_tbmonitor.md",
+      "project_key": "-home-christophe-docs-codes-claude-plugins-bio",
+      "filename": "project_tbmonitor.md",
+      "bytes": 3714,
+      "modified_at": "2026-05-08T10:58:04.575118+00:00",
+      "sha256": "a93e062aae52dd75dd40c5833fec59a31a93ed3a97d9ababa86f1221664bb662",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": true,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "MEMORY.md",
+      "bytes": 14199,
+      "modified_at": "2026-07-22T06:38:16.216525+00:00",
+      "sha256": "961ab22508503fefeed099a5dcedf75dad0f7d8c7678ad3a91a48f53a57749b7",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": true,
+        "broken_local_links": true
+      },
+      "local_links": 47,
+      "wiki_links": 0,
+      "broken_local_link_count": 1
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_always_state_result_file_path.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_always_state_result_file_path.md",
+      "bytes": 1650,
+      "modified_at": "2026-06-24T12:27:01.967721+00:00",
+      "sha256": "cf61a1023eb4d267236169034c15bc98df706b45c1d5d972930e7bd304030c35",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_autonomous_iteration.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_autonomous_iteration.md",
+      "bytes": 1712,
+      "modified_at": "2026-05-05T14:40:29.672202+00:00",
+      "sha256": "7ad54af7e9d733a4f565b291df51c87f043d862344a0810e2280ac084ec0a49a",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_check_venvs_first.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_check_venvs_first.md",
+      "bytes": 1279,
+      "modified_at": "2026-06-09T06:21:43.664260+00:00",
+      "sha256": "c76e7a07e5b3e2fddc8ff82196615a881163fd9759e2e0a835023a6ab711663d",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_classification_source_in_flux.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_classification_source_in_flux.md",
+      "bytes": 2177,
+      "modified_at": "2026-05-31T17:19:49.481676+00:00",
+      "sha256": "7f5d7598ca0bc2637c953c9108568efc65d86ffdf32ddfdf6bbab8db30053979",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 3,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_clonal_lineage_low_snp_traces.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_clonal_lineage_low_snp_traces.md",
+      "bytes": 5201,
+      "modified_at": "2026-05-31T11:40:53.170191+00:00",
+      "sha256": "2090d8192259e77d223c3aac517842063729c780da1117c106b211f51e29cac2",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 3,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_core_calibration_careful_sequential.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_core_calibration_careful_sequential.md",
+      "bytes": 2088,
+      "modified_at": "2026-06-03T17:16:00.238230+00:00",
+      "sha256": "a52a4ae9664ba4284872180c491808a6e203680b8697788c6f53efec90b27284",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_derive_lineage_marker_from_strains.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_derive_lineage_marker_from_strains.md",
+      "bytes": 1529,
+      "modified_at": "2026-05-30T09:37:53.509480+00:00",
+      "sha256": "abc8b04f95d80556f13008ecbc90f5391e18a990646fee82087e85b1c3344abf",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_mcmc_let_converge_no_concurrent.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_mcmc_let_converge_no_concurrent.md",
+      "bytes": 1842,
+      "modified_at": "2026-06-06T00:35:51.070037+00:00",
+      "sha256": "a8aad86ec87c3dc56992219a94ac3ac2739ad7d9b700aa615abcdc67543a6039",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_minimum_sublineage_size.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_minimum_sublineage_size.md",
+      "bytes": 1324,
+      "modified_at": "2026-05-11T12:33:24.144954+00:00",
+      "sha256": "e633903a4a07a7368273d454d6a36d84258ecb74e459990deb380272f875f7dd",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_never_mass_operate_bdd_ignore.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_never_mass_operate_bdd_ignore.md",
+      "bytes": 1450,
+      "modified_at": "2026-05-30T10:38:15.622603+00:00",
+      "sha256": "0bda70d746bcaab4d4fd6249ebe63e3d73ba4750b4b811c339ba23cd2fae3513",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_no_claude_coauthor_public_repos.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_no_claude_coauthor_public_repos.md",
+      "bytes": 1189,
+      "modified_at": "2026-06-03T08:48:30.346161+00:00",
+      "sha256": "a30f4baaaec84d42b10e2a15b84ebff3e6b8a7da707513dab1cacd9f0f34fbe7",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_no_optimize_pass_dissol_clonal.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_no_optimize_pass_dissol_clonal.md",
+      "bytes": 2546,
+      "modified_at": "2026-05-30T15:28:27.245807+00:00",
+      "sha256": "9e41efd8e3f5fcfd22d80cd2c2fcb6e837476deb1bcd34d66077ec9d081a07b0",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_oral_scientifique_neutre.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_oral_scientifique_neutre.md",
+      "bytes": 5311,
+      "modified_at": "2026-05-19T16:51:13.554768+00:00",
+      "sha256": "dd9bd1d60fd23e078e11de38c2da821ffe00f1057d1ef0ad0927aa0f1c9f0e13",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_overleaf_workflow.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_overleaf_workflow.md",
+      "bytes": 1914,
+      "modified_at": "2026-06-11T06:28:36.948308+00:00",
+      "sha256": "e06cc203858f5ef3b7c4ea55eaf80fb2cad33e59f824b7bcd8c3fe7716cf4703",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_pectinated_subclade_mining.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_pectinated_subclade_mining.md",
+      "bytes": 2054,
+      "modified_at": "2026-05-16T13:30:44.637424+00:00",
+      "sha256": "d126ff3633abfdbd9ac3b4f5771975fd01a77500ed8fc24662cabeb070c2d59d",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_prefer_highest_quality_option.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_prefer_highest_quality_option.md",
+      "bytes": 981,
+      "modified_at": "2026-05-29T16:15:38.193563+00:00",
+      "sha256": "eec3faae5e69b4f76fd625addc789c20e99c60a3dd8e759ef494da8a39c33841",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_rd_source_of_truth.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_rd_source_of_truth.md",
+      "bytes": 2201,
+      "modified_at": "2026-06-07T09:54:51.747839+00:00",
+      "sha256": "72d9267f6add1fa7d11707a21686ad15177a384ddabb9285034a8e48766d4b6f",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_show_synapo_not_just_geo.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_show_synapo_not_just_geo.md",
+      "bytes": 1631,
+      "modified_at": "2026-06-25T09:33:54.816646+00:00",
+      "sha256": "6d96702166c60639f2dabc6027cfb82b00fde7ca2746702837c88d847f09a986",
+      "source_type": "feedback",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": true,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_taxonomy_user_driven_pectine.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_taxonomy_user_driven_pectine.md",
+      "bytes": 2188,
+      "modified_at": "2026-06-10T09:04:12.435956+00:00",
+      "sha256": "1f59e8c107db9bcab2e4925de78f6f7f9c3a817ec1119759ddb43eb9b9e75d4a",
+      "source_type": "feedback",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": true,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 3,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_tbannotator_query_pitfalls.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_tbannotator_query_pitfalls.md",
+      "bytes": 1606,
+      "modified_at": "2026-05-29T07:33:50.445861+00:00",
+      "sha256": "d46ef13f3f4e42c3aa303031c6e4f61580cf0299ea73dd9734814673324e1a50",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_tool_first_no_homemade.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_tool_first_no_homemade.md",
+      "bytes": 2414,
+      "modified_at": "2026-05-31T18:03:08.937675+00:00",
+      "sha256": "41792dd0874beb3247cf9175bb70a145ac5a76328c5c2f1c97ea5f3388f3cb0d",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 4,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_L1_2_1_2_1_2_taxonomy.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_L1_2_1_2_1_2_taxonomy.md",
+      "bytes": 2015,
+      "modified_at": "2026-06-10T09:04:33.803186+00:00",
+      "sha256": "c8c9c583d2abf0f0ac2a565ce072ffc6cfcfaf679976c90a936280dc6e35dcf8",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": true,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_audition_pr_upcite_jury.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_audition_pr_upcite_jury.md",
+      "bytes": 6507,
+      "modified_at": "2026-05-16T16:48:16.560693+00:00",
+      "sha256": "29a8a2b776bf838be8b7dc238b83c598c485f49cccd4f65da72846cefffb4393",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_audition_pr_upcite_jury_4methodologues.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_audition_pr_upcite_jury_4methodologues.md",
+      "bytes": 15218,
+      "modified_at": "2026-05-16T17:06:39.294496+00:00",
+      "sha256": "44dd6252ff09512e7c8200dba26bbbcb90f1a92aa3e4a23bc3c5ae4a23eaee5e",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_audition_pr_upcite_jury_lbt.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_audition_pr_upcite_jury_lbt.md",
+      "bytes": 15501,
+      "modified_at": "2026-05-16T17:23:44.124959+00:00",
+      "sha256": "fe99d8b6c002124ae55e9fec377d845e5a84e839954e40c1af4437bb96dc722a",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_audition_pr_upcite_jury_patin_zider_medjkane.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_audition_pr_upcite_jury_patin_zider_medjkane.md",
+      "bytes": 16695,
+      "modified_at": "2026-05-16T17:12:41.402098+00:00",
+      "sha256": "be0be7cc564eb87b950742d0c3de6a7d29641dbbc8520bced4af792605b15d8b",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_bovis_taxonomy.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_bovis_taxonomy.md",
+      "bytes": 69924,
+      "modified_at": "2026-06-22T05:52:46.697906+00:00",
+      "sha256": "00c24e3a0c7f1be02de01939eba4420cac9e92283e478497af890f724068bfba",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": true,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_bpal_state_and_cloud_limit.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_bpal_state_and_cloud_limit.md",
+      "bytes": 2278,
+      "modified_at": "2026-06-12T11:18:27.320767+00:00",
+      "sha256": "8891d19f9f81bb2e193f820633ea2ea85f1aafb18ff3f6b940af7b13c8d3c46e",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_diversifying_antigens_state.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_diversifying_antigens_state.md",
+      "bytes": 4844,
+      "modified_at": "2026-06-12T10:00:20.241355+00:00",
+      "sha256": "1f35ee14aa3d714e425f5151f033a08ae50612a645ebbebc7cba21cc72434bc0",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_four_hot_topic_projects_2026-06.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_four_hot_topic_projects_2026-06.md",
+      "bytes": 2998,
+      "modified_at": "2026-06-06T11:53:47.208589+00:00",
+      "sha256": "abf4a8dd2c75bca8cc3f349e53bbee98afe1cfd76316f5935eac6671daa4b855",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_ntm_unidentified.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_ntm_unidentified.md",
+      "bytes": 3455,
+      "modified_at": "2026-06-05T23:01:16.448999+00:00",
+      "sha256": "e12684e37107f9cac69353c0150cc77ed2474de08746d31b55b9f68a7aeb5fe6",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 3,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_oman_meeting_roadmap_2026-06.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_oman_meeting_roadmap_2026-06.md",
+      "bytes": 2765,
+      "modified_at": "2026-07-01T11:31:25.183555+00:00",
+      "sha256": "d2191abc160f8c351549375a787015a00aa6b6354a29bc36f7150a36f0248104",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_open_science_publication_strategy.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_open_science_publication_strategy.md",
+      "bytes": 4605,
+      "modified_at": "2026-06-02T10:48:47.444040+00:00",
+      "sha256": "860f1429ff2630f7e43f1dbdc9fac7f6d8cf761dd692cfbbfec10a66e22a3d53",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_orygis_phylogenie.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_orygis_phylogenie.md",
+      "bytes": 1847,
+      "modified_at": "2026-07-01T13:40:14.108227+00:00",
+      "sha256": "11f5a2c5e7287f682109774fb4233ffce7687decbdb5a79d005f16d97eec8baf",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 4,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_orygis_zoonotic_state.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_orygis_zoonotic_state.md",
+      "bytes": 2699,
+      "modified_at": "2026-06-06T08:56:05.909628+00:00",
+      "sha256": "fceed5990c97ec01d167c0eec55edf6c6a5428041df4a5bf811b404ad0fd4f54",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_ponA_microsatellite.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_ponA_microsatellite.md",
+      "bytes": 3262,
+      "modified_at": "2026-06-19T13:18:20.242549+00:00",
+      "sha256": "bd310889cb8ebd7fead6168a20a5d8a2484c7e84580b3f14c3256f4309909c51",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_still_unknown_448_positioning.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_still_unknown_448_positioning.md",
+      "bytes": 2323,
+      "modified_at": "2026-06-09T14:25:36.355154+00:00",
+      "sha256": "3b98084ebd36121e414175da89001d846991ef7b0d5ff63357834bd1f1bde1ec",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/project_yersinia_pestis_transfer.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "project_yersinia_pestis_transfer.md",
+      "bytes": 3880,
+      "modified_at": "2026-07-22T15:12:03.422596+00:00",
+      "sha256": "faefec08fb9bf8b39fe27e7d9d77ce49dac7752511e363b8eb9ea4f06bd863e7",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/reference_barcoding_v2_authoritative.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "reference_barcoding_v2_authoritative.md",
+      "bytes": 4353,
+      "modified_at": "2026-05-31T17:20:01.879704+00:00",
+      "sha256": "6c83548f4c6a9e71f443898d915068b56dbdc557c157c2f0efb2add30dcd8eed",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/reference_bcg_node_calibrations.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "reference_bcg_node_calibrations.md",
+      "bytes": 4530,
+      "modified_at": "2026-06-22T05:53:03.929010+00:00",
+      "sha256": "f56b81a3b42557008f67f31a256c4dddeaeaa6bc16231ff34f9c39d6f871bd2b",
+      "source_type": "reference",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": true,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/reference_bdd_curation_intensity_by_lineage.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "reference_bdd_curation_intensity_by_lineage.md",
+      "bytes": 1683,
+      "modified_at": "2026-06-06T14:15:45.770472+00:00",
+      "sha256": "411c5c8e13ebe48079e0dc69c3eb8d6b54b51c1825d5b30aae36429b21719fb6",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 3,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/reference_bdd_disk_audit_2026-06.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "reference_bdd_disk_audit_2026-06.md",
+      "bytes": 2752,
+      "modified_at": "2026-06-06T10:33:46.791264+00:00",
+      "sha256": "0b68cafc7f496bf6f1b76538ec473d87722c1ea1c7fb5d69d428c6c4de9ded67",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 4,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/reference_bioproject_geo_cache.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "reference_bioproject_geo_cache.md",
+      "bytes": 3417,
+      "modified_at": "2026-05-31T06:50:24.537961+00:00",
+      "sha256": "973f17f266f3f1882d58ac598fdea9d0a4dd5ae0eb693996fd64ba091e51ef8e",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/reference_canettii_mtbc_markers.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "reference_canettii_mtbc_markers.md",
+      "bytes": 1525,
+      "modified_at": "2026-05-29T07:33:34.252862+00:00",
+      "sha256": "a2d9e6a0524b48afe33320331ead297a01b7b5c842f978f53579b651e47535db",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/reference_rd_typing_report_json.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "reference_rd_typing_report_json.md",
+      "bytes": 3734,
+      "modified_at": "2026-05-31T15:57:39.275212+00:00",
+      "sha256": "afe80666a571951b0f8f97718e6092d802c0a2c8d69859ec9c1d039d9e7bb421",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/reference_source_of_truth_triplet.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "reference_source_of_truth_triplet.md",
+      "bytes": 1847,
+      "modified_at": "2026-06-04T10:03:53.281361+00:00",
+      "sha256": "3f174544b69b1a4881d00d275f403af34bac34611492d76d4e6fb8a195c427e5",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc/memory/user_orcid.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "user_orcid.md",
+      "bytes": 987,
+      "modified_at": "2026-06-23T14:00:59.775988+00:00",
+      "sha256": "c1af03e205eb2019022acaccb24e10d3b8b29ace53644cb61bdcaf931cdd075c",
+      "source_type": "user",
+      "freshness": "durable-candidate",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc-L5L6-codivergence-ethnies-ouest-afrique/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-codes-mtbc-L5L6-codivergence-ethnies-ouest-afrique",
+      "filename": "MEMORY.md",
+      "bytes": 199,
+      "modified_at": "2026-07-10T17:27:22.475362+00:00",
+      "sha256": "77c5dea620dfa5b7aa570301ff0623331d5ae667760a011fb650cf614f3e4637",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 1,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-mtbc-L5L6-codivergence-ethnies-ouest-afrique/memory/no-session-closure-signoffs.md",
+      "project_key": "-home-christophe-docs-codes-mtbc-L5L6-codivergence-ethnies-ouest-afrique",
+      "filename": "no-session-closure-signoffs.md",
+      "bytes": 1101,
+      "modified_at": "2026-07-10T17:27:00.009386+00:00",
+      "sha256": "ef301c619c4c84c2f8a717fab580ae23d7c5a6b5ca35f506279ae67f8080c3ff",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-predictops/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-codes-predictops",
+      "filename": "MEMORY.md",
+      "bytes": 445,
+      "modified_at": "2026-07-25T18:07:32.689343+00:00",
+      "sha256": "2159105460f92309e9ea41b1d68a6c2ebe936f1a959f24c7bb7e584a6fb33f1b",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 2,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-predictops/memory/feedback_perimetre_agent_predictops.md",
+      "project_key": "-home-christophe-docs-codes-predictops",
+      "filename": "feedback_perimetre_agent_predictops.md",
+      "bytes": 3209,
+      "modified_at": "2026-08-04T06:05:04.319129+00:00",
+      "sha256": "2a80bfb81aca18c3a1e77fa0b7c62cdc2cfa44d095866e5855542c6340cf0264",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-predictops/memory/feedback_seuils_alerte_page_parametres.md",
+      "project_key": "-home-christophe-docs-codes-predictops",
+      "filename": "feedback_seuils_alerte_page_parametres.md",
+      "bytes": 2468,
+      "modified_at": "2026-07-21T09:56:52.300024+00:00",
+      "sha256": "fb24302e440c33ade99284428542c040f06d7c87091df839b4823ea4ce138e1b",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-predictops-mcp/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-codes-predictops-mcp",
+      "filename": "MEMORY.md",
+      "bytes": 180,
+      "modified_at": "2026-06-21T07:04:44.070095+00:00",
+      "sha256": "f2db2573242c35d2621084a17d458cade0bf48af5669c9f330f8b39f8ed860d0",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 1,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-predictops-mcp/memory/chatbot-skills-paradigm.md",
+      "project_key": "-home-christophe-docs-codes-predictops-mcp",
+      "filename": "chatbot-skills-paradigm.md",
+      "bytes": 1485,
+      "modified_at": "2026-06-21T07:04:38.679072+00:00",
+      "sha256": "a88ddcd591b68456b3a1ef6986fc2272ffb18fed40045319d60d142b1c5e5f84",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": true,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-voynich/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-codes-voynich",
+      "filename": "MEMORY.md",
+      "bytes": 190,
+      "modified_at": "2026-06-06T17:49:38.802492+00:00",
+      "sha256": "963d2ecc1dfd48b69d3bdfc698366ffd229c8b3ca81864ce071ce2e2f637020f",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 1,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-voynich/memory/voynich-goal-not-article.md",
+      "project_key": "-home-christophe-docs-codes-voynich",
+      "filename": "voynich-goal-not-article.md",
+      "bytes": 1181,
+      "modified_at": "2026-06-06T17:49:20.057464+00:00",
+      "sha256": "20933db5ff63e93520d13d7b01670a426e884dc80c0366f0a78fb90d9bfc5b71",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-projects-AMI-Smart-MI-2026/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-projects-AMI-Smart-MI-2026",
+      "filename": "MEMORY.md",
+      "bytes": 511,
+      "modified_at": "2026-05-06T09:00:04.597586+00:00",
+      "sha256": "6dccef731b4318b843a90122d2b88eadec3ec972bcb09a4ba32acbe0839801df",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 3,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-projects-AMI-Smart-MI-2026/memory/beneficiaires_smart_mi.md",
+      "project_key": "-home-christophe-docs-projects-AMI-Smart-MI-2026",
+      "filename": "beneficiaires_smart_mi.md",
+      "bytes": 1454,
+      "modified_at": "2026-05-06T09:01:03.483655+00:00",
+      "sha256": "b56589f3a9b93aef12fc0954fbb531943bae8d12caa1149936ed164e4805baed",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-projects-AMI-Smart-MI-2026/memory/smart_mi_2026.md",
+      "project_key": "-home-christophe-docs-projects-AMI-Smart-MI-2026",
+      "filename": "smart_mi_2026.md",
+      "bytes": 1279,
+      "modified_at": "2026-05-06T09:00:18.859603+00:00",
+      "sha256": "c20d67ac7bb7ea68892fd7e05e1ba84db98d5ed28bb6649fd79a0d2a44319d4c",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-projects-AMI-Smart-MI-2026/memory/team_formation_ia.md",
+      "project_key": "-home-christophe-docs-projects-AMI-Smart-MI-2026",
+      "filename": "team_formation_ia.md",
+      "bytes": 1169,
+      "modified_at": "2026-05-06T09:29:14.043117+00:00",
+      "sha256": "fbf01e47b5e13093a6358033a852b8661c747bda73a458eb6d8efa4429cd7c37",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-publis/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-publis",
+      "filename": "MEMORY.md",
+      "bytes": 166,
+      "modified_at": "2026-05-26T14:40:17.960918+00:00",
+      "sha256": "003aab2cde51227eb99ed56e6201f446d2279514a79e9cfe37bbf8776f174dbb",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": true
+      },
+      "local_links": 1,
+      "wiki_links": 0,
+      "broken_local_link_count": 1
+    }
+  ],
+  "problems": []
+}
