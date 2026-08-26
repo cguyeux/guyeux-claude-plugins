@@ -49,6 +49,7 @@ def build_external_farm_commands(profile_root: Path) -> list[list[str]]:
         [sys.executable, "_audit/tools/audit_codex_hooks.py", "--check"],
         [sys.executable, "_audit/tools/audit_auxiliary_surfaces.py", "--check"],
         [sys.executable, "_audit/tools/validate_parity.py", "--check"],
+        [sys.executable, "_audit/tools/maintain_environment.py", "validate"],
         [sys.executable, "_audit/tools/sync_execpolicy.py"],
         [sys.executable, "_audit/tools/import_claude_memories.py", "--check"],
         [sys.executable, "_audit/tools/sync_knowledge_base.py", "--check"],

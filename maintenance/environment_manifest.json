@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "name": "claude-codex-personal-environment",
+  "repository_relative_sources": [
+    "canon_skills.json",
+    "codex_skills.json",
+    "codex_hooks",
+    "codex_packages",
+    "codex_rules",
+    "_audit/tools"
+  ],
+  "snapshot_items": [
+    {
+      "id": "shared-instructions",
+      "path": ".agents/instructions",
+      "required": true,
+      "classification": "canonical-local",
+      "scanner_profile": "local-agent-sync"
+    },
+    {
+      "id": "claude-hooks",
+      "path": ".claude/hooks",
+      "required": true,
+      "classification": "derived-safe",
+      "scanner_profile": "local-agent-sync"
+    },
+    {
+      "id": "task-register",
+      "path": "TASKS.md",
+      "required": true,
+      "classification": "local-private",
+      "scanner_profile": "local-agent-sync"
+    },
+    {
+      "id": "shared-knowledge-clean",
+      "path": ".agents/knowledge",
+      "required": false,
+      "classification": "local-private",
+      "scanner_profile": "local-agent-sync",
+      "children": true
+    },
+    {
+      "id": "shared-personal-skills-clean",
+      "path": ".agents/skills",
+      "required": false,
+      "classification": "canonical-local",
+      "scanner_profile": "local-agent-sync",
+      "children": true
+    },
+    {
+      "id": "claude-personal-skills-clean",
+      "path": ".claude/skills",
+      "required": false,
+      "classification": "claude-local",
+      "scanner_profile": "local-agent-sync",
+      "children": true
+    }
+  ],
+  "manual_private_sources": [
+    {
+      "id": "shared-knowledge",
+      "path": ".agents/knowledge",
+      "reason": "Les entrees propres sont sauvegardees separement. Toute entree bloquee par le scanner reste a traiter par le dispositif prive."
+    },
+    {
+      "id": "shared-personal-skills",
+      "path": ".agents/skills",
+      "reason": "Chaque skill propre est sauvegarde. Les sources tierces ou exemples bloques restent exclus du snapshot automatique."
+    },
+    {
+      "id": "claude-personal-skills",
+      "path": ".claude/skills",
+      "reason": "Chaque variante propre est sauvegardee. Les variantes bloquees restent a sauvegarder par le dispositif prive de la machine."
+    }
+  ],
+  "never_snapshot": [
+    ".claude.json",
+    ".claude/.credentials.json",
+    ".claude/history.jsonl",
+    ".claude/projects",
+    ".claude/cache",
+    ".codex/auth.json",
+    ".codex/config.toml",
+    ".codex/history.jsonl",
+    ".codex/memories",
+    ".codex/sessions",
+    ".codex/logs"
+  ],
+  "derived_targets": [
+    {
+      "id": "claude-global-instructions",
+      "path": ".claude/CLAUDE.md",
+      "source": ".agents/instructions"
+    },
+    {
+      "id": "codex-global-instructions",
+      "path": ".codex/AGENTS.md",
+      "source": ".agents/instructions"
+    },
+    {
+      "id": "claude-knowledge-view",
+      "path": ".claude/knowledge",
+      "source": ".agents/knowledge"
+    },
+    {
+      "id": "codex-knowledge-view",
+      "path": ".Codex/knowledge",
+      "source": ".agents/knowledge"
+    },
+    {
+      "id": "codex-hooks",
+      "path": ".codex/hooks.json",
+      "source": "codex_hooks/hooks.json"
+    },
+    {
+      "id": "codex-execpolicy",
+      "path": ".codex/rules/default.rules",
+      "source": "codex_rules/default.rules"
+    },
+    {
+      "id": "codex-direct-skills",
+      "path": ".codex/skills",
+      "source": "canon_skills.json + codex_skills.json"
+    }
+  ],
+  "codex_plugins": [
+    "guyeux-phylo-pilot",
+    "bio-bacteria",
+    "bio-pathogens",
+    "bio-population-genetics",
+    "bio-redac",
+    "ia",
+    "maboss",
+    "multimedia",
+    "ops",
+    "web"
+  ],
+  "claude_plugins_from_repository": [
+    "bio_bacteria",
+    "bio_pathogens",
+    "redac"
+  ],
+  "disabled_skill_names": [
+    "mbovis",
+    "triangulate-route"
+  ],
+  "periodic_audit": {
+    "service": "codex-migration-audit.service",
+    "timer": "codex-migration-audit.timer",
+    "calendar": "weekly",
+    "randomized_delay_minutes": 30
+  }
+}

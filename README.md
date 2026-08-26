@@ -70,6 +70,8 @@ python3 _audit/tools/audit_claude_memories.py --check
 python3 _audit/tools/import_claude_memories.py --check
 python3 _audit/tools/audit_auxiliary_surfaces.py --check
 python3 _audit/tools/validate_parity.py --check
+python3 _audit/tools/maintain_environment.py validate
+python3 _audit/tools/maintain_environment.py audit
 python3 _audit/tools/check_all.py --profile-root ~/.codex
 python3 _audit/tools/check_all.py --source git-index --profile-root ~/.codex
 ```
@@ -123,6 +125,12 @@ interface et contrôles négatifs. Les sondes runtime s'exécutent séparément 
 `--run-runtime claude|codex --location global|root|nested|skill`. Seuls les
 résultats structurés, événements de hooks et coûts agrégés sont conservés ; les
 transcripts, identifiants de session et valeurs de configuration ne le sont pas.
+
+`maintain_environment.py` porte CCX-16. Il crée des snapshots locaux filtrés,
+reconstruit les surfaces dérivées avec rollback récupérable, réinstalle les
+plugins Codex depuis le marketplace versionné et fournit l'audit hebdomadaire.
+La procédure complète et ses limites privées sont documentées dans
+`maintenance/README.md`.
 
 `check_all.py` regroupe les contrôles de non-dérive : registres générés,
 documentation, audit des skills, fermes Codex et Agents, profil Codex réel et

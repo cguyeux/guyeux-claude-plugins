@@ -36,6 +36,7 @@ class CheckAllTests(unittest.TestCase):
         self.assertIn("audit_codex_hooks.py --check", joined)
         self.assertIn("audit_auxiliary_surfaces.py --check", joined)
         self.assertIn("validate_parity.py --check", joined)
+        self.assertIn("maintain_environment.py validate", joined)
         self.assertIn("sync_execpolicy.py", joined)
         self.assertIn("import_claude_memories.py --check", joined)
         self.assertIn("audit_codex_skill_farm.py --profile-root /tmp/codex-profile", joined)
