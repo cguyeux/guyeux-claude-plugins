@@ -9,14 +9,14 @@
       "maboss": 12,
       "multimedia": 3,
       "ops": 4,
-      "redac": 1,
+      "redac": 2,
       "web": 2
     },
     "package_candidate": {
       "bio-bacteria": 8,
       "bio-pathogens": 39,
       "bio-population-genetics": 47,
-      "bio-redac": 2,
+      "bio-redac": 3,
       "guyeux-phylo-pilot": 5,
       "ia": 14,
       "maboss": 12,
@@ -29,7 +29,7 @@
       "packaged-payload": 15,
       "packaged-pilot": 5,
       "packaged-runtime-adapted": 58,
-      "packaged-workflow-guarded": 10
+      "packaged-workflow-guarded": 11
     }
   },
   "rows": [
@@ -2173,6 +2173,26 @@
       ],
       "file_count": 2,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
+    },
+    {
+      "name": "soumission",
+      "source_plugin": "redac",
+      "canonical_path": "redac/skills/soumission",
+      "package_candidate": "bio-redac",
+      "packaged_in": [
+        "bio-redac"
+      ],
+      "classification": "packaged-workflow-guarded",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "script-payload",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 11,
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
       "name": "spaam-ancient-metagenome-dir",

@@ -18,10 +18,10 @@ def frontmatter(text: str) -> str:
 
 
 class CodexWorkflowPackagesTests(unittest.TestCase):
-    def test_workflow_audit_records_ten_rows(self):
+    def test_workflow_audit_records_eleven_rows(self):
         audit = json.loads(AUDIT.read_text(encoding="utf-8"))
         rows = audit["rows"]
-        self.assertEqual(10, len(rows))
+        self.assertEqual(11, len(rows))
         self.assertEqual(
             {
                 "atlas-add-lineage",
@@ -34,6 +34,7 @@ class CodexWorkflowPackagesTests(unittest.TestCase):
                 "mtbc-reboot",
                 "pectinated-subclade-mining",
                 "strain-qc",
+                "soumission",
             },
             {row["name"] for row in rows},
         )
@@ -52,6 +53,22 @@ class CodexWorkflowPackagesTests(unittest.TestCase):
                 self.assertNotIn("version:", fm)
                 self.assertNotIn("CLAUDE_PLUGIN_ROOT", text)
                 self.assertNotIn("~/.claude/cache", text)
+
+    def test_submission_copy_uses_codex_runtime_and_current_turn_authority(self):
+        skill = PACKAGES / "bio-redac" / "skills" / "soumission"
+        text = (skill / "SKILL.md").read_text(encoding="utf-8")
+        payload = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in sorted(skill.rglob("*.md"))
+        )
+        self.assertIn("## Navigation sous Codex", text)
+        self.assertIn("agent-browser", payload)
+        self.assertIn("demande explicite dans le tour courant", text)
+        self.assertIn("~/.agents/knowledge/journals", payload)
+        self.assertNotIn("tabs_context_mcp", payload)
+        self.assertNotIn("tabs_close_mcp", payload)
+        self.assertNotIn("AskUserQuestion", payload)
+        self.assertNotIn("~/.claude/knowledge/journals", payload)
 
 
 if __name__ == "__main__":

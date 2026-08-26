@@ -25,10 +25,10 @@ class CodexSkillFarmAuditTests(unittest.TestCase):
     def test_repository_audit_is_closed(self):
         summary, problems = self.audit.audit_repository(ROOT)
         self.assertEqual([], problems)
-        self.assertEqual(189, summary["canonicals"])
+        self.assertEqual(190, summary["canonicals"])
         self.assertEqual(53, summary["direct_exports"])
-        self.assertEqual(136, summary["packaged_skills"])
-        self.assertEqual(136, summary["matrix_rows"])
+        self.assertEqual(137, summary["packaged_skills"])
+        self.assertEqual(137, summary["matrix_rows"])
         self.assertEqual(10, summary["plugins"])
         self.assertEqual(
             [
@@ -62,8 +62,11 @@ class CodexSkillFarmAuditTests(unittest.TestCase):
             profile = Path(tmp)
             cache = profile / "plugins" / "cache" / "personal"
             for plugin, skills in self.audit.package_skill_dirs(ROOT / "codex_packages" / "plugins").items():
+                manifest = json.loads(
+                    (ROOT / "codex_packages" / "plugins" / plugin / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8")
+                )
                 for skill in skills:
-                    target = cache / plugin / "0.1.0" / "skills" / skill.name
+                    target = cache / plugin / manifest["version"] / "skills" / skill.name
                     target.mkdir(parents=True)
                     (target / "SKILL.md").write_text((skill / "SKILL.md").read_text(encoding="utf-8"), encoding="utf-8")
             config_lines = [
@@ -83,7 +86,7 @@ class CodexSkillFarmAuditTests(unittest.TestCase):
             summary, problems = self.audit.audit_profile(profile)
             self.assertEqual([], problems)
             self.assertEqual(10, summary["enabled_plugins"])
-            self.assertEqual(136, summary["installed_skills"])
+            self.assertEqual(137, summary["installed_skills"])
 
     def test_profile_audit_rejects_forbidden_frontmatter(self):
         with tempfile.TemporaryDirectory() as tmp:

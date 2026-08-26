@@ -27,11 +27,11 @@ class CodexPackageMatrixTests(unittest.TestCase):
     def setUpClass(cls):
         cls.matrix = load_module("generate_codex_package_matrix")
 
-    def test_matrix_covers_the_136_non_exported_skills(self):
+    def test_matrix_covers_the_137_non_exported_skills(self):
         rows = self.matrix.build_rows()
         names = {row["name"] for row in rows}
-        self.assertEqual(136, len(rows))
-        self.assertEqual(136, len(names))
+        self.assertEqual(137, len(rows))
+        self.assertEqual(137, len(names))
         self.assertIn("tbmonitor-papers", names)
         self.assertIn("mtbc-prospect", names)
         self.assertNotIn("remote-compute", names)
@@ -103,8 +103,9 @@ class CodexPackageMatrixTests(unittest.TestCase):
     def test_workflow_packages_are_marked_after_materialization(self):
         rows = self.matrix.build_rows()
         workflow = [row for row in rows if row["classification"] == "packaged-workflow-guarded"]
-        self.assertEqual(10, len(workflow))
+        self.assertEqual(11, len(workflow))
         self.assertEqual({"bio-pathogens", "bio-redac", "ops"}, {row["package_candidate"] for row in workflow})
+        self.assertIn("soumission", {row["name"] for row in workflow})
 
     def test_matrix_keeps_required_verrous_visible(self):
         rows = {row["name"]: row for row in self.matrix.build_rows()}

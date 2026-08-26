@@ -1,6 +1,6 @@
 # Documentation des skills de recherche du groupe Guyeux
 
-Cette collection outille les travaux du groupe Guyeux (FEMTO-ST), dont la phylogénomique évolutive du complexe *Mycobacterium tuberculosis* (MTBC), la génétique des populations et la génomique bactérienne hors MTBC. Elle réunit **176 noms de skills actifs** sur **9 plugins**. Chaque skill est décrit par sa raison d'être et ses compétences ; les skills partagés entre plugins (symlinks) sont documentés une seule fois, sur la page de leur plugin d'origine.
+Cette collection outille les travaux du groupe Guyeux (FEMTO-ST), dont la phylogénomique évolutive du complexe *Mycobacterium tuberculosis* (MTBC), la génétique des populations et la génomique bactérienne hors MTBC. Elle réunit **177 noms de skills actifs** sur **9 plugins**. Chaque skill est décrit par sa raison d'être et ses compétences ; les skills partagés entre plugins (symlinks) sont documentés une seule fois, sur la page de leur plugin d'origine.
 
 [Retour au README du dépôt](../README.md)
 
@@ -38,7 +38,7 @@ Les plugins `maboss` et `droit` relèvent d'autres domaines et sont documentés 
 | [bio_bacteria](bio_bacteria.md) | Domaine bactérien hors MTBC stricto sensu. Porte les méthodes qui ne se transposent pas correctement au complexe M. tuberculosis : assemblage de no… | 9 |
 | [bio_population_genetics](bio_population_genetics.md) | Contexte hôte et outillage générique. Pour une étude M. tuberculosis, l'histoire des populations humaines, les migrations, la paléoclimatologie et… | 55 |
 | [bio_redac](bio_redac.md) | Phase hybride analyse et rédaction. Agrège par symlink les skills des autres plugins pour le moment où l'on passe des résultats phylogénomiques M.… | 1 |
-| [redac](redac.md) | Rédaction et contrôle qualité du manuscrit M. tuberculosis : mise en forme LaTeX, vérification des affirmations et des références, nettoyage stylis… | 30 |
+| [redac](redac.md) | Rédaction et contrôle qualité du manuscrit M. tuberculosis : mise en forme LaTeX, vérification des affirmations et des références, nettoyage stylis… | 31 |
 | [ia](ia.md) | Machine learning et data science au service des analyses MTBC : classification de lignées, prédiction de phénotypes de résistance à partir de génot… | 14 |
 | [multimedia](multimedia.md) | Outillage périphérique (audio, vidéo, synthèse vocale, sous-titrage). Utile à la valorisation et à la communication d'un projet M. tuberculosis (sé… | 5 |
 | [ops](ops.md) | Projets applicatifs du groupe (PrédictOps, OptimOps, DoctrinOps), hors du champ M. tuberculosis ; présents dans la collection pour d'autres travaux. | 4 |
@@ -214,6 +214,7 @@ Les plugins `maboss` et `droit` relèvent d'autres domaines et sont documentés 
 - [`slide-design`](redac.md#slide-design) : Transforme une courte description de ce que l'on veut dire en une a quelques slides de qua…
 - [`slide-polish`](redac.md#slide-polish) : Amelioration ciblee d'une slide Beamer existante, sur le fond et sur la forme, avec une et…
 - [`snp-distance`](bio_pathogens.md#snp-distance) : Boîte à outils académique (groupe Guyeux, FEMTO-ST) : calcule des matrices de distances SN…
+- [`soumission`](redac.md#soumission) : Gère tout le cycle de soumission d'un article scientifique, de la préparation au suivi, av…
 - [`spaam-ancient-metagenome-dir`](bio_pathogens.md#spaam-ancient-metagenome-dir) : Interroge SPAAM AncientMetagenomeDir, catalogue communautaire de référence de tous les éch…
 - [`spaam-community`](bio_pathogens.md#spaam-community) : Index de l'écosystème communautaire SPAAM (Standards, Precautions and Advances in Ancient…
 - [`spdi-annotation`](bio_pathogens.md#spdi-annotation) : Boîte à outils académique (groupe Guyeux, FEMTO-ST) : annote les variants SPDI du MTBC ave…

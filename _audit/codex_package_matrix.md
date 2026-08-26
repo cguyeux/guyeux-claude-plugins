@@ -3,12 +3,12 @@
 Ce fichier est genere par `_audit/tools/generate_codex_package_matrix.py`.
 Il inventorie les skills canoniques absents de `codex_skills.json` et indique le premier traitement requis pour les empaqueter dans Codex.
 
-- Total non exporte Codex : 136
+- Total non exporte Codex : 137
 - Deja materialises dans un paquet pilote : 5
 - Deja materialises dans des paquets directs : 48
 - Deja materialises dans des paquets payload audites : 15
 - Deja materialises avec adaptation runtime Codex : 58
-- Deja materialises avec garde-fou workflow Codex : 10
+- Deja materialises avec garde-fou workflow Codex : 11
 - Bloques par workflow personnel d'ecriture : 0
 - Adaptation runtime Claude ou MCP requise : 0
 - Audit de payload requis : 0
@@ -21,7 +21,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | bio-bacteria | 8 |
 | bio-pathogens | 39 |
 | bio-population-genetics | 47 |
-| bio-redac | 2 |
+| bio-redac | 3 |
 | guyeux-phylo-pilot | 5 |
 | ia | 14 |
 | maboss | 12 |
@@ -147,6 +147,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | sklearn-explainability | ia | ia | packaged-direct | unsupported-frontmatter | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | slavevoyages | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | mcp-runtime, supporting-resources, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | snp-distance | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
+| soumission | redac | bio-redac | packaged-workflow-guarded | claude-runtime-reference, project-memory-write, script-payload, supporting-resources, web-runtime | Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution. |
 | spaam-ancient-metagenome-dir | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | spaam-community | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | spdi-annotation | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |

@@ -1,7 +1,7 @@
 {
   "name": "bio-redac",
-  "version": "0.1.0",
-  "description": "Local Codex package for 2 migrated Claude skills.",
+  "version": "0.1.0+codex.20260826082658",
+  "description": "Local Codex package for 3 migrated Claude skills.",
   "author": {
     "name": "Christophe Guyeux"
   },

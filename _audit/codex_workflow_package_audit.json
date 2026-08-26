@@ -77,7 +77,7 @@
         "script-payload"
       ],
       "unsupported_frontmatter": [],
-      "file_count": 5,
+      "file_count": 4,
       "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
       "audit": {
         "copied_files_expected": 4,
@@ -89,6 +89,31 @@
         "excluded_roots": [
           "__pycache__"
         ]
+      }
+    },
+    {
+      "name": "documentation",
+      "source_plugin": "ops",
+      "canonical_path": "ops/skills/documentation",
+      "package_candidate": "ops",
+      "packaged_in": [
+        "ops"
+      ],
+      "classification": "packaged-workflow-guarded",
+      "signals": [
+        "project-memory-write"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 1,
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 3284,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 3767,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
       }
     },
     {
@@ -113,7 +138,7 @@
         "disable-model-invocation",
         "user-invocable"
       ],
-      "file_count": 4,
+      "file_count": 3,
       "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
       "audit": {
         "copied_files_expected": 3,
@@ -125,6 +150,41 @@
         "excluded_roots": [
           "__pycache__"
         ]
+      }
+    },
+    {
+      "name": "fig-ideation",
+      "source_plugin": "redac",
+      "canonical_path": "redac/skills/fig-ideation",
+      "package_candidate": "bio-redac",
+      "packaged_in": [
+        "bio-redac"
+      ],
+      "classification": "packaged-workflow-guarded",
+      "signals": [
+        "claude-runtime-reference",
+        "data-payload",
+        "mcp-runtime",
+        "project-memory-write",
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 15,
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
+      "audit": {
+        "copied_files_expected": 15,
+        "copied_bytes_expected": 127230,
+        "copied_files_actual": 15,
+        "copied_bytes_actual": 127613,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
       }
     },
     {
@@ -224,6 +284,35 @@
       }
     },
     {
+      "name": "soumission",
+      "source_plugin": "redac",
+      "canonical_path": "redac/skills/soumission",
+      "package_candidate": "bio-redac",
+      "packaged_in": [
+        "bio-redac"
+      ],
+      "classification": "packaged-workflow-guarded",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "script-payload",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 11,
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
+      "audit": {
+        "copied_files_expected": 11,
+        "copied_bytes_expected": 152905,
+        "copied_files_actual": 11,
+        "copied_bytes_actual": 154065,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
       "name": "strain-qc",
       "source_plugin": "bio_pathogens",
       "canonical_path": "bio_pathogens/skills/strain-qc",
@@ -248,63 +337,6 @@
         "copied_bytes_expected": 33816,
         "copied_files_actual": 1,
         "copied_bytes_actual": 34194,
-        "excluded_files": 0,
-        "excluded_bytes": 0,
-        "excluded_roots": []
-      }
-    },
-    {
-      "name": "fig-ideation",
-      "source_plugin": "redac",
-      "canonical_path": "redac/skills/fig-ideation",
-      "package_candidate": "bio-redac",
-      "packaged_in": [],
-      "classification": "blocked-by-personal-workflow",
-      "signals": [
-        "claude-runtime-reference",
-        "data-payload",
-        "project-memory-write",
-        "script-payload",
-        "supporting-resources",
-        "unsupported-frontmatter",
-        "web-runtime"
-      ],
-      "unsupported_frontmatter": [
-        "argument-hint",
-        "user-invocable"
-      ],
-      "file_count": 27,
-      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage.",
-      "audit": {
-        "copied_files_expected": 15,
-        "copied_bytes_expected": 127230,
-        "copied_files_actual": 15,
-        "copied_bytes_actual": 127613,
-        "excluded_files": 0,
-        "excluded_bytes": 0,
-        "excluded_roots": []
-      }
-    },
-    {
-      "name": "documentation",
-      "source_plugin": "ops",
-      "canonical_path": "ops/skills/documentation",
-      "package_candidate": "ops",
-      "packaged_in": [
-        "ops"
-      ],
-      "classification": "packaged-workflow-guarded",
-      "signals": [
-        "project-memory-write"
-      ],
-      "unsupported_frontmatter": [],
-      "file_count": 1,
-      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
-      "audit": {
-        "copied_files_expected": 1,
-        "copied_bytes_expected": 3284,
-        "copied_files_actual": 1,
-        "copied_bytes_actual": 3767,
         "excluded_files": 0,
         "excluded_bytes": 0,
         "excluded_roots": []

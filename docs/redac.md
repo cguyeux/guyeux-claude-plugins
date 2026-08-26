@@ -6,13 +6,13 @@
 
 Rédaction et contrôle qualité du manuscrit M. tuberculosis : mise en forme LaTeX, vérification des affirmations et des références, nettoyage stylistique, réponse aux relecteurs, dépôt Zenodo et pont Overleaf.
 
-Skills propres (canoniques) : **30** ; skills partagés utilisés (symlinks) : **4**.
+Skills propres (canoniques) : **31** ; skills partagés utilisés (symlinks) : **4**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [beamer-slides](#beamer-slides) ; [bib-check](#bib-check) ; [biblatex](#biblatex) ; [claim-check](#claim-check) ; [cv](#cv) ; [deai-latex](#deai-latex) ; [docs-latex](#docs-latex) ; [fig-check](#fig-check) ; [fig-ideation](#fig-ideation) ; [grant-proposal](#grant-proposal) ; [humanizer](#humanizer) ; [latex-build](#latex-build) ; [latex-document](#latex-document) ; [latex-formatting](#latex-formatting) ; [latex-paper-en](#latex-paper-en) ; [latex-posters](#latex-posters) ; [latex-tables](#latex-tables) ; [latex-writing](#latex-writing) ; [lit-review](#lit-review) ; [literature-access](#literature-access) ; [manuscript-review](#manuscript-review) ; [overleaf-bridge](#overleaf-bridge) ; [pdf-to-latex](#pdf-to-latex) ; [reviewer-response](#reviewer-response) ; [slide-design](#slide-design) ; [slide-polish](#slide-polish) ; [supp-check](#supp-check) ; [synthesize-research](#synthesize-research) ; [theme-factory](#theme-factory) ; [zenodo-deposit](#zenodo-deposit)
+Sommaire : [beamer-slides](#beamer-slides) ; [bib-check](#bib-check) ; [biblatex](#biblatex) ; [claim-check](#claim-check) ; [cv](#cv) ; [deai-latex](#deai-latex) ; [docs-latex](#docs-latex) ; [fig-check](#fig-check) ; [fig-ideation](#fig-ideation) ; [grant-proposal](#grant-proposal) ; [humanizer](#humanizer) ; [latex-build](#latex-build) ; [latex-document](#latex-document) ; [latex-formatting](#latex-formatting) ; [latex-paper-en](#latex-paper-en) ; [latex-posters](#latex-posters) ; [latex-tables](#latex-tables) ; [latex-writing](#latex-writing) ; [lit-review](#lit-review) ; [literature-access](#literature-access) ; [manuscript-review](#manuscript-review) ; [overleaf-bridge](#overleaf-bridge) ; [pdf-to-latex](#pdf-to-latex) ; [reviewer-response](#reviewer-response) ; [slide-design](#slide-design) ; [slide-polish](#slide-polish) ; [soumission](#soumission) ; [supp-check](#supp-check) ; [synthesize-research](#synthesize-research) ; [theme-factory](#theme-factory) ; [zenodo-deposit](#zenodo-deposit)
 
 ### beamer-slides
 
@@ -169,6 +169,12 @@ Compétences : taper /slide-design ; demander une ou deux slides sur une idee ; 
 Amelioration ciblee d'une slide Beamer existante, sur le fond et sur la forme, avec une etape obligatoire de brassage large : relire la matiere du projet (cahier de labo, manuscrit, JOURNAL, claim-check) pour reconstruire la these pleine et eviter la moyennisation par polissage, ce defaut classique qui rend une slide moyenne plus belle en sacrifiant specificite, nuance et voix. Compile et lit visuellement les PNG, choisit une modalite (TikZ, Mermaid, frise, big number, carte via geo-map), applique deai-latex etendu, score chaque version sur 16 points avec veto anti-moyennisation, itere tant que le score progresse, puis enchaine une boucle de proprete visuelle sur crops haute resolution et un test final de voix scientifique.
 
 Compétences : taper /slide-polish ; demander d'ameliorer, de retravailler ou de rendre meilleure une slide precise existante, plutot que d'en creer une nouvelle ou de generer un deck entier
+
+### soumission
+
+Gère tout le cycle de soumission d'un article scientifique, de la préparation au suivi, avec exécution externe seulement sur demande explicite : choisir la revue cible (base de revues avec scope, contraintes de longueur, frais réels, facteur d'impact et délai de première décision), contrôler que le manuscrit est prêt (dont la version française main_fr.tex), se connecter aux portails éditeurs par ORCID, déposer le préprint sur bioRxiv/medRxiv/arXiv et le code sur le GitHub centralisateur, remplir le formulaire de soumission, tenir le registre central des soumissions (qui, où, quand, statut) et en tirer les enseignements des rejets
+
+Compétences : l'utilisateur veut « soumettre un article », « choisir une revue », « où soumettre ce papier », « préparer la soumission », « déposer le préprint », « où en sont mes soumissions », « le journal a répondu », « on m'a rejeté, où resoumettre », ou tape /soumission
 
 ### supp-check
 

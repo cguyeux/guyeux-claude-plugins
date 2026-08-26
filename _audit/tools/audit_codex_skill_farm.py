@@ -119,7 +119,19 @@ def installed_profile_skill_dirs(profile_root: Path) -> list[Path]:
     cache = profile_plugin_cache(profile_root)
     if not cache.is_dir():
         return []
-    return sorted(cache.glob("*/0.1.0/skills/*"))
+    installed: list[Path] = []
+    known_plugins: set[str] = set()
+    for plugin in sorted(PACKAGES_ROOT.iterdir()):
+        manifest_path = plugin / ".codex-plugin" / "plugin.json"
+        if not manifest_path.is_file():
+            continue
+        known_plugins.add(plugin.name)
+        version = load_json(manifest_path).get("version")
+        if isinstance(version, str) and version:
+            installed.extend((cache / plugin.name / version / "skills").glob("*"))
+    for plugin in sorted(path for path in cache.iterdir() if path.is_dir() and path.name not in known_plugins):
+        installed.extend(plugin.glob("*/skills/*"))
+    return sorted(installed)
 
 
 def profile_config(profile_root: Path) -> dict[str, Any]:
@@ -191,12 +203,12 @@ def audit_repository(root: Path = ROOT) -> tuple[dict[str, Any], list[str]]:
     classifications = {row["classification"] for row in rows}
     row_names = {row["name"] for row in rows}
 
-    if len(registry) != 189:
+    if len(registry) != 190:
         problems.append(f"registre canonique inattendu: {len(registry)}")
     if len(exports) != 53:
         problems.append(f"exports directs inattendus: {len(exports)}")
-    if len(omitted) != 136:
-        problems.append(f"canoniques empaquetes attendus 136, obtenu {len(omitted)}")
+    if len(omitted) != 137:
+        problems.append(f"canoniques empaquetes attendus 137, obtenu {len(omitted)}")
     if row_names != omitted:
         problems.append("la matrice paquet ne couvre pas exactement canon - exports")
     if packaged != omitted:

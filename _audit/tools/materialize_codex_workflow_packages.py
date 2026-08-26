@@ -2,6 +2,7 @@
 """Materialize project-workflow Codex packages with explicit guardrails."""
 from __future__ import annotations
 
+import argparse
 import fnmatch
 import json
 import re
@@ -134,6 +135,62 @@ def adapt_workflow_text(text: str, row: dict[str, Any]) -> str:
     return text
 
 
+def adapt_submission_text(text: str) -> str:
+    """Replace Claude-only submission runtime details in the Codex copy."""
+    text = re.sub(
+        r"\nallowed-tools:\n(?:[ \t]+-[^\n]*\n)+",
+        "\n",
+        text,
+        count=1,
+    )
+    replacements = {
+        "~/.claude/knowledge/journals": "~/.agents/knowledge/journals",
+        "`tabs_context_mcp{createIfEmpty:true}`": "`agent-browser --session soumission open <url>`",
+        "tabs_context_mcp{createIfEmpty:true}": "agent-browser --session soumission open <url>",
+        "`tabs_close_mcp`": "`agent-browser --session soumission close`",
+        "tabs_close_mcp": "agent-browser --session soumission close",
+        "`tabs_create_mcp`": "`agent-browser click <ref> --new-tab`",
+        "tabs_create_mcp": "agent-browser click <ref> --new-tab",
+        "`navigate`": "`agent-browser open`",
+        "`read_page`": "`agent-browser snapshot -i`",
+        "`get_page_text`": "`agent-browser get text body`",
+        "`AskUserQuestion`": "une question explicite à l'utilisateur",
+    }
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+    text = text.replace("---\n\nname:", "---\nname:", 1)
+    text = text.replace(
+        "puis un `tabId` explicite passé à chaque `agent-browser open`",
+        "puis la même session nommée utilisée avec `agent-browser open`",
+    )
+    text = text.replace(
+        "puis `AGENTS.md` ou, à défaut,\n"
+        "   `AGENTS.md` or `AGENTS.md or CLAUDE.md fallback` fallback.",
+        "puis `AGENTS.md`, ou `CLAUDE.md` seulement comme registre historique.",
+    )
+    navigation_note = (
+        "\n## Navigation sous Codex\n\n"
+        "Utiliser le skill `agent-browser` avec une session nommée propre au manuscrit. "
+        "Suivre la boucle `open`, `snapshot -i`, action, nouveau `snapshot -i`, puis "
+        "fermer la session avant de rendre la main. Activer les limites de domaine et "
+        "les frontières de contenu quand elles sont disponibles. Ne jamais enregistrer "
+        "un état d'authentification, saisir un secret ou franchir une confirmation légale. "
+        "Si `agent-browser` ou un navigateur équivalent n'est pas disponible, rester en "
+        "préparation locale et signaler le verrou au lieu de simuler l'action externe.\n"
+    )
+    if "# /soumission" in text and "## Navigation sous Codex" not in text:
+        text = text.rstrip() + "\n" + navigation_note
+    return text
+
+
+def adapt_submission_payload(target: Path) -> None:
+    for path in target.rglob("*"):
+        if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
+            continue
+        text = path.read_text(encoding="utf-8")
+        path.write_text(adapt_submission_text(text), encoding="utf-8")
+
+
 def clean_text_payload(target: Path) -> None:
     for path in target.rglob("*"):
         if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
@@ -211,6 +268,8 @@ def copy_skill(source: Path, target: Path, row: dict[str, Any]) -> None:
     shutil.copytree(source, target, dirs_exist_ok=True, ignore=ignore)
     skill_md = target / "SKILL.md"
     skill_md.write_text(adapt_workflow_text(skill_md.read_text(encoding="utf-8"), row), encoding="utf-8")
+    if row["name"] == "soumission":
+        adapt_submission_payload(target)
     clean_text_payload(target)
 
 
@@ -225,9 +284,14 @@ def all_package_skill_counts() -> dict[str, int]:
 
 def manifest(package_name: str, skill_count: int) -> dict[str, Any]:
     meta = PACKAGE_METADATA[package_name]
+    manifest_path = PACKAGES_ROOT / package_name / ".codex-plugin" / "plugin.json"
+    version = "0.1.0"
+    if manifest_path.is_file():
+        current = json.loads(manifest_path.read_text(encoding="utf-8"))
+        version = current.get("version") or version
     return {
         "name": package_name,
-        "version": "0.1.0",
+        "version": version,
         "description": f"Local Codex package for {skill_count} migrated Claude skills.",
         "author": {"name": "Christophe Guyeux"},
         "skills": "./skills/",
@@ -279,11 +343,18 @@ def write_audit(rows: list[dict[str, Any]]) -> None:
     MD_OUT.write_text("\n".join(lines), encoding="utf-8")
 
 
-def materialize() -> list[dict[str, Any]]:
+def materialize(selected_names: set[str] | None = None) -> list[dict[str, Any]]:
     audit_rows: list[dict[str, Any]] = []
     by_package: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows_to_materialize():
+        if selected_names is not None and row["name"] not in selected_names:
+            continue
         by_package[row["package_candidate"]].append(row)
+
+    found = {row["name"] for rows in by_package.values() for row in rows}
+    if selected_names is not None and found != selected_names:
+        missing = sorted(selected_names - found)
+        raise ValueError(f"skills workflow absents de la matrice : {', '.join(missing)}")
 
     for package_name, rows in sorted(by_package.items()):
         if package_name not in PACKAGE_METADATA:
@@ -329,12 +400,32 @@ def materialize() -> list[dict[str, Any]]:
     ordered_names = ["guyeux-phylo-pilot"] + sorted(name for name in existing if name != "guyeux-phylo-pilot")
     marketplace["plugins"] = [existing[name] for name in ordered_names]
     MARKETPLACE.write_text(json.dumps(marketplace, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    materialized_rows = list(audit_rows)
+    if selected_names is not None and JSON_OUT.is_file():
+        previous = json.loads(JSON_OUT.read_text(encoding="utf-8")).get("rows", [])
+        current = {row["name"]: row for row in rows_to_materialize()}
+        merged = {
+            row["name"]: {**current.get(row["name"], row), "audit": row["audit"]}
+            for row in previous
+            if row["name"] not in selected_names
+        }
+        merged.update({row["name"]: row for row in audit_rows})
+        audit_rows = [merged[name] for name in sorted(merged)]
     write_audit(audit_rows)
-    return audit_rows
+    return materialized_rows
 
 
 def main() -> int:
-    rows = materialize()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--skill",
+        action="append",
+        default=[],
+        help="materialiser seulement ce skill et conserver les autres lignes d'audit",
+    )
+    args = parser.parse_args()
+    selected = set(args.skill) or None
+    rows = materialize(selected)
     by_package = Counter(row["package_candidate"] for row in rows)
     print(f"OK : {len(rows)} skills workflow materialises")
     print("package: " + ", ".join(f"{key}={value}" for key, value in sorted(by_package.items())))

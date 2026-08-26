@@ -140,9 +140,14 @@ def clean_text_payload(target: Path) -> None:
 
 def manifest(package_name: str, skill_count: int) -> dict[str, Any]:
     meta = PACKAGE_METADATA[package_name]
+    manifest_path = PACKAGES_ROOT / package_name / ".codex-plugin" / "plugin.json"
+    version = "0.1.0"
+    if manifest_path.is_file():
+        current = json.loads(manifest_path.read_text(encoding="utf-8"))
+        version = current.get("version") or version
     return {
         "name": package_name,
-        "version": "0.1.0",
+        "version": version,
         "description": f"Local direct Codex package for {skill_count} migrated Claude skills.",
         "author": {"name": "Christophe Guyeux"},
         "skills": "./skills/",

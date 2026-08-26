@@ -68,6 +68,14 @@ Sur le profil personnel courant, 14 contrôles sur 15 passent. Le seul écart es
 le même registre canonique rendu obsolète par ce travail non suivi. Les MCP,
 plugins, hooks, instructions, règles, vues KB et fermes installés sont conformes.
 
+## Suivi après CCX-16
+
+Le 2026-08-26, `soumission` a été intégré comme 190e canonique et 137e skill
+empaqueté, puis installé dans `bio-redac` sous une version cache-bustée. L'audit
+du profil personnel passe désormais 15 contrôles sur 15. Les comptes de la
+reconstruction vierge ci-dessus restent ceux du témoin historique exécuté avant
+cette extension.
+
 ## Contrôles adversariaux
 
 - le mode par défaut de `snapshot`, `restore` et `reconstruct` est un dry-run ;

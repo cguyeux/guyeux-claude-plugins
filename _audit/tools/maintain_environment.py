@@ -422,7 +422,7 @@ def audit(home: Path) -> tuple[dict[str, Any], int]:
         if direct.exists() or direct.is_symlink():
             disabled_hits.append(name)
         cache = home / ".codex" / "plugins" / "cache" / "personal"
-        if cache.is_dir() and any(cache.glob(f"*/0.1.0/skills/{name}")):
+        if cache.is_dir() and any(cache.glob(f"*/*/skills/{name}")):
             disabled_hits.append(name)
     add("disabled-skills", not disabled_hits, f"visible={len(set(disabled_hits))}")
     config = home / ".codex" / "config.toml"

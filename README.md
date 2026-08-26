@@ -39,7 +39,7 @@ La collection s'organise comme la chaîne de production d'un article de phylogé
 | 9. Vérification et réponse aux relecteurs | `redac` |
 | 10. Valorisation et dépôt (DOI, Overleaf, financements) | `redac` |
 
-Le catalogue complet est dans le [dossier `docs/`](docs/README.md) : une page par plugin, plus un index alphabétique des 188 noms de skills actifs. Les deux versions intentionnellement divergentes de `phylo-history` portent ce total à 189 répertoires canoniques. Les plugins `maboss` et `droit` relèvent de domaines séparés et y sont documentés à part.
+Le catalogue complet est dans le [dossier `docs/`](docs/README.md) : une page par plugin, plus un index alphabétique des 189 noms de skills actifs. Les deux versions intentionnellement divergentes de `phylo-history` portent ce total à 190 répertoires canoniques. Les plugins `maboss` et `droit` relèvent de domaines séparés et y sont documentés à part.
 
 ## Installation
 
