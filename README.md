@@ -68,6 +68,7 @@ python3 _audit/tools/audit_execpolicy.py --check
 python3 _audit/tools/sync_execpolicy.py
 python3 _audit/tools/audit_claude_memories.py --check
 python3 _audit/tools/import_claude_memories.py --check
+python3 _audit/tools/audit_auxiliary_surfaces.py --check
 python3 _audit/tools/check_all.py --profile-root ~/.codex
 python3 _audit/tools/check_all.py --source git-index --profile-root ~/.codex
 ```
@@ -108,6 +109,12 @@ l'interface officielle Codex avec une sélection explicite au niveau projet,
 un dry-run par défaut, une sauvegarde récupérable avant écriture et une
 vérification des scopes et hashes. Un projet sensible, incomplet ou non proposé
 par le détecteur officiel est refusé sans option de contournement.
+
+`audit_auxiliary_surfaces.py` porte le contrôle CCX-14 sur les plugins
+auxiliaires, agents, commandes, MCP et réglages d'interface. Il vérifie le
+statusline TUI natif, les quatre MCP déjà présents, le runtime Pyright et
+l'installation Graphify adaptée sous `~/.agents/skills`, sans sérialiser les
+valeurs secrètes de configuration.
 
 `check_all.py` regroupe les contrôles de non-dérive : registres générés,
 documentation, audit des skills, fermes Codex et Agents, profil Codex réel et

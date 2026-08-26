@@ -31,5 +31,7 @@
     "writing-hookify-rules"
   ],
   "claude_only_expected": [],
-  "agents_only_expected": []
+  "agents_only_expected": [
+    "graphify"
+  ]
 }

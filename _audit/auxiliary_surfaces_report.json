@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "codex_version": "codex-cli 0.149.1",
+  "pyright_version": "pyright 1.1.410",
+  "graphify_version": "0.9.50",
+  "graphify": {
+    "canonical_path": "/home/christophe/.agents/skills/graphify",
+    "installed": true,
+    "provenance_present": true,
+    "historical_codex_duplicate_absent": true,
+    "forbidden_instruction_patterns": []
+  },
+  "codex_tui": {
+    "status_line": [
+      "current-dir",
+      "model-with-reasoning",
+      "context-remaining"
+    ],
+    "terminal_title": [
+      "project-name",
+      "git-branch",
+      "model-with-reasoning",
+      "task-progress"
+    ]
+  },
+  "codex_features": {
+    "memories": true,
+    "terminal_resize_reflow_absent": true,
+    "external_migration_absent": true
+  },
+  "mcp": {
+    "servers": [
+      {
+        "name": "context7",
+        "transport": "http",
+        "credential_header_count": 1
+      },
+      {
+        "name": "superhuman",
+        "transport": "http",
+        "credential_header_count": 0
+      },
+      {
+        "name": "tbannotator",
+        "transport": "http",
+        "credential_header_count": 0
+      },
+      {
+        "name": "tbmonitor",
+        "transport": "http",
+        "credential_header_count": 0
+      }
+    ],
+    "names_match_expected": true,
+    "secret_values_serialized": false,
+    "note": "Un en-tête statique porteur d'un secret reste à durcir, sans copie ni exposition de sa valeur."
+  },
+  "claude_auxiliary_inventory": {
+    "agent_markdown_count": 4,
+    "agent_names": [
+      "bioinfo-analyst",
+      "manuscript-orchestrator",
+      "manuscript-reviewer",
+      "manuscript-reviser"
+    ],
+    "command_markdown_count": 0,
+    "statusline_script_present": true
+  },
+  "decisions": [
+    {
+      "surface": "graphify",
+      "decision": "import-adapte",
+      "reason": "capacité absente, source amont épinglée"
+    },
+    {
+      "surface": "pyright-lsp",
+      "decision": "remplace-runtime-local",
+      "reason": "plugin Claude sans payload serveur"
+    },
+    {
+      "surface": "agents-bio-redac",
+      "decision": "abandonne-redondant",
+      "reason": "prompts Claude obsolètes, pipelines Codex déjà présents"
+    },
+    {
+      "surface": "commandes-Claude",
+      "decision": "aucun-import",
+      "reason": "aucune commande Markdown détectée"
+    },
+    {
+      "surface": "MCP",
+      "decision": "conserve",
+      "reason": "les quatre noms observés sont déjà configurés dans Codex"
+    },
+    {
+      "surface": "statusline",
+      "decision": "remplace-TUI-native",
+      "reason": "configuration Codex persistante"
+    },
+    {
+      "surface": "caches-marketplace",
+      "decision": "aucun-import",
+      "reason": "caches non canoniques"
+    },
+    {
+      "surface": "frontend-design",
+      "decision": "aucun-import",
+      "reason": "plugin Claude désactivé et capacité Codex déjà disponible"
+    }
+  ],
+  "ok": true
+}
