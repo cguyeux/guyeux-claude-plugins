@@ -485,6 +485,221 @@ def cmd_reject(args) -> int:
     return 0
 
 
+# ── audit : ce que le registre ne sait pas de lui-meme ───────────────────────
+# P46. Le 2026-08-30, trois ecarts ont ete trouves A LA MAIN sur douze lignes :
+# une decision (desk-reject mSystems du 2026-08-09) consignee dans le cahier du
+# projet et jamais reportee ici, ce qui laissait le registre afficher une double
+# soumission active du meme manuscrit pendant 21 jours ; un quatrieme rejet absent
+# de rejections.md ; et un champ `fr_version` perdu lors d'une resoumission, parce
+# qu'`add` cree une ligne neuve sans heriter des acquis du manuscrit. Aucun de ces
+# trois defauts n'est detectable par `list` ou par `stale` : ils ne portent pas sur
+# l'age d'un statut mais sur sa VERITE, et la verite vit dans le cahier du projet.
+#
+# Ce que cette commande n'est PAS : un verdict. Elle apparie du texte libre, donc
+# elle signale des entrees A LIRE, jamais une decision a enregistrer. Le registre
+# ne se corrige que par `set` ou `reject`, apres lecture de l'entree signalee.
+
+PROJECT_ROOTS_ENV = "SOUMISSION_PROJECTS"
+_DEFAULT_PROJECT_ROOT = Path.home() / "docs" / "codes" / "mtbc"
+# Un projet vit a la racine du depot, ou archive : les deux comptent pour l'audit,
+# une soumission continuant de vivre apres l'archivage du projet qui l'a produite.
+_PROJECT_SUBDIRS = ("", "fini", "projets_abandonnes")
+
+# Largeur de la fenetre de co-occurrence, en caracteres de part et d'autre du nom
+# de la revue. 200 tient une phrase et sa voisine ; au-dela, on retrouve le bruit
+# d'une entree entiere, en deca on manque « X. La revue a refuse le manuscrit ».
+_FENETRE = 90
+
+_DECISION_WORDS = (
+    # Motifs FORTS : des formes ou une revue PRONONCE une decision, pas des mots
+    # isoles. Mesure du 2026-08-30 : la liste large ("reject", "refus", "accept"…)
+    # rendait 4 faux positifs sur 5 signalements, un cahier de soumission parlant de
+    # rejets a longueur de page, y compris de ceux des projets voisins.
+    "desk-reject", "desk reject", "reject-desk", "rejet sans revue",
+    "a ete rejete", "a ete rejetee", "a ete refuse", "a ete refusee",
+    "a ete accepte", "a ete acceptee", "hors perimetre",
+    "decision editoriale", "notification de rejet", "revisions majeures",
+    "major revision", "minor revision", "accepte pour publication",
+)
+
+_JOURNAL_STOPWORDS = {"the", "of", "and", "for", "journal", "international",
+                      "review", "reviews", "research", "letters", "annals",
+                      "archives", "advances", "current", "open", "access"}
+
+
+def _deaccent(t: str) -> str:
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", t)
+                   if unicodedata.category(c) != "Mn").lower()
+
+
+def project_dir(project: str) -> Path | None:
+    """Ou vit le projet qui a produit cette soumission, archive ou non."""
+    roots = [Path(x) for x in os.environ.get(PROJECT_ROOTS_ENV, "").split(":") if x]
+    roots.append(_DEFAULT_PROJECT_ROOT)
+    for root in roots:
+        for sub in _PROJECT_SUBDIRS:
+            cand = (root / sub / project) if sub else (root / project)
+            if (cand / "cahier_de_labo.md").exists():
+                return cand
+    return None
+
+
+def _cahier_entries(d: Path) -> list[tuple[str, str, str]]:
+    """(date, titre, corps) par entree de cahier, archive comprise."""
+    out: list[tuple[str, str, str]] = []
+    for name in ("cahier_de_labo.md", "cahier_de_labo_archive.md"):
+        f = d / name
+        if not f.exists():
+            continue
+        cur_date, cur_title, buf = "", "", []
+        for line in f.read_text(errors="ignore").splitlines():
+            m = re.match(r"^##\s+(\d{4}-\d{2}-\d{2})\s*(.*)$", line)
+            if m:
+                if cur_date:
+                    out.append((cur_date, cur_title, "\n".join(buf)))
+                cur_date, cur_title, buf = m.group(1), m.group(2)[:90], []
+            elif cur_date:
+                buf.append(line)
+        if cur_date:
+            out.append((cur_date, cur_title, "\n".join(buf)))
+    return out
+
+
+def _journal_tokens(row: dict) -> list[str]:
+    toks = [t for t in re.split(r"[^a-z0-9]+", _deaccent(row.get("journal_name", "")))
+            if len(t) >= 4 and t not in _JOURNAL_STOPWORDS]
+    key = _deaccent(row.get("journal_key", "")).replace("-", " ")
+    toks += [t for t in key.split() if len(t) >= 4 and t not in _JOURNAL_STOPWORDS]
+    return sorted(set(toks))
+
+
+def _self_test() -> int:
+    """Temoin positif : le cas qui a motive cette commande doit etre retrouve.
+
+    Le 2026-08-09, mSystems a rejete Rv2438A hors perimetre ; le cahier du projet le
+    dit, le registre l'a ignore 21 jours. Un detecteur qui ne retrouve pas CE cas ne
+    prouve rien quand il ne signale rien ailleurs. Le test rejoue donc l'appariement
+    sur ce couple connu, sans toucher au registre.
+    """
+    d = project_dir("Rv2438A")
+    if d is None:
+        print("self-test IMPOSSIBLE : projet Rv2438A introuvable sur disque")
+        return 1
+    faux = {"journal_name": "mSystems", "journal_key": "msystems"}
+    toks = _journal_tokens(faux)
+    trouve = []
+    for date, titre, corps in _cahier_entries(d):
+        if date < "2026-08-04":
+            continue
+        texte = _deaccent(titre + "\n" + corps)
+        for t in toks:
+            for m in re.finditer(re.escape(t), texte):
+                fen = texte[max(0, m.start() - _FENETRE):m.end() + _FENETRE]
+                mot = next((w for w in _DECISION_WORDS if w in fen), None)
+                if mot:
+                    trouve.append((date, mot))
+                    break
+            if trouve and trouve[-1][0] == date:
+                break
+    if trouve:
+        print(f"self-test OK : le desk-reject mSystems de Rv2438A est retrouve "
+              f"({trouve[0][0]}, motif « {trouve[0][1]} »)")
+        return 0
+    print("self-test ECHOUE : le temoin positif connu n'est PAS retrouve.")
+    print("  -> tout resultat vide de `audit` est donc ininterpretable ; elargir")
+    print("     _DECISION_WORDS ou _FENETRE avant de conclure quoi que ce soit.")
+    return 1
+
+
+def cmd_audit(args) -> int:
+    if getattr(args, "self_test", False):
+        return _self_test()
+    rows = load()
+    active = [r for r in rows if r.get("status") in ACTIVE or r.get("status") == "preparing"]
+    print(f"=== Audit du registre ({len(rows)} lignes, {len(active)} actives) ===\n")
+    ecarts = 0
+
+    # 1. deux lignes actives pour le meme manuscrit
+    par_projet: dict[str, list[dict]] = {}
+    for r in active:
+        par_projet.setdefault(r.get("project", ""), []).append(r)
+    for proj, rs in sorted(par_projet.items()):
+        if len(rs) > 1:
+            ecarts += 1
+            print(f"[DOUBLE SOUMISSION ACTIVE] {proj} : {len(rs)} lignes actives")
+            for r in rs:
+                print(f"    {r['status']:10s} {r.get('journal_name','?')[:40]:42s} depuis {r.get('submitted_on','?')}")
+            print("    -> un manuscrit ne peut etre en evaluation que dans UNE revue a la fois ;")
+            print("       soit une decision n'a pas ete consignee, soit c'est une faute a corriger.\n")
+
+    # 2. champs acquis perdus a la resoumission
+    HERITABLES = ("preprint_server", "preprint_id", "github_repo", "zenodo_doi", "fr_version")
+    for proj, rs in sorted(par_projet.items()):
+        anciennes = [r for r in rows if r.get("project") == proj and r not in rs]
+        for r in rs:
+            for champ in HERITABLES:
+                if r.get(champ):
+                    continue
+                source = next((a for a in anciennes if a.get(champ)), None)
+                if source:
+                    ecarts += 1
+                    print(f"[CHAMP PERDU] {r['id']} : `{champ}` vide, mais renseigne sur {source['id']}")
+                    print(f"    valeur disponible : {source[champ][:70]}")
+                    print(f"    -> `add` cree une ligne neuve sans heriter ; reporter avec `set`.\n")
+
+    # 3. decision visible dans le cahier du projet, absente du registre
+    for r in active:
+        proj = r.get("project", "")
+        d = project_dir(proj)
+        if d is None:
+            print(f"[PROJET INTROUVABLE] {r['id']} : aucun cahier pour `{proj}`")
+            print(f"    -> ligne non auditable ; definir {PROJECT_ROOTS_ENV} si le depot a bouge.\n")
+            continue
+        toks = _journal_tokens(r)
+        if not toks:
+            continue
+        depuis = r.get("submitted_on") or r.get("status_on") or ""
+        suspects = []
+        for date, titre, corps in _cahier_entries(d):
+            if depuis and date < depuis:
+                continue
+            texte = _deaccent(titre + "\n" + corps)
+            # Co-occurrence RAPPROCHEE, pas presence dans la meme entree : un cahier
+            # de soumission parle de rejets a longueur de page, et exiger seulement
+            # que la revue et un mot de decision figurent dans la meme entree rendait
+            # 4 faux positifs sur 5 signalements au premier essai (mesure 2026-08-30).
+            # La fenetre ramene le test a « ce mot de decision parle-t-il de CETTE
+            # revue », qui est la question posee.
+            hit = None
+            for t in toks:
+                for m in re.finditer(re.escape(t), texte):
+                    fen = texte[max(0, m.start() - _FENETRE):m.end() + _FENETRE]
+                    mot = next((w for w in _DECISION_WORDS if w in fen), None)
+                    if mot:
+                        hit = mot
+                        break
+                if hit:
+                    break
+            if hit:
+                suspects.append((date, titre, hit))
+        if suspects:
+            ecarts += 1
+            print(f"[DECISION POSSIBLE NON CONSIGNEE] {r['id']} ({r['status']} depuis {depuis})")
+            for date, titre, mot in suspects[-3:]:
+                print(f"    cahier {date} [{mot}] : {titre}")
+            print(f"    -> LIRE ces entrees. Si une decision y figure, l'enregistrer avec")
+            print(f"       `submissions.py reject {r['id']} --lesson \"...\"` ou `set`.\n")
+
+    if not ecarts:
+        print("aucun ecart : chaque ligne active est coherente avec le cahier de son projet,")
+        print("aucun manuscrit n'a deux lignes actives, aucun champ acquis n'a ete perdu.")
+        return 0
+    print(f"{ecarts} ecart(s) a verifier. Un signalement n'est pas un verdict :")
+    print("lire l'entree de cahier avant de toucher au registre.")
+    return 1
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -541,6 +756,11 @@ def main() -> int:
     sp = sub.add_parser("stale", help="soumissions sans nouvelle")
     sp.add_argument("--days", type=int, default=60)
     sp.set_defaults(func=cmd_stale)
+
+    sp = sub.add_parser("audit", help="ecarts entre le registre et les cahiers de projet")
+    sp.add_argument("--self-test", action="store_true",
+                    help="rejoue le temoin positif connu (desk-reject mSystems de Rv2438A)")
+    sp.set_defaults(func=cmd_audit)
 
     sp = sub.add_parser("reject", help="enregistre une decision negative")
     sp.add_argument("id")
