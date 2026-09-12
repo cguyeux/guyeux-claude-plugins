@@ -768,15 +768,29 @@ MESO_META = ("preflight", "garde-fou", "garde fou", "pre-vol", "prevol",
              "bloquant")
 
 
-def _est_cite(ligne: str, marqueur: str) -> bool:
+def _est_cite(ligne: str, marqueur: str, profondeur: int = 0) -> bool:
     """Le marqueur est-il entre guillemets ou en emphase, donc MENTIONNE ?
 
     « Mesocentre utilise mais non remercie » entre guillemets francais, "..." ou
     *...* designe le libelle d'une alerte, jamais un calcul qui a tourne.
+
+    `profondeur` est le nombre de guillemets francais ouverts AVANT cette ligne.
+    Il est indispensable et son absence a laisse passer le faux positif une
+    TROISIEME fois le 2026-09-12 : une citation de deux lignes ne montre, sur la
+    ligne du marqueur, que son guillemet fermant, et un test ligne par ligne
+    conclut alors a une trace. Un cahier de laboratoire justifie a 100 colonnes,
+    donc ses citations enjambent les retours a la ligne : c'est le cas normal, pas
+    le cas limite.
     """
     i = ligne.find(marqueur)
     if i < 0:
         return False
+    if profondeur > 0:
+        return True  # citation francaise ouverte sur une ligne precedente
+    # Citation ouverte plus haut et fermee ici : un « \u00bb » sans « \u00ab » avant lui.
+    ferme_orphelin = ligne.find("\u00bb", i + len(marqueur))
+    if ferme_orphelin >= 0 and ligne.rfind("\u00ab", 0, i) < 0:
+        return True
     for ouvre, ferme in (("\u00ab", "\u00bb"), ('"', '"'), ("*", "*"),
                          ("`", "`"), ("\u201c", "\u201d")):
         avant = ligne.rfind(ouvre, 0, i)
@@ -839,12 +853,23 @@ def meso_traces(root: Path) -> list[str]:
             brut = p.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
+        profondeur = 0  # guillemets francais ouverts, suivis d'une ligne a l'autre
         for num, ligne in enumerate(brut.splitlines(), start=1):
             texte = _norm(ligne)
+            if not ligne.strip():
+                # Une citation n'enjambe pas un paragraphe. Sans cette remise a
+                # zero, un guillemet ouvert et jamais ferme -- prose bancale,
+                # copier-coller tronque -- masque TOUT le reste du fichier : un
+                # faux negatif, donc un garde-fou muet sur un calcul reel, ce qui
+                # est plus grave que le faux positif qu'on corrige ici.
+                profondeur = 0
+                continue
+            ouverte = profondeur
+            profondeur = max(0, profondeur + ligne.count("\u00ab") - ligne.count("\u00bb"))
             if any(meta in texte for meta in MESO_META):
                 continue  # la ligne documente le controle, elle ne trace aucun calcul
             for m in MESO_TRACES:
-                if m in texte and not _est_cite(texte, m):
+                if m in texte and not _est_cite(texte, m, ouverte):
                     vues.append(f"{nom}:{num} : « {m} »")
                     break
             if vues and vues[-1].startswith(f"{nom}:"):
