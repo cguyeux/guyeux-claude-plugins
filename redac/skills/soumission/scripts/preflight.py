@@ -195,8 +195,16 @@ def resoumission(root: Path, journal: str | None) -> dict | None:
     resubmit du 2026-08-31, echeance 2026-09-28) : le pre-vol exigeait un verdict
     de diffusion et un cadrage editorial pour un manuscrit deja en evaluation.
 
+    `returned-to-draft` compte autant que `revision`, et le cas est meme plus net :
+    le portail a deja accepte le depot et attribue un numero, et le bureau demande
+    des corrections de forme. Choisir la revue n'est plus une question, elle est
+    choisie. Constate le 2026-09-12 sur mtbc/fini/Rv1125 (9451231), ou le pre-vol
+    exigeait un cadrage editorial et opposait la regle de variation a un dossier
+    deja ouvert chez la revue.
+
     Rend la ligne du registre central, ou None. Les deux portes restent BLOQUANTES
-    quand le registre ne porte aucune revision en cours chez cette revue.
+    quand le registre ne porte, chez cette revue, ni revision ni renvoi en
+    brouillon.
     """
     if not journal:
         return None
@@ -217,7 +225,7 @@ def resoumission(root: Path, journal: str | None) -> dict | None:
         row = dict(zip(cols, vals))
         if (row.get("project", "").lower() == root.name.lower()
                 and row.get("journal_key") == journal
-                and row.get("status") == "revision"):
+                and row.get("status") in ("revision", "returned-to-draft")):
             return row
     return None
 
@@ -842,9 +850,51 @@ def _norm(t: str) -> str:
     return re.sub(r"[{}~]", "", _sans_accents(_delatex_accents(t))).lower()
 
 
-def meso_traces(root: Path) -> list[str]:
-    """Ou la memoire du projet dit qu'un calcul est parti sur mp, mh ou Lumiere."""
-    vues: list[str] = []
+# Indices qu'une ligne rapporte un calcul EXECUTE, et pas seulement le sujet
+# « calcul distant » : un identifiant de job, un chemin sur la machine distante,
+# une option de soumission. C'est le quatrieme etage de ce controle, et le dernier,
+# parce que les trois premiers etaient des heuristiques de FORME (liste de mots,
+# mots meta, guillemets) et qu'aucune ne peut distinguer un cahier qui PARLE de
+# calcul distant d'un cahier qui en RAPPORTE un : toute phrase meta finit par
+# ressembler a une trace. Celui-ci demande autre chose -- que la trace soit
+# ACTIONNABLE. Un compte rendu de calcul porte presque toujours un numero de job
+# ou un chemin ; une phrase sur l'outillage n'en porte pas.
+MESO_PREUVES = (
+    re.compile(r"\b(?:job|jobid|slurm)\s*:?\s*#?\s*\d{4,9}\b"),
+    re.compile(r"\b\d{4,9}\b.{0,40}\b(?:slurm|sbatch|squeue|mesocentre|mesohelios)\b"),
+    re.compile(r"\b(?:slurm|sbatch|squeue|mesocentre|mesohelios)\b.{0,40}\b\d{4,9}\b"),
+    re.compile(r"m[hp]:/\S+"),
+    re.compile(r"--gres=gpu|--partition|scontrol|squeue\s+-"),
+    re.compile(r"\b(?:mesohelios|mesologin)\b"),
+)
+
+
+def _hors_citation(ligne: str) -> str:
+    """La ligne privee de ses fragments cites, ou une preuve ne compte pas.
+
+    Une phrase qui DECRIT une trace la cite souvent telle quelle, et un exemple
+    syntaxiquement valide est indistinguable d'une trace : « un chemin de staging
+    `mh:/Work` » porte litteralement un chemin distant sans qu'aucun calcul n'ait
+    tourne. Chercher les preuves hors des backticks et des guillemets ferme ce
+    dernier trou, quatrieme et derniere incarnation du faux positif du 2026-09-12.
+    """
+    for motif in (r"`[^`]*`", r"\u00ab[^\u00bb]*\u00bb", r'"[^"]*"',
+                  r"\u201c[^\u201d]*\u201d"):
+        ligne = re.sub(motif, " ", ligne)
+    return ligne
+
+
+def meso_traces(root: Path) -> list[tuple[str, bool]]:
+    """Ou la memoire du projet dit qu'un calcul est parti sur mp, mh ou Lumiere.
+
+    Rend des couples (ou, preuve_forte). `preuve_forte` distingue une trace
+    ACTIONNABLE -- numero de job, chemin distant, option de soumission -- d'une
+    simple occurrence du vocabulaire. L'appelant bloque sur la premiere et se
+    contente d'avertir sur la seconde : un mot ne vaut pas un fait, et un
+    garde-fou qui bloque sur un mot finit par bloquer sur sa propre documentation,
+    ce qui est arrive quatre fois le 2026-09-12.
+    """
+    vues: list[tuple[str, bool]] = []
     for nom in MESO_FICHIERS:
         p = root / nom
         if not p.exists():
@@ -870,9 +920,13 @@ def meso_traces(root: Path) -> list[str]:
                 continue  # la ligne documente le controle, elle ne trace aucun calcul
             for m in MESO_TRACES:
                 if m in texte and not _est_cite(texte, m, ouverte):
-                    vues.append(f"{nom}:{num} : « {m} »")
+                    nu = _hors_citation(texte)
+                    forte = any(rx.search(nu) for rx in MESO_PREUVES)
+                    vues.append((f"{nom}:{num} : « {m} »", forte))
                     break
-            if vues and vues[-1].startswith(f"{nom}:"):
+            # Une preuve forte tranche ; sinon continuer, une ligne plus bas peut
+            # en porter une.
+            if vues and vues[-1][1]:
                 break
     return vues
 
@@ -883,12 +937,24 @@ def check_acknowledgements(root: Path, art: Path, rep: Report) -> None:
     cite = any(m in tex for m in MESO_MARQUEURS_TEX)
     traces = meso_traces(root)
 
+    fortes = [ou for ou, forte in traces if forte]
+    faibles = [ou for ou, forte in traces if not forte]
+    traces_txt = [ou for ou, _ in traces]
+
     if traces and cite:
         rep.add(OK, "Mesocentre cite dans les remerciements",
-                "calcul distant trace dans " + ", ".join(traces[:3]))
-    elif traces and not cite:
+                "calcul distant trace dans " + ", ".join(traces_txt[:3]))
+    elif faibles and not fortes and not cite:
+        rep.add(WARN, "Vocabulaire de calcul distant, sans trace d'execution",
+                "Mentionne sans numero de job, chemin distant ni option de "
+                "soumission : " + " ; ".join(faibles[:3]) + "\n"
+                "Probablement une phrase QUI PARLE de calcul distant plutot qu'un "
+                "calcul qui a tourne\n(un cahier de laboratoire parle de ses "
+                "outils). Verifier la ligne : si un calcul a bien eu lieu pour ce "
+                "manuscrit, remercier le mesocentre.")
+    elif fortes and not cite:
         rep.add(FAIL, "Mesocentre utilise mais non remercie",
-                "Trace d'un calcul distant : " + " ; ".join(traces[:3]) + "\n"
+                "Trace d'un calcul distant : " + " ; ".join(fortes[:3]) + "\n"
                 "Ajouter aux remerciements, en anglais et dans la version francaise :\n"
                 f"  {MESO_PHRASE}\n"
                 "Si le calcul cite n'a rien a voir avec ce manuscrit, ignorer ce point "
@@ -1149,7 +1215,8 @@ def check_supplementary(art: Path, rep: Report) -> None:
         rep.add(OK, "Supplementary materials", detail)
 
 
-def check_registry(project: str, journal: str | None, rep: Report) -> None:
+def check_registry(project: str, journal: str | None, rep: Report,
+                   root: Path | None = None) -> None:
     script = Path(__file__).with_name("submissions.py")
     try:
         out = subprocess.run([sys.executable, str(script), "list", "--project", project],
@@ -1163,12 +1230,25 @@ def check_registry(project: str, journal: str | None, rep: Report) -> None:
     else:
         rep.add(WARN, "Ce projet a deja un historique de soumission", listing)
     if journal:
+        # La regle de variation sert a CHOISIR une revue. Sur une resoumission elle
+        # n'a rien a arbitrer : le dossier est deja ouvert chez cette revue, et son
+        # verdict y devient trompeur -- il opposait un REFUS a Rv1125 le 2026-09-12
+        # au motif qu'un autre manuscrit etait en evaluation chez Molecular
+        # Microbiology, alors que Rv1125 y etait deja soumis et renvoye en brouillon.
+        rev = resoumission(root, journal) if root is not None else None
         try:
             out = subprocess.run([sys.executable, str(script), "variety", journal],
                                  capture_output=True, text=True, timeout=30)
-            level = FAIL if out.returncode == 2 else (
-                WARN if "ALERTE" in out.stdout else OK)
-            rep.add(level, f"Regle de variation pour {journal}", out.stdout.strip())
+            if rev:
+                rep.add(OK, f"Regle de variation sans objet ({journal})",
+                        "resoumission chez une revue qui detient deja ce dossier "
+                        f"({rev.get('manuscript_id') or 'sans id'}) : il n'y a pas "
+                        "de cible a choisir.\nVerdict informatif, non bloquant :\n"
+                        + out.stdout.strip())
+            else:
+                level = FAIL if out.returncode == 2 else (
+                    WARN if "ALERTE" in out.stdout else OK)
+                rep.add(level, f"Regle de variation pour {journal}", out.stdout.strip())
         except (subprocess.SubprocessError, OSError) as e:
             rep.add(WARN, "Regle de variation non evaluee", str(e))
 
@@ -1277,7 +1357,7 @@ def main() -> int:
         check_links(art, rep)
     check_supplementary(art, rep)
     check_git(art, rep)
-    check_registry(root.name, args.journal, rep)
+    check_registry(root.name, args.journal, rep, root)
     if not args.journal:
         rep.add(WARN, "Aucune revue cible passee",
                 "Sans --journal, ni les limites de longueur ni la regle de variation "
