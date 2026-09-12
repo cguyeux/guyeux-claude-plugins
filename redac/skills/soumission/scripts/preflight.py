@@ -1035,6 +1035,23 @@ def check_links(art: Path, rep: Report, timeout: float = 8.0) -> None:
         else:
             vivants += 1
 
+    # Un DOI reserve mais non publie rend 404, et c'est une pratique DELIBEREE
+    # (reserver a la soumission, publier au camera-ready). Le distinguer d'un lien
+    # casse, sans quoi ce controle crie au loup sur tout manuscrit qui suit cette
+    # pratique : constate sur mtbc/fini/Rv1125 le 2026-09-12, dont le cahier dit
+    # explicitement « publication du depot Zenodo a l'acceptation ».
+    reserves = [m for m in morts if "doi.org/" in m]
+    morts = [m for m in morts if m not in reserves]
+    if reserves:
+        rep.add(WARN, "DOI non resolu, probablement reserve et non publie",
+                "\n".join(reserves[:6]) + "\n"
+                "Un DOI reserve rend 404 jusqu'a la publication du depot : c'est la "
+                "pratique normale\n(reserver a la soumission, publier au "
+                "camera-ready), et le cahier du projet doit le dire.\n"
+                "Mais le relecteur, lui, suit le lien et voit un 404. Deux issues "
+                "tenables : publier le\ndepot maintenant, ou ecrire dans le "
+                "manuscrit que le DOI sera actif a la publication.\n"
+                "Verifier aussi qu'il ne s'agit pas d'un DOI simplement faux.")
     if morts:
         rep.add(FAIL, "Lien(s) mort(s) dans le manuscrit",
                 "\n".join(morts[:10]) + "\n"
@@ -1050,8 +1067,10 @@ def check_links(art: Path, rep: Report, timeout: float = 8.0) -> None:
         rep.add(WARN, "Liens non verifies (reseau)",
                 f"{len(injoignables)} cible(s) injoignable(s), aucune atteinte : "
                 "probablement pas de reseau ici.\n" + "\n".join(injoignables[:4]))
-    else:
+    elif vivants:
         detail = f"{vivants}/{len(cibles[:40])} cible(s) repondent"
+        if reserves:
+            detail += f", {len(reserves)} DOI non resolu(s), signale(s) a part"
         if injoignables:
             detail += f", {len(injoignables)} injoignable(s) : " + \
                       "; ".join(injoignables[:3])
