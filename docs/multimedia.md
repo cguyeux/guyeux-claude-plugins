@@ -6,7 +6,7 @@
 
 Outillage périphérique (audio, vidéo, synthèse vocale, sous-titrage). Utile à la valorisation et à la communication d'un projet M. tuberculosis (séminaires, supports pédagogiques), pas à l'analyse génomique.
 
-Skills propres (canoniques) : **5** ; skills partagés utilisés (symlinks) : **0**.
+Skills propres (canoniques) : **5** ; skills partagés utilisés (symlinks) : **1**.
 
 [Retour à l'index de la documentation](README.md)
 
@@ -43,3 +43,11 @@ Compétences : compléter, créer ou réparer les sous-titres d'un film muet ; o
 Synthetise un fichier .mp3 a partir d'un fichier texte (.txt, .md, chapitre de livre) via trois moteurs. Par defaut Mistral/Voxtral (voxtral-mini-tts) : voix preregles multilingues dont six francaises en registres emotionnels, galerie de voix clonees depuis un enregistrement, clonage ponctuel par echantillon ; le ton se choisit par la variante de voix, Voxtral n'acceptant pas d'instructions de prosodie en texte libre. Alternative OpenAI gpt-4o-mini-tts quand on veut une prosodie pilotee par un prompt sur mesure ou davantage de voix. Kokoro-82M en local, gratuit et hors ligne. Avant synthese, Claude lit un echantillon, identifie auteur, genre, epoque et ton, puis choisit la voix.
 
 Compétences : narrer un texte en audio ; generer un MP3 ou un livre audio ; lire un fichier a voix haute ; l'utilisateur mentionne TTS, synthese vocale, Voxtral, Kokoro, F5-TTS ou XTTS ; l'utilisateur dit Whisper en confondant avec la reconnaissance vocale
+
+## Skills partagés (via symlink)
+
+Documentés sur la page de leur plugin d'origine.
+
+| Skill | Origine |
+|-------|---------|
+| [remote-compute](bio_population_genetics.md#remote-compute) | `bio_population_genetics` |

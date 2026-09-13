@@ -6,13 +6,13 @@
 
 Cœur du dispositif. Rassemble les skills qui touchent directement le complexe Mycobacterium tuberculosis (MTBC) et les pathogènes apparentés : accès aux génomes de référence et aux isolats de recherche publiés, fréquences alléliques de résistance aux antituberculeux telles que rapportées dans la littérature évaluée par des pairs, assignation de lignées, bases de données génomiques spécialisées. C'est le plugin qu'on active quand le travail porte effectivement sur M. tuberculosis.
 
-Skills propres (canoniques) : **56** ; skills partagés utilisés (symlinks) : **30**.
+Skills propres (canoniques) : **61** ; skills partagés utilisés (symlinks) : **30**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [active-site-check](#active-site-check) ; [ancestral-reconstruction](#ancestral-reconstruction) ; [atlas-add-lineage](#atlas-add-lineage) ; [bacdive](#bacdive) ; [bdd-bridge](#bdd-bridge) ; [beast2-dating](#beast2-dating) ; [binary-coclustering](#binary-coclustering) ; [bioproject-scout](#bioproject-scout) ; [coevolution](#coevolution) ; [convergent-evolution](#convergent-evolution) ; [crispr-spacer-null](#crispr-spacer-null) ; [crisprbuilder](#crisprbuilder) ; [crisprcasdb](#crisprcasdb) ; [denovo-content-qc](#denovo-content-qc) ; [fetch-tbannotator](#fetch-tbannotator) ; [host-pathogen-pair](#host-pathogen-pair) ; [isfinder-offline](#isfinder-offline) ; [lineage-comparison](#lineage-comparison) ; [lineage-subdivision](#lineage-subdivision) ; [marker-laminarity](#marker-laminarity) ; [miru-vntr](#miru-vntr) ; [mixed-infection](#mixed-infection) ; [mk-ascertainment](#mk-ascertainment) ; [molecular-clock](#molecular-clock) ; [mtbc-bilan](#mtbc-bilan) ; [mtbc-epistasis](#mtbc-epistasis) ; [mtbc-gene](#mtbc-gene) ; [mtbc-gene-network](#mtbc-gene-network) ; [mtbc-lineages](#mtbc-lineages) ; [mtbc-prospect](#mtbc-prospect) ; [mtbc-reboot](#mtbc-reboot) ; [pangenome-enrichment](#pangenome-enrichment) ; [pathogens-portal](#pathogens-portal) ; [pectinated-subclade-mining](#pectinated-subclade-mining) ; [phylogeography](#phylogeography) ; [pocket-detection](#pocket-detection) ; [raxml](#raxml) ; [rd-detection](#rd-detection) ; [resistance-catalogue](#resistance-catalogue) ; [resistance-profiler](#resistance-profiler) ; [sitvitweb](#sitvitweb) ; [snp-distance](#snp-distance) ; [spaam-ancient-metagenome-dir](#spaam-ancient-metagenome-dir) ; [spaam-community](#spaam-community) ; [spdi-annotation](#spdi-annotation) ; [species-id](#species-id) ; [sra-geolocate](#sra-geolocate) ; [strain-qc](#strain-qc) ; [string-db](#string-db) ; [tb-cli](#tb-cli) ; [tbannotator-es](#tbannotator-es) ; [tbannotator-mcp](#tbannotator-mcp) ; [tbannotator-upstream](#tbannotator-upstream) ; [tbmonitor-papers](#tbmonitor-papers) ; [thd](#thd) ; [tsne-hdbscan](#tsne-hdbscan)
+Sommaire : [active-site-check](#active-site-check) ; [ancestral-reconstruction](#ancestral-reconstruction) ; [atlas-add-lineage](#atlas-add-lineage) ; [bacdive](#bacdive) ; [bdd-bridge](#bdd-bridge) ; [beast2-dating](#beast2-dating) ; [binary-coclustering](#binary-coclustering) ; [bioproject-scout](#bioproject-scout) ; [coevolution](#coevolution) ; [convergent-evolution](#convergent-evolution) ; [crispr-spacer-null](#crispr-spacer-null) ; [crisprbuilder](#crisprbuilder) ; [crisprcasdb](#crisprcasdb) ; [denovo-content-qc](#denovo-content-qc) ; [fetch-tbannotator](#fetch-tbannotator) ; [gwas-clonal-lineage](#gwas-clonal-lineage) ; [hgt-direction-check](#hgt-direction-check) ; [host-pathogen-pair](#host-pathogen-pair) ; [isfinder-offline](#isfinder-offline) ; [lineage-comparison](#lineage-comparison) ; [lineage-subdivision](#lineage-subdivision) ; [marker-laminarity](#marker-laminarity) ; [miru-vntr](#miru-vntr) ; [mixed-infection](#mixed-infection) ; [mk-ascertainment](#mk-ascertainment) ; [molecular-clock](#molecular-clock) ; [mtbc-bilan](#mtbc-bilan) ; [mtbc-epistasis](#mtbc-epistasis) ; [mtbc-gene](#mtbc-gene) ; [mtbc-gene-network](#mtbc-gene-network) ; [mtbc-lineages](#mtbc-lineages) ; [mtbc-prospect](#mtbc-prospect) ; [mtbc-reboot](#mtbc-reboot) ; [pangenome-enrichment](#pangenome-enrichment) ; [pathogens-portal](#pathogens-portal) ; [pectinated-subclade-mining](#pectinated-subclade-mining) ; [phylo-forest](#phylo-forest) ; [phylogeography](#phylogeography) ; [pocket-detection](#pocket-detection) ; [raxml](#raxml) ; [rd-detection](#rd-detection) ; [registres-sans-referent](#registres-sans-referent) ; [resistance-catalogue](#resistance-catalogue) ; [resistance-profiler](#resistance-profiler) ; [sitvitweb](#sitvitweb) ; [snp-distance](#snp-distance) ; [spaam-ancient-metagenome-dir](#spaam-ancient-metagenome-dir) ; [spaam-community](#spaam-community) ; [spdi-annotation](#spdi-annotation) ; [species-id](#species-id) ; [sra-geolocate](#sra-geolocate) ; [strain-qc](#strain-qc) ; [string-db](#string-db) ; [tb-cli](#tb-cli) ; [tbannotator-es](#tbannotator-es) ; [tbannotator-mcp](#tbannotator-mcp) ; [tbannotator-upstream](#tbannotator-upstream) ; [tbmonitor-papers](#tbmonitor-papers) ; [thd](#thd) ; [tsne-hdbscan](#tsne-hdbscan) ; [variant-reality-check](#variant-reality-check)
 
 ### active-site-check
 
@@ -103,6 +103,16 @@ Compétences : trier vrai-contenu vs contaminant après un assemblage de novo de
 Récupère report.json et génère spdi.txt pour des souches MTBC depuis le serveur TBannotator.
 
 Compétences : peupler les répertoires de la BDD avec les données génomiques manquantes de souches déjà présentes dans la base TBannotator
+
+### gwas-clonal-lineage
+
+Academic research toolkit (Guyeux group, FEMTO-ST) for testing whether a variant, gene or locus is genuinely associated with a clinical or phenotypic trait (drug resistance, tissue tropism, disease form) in a bacterial GWAS on a CLONAL population such as the MTBC, where population structure (lineage) is the dominant confounder and a naive association almost always recovers lineage instead of the phenotype. Packages the full pipeline reforged independently at least 4 times in this repo (mtbc/Rv2566, mtbc/Rv1125, mtbc/ tissue_tropism_mtbc, mtbc/mixed_infections_multimarker) into one reusable module: lineage-stratified Cochran-Mantel-Haenszel (CMH) at BOTH the cohort level (is the lineage itself associated with the phenotype?) and the locus level (does carrying this specific variant stay associated once lineage is controlled?), Breslow-Day heterogeneity test to flag a pooled odds ratio that hides opposite effects between strata, a paucibacillarity/ dropout direction filter, a mappability/paralogy BLAST check to catch cross-mapping artefacts (PE/PPE, esx, pks/pps, lpp, the ~10% of MTBC that is not uniquely mappable at Illumina read length), and a tree-free homoplasy probe via nested clade-code depth. Use this whenever a GWAS hit, a candidate resistance/tropism gene, or a "top-N genes" table from a published bacterial GWAS (Cambau/Bridier-Nahmias, CRyPTIC, or any pyseer/treeWAS/ DBGWAS output) needs to be checked for robustness before being written into a manuscript, do NOT trust a published or in-house GWAS hit on a clonal pathogen without running at least the lineage-stratified locus-level CMH first, even if a cohort-level lineage check already came back non-significant (the two are different questions, see below).
+
+### hgt-direction-check
+
+Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed comparative genomics: decide the DIRECTION of a horizontal transfer before it becomes a claim, and kill the commonest way of getting it backwards. A high sequence identity between a bacterial gene and a viral (or plasmid, or any other donor candidate) gene says NOTHING about who captured whom: it measures a position inside the structure of the gene family. The test that does settle direction is topological, and it comes with its own null. (1) NESTING: build the family tree from a reference panel of CELLULAR homologues plus the sequences carried by the candidate donor, and ask whether each donor-borne sequence sits INSIDE the cellular diversity (capture cell -> donor) or BASAL to it (the family would then originate in the donor). (2) HOST CONCORDANCE: nesting alone is not enough, each donor-borne sequence must land next to the homologues of its OWN host taxon, which is what separates a real capture from an arbitrary placement, and what turns one case into a repeated, independent result. (3) LONG-BRANCH CONTROL: the host clade must still exist in a tree inferred independently WITHOUT the donor sequences, otherwise the nesting was manufactured by the analysis. Also carries the correlation pre-test that disqualifies an identity-based argument in seconds, before any tree is built
+
+Compétences : a manuscript is about to say "this bacterial gene derives from a phage" (or from a plasmid, or an integron) on the strength of a BLAST identity ; an insertion sequence, transposase or any mobile-element gene is found in a viral genome ; a reviewer asks which way a transfer went ; a striking identity to a viral gene needs to be checked against the plain alternative that it is simply the family's internal structure ; or a negative result (no transfer detectable) must be made publishable rather than silent
 
 ### host-pathogen-pair
 
@@ -218,6 +228,12 @@ Méthodologie d'extraction itérative des sous-lignées pectinées au sein d'une
 
 Compétences : on observe une topologie pectinée dans un arbre RAxML focalisé et l'on veut extraire itérativement les sous-clades pour raffiner la taxonomie ; on suspecte qu'un clade trop hétérogène contient plusieurs sous-lignées ; on veut un classifieur SPDI pour reclasser des souches en attente
 
+### phylo-forest
+
+Bibliothèque interrogeable des arbres phylogénétiques déjà calculés dans un dépôt de recherche : moissonne les Newick existants, en extrait une fiche (outil, modèle, alignement, taxons, composition par clade avec son système taxonomique), et répond à « ai-je déjà un arbre qui ferait l'affaire ? » AVANT de relancer un calcul. Rend aussi des FORÊTS pour les statistiques inter-arbres qu'un arbre isolé ne permet pas (fréquence d'un clade à travers des reconstructions indépendantes)
+
+Compétences : avant tout RAxML / IQ-TREE / FastTree, pour chercher un arbre existant ; après un calcul, pour le verser à la forêt ; pour retrouver l'arbre d'une figure ; pour mesurer la stabilité d'un clade entre études
+
 ### phylogeography
 
 Boîte à outils académique (groupe Guyeux, FEMTO-ST) pour l'analyse de distribution géographique des lignées MTBC via TBannotator : tableau croisé pays × lignée, cartes choroplèthes, barplots empilés et indices de diversité géographique. Pour retrouver des études phylogéographiques antérieures sur une lignée ou un pays, à coupler avec tbmonitor-papers.
@@ -241,6 +257,12 @@ Compétences : construire des phylogénies MTBC ; placer de nouvelles souches su
 Academic research toolkit (Guyeux group, FEMTO-ST) for regions of difference (RD) in MTBC genomes of published research isolates: reading the RD calls the TBannotator pipeline already produces, and cross-checking them with an independent published implementation (RDscan, Bespiatykh et al., mSphere 2021)
 
 Compétences : an RD-based argument enters a manuscript, a clade is defined by a deletion, a new candidate deletion (CUS) needs confirming, or an RD call contradicts the literature and one needs to know which side is wrong
+
+### registres-sans-referent
+
+Auditer et reparer les ENONCES d'un depot dont la nomenclature a bouge : noms de clades qui ne designent plus rien, effectifs perimes, enonces refutes qui survivent ailleurs, et le cas qu'aucun test d'existence n'attrape, le label VIVANT mais FAUX d'une table de correspondance. Mesure d'abord (combien, ou, dans quel fichier), repare ensuite en posant un renvoi de peremption en tete de chaque entree concernee, sans jamais reecrire l'entree elle-meme
+
+Compétences : une lignee vient d'etre renommee, re-peignee ou re-decoupee ; un effectif cite ne correspond plus au disque ; un resultat s'appuie sur un clade dont le nom a change ; une base de connaissances partagee entre projets nomme des clades ; avant de reutiliser une calibration ou une mesure datee ; a chaque ouverture d'iteration sur un projet taxonomique
 
 ### resistance-catalogue
 
@@ -349,6 +371,12 @@ Compétences : calculer la THD sur des profils MIRU-VNTR, des matrices de distan
 Réduction de dimension t-SNE + clustering par densité HDBSCAN pour explorer la diversité génomique du MTBC. Fonctionne sur des matrices SPDI présence/absence, des matrices de distances SNP ou des profils MIRU-VNTR.
 
 Compétences : explorer la structure de population des souches MTBC ; identifier des clusters de transmission ; détecter aberrants ou lignées mal classées ; visualiser les relations génomiques en 2D ; clustering non supervisé sans fixer le nombre de clusters
+
+### variant-reality-check
+
+Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed MTBC phylogenomics: decide whether a called variant is REAL and which allele is ANCESTRAL, before it becomes a claim in a manuscript. Two complementary gestes. (1) Sequence context of a called indel: placement ambiguity after normalisation (the measure that actually settles polymerase slippage, not homopolymer length), tandem repeats, local GC read against the genome background, k-mer uniqueness against cross-mapping, each with a null model built by sampling positions and measuring them exactly like the site. (2) Polarisation on CLOSED COMPLETE ASSEMBLIES instead of variant calls, locating the site by its unique flanks and measuring the gap between them, which answers coverage, mapping and calling artefacts at once. Also translates a CDS to the REAL stop rather than to the annotated boundary
+
+Compétences : an indel or frameshift is suspected to be a calling artefact, a variant is about to be called a synapomorphy, a `disrupt_frac` or a snpEff HIGH label is about to be written as pseudogenisation, an outgroup appears to LACK a variant, or a reference annotation looks unrepresentative
 
 ## Skills partagés (via symlink)
 

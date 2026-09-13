@@ -272,9 +272,9 @@ Compétences : PDF scientifique long ; article à colonnes ou tableaux complexes
 
 ### remote-compute
 
-Deploy long, memory-hungry, disk-hungry or GPU computations of the Guyeux group (FEMTO-ST) onto the two remote machines available over SSH: `mp` (standalone 64-thread / 125 GB / 51 TB box, no scheduler) and `mh` (mesohelios Slurm cluster login node, A100 and L40 GPUs, 1 TB bigmem nodes, BeeGFS). Covers the choice between them, sbatch recipes, data staging, quota and filesystem traps, and job monitoring
+Deploy long, memory-hungry, disk-hungry or GPU computations onto the two remote machines reachable over SSH: `mp` (standalone 64-thread / 125 GB / 51 TB box, no scheduler) and `mh` (Helios, the Slurm cluster of the Mesocentre de calcul de Franche-Comte: A100 and L40 GPUs, 1 TB bigmem node, BeeGFS). Any discipline, not only bioinformatics: model training, LLM inference, audio transcription, OCR of scanned documents, simulation, optimisation, GIS, MATLAB, large data processing. Covers choosing between the two, Slurm QOS ceilings, sbatch recipes, module and architecture traps, data staging, local scratch, job chaining, and the mesocentre's other services
 
-Compétences : a computation needs more RAM, more disk, more cores, a GPU, or more wall-clock time than the laptop can give, or when asked to run something "sur mp", "sur mh", "sur le cluster", "en GPU", "en batch
+Compétences : a computation needs more RAM, disk, cores, a GPU or more wall-clock time than the laptop can give, or when asked to run something "sur mp", "sur mh", "sur le cluster", "en GPU", "en batch", "sur Helios", "au mesocentre
 
 ### scanpy
 

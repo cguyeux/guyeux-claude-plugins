@@ -6,7 +6,7 @@
 
 Projet distinct. maboss / CoLoMoTo n'appartient pas au programme M. tuberculosis : il concerne la modélisation booléenne stochastique de réseaux de signalisation (signalisation cancéreuse, projet mabossDemo). Il est documenté ici uniquement parce qu'il partage le même dépôt de plugins, et reste hors du pipeline de recherche M. tuberculosis.
 
-Skills propres (canoniques) : **12** ; skills partagés utilisés (symlinks) : **0**.
+Skills propres (canoniques) : **12** ; skills partagés utilisés (symlinks) : **1**.
 
 [Retour à l'index de la documentation](README.md)
 
@@ -85,3 +85,11 @@ Compétences : predire l'effet d'un medicament seul ou en combinaison sur un mod
 Pilote la veritable API Python pyMaBoSS (colomoto/pyMaBoSS, bindings du moteur C++ MaBoSS). Couvre le chargement (load, loadBNet, loadSBML, loadTabularQual), l'objet Simulation (run, mutate, copy, update_parameters, get_logical_rules), copy_and_mutate, set_output, set_nodes_istate, l'extraction des resultats (get_nodes_probtraj, get_states_probtraj, get_last_nodes_probtraj), l'interoperabilite (to_biolqm, to_minibn), MaBoSSClient, UPMaBoSS, Ensemble et PopMaBoSS, les widgets Jupyter, et l'evaluateur d'assertions en logique temporelle CCT maboss.temporal_logic.MaBoSSEvaluator.querying d'Oscar Dufossez, veritable implementation de la grammaire de requetes P/T/Pmax/Pmin/Tmax/Tmin/Inc/Dec. Installation : conda install -c colomoto pymaboss puis python -m maboss_setup.
 
 Compétences : executer un modele MaBoSS depuis Python ; appliquer une invalidation ou une surexpression ; lire P(noeud) au dernier pas de temps ; verifier une affirmation directionnelle de la litterature via MaBoSSEvaluator
+
+## Skills partagés (via symlink)
+
+Documentés sur la page de leur plugin d'origine.
+
+| Skill | Origine |
+|-------|---------|
+| [remote-compute](bio_population_genetics.md#remote-compute) | `bio_population_genetics` |

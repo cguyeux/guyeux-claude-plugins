@@ -6,7 +6,7 @@
 
 Phase hybride analyse et rédaction. Agrège par symlink les skills des autres plugins pour le moment où l'on passe des résultats phylogénomiques M. tuberculosis (arbre daté, profils de résistance, figures) au manuscrit.
 
-Skills propres (canoniques) : **1** ; skills partagés utilisés (symlinks) : **148**.
+Skills propres (canoniques) : **1** ; skills partagés utilisés (symlinks) : **150**.
 
 [Retour à l'index de la documentation](README.md)
 
@@ -107,6 +107,7 @@ Documentés sur la page de leur plugin d'origine.
 | [mtbc-prospect](bio_pathogens.md#mtbc-prospect) | `bio_pathogens` |
 | [mtbc-reboot](bio_pathogens.md#mtbc-reboot) | `bio_pathogens` |
 | [mycobacterium-leprae](bio_bacteria.md#mycobacterium-leprae) | `bio_bacteria` |
+| [narratif](redac.md#narratif) | `redac` |
 | [ncbi-pathogen-detection](bio_bacteria.md#ncbi-pathogen-detection) | `bio_bacteria` |
 | [neolithic-14c](bio_population_genetics.md#neolithic-14c) | `bio_population_genetics` |
 | [nextflow-development](bio_population_genetics.md#nextflow-development) | `bio_population_genetics` |
@@ -142,6 +143,7 @@ Documentés sur la page de leur plugin d'origine.
 | [reviewer-response](redac.md#reviewer-response) | `redac` |
 | [scanpy](bio_population_genetics.md#scanpy) | `bio_population_genetics` |
 | [sci-figure](bio_population_genetics.md#sci-figure) | `bio_population_genetics` |
+| [sci-table](redac.md#sci-table) | `redac` |
 | [scientific-problem-selection](bio_population_genetics.md#scientific-problem-selection) | `bio_population_genetics` |
 | [scikit-bio](bio_population_genetics.md#scikit-bio) | `bio_population_genetics` |
 | [scikit-learn](bio_population_genetics.md#scikit-learn) | `bio_population_genetics` |

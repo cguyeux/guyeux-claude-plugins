@@ -6,13 +6,19 @@
 
 Rédaction et contrôle qualité du manuscrit M. tuberculosis : mise en forme LaTeX, vérification des affirmations et des références, nettoyage stylistique, réponse aux relecteurs, dépôt Zenodo et pont Overleaf.
 
-Skills propres (canoniques) : **31** ; skills partagés utilisés (symlinks) : **4**.
+Skills propres (canoniques) : **37** ; skills partagés utilisés (symlinks) : **4**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [beamer-slides](#beamer-slides) ; [bib-check](#bib-check) ; [biblatex](#biblatex) ; [claim-check](#claim-check) ; [cv](#cv) ; [deai-latex](#deai-latex) ; [docs-latex](#docs-latex) ; [fig-check](#fig-check) ; [fig-ideation](#fig-ideation) ; [grant-proposal](#grant-proposal) ; [humanizer](#humanizer) ; [latex-build](#latex-build) ; [latex-document](#latex-document) ; [latex-formatting](#latex-formatting) ; [latex-paper-en](#latex-paper-en) ; [latex-posters](#latex-posters) ; [latex-tables](#latex-tables) ; [latex-writing](#latex-writing) ; [lit-review](#lit-review) ; [literature-access](#literature-access) ; [manuscript-review](#manuscript-review) ; [overleaf-bridge](#overleaf-bridge) ; [pdf-to-latex](#pdf-to-latex) ; [reviewer-response](#reviewer-response) ; [slide-design](#slide-design) ; [slide-polish](#slide-polish) ; [soumission](#soumission) ; [supp-check](#supp-check) ; [synthesize-research](#synthesize-research) ; [theme-factory](#theme-factory) ; [zenodo-deposit](#zenodo-deposit)
+Sommaire : [aap](#aap) ; [beamer-slides](#beamer-slides) ; [bib-check](#bib-check) ; [biblatex](#biblatex) ; [cadrage-editorial](#cadrage-editorial) ; [claim-check](#claim-check) ; [cv](#cv) ; [deai-latex](#deai-latex) ; [docs-latex](#docs-latex) ; [fig-check](#fig-check) ; [fig-ideation](#fig-ideation) ; [grant-proposal](#grant-proposal) ; [humanizer](#humanizer) ; [latex-build](#latex-build) ; [latex-document](#latex-document) ; [latex-formatting](#latex-formatting) ; [latex-paper-en](#latex-paper-en) ; [latex-posters](#latex-posters) ; [latex-tables](#latex-tables) ; [latex-writing](#latex-writing) ; [lit-review](#lit-review) ; [literature-access](#literature-access) ; [manuscript-review](#manuscript-review) ; [narratif](#narratif) ; [overleaf-bridge](#overleaf-bridge) ; [pdf-to-latex](#pdf-to-latex) ; [reviewer-response](#reviewer-response) ; [sci-table](#sci-table) ; [slide-design](#slide-design) ; [slide-polish](#slide-polish) ; [soumission](#soumission) ; [supp-check](#supp-check) ; [supp-tables](#supp-tables) ; [synthesize-research](#synthesize-research) ; [theme-factory](#theme-factory) ; [verdict-diffusion](#verdict-diffusion) ; [zenodo-deposit](#zenodo-deposit)
+
+### aap
+
+Gère tout le cycle d'un appel à projets, de l'arrivée de l'appel à la décision du financeur, pour ANR (AAPG, LabCom), ANRS MIE, ERC et Horizon Europe, IUF, Interreg, PHC (CEDRE, Maghreb, Toubkal), AUF, ARS, Région, UMLP (Sunergia), Smart MI, OPCO, EDIH. Quatre gestes : instruire un appel qui arrive et rendre un verdict go/no-go argumenté avant d'écrire quoi que ce soit ; amorcer un dossier pré-rempli des informations administratives récurrentes (SIRET, RNSR, signataires, coûts, track record) ; relire un brouillon contre la grille de critères de l'appel ; enregistrer la décision et en tirer l'enseignement réutilisable. Tient le registre CENTRAL des candidatures, seul endroit d'où se voient la limite d'implication de l'ANR, les clauses de non-cumul et les mandats qui interdisent un dépôt
+
+Compétences : l'utilisateur reçoit ou mentionne un appel à projets, demande s'il faut candidater, prépare ou dépose un dossier de financement, cherche une information administrative pour un formulaire, veut savoir où en sont ses candidatures, ou reçoit une réponse du financeur ; Trigger phrases : "appel à projets", "faut-il candidater", "on dépose ou pas", "monter un dossier ANR", "candidature IUF", "où en sont mes dossiers", "j'ai reçu un mail pour un AAP", "quel est le SIRET", "on a été refusé", "on est lauréat", "deadline de l'appel
 
 ### beamer-slides
 
@@ -31,6 +37,12 @@ Compétences : verifier la bibliographie ; controler que les references existent
 Paquets LaTeX biblatex/biber pour la gestion moderne de bibliographie.
 
 Compétences : aider à citer des références ; gérer des fichiers .bib ; choisir un style de citation ; dépanner la compilation de bibliographie
+
+### cadrage-editorial
+
+Dernière passe avant de déposer un manuscrit, une fois la revue choisie : relire la VITRINE (titre, résumé, mots-clés, clôture d'introduction, première phrase de discussion, conclusion, lettre d'accompagnement) contre ce que cette revue publie réellement, pour qu'un travail de qualité ne soit pas refusé sur un malentendu de formulation. Mesure la forme réelle du corpus de la revue, simule le rejet éditorial par une instance indépendante qui ne voit que ce que l'éditeur lit, propose des retouches justifiées par un fait éditorial vérifié, et rend UN verdict daté dans `cadrage_editorial.md` : ALIGNE, RETOUCHER, CHANGER-DE-CIBLE ou ROUVRIR. Ne touche jamais aux Résultats ni aux Méthodes, et ne sauve pas une revue mal choisie
+
+Compétences : la revue est arrêtée et qu'il reste à vérifier que le cadrage colle, quand on craint un desk-reject de principe, quand on hésite sur le titre ou le résumé pour une cible donnée, quand on recadre après un rejet pour une nouvelle revue, ou taper /cadrage-editorial
 
 ### claim-check
 
@@ -140,6 +152,10 @@ Revue par les pairs d'un manuscrit scientifique comme pour une revue a fort fact
 
 Compétences : obtenir une lecture critique d'un manuscrit ; savoir ce qu'un relecteur objecterait ; faire relire un article avant soumission ; demander un second avis sur un brouillon
 
+### narratif
+
+Conception de l'article entre le message et le squelette. Ordonne l'acquis en vue de la démonstration, fixe la chaîne d'arguments et ses points de bascule, puis décide du temps et du lieu de chaque fait, développé dans le corps, porté par une figure, réduit à une phrase avec renvoi, versé au supplémentaire, ou reconnu comme sérendipité. Émet ensuite le squelette LaTeX depuis le plan, chaque section portant son allocation. Use on `/narratif`, `/narratif read`, `/narratif tri`, `/narratif drift`, `/narratif reprise`, or « comment structurer cet article », « quel est le fil de la démonstration », « dans quel ordre sortir les arguments », « qu'est-ce qui va en supplementary », « l'article est trop verbeux », « on perd le lecteur », « par quoi commencer », avant d'écrire le squelette d'un manuscrit.
+
 ### overleaf-bridge
 
 Synchronise un depot local article/ avec un projet Overleaf via l'integration Git officielle d'Overleaf (git-bridge, git.overleaf.com). Git standard sur le depot officiel : pas de serveur MCP, pas d'API non officielle, pas de scraping.
@@ -158,6 +174,12 @@ Reponse point par point systematique a une revue de manuscrit. Decoupe les comme
 
 Compétences : des rapports de relecture sont arrives et il faut y repondre ; traiter une revision ; rediger une lettre de reponse
 
+### sci-table
+
+Academic research toolkit (Guyeux group, FEMTO-ST), redaction d'articles evalues par les pairs : conception et mise en forme des TABLEAUX d'un manuscrit. Traite d'abord le FOND (ce tableau doit-il exister, ou est-ce une phrase, une figure, un supplementaire ; quelles lignes, quelles colonnes, quel ordre, quelle precision), puis la FORME (booktabs, alignement decimal siunitx, notes threeparttable, legende autonome, largeur reelle et ancrage colonne / pleine page / rotation / longtable). Audite mecaniquement les tableaux d'un .tex (20 regles : colonne constante, precision heterogene, largeur debordante, police reduite en rustine, tableau non cite, tableau relu dans le texte), construit un tableau depuis un CSV en explicitant ses decisions, et tient le registre tab_check.md. A
+
+Compétences : on ecrit ou retravaille un tableau d'article, quand un tableau deborde de la marge, quand on hesite entre un tableau et une figure, ou avant une soumission ; Pour la seule syntaxe de tabularray, voir latex-tables
+
 ### slide-design
 
 Transforme une courte description de ce que l'on veut dire en une a quelques slides de qualite editoriale. Impose un systeme graphique (palette, typographie, grille), raisonne sur la narration, propose plusieurs options structurelles avec des references editoriales explicites (NYT Graphics, Bloomberg, Pudding, Tufte, Nature Methods), exige au moins une option a signature visuelle forte, prefere schemas, frises et diagrammes au texte brut, reutilise les figures trouvees dans le projet, delegue les cartes a geo-map et les graphiques a sci-figure, s'aligne sur le style du deck hote, et compile systematiquement un apercu qu'il critique avant livraison.
@@ -172,15 +194,21 @@ Compétences : taper /slide-polish ; demander d'ameliorer, de retravailler ou de
 
 ### soumission
 
-Gère tout le cycle de soumission d'un article scientifique, de la préparation au suivi, avec exécution externe seulement sur demande explicite : choisir la revue cible (base de revues avec scope, contraintes de longueur, frais réels, facteur d'impact et délai de première décision), contrôler que le manuscrit est prêt (dont la version française main_fr.tex), se connecter aux portails éditeurs par ORCID, déposer le préprint sur bioRxiv/medRxiv/arXiv et le code sur le GitHub centralisateur, remplir le formulaire de soumission, tenir le registre central des soumissions (qui, où, quand, statut) et en tirer les enseignements des rejets
+Gère tout le cycle de soumission d'un article scientifique, de la préparation au suivi, avec exécution externe seulement sur demande explicite : choisir la revue cible (base de revues avec scope, contraintes de longueur, frais réels, facteur d'impact et délai de première décision), contrôler que le manuscrit est prêt (dont la version française main_fr.tex), se connecter aux portails éditeurs par ORCID, déposer le préprint sur bioRxiv/medRxiv/arXiv et le code sur le GitHub centralisateur, remplir le formulaire de soumission, tenir le registre central des soumissions (qui, où, quand, statut), faire après chaque soumission le point d'état de tous les manuscrits (déposé, rejeté, en révision, préparé mais jamais soumis) et reprendre ce qui cloche, et en tirer les enseignements des rejets
 
-Compétences : l'utilisateur veut « soumettre un article », « choisir une revue », « où soumettre ce papier », « préparer la soumission », « déposer le préprint », « où en sont mes soumissions », « le journal a répondu », « on m'a rejeté, où resoumettre », ou tape /soumission
+Compétences : l'utilisateur veut « soumettre un article », « choisir une revue », « où soumettre ce papier », « préparer la soumission », « déposer le préprint », « où en sont mes soumissions », « le journal a répondu », « on m'a rejeté, où resoumettre », « fais le point sur mes soumissions », ou tape /soumission
 
 ### supp-check
 
 Vérification d'alignement entre un manuscrit principal et ses supplementary materials. Itère sur chaque table/figure/fichier supplémentaire, comprend son rôle, parcourt le cahier_de_labo.md pour reconstruire sa genèse et ce qui s'est passé depuis, puis détecte les divergences avec le main.tex et avec la vérité la plus récente. Les dernières entrées du cahier font autorité : si un supplément est obsolète, le skill propose de le retravailler, de réécrire le main, de lancer une expérience d'arbitrage ou de remettre l'ensemble en question.
 
 Compétences : préparer une soumission ou resoumission ; après toute modification de la BDD ou des scripts ; après correction d'un bug influençant les chiffres ; après mise à jour d'une méthode ou d'un outil ; avant envoi de révisions à un relecteur
+
+### supp-tables
+
+Cherche un gène, un locus tag, une accession ou tout motif dans les TABLES SUPPLÉMENTAIRES d'articles scientifiques, les .xlsx, .csv et .docx qu'aucun moteur plein texte n'indexe. Comble le troisième angle mort du rappel bibliographique, après l'écart résumé/plein texte et le gène rebaptisé : un gène peut être ABSENT du corps de tous les articles pertinents et PRÉSENT dans les tables de plusieurs d'entre eux. Récupère par Europe PMC, avec repli obligatoire par le préprint bioRxiv quand l'article n'est pas en accès ouvert, et rend chaque occurrence avec ses EN-TÊTES de colonnes. Porte son propre garde-fou : `rank` situe une valeur trouvée dans la distribution de sa propre table, parce qu'une ligne trouvée n'est pas un résultat
+
+Compétences : un gène ressort « sans littérature » alors que des jeux protéomiques, des cribles CRISPRi, des tables d'essentialité ou des sorties de GWAS le contiennent ; vérifier qu'un terme est réellement absent ; instruire un gène dark ; préparer un claim-check sur une donnée publiée
 
 ### synthesize-research
 
@@ -193,6 +221,10 @@ Compétences : de nombreuses sources separees portent sur une meme question et i
 Applique un theme visuel coherent (couleurs, typographie, espacement) a un artefact : slides, documents, rapports, pages HTML. Dix themes preetablis sont disponibles et un nouveau theme peut etre genere a la volee. Pour le travail de slide scientifique utiliser slide-design, et pour les gabarits de figures de revue sci-figure.
 
 Compétences : restyler ou harmoniser un artefact existant ; obtenir une autre apparence pour un deck ou une page ; demander une palette et un appariement de polices sur mesure
+
+### verdict-diffusion
+
+Les deux portes de décision du cycle, qui demandent si un travail MÉRITE d'être écrit puis diffusé. Porte 1bis (`amont`, AVANT toute rédaction), faut-il rédiger, recadrer, élargir la question, ou classer un sujet creux ou déjà publié ? Porte 3bis (défaut, manuscrit stabilisé), soumettre, préprint seul, ne pas diffuser, ou rouvrir ? Rend UN verdict argumenté, jamais un menu. Use on `/verdict-diffusion`, `/verdict-diffusion amont`, `/verdict-diffusion read`, or "est-ce que ça vaut la peine d'écrire cet article", "faut-il se lancer dans la rédaction", "le sujet est-il assez solide", "est-ce que ça mérite d'être soumis", "est-ce publiable", "faut-il soumettre ou juste un préprint", "ce travail vaut-il un article", "on soumet ou pas".
 
 ### zenodo-deposit
 
