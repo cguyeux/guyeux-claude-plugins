@@ -19,6 +19,7 @@ laminar_tree.nwk, removed_markers.txt.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from collections import defaultdict
@@ -65,6 +66,43 @@ def load_pool(pool: Path, chrom="NC_000962.3", seen=None):
         dirs.append(f.parent.parent)
         profiles.append({ln.strip() for ln in f.read_text().splitlines() if ln.strip()})
     return strains, profiles, dirs
+
+
+def _digest(path: Path | None) -> str:
+    """Short content digest of a file, or "" when there is no file."""
+    if path is None or not Path(path).is_file():
+        return ""
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()[:12]
+
+
+def run_regime(a, excluded_strains: set[str]) -> dict:
+    """Everything that makes two runs of this script incomparable, in one JSON.
+
+    Without it, `report.json` carries the counts and nothing that produced them: two runs on two
+    marker sets, two masks or two strain populations are indistinguishable, and a comparison
+    between them reads as a change in the object. Same lesson, and same fix, as the `regime`
+    column of a node registry.
+    """
+    return {
+        "source": "pool" if a.pool else ("fit" if a.fit else "matrix"),
+        "n_pools": len(a.pool or []),
+        "pool_list": [str(p) for p in (a.pool or [])],
+        "markers": {"fichier": str(a.markers) if a.markers else "",
+                    "prefix": a.prefix,
+                    "digest": _digest(a.markers)},
+        "min_carriers": a.min_carriers,
+        "max_markers": a.max_markers,
+        "exclude_positions": [{"fichier": str(f), "digest": _digest(f)}
+                              for f in (a.exclude_positions or [])],
+        "exclude_strains": {"n": len(excluded_strains),
+                            "fichiers": [{"fichier": str(f), "digest": _digest(f)}
+                                         for f in (a.exclude_strains or [])]},
+        "three_state": {"gff3": str(a.gff3) if a.gff3 else "",
+                        "max_missing": a.max_missing,
+                        "min_depth": a.min_depth} if a.gff3 else None,
+        "strain_level": {"enabled": bool(a.strain_level), "tolerance": a.strain_tolerance},
+        "on_thr": a.on_thr if a.fit else None,
+    }
 
 
 def barcode_markers(tsv: Path, prefix: str):
@@ -164,6 +202,19 @@ def main() -> int:
         "32-strain Bovis pool, masking cut present-sets 292->92 and crossings against a "
         "known-clean 5-strain candidate 129->20, most of the residual at fragility <=2).",
     )
+    ap.add_argument(
+        "--exclude-strains",
+        type=Path,
+        action="append",
+        help="repeatable: file of strain accessions (one per line, '#' comments) dropped from "
+        "every pool BEFORE anything else. Use it when the marker set under test was itself "
+        "computed with those strains excluded -- a quality quarantine, typically. Testing a "
+        "strain that the reference was built without makes it fail by construction: a marker "
+        "it does not carry was formerly kept out of its node (it counted towards the carriage "
+        "threshold) and now enters it. Measured on M. bovis 2026-08-24: 8 of 26 nesting "
+        "failures and 16 of 75 ancestral-chain dropouts were quarantined strains, none of "
+        "which failed before the quarantine existed.",
+    )
     ap.add_argument("--max-markers", type=int, default=6000, help="cap after deduplication")
     ap.add_argument("--top-crossings", type=int, default=25)
     ap.add_argument(
@@ -200,9 +251,36 @@ def main() -> int:
 
     UNK_pre = None  # three-state mask when reading a fit
     nb_strains = None  # strains behind each strain block, likewise
+    excluded_strains: set[str] = set()
+    for f in a.exclude_strains or []:
+        for line in f.read_text().splitlines():
+            tok = line.split("#", 1)[0].strip()
+            if tok:
+                excluded_strains.add(tok)
+    if excluded_strains and not a.pool:
+        # silently ignoring an exclusion is the very trap this option exists to close: the run
+        # would look filtered and not be, and `report.meta.json` would say 54 while the matrix
+        # holds all of them.
+        print(
+            "--exclude-strains only applies to --pool: with --matrix or --fit the taxa are "
+            "already aggregated and individual strains cannot be dropped here. Rebuild the "
+            "matrix (or the fit) without them instead.",
+            file=sys.stderr,
+        )
+        return 1
+    if excluded_strains:
+        print(
+            f"--exclude-strains: {len(excluded_strains)} accession(s) never loaded "
+            f"({', '.join(str(f) for f in a.exclude_strains)})",
+            file=sys.stderr,
+        )
+
     if a.pool:
         strains, profiles, strain_dirs = [], [], []
-        seen: set[str] = set()  # shared across pools: a strain must be counted once
+        # pre-seeding `seen` with the excluded accessions is all it takes: load_pool skips any
+        # name already there, so an excluded strain never enters the matrix, the present-sets
+        # or the crossing witnesses.
+        seen: set[str] = set(excluded_strains)
         for p in a.pool:
             s, pr, dd = load_pool(p, seen=seen)
             strains += s
@@ -416,6 +494,7 @@ def main() -> int:
                 "n_crossings_left_for_marker_removal": len(sl.remaining.incoherent_pairs()),
             }
         (a.out / "report.json").write_text(json.dumps(report, indent=2) + "\n")
+        (a.out / "report.meta.json").write_text(json.dumps(run_regime(a, excluded_strains), indent=2) + "\n")
         if sl is not None:
             with (a.out / "strain_exceptions.tsv").open("w") as fh:
                 fh.write("taxon\tmarker\n")

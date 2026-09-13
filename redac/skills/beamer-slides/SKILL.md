@@ -1,311 +1,421 @@
 ---
 name: beamer-slides
 description: >-
-  Generate a full Beamer/LaTeX scientific presentation from existing research material:
-  reads main.tex, data and figures, then builds a self-contained, narrative-driven,
-  pedagogical deck. Use when the user asks for a talk, a seminar or conference presentation,
-  a defence deck, or slides covering a whole paper or project. For one or two slides from a
-  verbal idea use slide-design, and to rework an existing slide use slide-polish.
+  Academic research toolkit (Guyeux group, FEMTO-ST): designs and checks a full
+  scientific Beamer talk from existing peer-reviewed research material. Reads the
+  project memory and manuscript, settles the message, audience, duration and the two
+  languages (slides and speaker), turns the allotted time into a slide budget, ranks
+  what may enter, audits which figures survive projection, writes the narrative plan
+  and a per-slide spec, ideates a visual object for each slide, then emits the deck
+  plus two companion files: a timed speaker script and a pedagogical support sheet.
+  Ends with mechanical checks (overflow, density, decorative TikZ, claim
+  traceability) and a simulated-audience review. Also EDITS an existing deck on
+  request, under the constraint that any addition pays for itself in the time budget,
+  and DECLINES it into a shorter, longer or translated variant sharing a single source
+  rather than a diverging copy. Use for a talk, a seminar, a conference or defence
+  deck, slides on a paper or project, speaker notes, a check on an existing deck,
+  adding or removing a section from a deck, a short version of a talk, a fork of an
+  existing deck, or /slides. For one or two slides from a verbal idea use
+  slide-design; to rework a single slide, slide-polish; for a poster, latex-posters.
 user_invocable: true
 invocation: /slides
 ---
 
-# Beamer Slides Generator
+# beamer-slides — concevoir un exposé, puis le contrôler
 
-Generate professional LaTeX/Beamer presentation slides from research work. The skill analyzes the project context (article, data, figures), identifies key findings, builds a narrative arc, and produces a self-contained, scientifically rigorous yet pedagogical presentation.
+## Le défaut qu'il corrige, mesuré
 
-## When to Use
+Audit de neuf decks du parc, 2026-09-09. Ce ne sont pas des impressions.
 
-- The user asks to create slides, a presentation, or a talk from their research
-- The user asks to update existing slides after article modifications
-- The user wants a conference talk, lab meeting presentation, or thesis defense slides
-- The user says `/slides`
+| Mesure | Constat |
+|---|---|
+| Graphiques de données (`pgfplots`, `axis`) | **0** sur huit decks sur neuf. Des arguments quantitatifs, jamais montrés comme données. |
+| Réductions de police | 431 pour 75 frames (audition PR), 311 pour 96 (séminaire), 95 pour 22. On rétrécit pour faire tenir au lieu de couper. |
+| `Overfull \vbox` | 17, 5 et 3 dans les logs, jamais relus. Sur L5L6, une légende passe sous le cadre et chevauche le pied de page, dans un deck présenté. |
+| Volume contre durée | 75 à 96 frames pour 20 minutes. |
+| Thèmes | `default`, `Madrid`, metropolis, ou aucun. Pas d'identité. |
 
-## Philosophy
+Et deux défauts de fond, visibles à l'œil. La **puce déguisée en schéma** :
+TikZ ne sert qu'à dessiner des rectangles arrondis contenant des phrases, ce
+qui n'apporte rien de plus qu'une liste tout en occupant la moitié de la slide.
+Le **mur de puces en colonnes** : trente-cinq items en corps réduit, illisibles
+au-delà du troisième rang.
 
-A good scientific presentation is **not a compressed paper**. It is a guided tour through your scientific reasoning. The audience should:
-1. Understand the problem before seeing any data
-2. Follow the logic of each result as it builds on the previous one
-3. Leave with 3-5 key takeaways they can explain to someone else
+Ce qui, en revanche, va déjà bien : le narratif. `presentation_squelette.md` de
+L5L6 porte un fil rouge en une phrase, un arc explicite, un message par section,
+un take-home et une note de calibrage. Ne pas le réinventer, s'en inspirer.
 
-**Every slide must earn its place.** If a slide doesn't advance the narrative or provide essential context, cut it.
+## Le principe qui commande tout le reste
 
-## Process
+**Une slide est un objet à regarder, pas un texte à lire.** L'auditoire ne peut
+pas faire les deux à la fois : s'il lit, il n'écoute pas. D'où la règle par
+défaut, inversée par rapport à l'usage courant : **l'objet visuel est le défaut,
+la liste à puces est l'exception qui doit se justifier** dans la fiche de la
+slide. Un titre est une assertion, pas une étiquette : « L5 et L6 épousent la
+partition ethnolinguistique », jamais « Résultats ».
 
-### Phase 1: Understand the Research
+Deuxième principe, qui commande le volume : **le budget de temps précède le
+choix du contenu.** On convertit d'abord la durée en nombre de slides, puis on
+décide ce qui entre. L'ordre inverse produit mécaniquement les 75 frames pour
+20 minutes.
 
-Before writing a single slide, thoroughly analyze the project:
+## Localiser le contexte
 
-1. **Read the article** (`main.tex` or equivalent):
-   - Abstract: extract the 3-5 core claims
-   - Introduction: identify the gap/question
-   - Methods: note anything the audience needs to understand results
-   - Results: rank by importance and narrative weight
-   - Discussion: extract the interpretive insights (not data repetition)
-   - Conclusion: identify the take-home messages
-
-2. **Inventory available figures** (`figures/` directory):
-   - Which figures are publication-quality and self-explanatory?
-   - Which need simplification for a talk?
-   - Are there figures not in the article that could help (pipeline diagrams, etc.)?
-
-3. **Identify the audience level**:
-   - Ask the user if not obvious: conference (specialists), lab meeting (mixed), thesis defense (committee), general seminar (broad)
-   - Default: conference talk for specialists with clear context for non-experts
-
-4. **Determine duration**:
-   - Ask if not specified. Default: 20 minutes (~18-22 content slides + title + thanks)
-   - Rule of thumb: 1-1.5 minutes per content slide
-
-### Phase 2: Build the Narrative Arc
-
-Structure the presentation as a **story**, not a table of contents:
+Racine du projet : premier parent contenant `cahier_de_labo.md`. Lire, dans cet
+ordre et seulement s'ils existent :
 
 ```
-ACT 1: SETUP (3-4 slides)
-  - Why should the audience care? (the problem)
-  - What was missing? (the gap)
-  - What did you do? (1-slide overview, not detailed methods)
-
-ACT 2: THE JOURNEY (10-14 slides)
-  - Present results in logical order (not necessarily paper order)
-  - Each slide = one idea, one figure, one take-away
-  - Build complexity progressively
-  - Include "bridge slides" between sections (1-sentence transition)
-
-ACT 3: RESOLUTION (3-4 slides)
-  - Synthesis: what does it all mean together?
-  - Limitations (brief, honest)
-  - Perspectives (concrete next steps)
-  - Final take-home message
+CLAUDE.md                    instructions opérationnelles du projet
+etat_des_decouvertes.md      la vérité scientifique consolidée, et la phase déclarée
+plan_narratif.md             si l'article a déjà été conçu, sa chaîne d'arguments
+article/main.tex             le manuscrit, s'il existe
+cahier_de_labo.md            les trois dernières entrées seulement
+pistes.md                    ce qui est ouvert, pour la slide des perspectives
+claim_check.md, fig_check.md ce qui est déjà vérifié, et ce qui ne l'est pas
 ```
 
-**Key narrative principles:**
-- **Start with the question, not the methods.** Nobody cares about your pipeline until they understand why it matters.
-- **One message per slide.** If you need two ideas, make two slides.
-- **Show data, then interpret.** Let the figure speak first, then add your conclusion.
-- **Every dataset must be introduced.** Never show data without explaining what it is, where it comes from, how many samples, and what the axes mean.
-- **Transitions matter.** End each section with a bridge sentence to the next.
-- **The synthesis slide is the most important slide.** Spend time making it excellent.
+Afficher un résumé de l'état connu avant de travailler. **Si ces fichiers
+n'existent pas, le dire** et travailler depuis ce que l'utilisateur fournit :
+ne jamais affirmer un état scientifique qu'aucun registre ne porte.
 
-### Phase 3: Write the Slides
+Livrables dans `<projet>/presentations/AAAA-MM-JJ_<slug>/`. Un projet donne
+plusieurs exposés au fil du temps, à des publics différents ; un répertoire par
+exposé les empêche de s'écraser.
 
-#### Beamer Template
+## Les douze gestes
 
-Use the Metropolis theme by default (clean, modern, professional). Adapt if the user has a preferred theme.
+Les gestes 1 à 7 ne produisent **aucun LaTeX**. C'est délibéré : écrire des
+slides avant d'avoir décidé quoi montrer est la cause première des decks du parc.
+
+### 1. Le cadrage
+
+Quatre paramètres. Les demander par `AskUserQuestion` s'ils ne sont pas donnés,
+en une seule question à choix multiples plutôt qu'en quatre allers-retours.
+
+- **L'occasion** : séminaire d'équipe, conférence, audition, soutenance, cours,
+  grand public, réunion de projet. Elle fixe l'intensité du thème et le degré de
+  formalisme.
+- **Le public réel**, pas le public nominal : spécialistes du domaine,
+  biologistes non informaticiens, informaticiens non biologistes, jury
+  pluridisciplinaire, étudiants. C'est lui qui décide de ce qu'il faut
+  expliquer et de ce qu'on peut supposer connu.
+- **La durée**, et si les questions sont dedans ou en plus.
+- **Les deux langues, séparément** : celle des slides et celle de l'oral. Elles
+  diffèrent souvent (slides en anglais, exposé en français) et commandent des
+  livrables différents.
+
+Détail et conséquences de chaque valeur : `references/cadrage.md`.
+
+### 2. Le message et le fil conducteur
+
+Produire **deux à quatre propositions contrastées, jamais une seule**. Une
+proposition unique n'est pas un choix, c'est une décision déguisée.
+
+Chaque proposition porte : le message en une phrase, c'est-à-dire ce que
+l'auditoire doit pouvoir redire le lendemain ; l'arc en cinq à huit temps ; les
+deux ou trois points de bascule ; **ce qu'elle sacrifie** ; et pour quel public
+elle marche le mieux. Deux propositions qui ne diffèrent que par l'ordre ne sont
+pas contrastées : faire varier la thèse, pas la table des matières.
+
+Soumettre par `AskUserQuestion`, avec **une option explicite « aucune de
+celles-ci, voici la mienne »**. Si l'utilisateur dicte son message, reconstruire
+l'arc autour sans discuter, puis signaler en une phrase ce que ce message oblige
+à laisser dehors.
+
+Comment construire des propositions réellement différentes :
+`references/message_et_fil.md`.
+
+### 3. Le budget de temps
+
+Avant tout choix de contenu. Convertir la durée en budget :
+
+| Type de slide | Coût |
+|---|---|
+| Slide de contenu, registre académique | 60 à 90 s |
+| Slide de rupture, grand chiffre | 15 à 30 s |
+| Figure à commenter réellement | 90 à 150 s |
+| Page de section | 5 à 10 s |
+
+Réserver 10 % pour l'entrée en matière et les aléas. Une slide d'annexe ne coûte
+rien : elle ne se montre que si la question vient.
+
+Rendre le budget explicitement : « 20 minutes, questions en plus, donc 18 min de
+parole, donc 14 slides de corps dont 4 figures, 2 ruptures, 3 pages de section
+et 6 annexes ». **Ce budget contraint le geste 4, jamais l'inverse.**
+
+### 4. L'inventaire de la matière
+
+Lister tout ce qui pourrait entrer, puis donner à chaque item un rang. Repris du
+geste 6 de `narratif`, adapté à l'oral :
+
+- **NOYAU** — sans lui la démonstration tombe. Il aura sa slide.
+- **APPUI** — soutient un maillon du raisonnement. Il partage une slide.
+- **MENTION** — une phrase qui garde le chiffre, sans slide propre.
+- **ANNEXE** — une slide après `\appendix`, pour les questions.
+- **ÉCARTÉ** — avec son motif, écrit.
+
+La **taxe de coût irrécupérable** s'applique : trois semaines de calcul ne
+gagnent pas une slide. Si le total des NOYAU dépasse le budget du geste 3, ce
+n'est pas le budget qui cède : c'est le message qui est trop large, et on
+retourne au geste 2.
+
+### 5. Le recyclage
+
+Auditer les figures et tableaux déjà produits (`article/figures/`, `résultats/`,
+`figures/`, decks antérieurs du projet) selon des critères **de projection**,
+plus durs que ceux d'un article. Une figure d'article est conçue pour un lecteur
+à trente centimètres ; l'auditoire est à huit mètres.
+
+Quatre verdicts par figure : **réutilisable telle quelle** (rare) ; **à
+reforger** (agrandir les polices, changer le ratio pour le 16:9, élaguer les
+panneaux hors sujet, annoter directement sur la figure au lieu d'une légende) ;
+**à refaire** ; **inutilisable ici**. Consigner le verdict par figure dans le
+registre : c'est ce qui évite de réauditer les mêmes figures au prochain exposé.
+
+Grille détaillée et seuils : `references/inventaire_et_recyclage.md`.
+
+### 6. Le narratif fin et le squelette
+
+Fixer la chaîne d'arguments : les maillons que l'auditoire doit accepter l'un
+après l'autre pour passer de ce qu'il croyait à ce qu'on veut lui faire admettre.
+Repérer les **points de bascule**, ces endroits où une explication concurrente
+meurt et où une preuve visuelle est donc due. Décider l'ordre.
+
+Puis **émettre le squelette**, chaque section portant son allocation en
+commentaire, comme le fait `narratif` pour un article :
 
 ```latex
-\documentclass[10pt, aspectratio=169]{beamer}
+\section{Le résultat central}
+% presentation: maillon M2 | bascule B1 -> slide de preuve | budget 4 min | 4 slides
+```
 
-\usetheme[progressbar=frametitle, block=fill,
-          sectionpage=progressbar, numbering=fraction]{metropolis}
+Un plan qui n'émet pas le squelette est décoratif, et sera contredit dès la
+première slide.
 
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[french]{babel}    % or [english]{babel}
+### 7. La fiche par slide
+
+Pour chaque slide, dans `plan_presentation.md` :
+
+- **Rôle** dans l'arc, en une ligne.
+- **Message** en une phrase. C'est lui qui deviendra le **titre** de la slide.
+- **Informations** à porter, avec le rang des items consommés.
+- **Durée visée**.
+- **Modalité pressentie**, et si c'est une liste à puces, **pourquoi aucune
+  forme visuelle ne convient**.
+
+Gabarit littéral du registre : `references/gabarit_plan.md`.
+
+### 8. L'idéation visuelle
+
+Pour chaque slide non élémentaire, proposer **deux ou trois formes candidates
+avant d'en écrire une**, et motiver le choix. Ne pas dessiner la première forme
+qui vient : c'est ainsi qu'on obtient trois rectangles arrondis.
+
+Le bestiaire, l'arbre de décision « quelle forme pour ce message » et les
+patrons TikZ prêts à copier sont dans `references/ideation_visuelle.md`.
+Délégations :
+
+- **carte** : `geo-map`, obligatoire dès qu'il y a du géographique. Une carte
+  schématique en TikZ ne remplace pas une carte pour discuter distribution,
+  foyer ancestral ou flux.
+- **graphique de données** : `sci-figure`, en demandant explicitement des tailles
+  de police de projection, pas les presets de revue.
+- **une slide isolée particulièrement difficile** : `slide-design`, qui propose
+  des options structurelles avec références éditoriales.
+- **une figure qui manque au projet entier** : `fig-ideation`, qui cherche la
+  figure absente plutôt que de dessiner celle qu'on demande.
+
+### 9. La production
+
+Écrire le deck avec le thème maison, à l'intensité fixée au geste 1 :
+
+```latex
+\documentclass[aspectratio=169,11pt]{beamer}
+\usetheme[academique]{guyeux}     % ou [affirmee]
+\usepackage[french]{babel}        % ou [english]
 \usepackage{graphicx}
-\usepackage{booktabs}
-\usepackage{amsmath}
-\usepackage{xcolor}
-\usepackage{tcolorbox}
-\usepackage{tikz}
-\usetikzlibrary{arrows.meta, positioning}
-\usepackage{fontawesome5}
-
-% Compact spacing
-\setlength{\parskip}{2pt}
-\setbeamersize{text margin left=6mm, text margin right=6mm}
-\setbeamerfont{itemize/enumerate body}{size=\small}
-\setbeamerfont{itemize/enumerate subbody}{size=\footnotesize}
+\graphicspath{{figures/}{../../article/figures/}{../../résultats/}}
 ```
 
-#### Slide Design Rules
+Copier `assets/beamerthemeguyeux.sty` dans le répertoire de la présentation :
+le répertoire doit être autonome, donc portable vers Overleaf sans rien
+installer. Le thème et ses macros sont documentés dans `references/theme.md`,
+la grammaire des types de slide dans `references/grammaire_slides.md`.
 
-**Text:**
-- Maximum 6 bullet points per slide (fewer is better)
-- Maximum 8-10 words per bullet
-- No full sentences in bullets, use keywords and fragments
-- Body text: `\small` or `\footnotesize` to fit more if needed
-- **Never** put a wall of text on a slide
-
-**Figures:**
-- One figure per slide (two max if direct comparison)
-- Figures should occupy 50-70% of the slide area
-- Always caption or annotate: what are the axes? what are the colors?
-- Use `\includegraphics[width=\linewidth,height=0.70\textheight,keepaspectratio]`
-
-**Layout:**
-- Use `\begin{columns}[T,onlytextwidth]` for figure+text side-by-side
-- Typical split: 55% figure, 42% text (or 48/49)
-- Use TikZ for simple diagrams, flowcharts, and schemas
-- Use `tcolorbox` (keybox) for highlighted take-away messages
-
-**Colors:**
-- Define a consistent palette (5-6 colors) matching the topic
-- Use `\alert{}` for emphasis (red by default)
-- Use colored keyboxes for key messages
-- Keep backgrounds clean (white or very light)
-
-**Keybox pattern** (for take-away messages):
-```latex
-\newcommand{\kb}[2][maincolor]{%
-  \begin{tcolorbox}[colback=#1!8,colframe=#1,arc=3pt,
-    boxrule=0.8pt,top=2pt,bottom=2pt,left=5pt,right=5pt]
-  \footnotesize #2
-  \end{tcolorbox}}
-```
-
-#### Slide Types
-
-**Title slide:**
-```latex
-\begin{frame}[plain]\titlepage\end{frame}
-```
-
-**Outline slide** (optional, for talks > 15 min):
-```latex
-\begin{frame}{Plan}
-\tableofcontents[hideallsubsections]
-\end{frame}
-```
-
-**Content slide with figure:**
-```latex
-\begin{frame}{Clear, Specific Title (Not Generic)}
-\begin{columns}[T,onlytextwidth]
-\begin{column}{0.55\textwidth}
-  \centering
-  \includegraphics[width=\linewidth,height=0.70\textheight,
-    keepaspectratio]{figures/my_figure.png}
-\end{column}
-\begin{column}{0.42\textwidth}
-  \begin{itemize}\setlength\itemsep{3pt}
-    \item Key observation 1
-    \item Key observation 2
-    \item Interpretation
-  \end{itemize}
-  \vspace{3pt}
-  \kb{Take-home message for this slide}
-\end{column}
-\end{columns}
-\end{frame}
-```
-
-**Data introduction slide** (MANDATORY before showing results):
-```latex
-\begin{frame}{What we analyzed}
-\begin{columns}[T,onlytextwidth]
-\begin{column}{0.48\textwidth}
-  % Table or diagram of dataset composition
-\end{column}
-\begin{column}{0.48\textwidth}
-  % Pipeline overview or method summary
-\end{column}
-\end{columns}
-\end{frame}
-```
-
-**Synthesis slide** (the most important slide):
-```latex
-\begin{frame}{Synthesis / Key Messages}
-% Use TikZ, numbered list, or visual summary
-% NOT a repetition of all results
-% Instead: the integrated story, the big picture
-\end{frame}
-```
-
-**Closing slide:**
-```latex
-\begin{frame}[standout]
-  \centering
-  {\large\bfseries Thank you / Merci}\\[10pt]
-  \normalsize
-  \textbf{Code:} \texttt{github.com/...}\\[4pt]
-  \textbf{Data:} \texttt{...}\\[4pt]
-  \textbf{Contact:} \texttt{email@...}
-\end{frame}
-```
-
-### Phase 4: Self-Containment Checklist
-
-Before finalizing, verify the presentation is self-contained:
-
-- [ ] **Datasets explained**: sample sizes, species/groups, source database, how collected
-- [ ] **Methods explained**: at minimum a 1-slide overview; audience must understand what "core genome" / "enrichment" / your key method means
-- [ ] **Jargon defined**: any domain-specific term used more than twice must be explained on first use
-- [ ] **Figures annotated**: all axes labeled, colors explained, sample sizes noted
-- [ ] **Statistical tests explained**: what test, what p-value means in context, not just "p < 0.001"
-- [ ] **Limitations acknowledged**: at least one slide or section on caveats
-- [ ] **Narrative coherent**: someone who missed the first 2 slides can still follow from slide 3 onward
-- [ ] **Synthesis slide works standalone**: if someone only sees this one slide, they get the main message
-
-### Phase 5: Compilation and Verification
+Compiler, puis **regarder chaque slide rendue** avant de déclarer quoi que ce
+soit :
 
 ```bash
-cd <article_directory>
-pdflatex -interaction=nonstopmode slides.tex
-pdflatex -interaction=nonstopmode slides.tex   # second pass for refs
-grep -c "^!" slides.log                        # must be 0
-grep -c "LaTeX Warning.*undefined" slides.log  # must be 0
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/beamer-slides/scripts/deck_render.py deck.tex
 ```
 
-Check:
-- All figures render (no missing file errors)
-- No overfull frames (text spilling off slides)
-- Slide count matches expected duration
-- Section progress bar works
+### 10. Les deux markdowns
 
-## Updating Existing Slides
+Écrits depuis les fiches du geste 7, pas depuis les slides : des notes dérivées
+des slides ne font que les paraphraser.
 
-When updating slides after article modifications:
+**`notes_orateur.md`** — par slide : le rôle dans le narratif en une ligne, le
+temps à y passer, puis le **texte à dire**, rédigé pour être parlé, et les
+phrases de transition, qui sont ce qui manque le plus souvent. En français, et
+**aussi en anglais si l'oral est anglais**.
 
-1. **Read the article diff** (or understand what changed from context)
-2. **Identify which slides are affected**, don't blindly regenerate everything
-3. **Update affected slides only**, preserving the existing style and structure
-4. **Check narrative coherence**, a change in one slide may require transition updates
-5. **Recompile and verify**
+**`notes_techniques.md`** — le soutien pédagogique : définition de chaque
+métrique affichée et **pourquoi celle-là plutôt qu'une autre**, ce que fait
+chaque outil nommé, quel test statistique et comment lire sa valeur de p, les
+chiffres exacts avec leur source, les réserves, et les questions probables avec
+leur réponse.
 
-Common update scenarios:
-- **Title changed** → update title slide + any self-references
-- **Key number changed** → search all slides for that number
-- **New caveat added** → add to relevant slide + limitations
-- **Section restructured** → may need to reorder slides
-- **New result added** → insert slide in narrative-appropriate position
+Gabarits : `references/notes_orateur.md` et `references/notes_techniques.md`.
 
-## Language
+### 11. Les contrôles
 
-- Match the article language by default
-- For French presentations: use `[french]{babel}`, French punctuation rules (espace avant : ; ? !)
-- For English presentations: use `[english]{babel}`
-- Technical terms stay in their original language regardless
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/beamer-slides/scripts/slide_audit.py deck.tex --duree 20 --pixels
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/beamer-slides/scripts/slide_audit.py --pourquoi   # d'où viennent les seuils
+```
 
-## Common Mistakes to Avoid
+Le script mesure ; il ne tranche pas. Codes : `C2`/`C3` débordement vertical et
+horizontal, `T1` texte absent du PDF rendu, `D1` réduction de police, `D2`
+densité, `D3` take-away trop long, `V1` TikZ décoratif, `V2` part de slides sans
+objet visuel, `M1`/`M2` monotonie, `R1` rythme contre la durée, `S0` aucune frame trouvée alors
+que le PDF en compte (fragment non résolu : le rapport ne vaut alors rien),
+`S1` `\input` introuvable, `S2` liste des fragments réellement audités.
+Le script suit les `\input`, situe chaque défaut dans son fragment
+(« corps.tex:37 »), et **chaque variante s'audite avec sa propre durée**.
 
-1. **The "paper dump"**: copying paragraphs from the article onto slides. Never.
-2. **The methods maze**: spending 5 slides on methods before showing any result.
-3. **The naked figure**: showing a complex figure without explaining what we're looking at.
-4. **The missing context**: jumping to results without explaining the dataset.
-5. **The anticlimax**: putting the most important result in the middle, not building to it.
-6. **The wall of numbers**: showing tables with 20+ numbers. Simplify to key comparisons.
-7. **The orphan slide**: a slide with no connection to what came before or after.
-8. **The generic title**: "Results (1)", "Methods". Use specific, informative titles.
-9. **The absent synthesis**: ending with "perspectives" instead of a clear take-home message.
-10. **The overcrowded slide**: if you need to use `[shrink]`, the slide has too much content.
+S'y ajoutent deux contrôles que le script ne peut pas faire :
 
-## Appendix Slides
+- **fig-check par slide portant une figure** : lisibilité à la projection,
+  taille des textes, correspondance entre la figure et le message annoncé.
+- **claim-check des slides** : chaque chiffre et chaque affirmation affichés
+  doivent être traçables à `claim_check.md`, `etat_des_decouvertes.md` ou un
+  résultat sur disque. **Une slide affirme plus vite qu'un article, et personne
+  ne la relit.**
 
-For anticipated questions, add appendix slides after `\appendix`:
-- Detailed methods
-- Supplementary figures
-- Statistical details
-- Comparison tables
+Registre `slide_check.md`, au format de `fig_check.md`, horodaté, incrémental :
+on ne re-vérifie que ce qui a bougé. Détail : `references/controles.md`.
 
-These don't count toward the main presentation time but show preparedness.
+### 12. La revue par auditeur simulé
 
-## Output
+Se mettre dans la peau du public déclaré au geste 1 et rendre une critique
+constructive, structurée comme `manuscript-review` : MAJEUR, MODÉRÉ, MINEUR,
+POINTS FORTS, RECOMMANDATIONS. Elle porte sur le fond, sur la forme **et sur le
+texte à dire**. Déléguer à une instance indépendante de celle qui a rédigé le
+deck : l'auteur d'une slide ne voit pas ce qu'elle ne dit pas.
 
-The skill produces a single `slides.tex` file in the article directory (or the current working directory), compilable with `pdflatex`. The file should:
-- Be well-commented with section separators
-- Use consistent formatting throughout
-- Include a `\graphicspath` pointing to the figures directory
-- Compile cleanly in two passes with zero errors
+Grille par public et gabarit de sortie : `references/revue_auditeur.md`.
+Sortie datée dans `revue_auditeur.md`.
+
+## Modes d'invocation
+
+- **`/slides`** — cycle complet, les douze gestes.
+- **`/slides read`** — afficher le plan courant et sa fraîcheur, sans rien modifier.
+- **`/slides notes`** — régénérer les deux markdowns depuis les fiches.
+- **`/slides check`** — gestes 11 seul, sur un deck existant.
+- **`/slides review`** — geste 12 seul.
+- **`/slides edit <deck.tex> "<demande>"`** — modification demandée d'un deck
+  qu'on tient : ajouter une section, en retirer une, corriger un chiffre. Tout
+  ajout **rend la monnaie** du budget, et la demande passe par une fiche de
+  slide avant tout LaTeX.
+- **`/slides fork <deck.tex> --duree 15`** (ou `--langue en`) — décliner le
+  **même** exposé dans un autre format. Vérifier d'abord que le message ne
+  change pas : si c'est le cas, ce n'est pas une variante mais un nouvel
+  exposé, et il repart du geste 1. La bascule vers des fragments partagés est
+  mécanique, donc outillée, et se contrôle comme une refactorisation :
+
+  ```bash
+  python3 ${CLAUDE_PLUGIN_ROOT}/skills/beamer-slides/scripts/deck_fork.py deck.tex --nom court
+  ```
+
+  Le script découpe `preambule.tex` et `corps.tex`, écrit les deux maîtres,
+  puis **vérifie que le PDF de référence n'a pas changé de longueur**. Reste
+  ensuite le vrai travail, qui n'est pas mécanique : rejouer le budget et les
+  rangs pour la nouvelle durée.
+- **`/slides upgrade <deck.tex>`** — reprise d'un deck existant. Compiler, le
+  regarder slide par slide, passer l'audit, **reconstruire le plan que le deck
+  porte réellement**, le confronter à celui qu'il devrait porter, et **rendre le
+  chantier avant d'agir**. Calque du mode `reprise` de `narratif`. Ne jamais
+  réécrire un deck sans avoir montré ce qu'on va changer et pourquoi.
+
+## Éditer et décliner
+
+Un exposé est rarement donné une fois : il se retouche, il se raccourcit, il se
+traduit. Trois demandes voisines, un seul tri, qui tient en une question — **le
+message du geste 2 change-t-il ?**
+
+- **Non, et le contenu bouge à la marge** : c'est une **édition**. Elle se paie.
+  Le skill repose sur l'ordre budget puis contenu ; une demande d'ajout attaque
+  cet ordre de face, et c'est ainsi qu'un deck devient trop long, non pas d'un
+  coup mais par ajouts dont aucun n'a été compensé. Chiffrer l'ajout, puis
+  soumettre trois issues : **compenser** en nommant ce qui sort, **allonger** en
+  actant que la durée change, ou **verser en annexe** à coût nul. Et dire **à
+  quel maillon** l'ajout se rattache : celui qui ne sert aucun maillon est une
+  annexe, pas une section.
+- **Non, mais le format change** (durée, langue) : c'est une **variante**. Elle
+  ne se fabrique pas en copiant le répertoire, qui divergerait dès la première
+  correction de chiffre, ni par `\includeonlyframes`, qui perd les pages de
+  section et laisse une numérotation calée sur le deck complet — mesuré. Un
+  maître par variante, des fragments partagés, un booléen. Et une version
+  courte n'est **pas** la longue tronquée : on rejoue le budget et les rangs,
+  et des slides fusionnent.
+- **Oui** : ce n'est pas un fork, c'est un **nouvel exposé** qui recycle la
+  matière au geste 5. Le déguiser en variante donne deux decks qui divergent en
+  prétendant partager une source.
+
+Détail des trois gestes, structure de fichiers, mécanisme mesuré et registre des
+variantes : `references/edition_et_variantes.md`.
+
+## Erreurs à éviter
+
+- **Ajouter une slide sans rendre la monnaie du budget.**
+- **Fabriquer une version courte en supprimant des slides** au lieu de rejouer
+  le budget, les rangs et l'arc.
+- **Écrire des slides au geste 2.** Le LaTeX arrive au geste 9, pas avant.
+- **Choisir le contenu puis regarder la durée.** C'est l'ordre qui produit les
+  decks à 75 frames.
+- **Comprimer l'article.** Un exposé n'est pas un manuscrit court : il a un
+  public, une durée et une seule thèse.
+- **Mettre du texte dans des rectangles et appeler cela un schéma.** Si les
+  nœuds portent des phrases et qu'il n'y a ni axe, ni échelle, ni donnée, c'est
+  une liste à puces qui coûte la place d'une figure.
+- **Réduire la police pour faire tenir.** Le contenu est en trop : c'est lui
+  qu'on coupe. `\footnotesize` et ses voisins sont réservés aux sources et aux
+  notes.
+- **Réutiliser une figure d'article telle quelle.** Elle est calibrée pour la
+  lecture à trente centimètres.
+- **Répéter le même gabarit.** Titre, filet, contenu, encadré, vingt fois : au
+  bout de dix minutes l'œil ne distingue plus rien.
+- **Livrer sans avoir regardé les slides rendues.** Un débordement ressemble à
+  une slide simplement courte.
+- **Déclarer un chiffre qu'aucun registre ne porte.**
+- **Écrire les notes depuis les slides.** Elles ne feraient que les paraphraser ;
+  elles se dérivent des fiches.
+
+## Frontière avec les skills voisins
+
+`slide-design` conçoit une à quelques slides depuis une idée verbale ;
+`beamer-slides` conçoit un exposé entier et le contrôle. `slide-polish` améliore
+**une** slide existante, et c'est à lui que le geste 8 délègue une slide
+difficile et le mode `upgrade` une slide à reprendre. `latex-posters` fait les
+posters. `fig-ideation` cherche la figure qui manque au projet ; `sci-figure` et
+`geo-map` produisent graphiques et cartes. `narratif` fait pour un article ce
+que les gestes 2, 4, 6 et 7 font pour un exposé : si `plan_narratif.md` existe,
+**en partir** au lieu de refaire la chaîne d'arguments. `mtbc-bilan` produit un
+point d'étape interne, destiné à l'auteur ; un exposé est destiné à un public,
+et sa grammaire de slides est celle d'ici.
+
+## Références
+
+- `references/cadrage.md` — les quatre paramètres et ce que chacun commande.
+- `references/message_et_fil.md` — fabriquer des propositions réellement contrastées.
+- `references/inventaire_et_recyclage.md` — rangs, et audit des figures pour la projection.
+- `references/gabarit_plan.md` — format littéral de `plan_presentation.md`.
+- `references/grammaire_slides.md` — les types de slide et leur emploi.
+- `references/ideation_visuelle.md` — bestiaire, arbre de décision, patrons TikZ.
+- `references/notes_orateur.md` — gabarit du script parlé.
+- `references/notes_techniques.md` — gabarit du soutien pédagogique.
+- `references/controles.md` — les contrôles, leurs seuils, leurs faux positifs connus.
+- `references/revue_auditeur.md` — la revue par public.
+- `references/theme.md` — le thème, ses deux intensités, ses macros.
+- `references/edition_et_variantes.md` — éditer un deck existant sous contrainte
+  de budget, et le décliner en versions courte, longue ou traduite.

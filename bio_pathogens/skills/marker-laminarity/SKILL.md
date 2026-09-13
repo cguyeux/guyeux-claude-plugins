@@ -167,10 +167,37 @@ supplementaires (11 -> 4 retires, 88,2 % -> 95,7 % de present-sets conserves).
 - **`laminarisation`** : combien de marqueurs il a fallu sacrifier pour atteindre
   zero croisement. C'est la mesure d'incompatibilite du jeu.
 
-Fichiers ecrits : `report.json`, `crossings.tsv` (tous les croisements tries par
-fragilite, avec temoins), `laminar_tree.nwk` (arbre non enracine, longueurs de
-branche = nombre de souches du profil), `removed_markers.txt`, et `browser.html`
-(ci-dessous).
+Fichiers ecrits : `report.json`, `report.meta.json` (voir ci-dessous), `crossings.tsv`
+(tous les croisements tries par fragilite, avec temoins), `laminar_tree.nwk` (arbre non
+enracine, longueurs de branche = nombre de souches du profil), `removed_markers.txt`,
+et `browser.html` (ci-dessous).
+
+## Deux garde-fous de REGIME (ajoutes le 2026-08-24)
+
+**`--exclude-strains FICHIER`** (repetable). A utiliser des que le jeu de marqueurs teste
+a lui-meme ete calcule en ecartant des souches, typiquement une quarantaine de qualite.
+Juger une souche que le referentiel a ete construit sans elle la fait echouer par
+construction : un marqueur qu'elle ne porte pas etait auparavant tenu hors de son noeud,
+puisqu'elle comptait dans le seuil de portage, et y entre desormais. Mesure sur *M. bovis*
+le 2026-08-24 : 8 des 26 non-conformites d'emboitement et 16 des 75 decrochages de chaine
+ancestrale etaient des souches en quarantaine, dont aucune n'echouait avant que la
+quarantaine existe.
+
+Attention a l'effet sur les TAUX : ces souches sont les plus pauvres en appels, donc les
+plus grosses productrices de croisements FRAGILES dont elles sont l'unique temoin. Les
+ecarter fait baisser le NOMBRE de croisements francs et monter leur TAUX. Sur le clade
+Bovis, 54 souches sur 13 159 (0,41 %) portaient 51 856 croisements sur 222 046 (23 %) :
+les retirer donne 28 843 francs sur 170 190 (16,9 %) contre 31 511 sur 222 046 (14,2 %).
+**Comparer des comptes absolus, ou des taux a denominateurs comparables.**
+
+**`report.meta.json`**, ecrit d'office a cote de `report.json` des qu'un `--out` est
+donne. Il porte tout ce qui rend deux runs incomparables : source (pool / fit / matrix),
+nombre et liste des pools, fichier de marqueurs avec condensat SHA-256 court et prefixe,
+`min_carriers`, `max_markers`, chaque `--exclude-positions` avec son condensat, le bloc
+`--exclude-strains` (compte et condensat), le regime 3-etats s'il est actif, et
+`strain_level`. Sans lui, `report.json` ne portait que des compteurs, et deux runs sur
+deux masques ou deux populations differentes etaient indiscernables : une comparaison
+entre eux se lisait alors comme un changement de l'objet etudie.
 
 ## Le navigateur local : un instrument de travail, pas une figure
 
@@ -230,3 +257,27 @@ avant, pas apres.**
 Voir aussi : `binary-coclustering` (structure de population par LBM, dont ce
 skill est le controle aval), `pectinated-subclade-mining`, `lineage-subdivision`,
 `strain-qc`.
+
+## Homoplasie d'une catégorie de marqueurs : `scripts/homoplasy.py` (ajouté 2026-09-10)
+
+Complément de la laminarité, sur un axe qu'elle ne couvre pas. La laminarité demande si un jeu de
+marqueurs est compatible avec UN arbre quelconque ; ce script demande combien de fois chaque site
+doit changer sur un arbre DONNÉ (parcimonie de Fitch), et compare deux catégories de positions.
+
+    python3 scripts/homoplasy.py arbre.newick align.phy positions.txt categorie.txt
+
+Rend, par catégorie : pas de Fitch (moyenne, médiane), indice de cohérence moyen, proportion de
+sites homoplasiques, plus Mann-Whitney et Fisher entre les deux catégories.
+
+**Le piège de design, à ne pas rejouer.** L'arbre doit avoir été construit SUR LES DEUX catégories.
+L'évaluer sur un arbre inféré sans la catégorie testée est circulaire et la condamne d'avance ;
+l'évaluer sur un arbre inféré à partir d'elle seule fait l'inverse.
+
+**Ce que ça permet de distinguer, et qu'un comptage de sites informatifs ne voit pas.** Un jeu de
+marqueurs peut être DENSE en sites parcimonieusement informatifs et pourtant faux : un artefact de
+mapping reproductible (paralogie, PE/PPE) produit des motifs partagés par des groupes de souches,
+cohérents et résistants au bootstrap, mais incompatibles avec la phylogénie. C'est plus dangereux
+qu'un bruit dispersé, et seule l'homoplasie le révèle. Cas d'usage d'origine : `mtbc` P72.4, où les
+positions PE/PPE se sont révélées à la fois PLUS informatives en apparence (59,5 % de sites
+pars-informatifs contre 33,8 %) et homoplasiques cinq fois plus souvent (45,1 % contre 8,8 %,
+OR 8,56, p 7,5e-58).

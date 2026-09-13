@@ -126,6 +126,24 @@ Pour chaque figure extraite :
      Makefile.
    - Si trouve : noter le chemin du script dans le registre (utile en
      mode `--fix`).
+8. **Risque de debordement vertical (portrait + `width=\textwidth`)** :
+   a partir des dimensions `pdfinfo`/`identify` deja obtenues, calculer le
+   ratio hauteur/largeur du fichier. Si ce ratio depasse 1 (image plus
+   haute que large -- typiquement un flowchart ou un arbre vertical) **et**
+   que le code LaTeX force `width=\textwidth` (ou `width=\linewidth`) sans
+   borne de hauteur (`height=`, `keepaspectratio` avec un plafond) : signaler
+   un **risque** explicite avant meme la Phase 4, avec l'estimation
+   `hauteur_rendue = \textwidth_manuscrit * ratio` (recuperer `\textwidth`
+   reel via le petit document de sondage de la Phase 4 ci-dessous, ou a
+   defaut estimer ~455pt pour un A4/margin=2.5cm en 11pt). Une image dont la
+   hauteur rendue depasse a elle seule ~85% de `\textheight` ne laisse
+   quasiment plus de place a la legende : c'est le motif exact qui a fait
+   disparaitre la fin de la legende de la Figure 1 de `Rv1557` (flowchart
+   CONSORT portrait a `width=\textwidth`, legende de 200 mots) sans qu'aucun
+   `Overfull \vbox` ne soit emis dans le log -- LaTeX absorbe silencieusement
+   le debordement en bas de page plutot que d'avertir. Ce risque **rend la
+   Phase 4 obligatoire** pour cette figure (voir plus bas), meme en l'absence
+   de tout autre signal.
 
 ### 2bis -- Rendu des formats que `Read` ne sait pas ouvrir
 
@@ -242,6 +260,18 @@ systematiquement les criteres suivants et attribuer a chaque figure un
   a « voir Methodes » ou « voir section X » pour comprendre ce qui est
   affiche est une issue F-FAIL, pas un simple style a ameliorer.
 
+**F2. Rendu integral dans le PDF compile (critere mecanique, Phase 4)**
+- La legende complete (jusqu'a son dernier mot) apparait-elle **sur la
+  meme page** que sa figure dans le PDF final -- verifie par comparaison
+  automatique texte-source vs `pdftotext`, jamais par la seule lecture
+  visuelle (voir Phase 4.2, methode et justification) ?
+- Absence de FAIL ici est une condition **necessaire** au statut `OK` de
+  la figure, independamment de tous les autres criteres : une figure dont
+  le rendu isole est irreprochable mais dont la legende compilee est
+  tronquee n'est pas publiable en l'etat.
+- Ne s'applique -- et ne peut s'appliquer -- que si un `main.pdf` compile
+  et a jour existe (sinon `NA`, jamais `OK` par defaut : voir Phase 4).
+
 **G. Elements scientifiques specifiques (MTBC)**
 - Sur un arbre phylogenetique : presence d'une echelle (substitutions
   par site), presence d'un outgroup clair, support de branches (bootstrap)
@@ -272,7 +302,7 @@ systematiquement les criteres suivants et attribuer a chaque figure un
 
 ### Ce qu'il faut documenter pour chaque issue
 
-Par issue : critere (A-H), severite (WARN/FAIL), description concrete
+Par issue : critere (A-H, ou F2), severite (WARN/FAIL), description concrete
 ("la legende en haut a droite chevauche la branche L4.9.1"), et action
 suggeree ("deplacer la legende hors du panneau principal",
 "augmenter `fontsize` de 8 a 11 dans le script source").
@@ -286,7 +316,7 @@ suggeree ("deplacer la legende hors du panneau principal",
   ecart caption/image est une issue critere F.
 - **Comparer entre figures** : apres avoir inspecte toutes les figures,
   evaluer la coherence inter-figures (palette, police, style).
-- **Deux regles absolues, valables pour tout article verifie par ce
+- **Trois regles absolues, valables pour tout article verifie par ce
   skill, sans exception** :
   1. **Chaque legende doit se suffire a elle-meme** (critere F). Une
      figure comprehensible seulement en repartant lire le texte principal
@@ -299,28 +329,178 @@ suggeree ("deplacer la legende hors du panneau principal",
      l'appel manque et doit etre ajoute au bon endroit du texte, soit la
      figure est superflue et doit etre retiree ou deplacee en
      supplementary. Voir Phase 5 pour la detection systematique.
+  3. **Chaque legende doit se rendre integralement, sur une seule page,
+     dans le PDF compile** (critere F2, Phase 4). Une inspection qui se
+     limite au fichier de figure isole ne peut pas voir ce defaut -- la
+     legende n'existe que dans le `.tex` -- d'ou le caractere obligatoire
+     de la Phase 4 des qu'un PDF compile est disponible, verifiee
+     mecaniquement (texte source vs `pdftotext`) et non par la seule
+     relecture visuelle, precisement parce qu'une legende tronquee en fin
+     de phrase se confond a l'oeil avec une legende simplement courte.
 
 ---
 
-## Phase 4 -- Inspection du rendu dans le PDF final
+## Phase 4 -- Inspection du rendu dans le PDF final (OBLIGATOIRE des qu'un PDF existe)
 
-Si `article/main.pdf` existe et est recent (plus recent que `main.tex`) :
+**Cette phase n'est plus optionnelle.** Un defaut ne vivant que dans la mise
+en page du manuscrit compile -- jamais dans le fichier de figure isole --
+est invisible a la Phase 3, quelle que soit la rigueur de l'inspection
+visuelle : la legende n'existe nulle part dans le fichier `.pdf` de la
+figure elle-meme, seulement dans le `.tex` du manuscrit. Verifie sur
+`Rv1557` (2026-08-28) : la legende de la Figure 1 (flowchart CONSORT
+portrait a `width=\textwidth`, ~200 mots de legende) etait tronquee --
+sa derniere phrase disparaissait silencieusement sous le bas de la page,
+sans le moindre `Overfull \vbox` dans le log -- et ce defaut a **survecu a
+six tours de `/manuscript-review`** avant d'etre repere a l'oeil par
+l'auteur. Toute figure signalee a risque en Phase 2 point 8 (portrait +
+`width=\textwidth` sans plafond de hauteur), et plus generalement **toute
+figure du manuscrit des que `main.pdf`/`main_fr.pdf` existe et est plus
+recent que le `.tex`**, doit passer cette phase avant de recevoir un statut
+`OK`.
 
-1. Determiner sur quelle page apparait chaque figure via `pdfgrep`,
-   `pdftotext` ou recherche dans le log. Sinon : ignorer cette phase.
-2. `Read main.pdf pages "X"` pour chaque page contenant une figure.
-3. Verifier :
-   - La figure est-elle reellement visible sur la page ?
-   - Sa taille dans la page est-elle coherente avec son contenu ?
-     (eviter une figure 2cm avec 50 branches illisibles)
-   - La legende LaTeX est-elle sous/au-dessus correctement, sans
-     deborder la page ?
-   - La figure est-elle pres du texte qui la reference (pas 5 pages
-     plus loin) ?
+### 4.1 -- Localisation de la page
 
-Cette phase est optionnelle mais precieuse : c'est le seul moyen
-d'attraper les problemes de **mise en page** qui n'apparaissent pas en
-inspectant la figure isolement.
+Pour chaque figure, determiner la page qui la porte dans le PDF compile :
+
+```bash
+python3 -c "
+import subprocess
+out = subprocess.run(['pdftotext','-layout','article/main.pdf','-'],
+                      capture_output=True, text=True).stdout
+pages = out.split('\x0c')
+for i, p in enumerate(pages, start=1):
+    if 'fig:consort-flow'[4:] in p:  # remplacer par un fragment distinctif de la legende
+        print(i)
+"
+```
+
+En pratique, chercher un fragment distinctif du **debut** de la legende
+(les premiers mots suffisent, ils ne sont jamais tronques) plutot que le
+`\label{}`, qui n'apparait pas dans le texte rendu.
+
+### 4.2 -- Verification mecanique de non-troncature (le coeur du controle)
+
+Ne pas se fier a une lecture visuelle seule pour detecter une troncature :
+une legende coupee en fin de phrase ressemble, a l'oeil, a une legende
+simplement courte -- c'est precisement pourquoi ce defaut a survecu a six
+reviews. La detection fiable est **mecanique**, en comparant le texte
+source de la legende au texte reellement rendu sur sa page :
+
+```bash
+python3 - <<'EOF'
+import subprocess, re
+
+TEX = "article/main.tex"          # ou main_fr.tex
+PDF = "article/main.pdf"          # ou main_fr.pdf
+
+def normalize(s):
+    # commandes LaTeX simples (\textit{...}, \citet{...}, ~, \, ...), accolades,
+    # espaces multiples/retours a la ligne du source, et guillemets typographiques
+    # que babel/le moteur substitue a la compilation (' source -> ' rendu) : sans
+    # ce dernier point, une legende contenant une apostrophe est un faux positif
+    # systematique (verifie sur Rv1557 -- 2 des 6 legendes du manuscrit).
+    # Meme piege pour les commandes LaTeX qui RENDENT UN CARACTERE au lieu de
+    # disparaitre : \S -> §, \P -> ¶, \pounds -> £, \dag -> †, \ddag -> ‡,
+    # \copyright -> ©, \textdegree -> °, \% -> %, \& -> &, \# -> #, \_ -> _.
+    # Cote source la regex les efface, cote PDF le caractere est bien la, et une
+    # legende qui finit par « (\S3.1) » remonte alors comme TRONQUEE alors qu'elle
+    # est intacte (verifie sur Rv1125, 2026-09-06 : 1 des 4 legendes, faux positif).
+    # On les efface donc AUSSI cote PDF, en normalisant les deux textes pareil.
+    # PIEGE DISTINCT (verifie sur Bovis_full, 2026-09-08) : \_, \%, \&, \# sont des
+    # commandes LaTeX d'UN SEUL caractere non-alphabetique -- la regex ci-dessous ne
+    # matche que \\[a-zA-Z]+, donc un chemin de fichier dans \texttt{...figure\_x.tsv}
+    # laisse un '\' residuel cote source, absent cote PDF ('figure_x.tsv' rendu sans
+    # backslash), et la legende remonte a tort comme TRONQUEE. On les convertit donc
+    # d'abord en leur caractere nu, AVANT la regex generale des commandes lettrees.
+    s = re.sub(r'\\([_%&#])', r'\1', s)
+    s = re.sub(r'\\[a-zA-Z]+\{?', ' ', s)
+    s = s.replace('{', '').replace('}', '')
+    s = s.replace('~', ' ').replace('\\', ' ')
+    s = s.replace('\u2019', "'").replace('\u2018', "'")
+    for ch in '§¶£†‡©°':
+        s = s.replace(ch, ' ')
+    return re.sub(r'\s+', ' ', s).strip()
+
+src = open(TEX, encoding="utf-8").read()
+out = subprocess.run(['pdftotext', '-layout', PDF, '-'],
+                      capture_output=True, text=True).stdout
+pages = [normalize(p) for p in out.split('\x0c')]
+
+for m in re.finditer(r'\\caption\{', src):
+    # extraction naive par comptage d'accolades -- suffisant ici, pas de
+    # \caption[...] court ni d'accolades non echappees dans le texte
+    depth, i = 1, m.end()
+    while depth and i < len(src):
+        if src[i] == '{': depth += 1
+        elif src[i] == '}': depth -= 1
+        i += 1
+    caption = src[m.end():i-1]
+    tail = normalize(caption)[-50:]
+    found_on = [pi+1 for pi, p in enumerate(pages) if tail in p]
+    status = "OK" if found_on else "TRONQUEE -- fin de legende absente de tout le PDF"
+    print(f"{status:45s} pages={found_on} | fin attendue : ...{tail[-40:]!r}")
+EOF
+```
+
+Recette validee empiriquement sur `Rv1557` (`main.tex`/`main_fr.tex`, 6 figures
+chacun) : 0 faux positif ni faux negatif apres normalisation, y compris sur les
+deux legendes qui contenaient une apostrophe (piege le plus frequent, cf.
+commentaire dans `normalize`) et sur celle qui s'etale sur plusieurs lignes de
+source separees par de vrais retours a la ligne (`\n`, sinon jamais retrouve
+dans le texte reflow du PDF).
+
+Interpreter le resultat :
+- **`found_on` vide** : la fin de la legende n'apparait sur AUCUNE page --
+  c'est exactement le defaut de `Rv1557` (absorbee silencieusement sous le
+  bas de page). Statut `FAIL`, critere **F2** (nouveau, voir grille), quel
+  que soit par ailleurs le rendu visuel de la figure.
+- **`found_on` non vide mais different de la page attendue** (celle du
+  debut de legende, Phase 4.1) : la legende s'est coupee entre deux pages
+  au milieu d'une phrase -- rare, mais tout aussi genant. Statut `FAIL`
+  critere F2.
+- **`found_on` egal a la page attendue** : rendu complet, poursuivre en
+  4.3.
+
+### 4.3 -- Verification visuelle complementaire
+
+Une fois la non-troncature confirmee mecaniquement, `Read main.pdf pages
+"X"` pour la page identifiee et verifier :
+- La figure est-elle reellement visible sur la page ?
+- Sa taille dans la page est-elle coherente avec son contenu ?
+  (eviter une figure 2cm avec 50 branches illisibles)
+- Reste-t-il une marge blanche raisonnable sous la legende (une figure qui
+  remplit exactement la page au pixel pres, sans aucune marge, est un
+  signal WARN meme si le controle 4.2 passe -- c'est `F2` a la limite de
+  se reproduire au moindre ajout de texte)
+- La figure est-elle pres du texte qui la reference (pas 5 pages plus
+  loin) ?
+
+### 4.4 -- Correction quand F2 echoue
+
+**Gating `--fix`, comme pour toute autre correction de ce skill** : sans
+`--fix`, se limiter a proposer la modification precise (option
+`\includegraphics` cible, ou phrase de la legende a raccourcir avec le
+`\ref{}` de remplacement) sans toucher au `.tex`. Avec `--fix`, appliquer
+directement -- c'est l'exception etroite documentee dans « Ce que le skill
+NE DOIT PAS faire » : seules les options `\includegraphics` et la longueur
+de la legende (jamais son contenu factuel) peuvent etre editees.
+
+Deux leviers, a combiner plutot qu'a choisir arbitrairement :
+1. **Plafonner la hauteur de l'image** plutot que forcer `width=\textwidth`
+   aveuglement : `\includegraphics[height=0.55\textheight,keepaspectratio]{...}`
+   (ajuster la fraction pour laisser ~250-350pt a la legende selon sa
+   longueur -- estimer avec la Phase 4.2 apres coup, iterer si necessaire).
+   Le fichier de figure lui-meme n'est jamais modifie (regle absolue du
+   skill), seule l'option `\includegraphics` du `.tex` change.
+2. **Raccourcir la legende** quand son contenu duplique deja une section de
+   Methods citee ailleurs (`Fig.~\ref{...}` depuis le texte) : renvoyer au
+   `\S` correspondant plutot que de repeter le detail methodologique en
+   entier dans la legende. Ne jamais retirer une information qui n'existe
+   **que** dans la legende (violerait le critere F d'autosuffisance).
+3. Recompiler (`make` / `make both`), puis **relancer integralement la
+   Phase 4.2** sur la figure corrigee -- ne jamais se contenter d'une
+   relecture visuelle apres correction, c'est exactement le pas qui avait
+   ete saute jusqu'ici.
 
 ---
 
@@ -419,6 +599,7 @@ Issues inter-figures
   Refs cassees        : L (liste)
   Figures jamais citees dans le texte : M (liste)  ⚠ bloquant
   Legendes non autosuffisantes        : N (liste)  ⚠ bloquant
+  Legendes tronquees a la compilation : P (liste)  ⚠ bloquant (critere F2)
 
 Figures a corriger en priorite
   1. Figure 2 (fig:ml_tree) — MAJOR
@@ -480,6 +661,9 @@ applicable automatiquement :
 - Comparer chaque figure a sa caption LaTeX
 - **Verifier que chaque legende est autosuffisante** (comprehensible
   sans lire le texte principal, critere F, regle imperative)
+- **Verifier mecaniquement, des qu'un PDF compile existe, que chaque
+  legende se rend integralement sur sa page** (critere F2, Phase 4,
+  obligatoire -- jamais seulement par lecture visuelle)
 - **Verifier que chaque figure legendee est appelee par au moins un
   `\ref{}` depuis la prose du corps du texte** (regle imperative,
   Phase 5 point 7), pas seulement l'inverse (refs cassees)
@@ -493,8 +677,18 @@ applicable automatiquement :
 ### Ce que le skill NE DOIT PAS faire
 - Decrire ce qu'il n'a pas reellement vu dans l'image
 - Statuer `OK` sans inspection visuelle
+- Statuer `OK` sur le critere F2 sans avoir fait tourner la verification
+  mecanique de la Phase 4.2 (une lecture visuelle seule ne suffit jamais
+  pour ce critere precis)
 - Modifier le `.tex` du manuscrit (seul `/manuscript-review` et
-  `/deai-latex` peuvent le faire)
+  `/deai-latex` peuvent le faire) -- **exception unique et etroite** :
+  en mode `--fix`, pour corriger un `FAIL` critere F2 (Phase 4.4), le
+  skill peut ajuster les options `\includegraphics` (`width=`/`height=`/
+  `keepaspectratio`) d'une figure et raccourcir une legende qui duplique
+  du texte deja present ailleurs (avec renvoi `\ref{}` vers cette
+  section). Meme dans ce cas : ne jamais alterer un chiffre, un resultat
+  ou une affirmation scientifique de la legende -- ce type de correction
+  reste du ressort de `/manuscript-review` ou `/claim-check`.
 - Modifier une image binaire directement (ni `Edit` ni overwrite)
 - Re-verifier une figure recemment validee (sauf `--force` ou
   `--stale-days`)
@@ -551,6 +745,7 @@ Toutes les figures sont OK (N inspectees, 0 issue bloquante) :
   ✅ Palette coherente inter-figures
   ✅ Captions correspondent au contenu
   ✅ Aucune figure orpheline ni ref cassee
+  ✅ Aucune legende tronquee a la compilation (verifie mecaniquement, Phase 4.2)
 
 Aucune action requise sur les figures.
 ```

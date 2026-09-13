@@ -226,6 +226,30 @@ contrôlée. Là où il est incomplet (PZA, `pncA` très diverse), il porte un s
 prédicteur opérationnel reste donc catalogue-centré, le ML servant de filet pour les cas non
 couverts, à condition d'expliciter le compromis sensibilité / spécificité.
 
+**Piste PZA câblée et confirmée de bout en bout (2026-09-08)** : Dissanayake et al. 2026 (BMC
+Microbiology, `10.1186/s12866-026-04876-1`) obtiennent un F1 ~81 % sur la même prédiction
+(résistance PZA depuis `pncA`) avec un GCN sur structures AlphaFold2, mais leur propre ablation
+montre que la quasi-totalité du signal vient de features de méta-prédicteurs de stabilité
+(DeepDDG en tête, puis RaSP, MAPP, SNAP2) attachées au seul résidu muté, pas de la convolution de
+graphe elle-même. RaSP (installation légère via le chemin Colab, pas le README principal —
+recette dans `~/.agents/knowledge/bioinformatics.md`) a d'abord été testé seul sur les 364
+variants faux-sens uniques du catalogue PZA/`pncA`, contre la structure expérimentale 3PL1
+(numérotation H37Rv, 100 % de correspondance) : AUC=0.829 (Mann-Whitney p=7×10⁻⁵) pour
+discriminer R-associated de S-associated (WHO catalogue). **Câblé ensuite comme feature
+supplémentaire dans le XGBoost résiduel de ce mode** (`phase10_predict.py --rasp`, module
+`analyses/pnca_rasp_feature.py` dans `Resistance_antibio`) : sur les 20413 souches PZA, ML seul
+AUC 0.784 → **ML+ddG RaSP AUC 0.855 (Δ+0.071)**, et surtout sensibilité à spéc≥0.98 **0.240→0.365
+(Δ+0.125)**, gain concentré exactement là où le ML seul était le plus faible (haute spécificité).
+Le score ne couvre que 2896/20413 souches (14 %, celles portant une mutation `pncA` faux-sens
+scorée) — détail et incident d'exécution (job local tué par contention mémoire, refait sur `mp`)
+dans l'entrée du cahier de `Resistance_antibio` du 2026-09-08. Voir la note miroir dans
+`mtbc-gene` (mode `mutation`, ΔΔG structural). Reste ouvert, non fait : étendre `--rasp` aux
+autres gènes de résistance dotés d'une structure (rpoB, katG, embB…), à évaluer au cas par cas
+avant de généraliser. Second résultat de l'article, indépendant des features : un
+split aléatoire par mutation laisse fuiter la position de mutation entre train et test et gonfle
+tous les modèles ; transposé ici, vérifier qu'un split par position AA (au lieu de, ou en plus
+de, GroupKFold par lignée) ne changerait pas le AUC ~0.84 rapporté pour PZA — non testé.
+
 ---
 
 ## Mode 3 : Découverte hors catalogue

@@ -227,7 +227,14 @@ n'est tracable a sa source. Les mesurer avant la grille, pas apres.
 ```bash
 python3 ${CLAUDE_PLUGIN_ROOT}/skills/deai-latex/scripts/content_economy.py main.tex --limit <limite revue>
 python3 ${CLAUDE_PLUGIN_ROOT}/skills/bib-check/scripts/self_citation.py main.tex --author <nom du 1er auteur>
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/narratif/scripts/plan_vs_manuscrit.py [projet]
 ```
+
+Le troisieme script ne mesure rien du texte : il mesure l'ecart entre le manuscrit et le
+**plan** qui l'a decide (`plan_narratif.md`, skill `/narratif`). C'est le seul instrument du
+pipeline qui reponde a « cette section aurait-elle du exister ? », question qu'aucune lecture
+du texte seul ne permet de poser. S'il n'y a pas de plan, le dire : le manuscrit a ete
+structure sans etape de conception, et c'est en soi une remarque de relecteur.
 
 **C1 -- Le manuscrit raconte-t-il ce qui n'a pas marche ?** Le script remonte les passages a
 marqueur (tentative anterieure, bascule de methode, resultat negatif, peripetie d'acces a une
@@ -254,11 +261,13 @@ un seul defaut structurel :
 
 | Signal mesure | Severite indicative |
 |---|---|
-| Longueur > limite de la revue cible declaree | **BLOQUANT pour la soumission** (rejet mecanique au desk), a dire tel quel |
+| Longueur > limite de la revue cible declaree | **BLOQUANT pour cette cible** (rejet mecanique au desk), a dire tel quel — mais la revue n'arbitre pas le message : si la demonstration exige cette taille, la reponse peut etre une autre cible ou le preprint, jamais l'amputation |
 | n-grammes partages entre Resultats et Discussion (redite quasi verbatim) | MODERE ; MAJEUR si la Discussion refait la demonstration au lieu d'interpreter |
 | Meme jeton numerique dans >= 3 sections du corps | MINEUR a MODERE — verifier d'abord : un effectif ou une longueur de proteine se repete legitimement |
 | Resultats > 50 % du corps ET zero fichier supplementaire | MODERE, structurel : du materiel de reproductibilite est reste dans le corps |
 | Item supplementaire jamais cite dans le corps, ou renvoi vers un chemin local (`supplementary_materials/table_S1.csv`) | MINEUR |
+| Section substantielle sans ligne `% narratif:` (aucun maillon, aucune bascule) | MODERE a MAJEUR — personne ne l'a decidee ; demander ce qu'elle demontre, et si la reponse est « rien », la couper avant tout autre levier |
+| Item classe SUPPLEMENTAIRE au plan mais developpe dans le corps | MODERE — signal lexical, a trancher a l'oeil ; une derive assumee se corrige au plan, pas en silence |
 
 La recommandation de relecteur suit l'ordre des leviers, et **cet ordre fait partie de la
 recommandation** : epuiser les redites d'abord, migrer verbatim vers le supplementaire
@@ -610,6 +619,7 @@ parmi le pipeline de qualite :
 | `/reviewer-response` | Une review existe non encore traitee, ou traitement en cours |
 | `/reviewer-response next` | Remarques en attente dans la review active |
 | `/recadrage` | Des acquis du projet n'apparaissent pas dans le manuscrit, une section ne sert pas la these, ou le manuscrit deborde (>= 9 sections / >= 8 figures) |
+| `/cadrage-editorial <cle>` | Une revue cible est deja arretee : le titre et le resume n'ont pas encore ete relus contre ce que CETTE revue publie. Cette review-ci juge le texte dans l'absolu et ne le fait pas |
 
 **Format de la suggestion** :
 
@@ -661,4 +671,17 @@ Le manuscrit semble pret pour soumission/resoumission :
   ✅ Texte nettoye (deai-latex applique)
 
 Aucune action supplementaire identifiee.
+Porte suivante : /verdict-diffusion (le manuscrit est bien fait ; reste a
+juger si le resultat merite d'etre publie, et ou).
 ```
+
+**Ne jamais conclure de ce bloc que le manuscrit est a soumettre.** Tout ce que ce
+skill mesure, comme `/claim-check` et `/bib-check`, c'est que le manuscrit est bien
+FAIT : que ses affirmations correspondent a leurs sources, que ses references
+existent, que son texte est propre. Aucune de ces dimensions ne demande si le
+RESULTAT meritait d'etre ecrit. Un manuscrit bien fabrique autour d'un resultat faux
+passe ici sans encombre — c'est exactement ce qui s'est produit sur
+`Mycobacterium_sp_novel` (27 pages, trois relectures internes, tous les registres au
+vert, decouverte centrale artefactuelle). Cette question-la est celle de la porte
+3bis : passer la main a **`/verdict-diffusion`**, qui tranche entre SOUMETTRE,
+DIFFUSER-SANS-COMITE, NE-PAS-DIFFUSER et ROUVRIR.

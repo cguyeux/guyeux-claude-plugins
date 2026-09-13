@@ -1,6 +1,6 @@
-# Patrons TikZ — cinq figures compilées et inspectées
+# Patrons TikZ — six figures compilées et inspectées
 
-Les cinq fichiers de `assets/patrons/` sont des figures **standalone complètes**, compilées
+Les six fichiers de `assets/patrons/` sont des figures **standalone complètes**, compilées
 en `-halt-on-error` et relues visuellement. Ils ne sont pas des extraits de documentation :
 chacun a été corrigé après sa première lecture visuelle, et les corrections sont commentées
 dans le code.
@@ -20,6 +20,7 @@ et **relire chaque PNG produit** avant de conclure.
 | `mecanisme_is_deletion.tex` | M1 | les trois états et l'encart de ce que la donnée ne tranche pas |
 | `avant_apres_topologie.tex` | C1 | les deux topologies et l'encart « ce qui tranche » |
 | `tanglegram.tex` | D3 | les deux arbres, les appariements, le test dans l'encart |
+| `saut_hote.tex` | M4 | la topologie, les hôtes, les événements de changement d'hôte |
 
 ## Ce que ces patrons imposent, et pourquoi
 
@@ -44,7 +45,7 @@ sep=6pt, text width=4.6cm, align=center]` et jamais un `\draw ... rectangle` sui
 `shorten >=2pt, shorten <=2pt`. Une pointe `stealth` sans `shorten` pénètre visiblement dans
 la boîte cible dès 200 dpi.
 
-**Une palette Okabe-Ito réduite**, identique dans les cinq patrons : `#0072B2` bleu,
+**Une palette Okabe-Ito réduite**, identique dans les six patrons : `#0072B2` bleu,
 `#D55E00` orange, `#009E73` vert, `#CC79A7` rose, `#4D4D4D` gris neutre. Compatible
 deutéranopie et protanopie, et distinguable en niveaux de gris. Pour un article dont les
 figures de données utilisent déjà `MTBC_PALETTE_CB` de `geo-map`, aligner sur celle-là.
@@ -77,6 +78,22 @@ un PDF sort, en cherchant `doesn't match`, `Undefined control sequence`, `Overfu
 et aucun PDF, sur pgf 3.1.11a. Un groupe de fonte par ligne, le `\\` reste dehors :
 `{\textit{ligne1}\\\textit{ligne2}}`.
 
+### Le préambule minimal d'un standalone n'a presque rien : liste de contrôle
+
+Deux échecs fatals rencontrés en écrivant une figure pour `animal_vs_human`, tous deux de
+la même famille — une commande dont le paquet ou la bibliothèque n'est pas chargé :
+
+- `\text{...}` en mode mathématique exige **`amsmath`**. Sans lui,
+  `Undefined control sequence`. Alternative sans paquet : `\mathrm{...}`.
+- La forme `diamond` (et `ellipse`, `trapezium`, `star`) exige
+  **`\usetikzlibrary{shapes.geometric}`**. Sans elle,
+  `I do not know the key '/tikz/diamond'`.
+
+Avant de compiler, vérifier que chaque forme, chaque décoration et chaque motif de flèche
+employé a sa bibliothèque déclarée. Les bibliothèques usuelles d'un schéma conceptuel :
+`positioning`, `arrows.meta`, `calc`, `fit`, `backgrounds`, `shapes.geometric`,
+`decorations.pathreplacing`, `chains`.
+
 ### `\begin{center}` interfère avec `calc`
 Autour d'un TikZ qui utilise `$(a)!0.5!(b)$`, il peut produire des caractères parasites.
 Préférer `\centering`.
@@ -85,6 +102,28 @@ Préférer `\centering`.
 `\resizebox{\textwidth}{!}{...}` plutôt que rogner les espacements à la main. Mais vérifier
 ensuite la taille de police **effective** : une chaîne horizontale réduite à 70 % rend un
 `\tiny` illisible.
+
+### Connecteur en L vers un point décalé d'une boîte cible : jamais `(cible.ancre -| source.ancre)`
+Piège vécu (Rv0007, figure-thèse de convergence, 2026-09-01), alors même que la même classe
+d'erreur était déjà documentée dans `tikz-beamer-patterns.md` (« Pièges identifiés ») — lu trop
+tard, après coup plutôt qu'avant d'écrire le TikZ. Détail complet et correctif verifié :
+[[tikz-beamer-patterns]] (section « Pièges identifiés »). En bref : composer `-|` comme
+combinateur de coordonnées ET comme opérateur de chemin dans la même expression donne un point
+qui ne tombe PAS sur la boîte cible mais quelque part entre les deux — la flèche pointe dans le
+vide, souvent sans qu'un simple coup d'œil au PDF entier le révèle (zoomer sur le point d'arrivée
+de CHAQUE flèche est le seul test qui fait foi). Toujours viser un point réel sur le bord de la
+boîte cible, au besoin décalé avec `[xshift=...]`/`[yshift=...]` (`([xshift=-2cm]cible.north)`),
+jamais une coordonnée recomposée par `-|`/`|-` entre deux ancres différentes.
+
+**Troisième occurrence, même figure, cause encore différente** : même après ce correctif, une
+flèche pointait vers le HAUT depuis l'intérieur de la boîte cible — uniquement dans la version
+française du manuscrit. Cause : la boîte source, avec un texte français plus long, dépassait la
+`minimum height` commune de sa rangée de ~0,45cm, ce que le décalage relatif fixe
+(`++(0,-0.75)`) avant le coude `-|` ne prévoyait pas. Détail et correctif (hauteur minimale
+généreuse plutôt que décalage recalculé) : [[tikz-beamer-patterns]] (« Troisième occurrence »).
+**Pour toute figure destinée à exister en plusieurs langues, ne jamais supposer qu'un noeud
+`minimum height` identique produit la même hauteur RENDUE d'une langue à l'autre** — le vérifier
+par zoom sur CHAQUE version linguistique séparément, jamais une seule.
 
 ## Défauts constatés à la relecture visuelle des patrons eux-mêmes
 

@@ -20,6 +20,7 @@ Rédaction de propositions de recherche adaptées aux formats de financement fra
 
 ## Interaction avec les autres skills
 
+- **`/aap`** : gère le CYCLE autour de la rédaction, et c'est par lui qu'on commence. Il instruit l'appel, rend le verdict go/no-go, tient le registre central des candidatures (d'où se voient la limite d'implication de l'ANR, les clauses de non-cumul et les mandats qui interdisent un dépôt), fournit les informations administratives récurrentes (SIRET, RNSR, signataires) et capitalise les motifs de refus. Ne pas écrire une ligne de proposition avant que sa porte go/no-go soit franchie.
 - **`/cv`** : extraire les données CV (encadrements, financements, h-index) à injecter dans la proposition
 - **`/researcher`** : trouver le contenu thématique (publications, abstracts, réunions, notes) pour nourrir les sections scientifiques
 - Ce skill gère la **structure, le format et la rédaction** de la proposition elle-même
@@ -31,14 +32,20 @@ Demander à l'utilisateur le type d'appel, puis appliquer le format correspondan
 | Financement | Format | Modèle existant |
 |---|---|---|
 | **ANR AAPG** | LaTeX, 20 pages max | `projects/ANR/AAPG2026/` |
-| **ANR LabCom** | DOCX/XLSX | `projects/ANR/LabCom-ARS/` |
+| **ANR LabCom** | DOCX/XLSX | `projects/ANR/Labcom - ARS/` |
 | **Horizon Europe** | LaTeX | `projects/Horizon/` |
-| **Interreg France-Suisse** | DOCX/LaTeX (fiche pré-projet) | `projects/Interreg/2026/` |
+| **Interreg France-Suisse** | DOCX/LaTeX (fiche pré-projet) | `projects/Interreg/2026 -SIRIUS/` |
 | **PHC Maghreb/Toubkal** | Markdown → soumission en ligne | `projects/PHC/Maghreb 2026/` |
 | **ARS** | Markdown + XLSX budget | `projects/ARS/projet_actuel_finance/` |
 | **AMI** | Markdown (formulaire court) | `projects/AMI/Smart MI 2026/` |
 | **Région BFC** | XLSX budget + MD résumé | `projects/Région/Urgences-BFC/` |
 | **UMLP Sunergia** | LaTeX | `projects/UMLP/Sunergia_2026/` |
+| **ANRS MIE (AAP générique)** | plateforme Apogée | `projects/ANRS/AAP_generique_tub/` |
+| **PHC CEDRE (franco-libanais)** | formulaire Eclectus / DOCX 9 sections | `projects/PHC/CEDRE 2026/`, `projects/AUF/Cèdre 2026/` |
+| **AAP CFA OPCO ATLAS** | DOCX + XLSX (amortissement, planning, récap financier) | `projects/AAP_OPCO_2026-02-06/` |
+| **EDIH** | dossier signé | `projects/EDIH/` |
+
+Pour les contraintes d'éligibilité, les dates et les pièces obligatoires de chacun de ces dispositifs, la source est `~/.agents/knowledge/funding/calls.tsv` et les fiches `calls/<key>.md`, interrogées par `/aap`. Ne pas les redécrire ici : un règlement recopié dans deux endroits diverge.
 
 ## Étape 2 : Appliquer la structure spécifique
 
@@ -92,7 +99,7 @@ III. **Impact et retombées du projet**
 4. Work Packages (WP1 = Coordination, WP2..N = R&D, dernier = Dissemination)
 5. Indicateurs Interreg (RCO 007, 014, 084, 087)
 
-**Référence** : lire `projects/Interreg/2026/`.
+**Référence** : lire `projects/Interreg/2026 -SIRIUS/`.
 
 ### PHC (Programme Hubert Curien)
 

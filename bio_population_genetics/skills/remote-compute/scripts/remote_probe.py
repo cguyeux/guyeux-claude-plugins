@@ -39,7 +39,10 @@ import re
 import subprocess
 import sys
 
-SSH_OPTS = ["-o", "ConnectTimeout=20", "-o", "BatchMode=yes"]
+# ConnectTimeout genereux : le rebond `bilbo` est lent, et un timeout court produit un
+# faux "Connection timed out during banner exchange" sur une machine parfaitement vivante
+# (verifie le 2026-09-04 : mp echoue a 15 s, repond a 45 s).
+SSH_OPTS = ["-o", "ConnectTimeout=45", "-o", "BatchMode=yes"]
 
 # --- mp : machine autonome, sans ordonnanceur -------------------------------- #
 MP_CMD = r"""
@@ -67,6 +70,10 @@ echo "@mine"; squeue -h -u $USER -o "%.10i %.9P %.2t %.10M %R" | head -10
 echo "@work"; beegfs-ctl --getquota --uid $USER --mount=/Work 2>/dev/null | tail -1
 echo "@home"; du -s --block-size=1G $HOME 2>/dev/null | cut -f1
 echo "@scratch"; df -BG --output=size,avail /Scratch 2>/dev/null | tail -1
+# QOS reellement attachee : c'est elle qui plafonne le nombre de coeurs et de GPU
+# simultanes, et non la taille des partitions. Contrainte n1 en pratique.
+echo "@qos"; sacctmgr -n show associations user=$USER format=QOS%40 | head -1
+echo "@qoslim"; sacctmgr -n show qos format=Name,MaxTRESPerUser%25 | grep -E "^ *(normal|meso|2gpu|3gpu|cpu-)"
 """
 
 
@@ -135,6 +142,8 @@ def probe_mh() -> dict:
         "work_quota": f"{m.group(3)} {m.group(4)}" if m else "?",
         "home_gb": (s.get("home") or ["?"])[0].strip(),
         "scratch_avail_gb": ((s.get("scratch") or ["? ?"])[0].split() + ["?"])[1],
+        "qos": (s.get("qos") or ["?"])[0].strip(),
+        "qos_limits": [l.strip() for l in s.get("qoslim", []) if l.strip()],
     }
 
 
@@ -157,16 +166,41 @@ def recommend(need: dict, mp: dict, mh: dict) -> list[str]:
         if not mh.get("reachable"):
             out.append("GPU demande mais mh injoignable : aucun GPU ailleurs, pas de repli.")
         elif free:
-            out.append("mh, partition gpu (A100 40 Go) ou gpu_l40 (L40) : "
+            l40 = [n for n in free if "L40" in n["gres"]]
+            if l40:
+                out.append("ATTENTION : gpu_l40 apparait libre mais c'est une partition PRIVEE "
+                           "financee par un tiers (Kamel Mazouzi, 2026-09-04). Ne pas s'y router "
+                           "de sa propre initiative ; demande d'autorisation en cours.")
+            out.append("mh, noeuds GPU libres : "
                        + ", ".join(f"{n['node']}({n['gres']},{n['state']})" for n in free))
         else:
             out.append("mh : aucun noeud GPU libre a l'instant, le job attendra en file. "
                        "Verifier `sinfo -p gpu` avant de promettre un delai.")
+
+        # La QOS ATTACHEE n'est pas la QOS APPLIQUEE : sans --qos explicite, le job retombe
+        # sur `normal` et son plafond d'un seul GPU, meme quand `3gpu` est attachee au compte.
+        attachees = mh.get("qos", "")
+        if "3gpu" in attachees or "2gpu" in attachees:
+            n = "3" if "3gpu" in attachees else "2"
+            out.append(f"QOS {n}gpu ATTACHEE au compte (depuis le 2026-09-07) mais la QOS par "
+                       f"DEFAUT reste `normal` : sans `#SBATCH --qos={n}gpu`, le job reste "
+                       f"plafonne a UN SEUL GPU. Ajouter la ligne pour lancer {n} jobs GPU de "
+                       "front (job array `--array=1-N%" + n + "` pour un lot). La comm "
+                       "inter-cartes n'a jamais ete benchmarkee : sur pour N jobs d'une carte, "
+                       "a mesurer pour un entrainement distribue. QOS pretee au cas par cas, "
+                       "prevenir meso-admins@univ-fcomte.fr en fin de campagne.")
+        elif attachees.strip() == "normal":
+            out.append("QOS `normal` seule : UN SEUL GPU et 48 coeurs en simultane, tous jobs "
+                       "confondus. Un 2e job GPU attendra en PD (QOSMaxCpuPerUserLimit). Une QOS "
+                       "superieure (2gpu, 3gpu, cpu-96...) se demande par mail a Kamel Mazouzi, "
+                       "responsable technique, avec meso-admins@univ-fcomte.fr en copie ; "
+                       "l'adresse de tickets svpmeso@ n'aboutit pas. Delai constate : un week-end.")
         out.append("mp n'a AUCUN GPU : ne jamais y router un calcul CUDA.")
 
     if ram:
         if ram > 500:
-            out.append(f"{ram} Go : seuls mh `bigmem` (1 To) et `gpu_l40` (1 To) tiennent. "
+            out.append(f"{ram} Go : seul mh `bigmem` (1 To) tient en partition ouverte "
+                       "(`gpu_l40` a aussi 1 To mais elle est privee). "
                        "mp plafonne a 125 Go.")
         elif ram > 125:
             out.append(f"{ram} Go : depasse mp (125 Go). Aller sur mh, partition "
@@ -177,8 +211,8 @@ def recommend(need: dict, mp: dict, mh: dict) -> list[str]:
     if disk:
         if disk > 800:
             out.append(f"{disk} Go d'espace : mp `/data` uniquement "
-                       f"({mp.get('data_avail_gb')} Go libres). Le quota BeeGFS de mh est de 1 Tio, "
-                       "dont 221 Gio deja pris.")
+                       f"({mp.get('data_avail_gb')} Go libres). Le quota BeeGFS de mh est de 1 Tio ; "
+                       "un espace /Work/Projects/<nom> de 3 To se demande aux admins.")
         else:
             out.append(f"{disk} Go d'espace : mp `/data/cguyeux` ou mh `/Work/Users/cguyeux` "
                        "(verifier le quota ci-dessus). JAMAIS `$HOME` ni `/` sur mp.")
@@ -189,8 +223,16 @@ def recommend(need: dict, mp: dict, mh: dict) -> list[str]:
 
     if cpus:
         if cpus > 64:
-            out.append(f"{cpus} coeurs : mp n'en a que 64 (32 physiques x2 HT). "
-                       "Au-dela, mh multi-noeuds (`mpi`, 24 c/noeud) avec un code qui sait le faire.")
+            msg = (f"{cpus} coeurs : mp n'en a que 64 (32 physiques x2 HT). "
+                   "Au-dela, mh multi-noeuds (`mpi`, 24 c/noeud, --ntasks divisible par 24, "
+                   "lancer par srun) avec un code qui sait VRAIMENT faire du MPI.")
+            if "cpu-96" in mh.get("qos", ""):
+                msg += (" QOS cpu-96 attachee au compte (2026-09-07) : ajouter "
+                        "`#SBATCH --qos=cpu-96`, sans quoi le job reste plafonne a 48 coeurs. "
+                        "Elle ne vaut QUE sur la partition mpi, pas sur smp ni bigmem.")
+            else:
+                msg += " La QOS normal plafonne a 48 coeurs ; cpu-96 se demande aux admins."
+            out.append(msg)
         elif mp.get("reachable") and not mp.get("pipeline_running"):
             out.append(f"{cpus} coeurs : mp est libre (load {mp.get('load')}), "
                        "disponible immediatement, sans file.")
@@ -225,7 +267,11 @@ def render(mp: dict, mh: dict, recos: list[str]) -> None:
         print(f"mh  frontale Slurm (mesohelios) | load {mh['load']} | "
               f"{mh['pending']} job(s) en attente sur le cluster")
         print(f"    /Work {mh['work_used']} / {mh['work_quota']} de quota | "
-              f"$HOME {mh['home_gb']} Go (quota 20 Go) | /Scratch libre {mh['scratch_avail_gb']}")
+              f"$HOME {mh['home_gb']} Go (quota 20 Go, LECTURE SEULE sur les noeuds) | "
+              f"/Scratch libre {mh['scratch_avail_gb']}")
+        print(f"    QOS : {mh.get('qos','?')}"
+              + ("  -> plafond 1 GPU et 48 coeurs en simultane"
+                 if mh.get('qos','').strip() == 'normal' else ""))
         if mh["my_jobs"]:
             print("    mes jobs :")
             for j in mh["my_jobs"]:

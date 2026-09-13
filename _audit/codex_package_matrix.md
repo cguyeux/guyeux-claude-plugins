@@ -3,7 +3,7 @@
 Ce fichier est genere par `_audit/tools/generate_codex_package_matrix.py`.
 Il inventorie les skills canoniques absents de `codex_skills.json` et indique le premier traitement requis pour les empaqueter dans Codex.
 
-- Total non exporte Codex : 137
+- Total non exporte Codex : 139
 - Deja materialises dans un paquet pilote : 5
 - Deja materialises dans des paquets directs : 48
 - Deja materialises dans des paquets payload audites : 15
@@ -11,7 +11,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 - Deja materialises avec garde-fou workflow Codex : 11
 - Bloques par workflow personnel d'ecriture : 0
 - Adaptation runtime Claude ou MCP requise : 0
-- Audit de payload requis : 0
+- Audit de payload requis : 2
 - Candidats directs sans verrou mecanique majeur : 0
 
 ## Comptes par paquet cible
@@ -19,7 +19,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | paquet | skills |
 |---|---:|
 | bio-bacteria | 8 |
-| bio-pathogens | 39 |
+| bio-pathogens | 41 |
 | bio-population-genetics | 47 |
 | bio-redac | 3 |
 | guyeux-phylo-pilot | 5 |
@@ -74,6 +74,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | frontend-design | web | web | packaged-direct | none | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | geopandas | ia | ia | packaged-direct | unsupported-frontmatter, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | glottolog | bio_population_genetics | bio-population-genetics | packaged-direct | supporting-resources, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
+| gwas-clonal-lineage | bio_pathogens | bio-pathogens | needs-payload-package-audit | script-payload, supporting-resources, unsupported-frontmatter | Copier scripts, donnees et references, puis tester le payload installe. |
 | helicobacter-pylori-phylogeography | bio_bacteria | bio-bacteria | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | host-pathogen-pair | bio_pathogens | bio-pathogens | packaged-payload | script-payload, web-runtime | Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee. |
 | imdb | multimedia | multimedia | packaged-runtime-adapted | claude-runtime-reference, script-payload, supporting-resources, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
@@ -120,6 +121,7 @@ Il inventorie les skills canoniques absents de `codex_skills.json` et indique le
 | pastml | bio_population_genetics | bio-population-genetics | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | pathogens-portal | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, web-runtime | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | pectinated-subclade-mining | bio_pathogens | bio-pathogens | packaged-workflow-guarded | claude-runtime-reference, mcp-runtime, project-memory-write, script-payload, unsupported-frontmatter | Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution. |
+| phylo-forest | bio_pathogens | bio-pathogens | needs-payload-package-audit | script-payload, unsupported-frontmatter | Copier scripts, donnees et references, puis tester le payload installe. |
 | phylo-history | bio_redac | bio-redac | packaged-direct | unsupported-frontmatter | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |
 | phylogeography | bio_pathogens | bio-pathogens | packaged-runtime-adapted | mcp-runtime, script-payload, unsupported-frontmatter | Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie. |
 | pleiades | bio_population_genetics | bio-population-genetics | packaged-direct | supporting-resources, web-runtime | Deja materialise dans un paquet direct, verifier lors de l'installation isolee. |

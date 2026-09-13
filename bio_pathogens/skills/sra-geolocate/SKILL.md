@@ -12,6 +12,47 @@ argument-hint: "<SRA | fichier | --zone 'texte'> [--deep] [--with-supp] [--cache
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebFetch, WebSearch
 ---
 
+> [!WARNING]
+> **[2026-09-08] TABLES ABSENTES du serveur tblearn.** Ce skill interroge 1 objet(s) qui
+> n'existent plus depuis le remplacement du MCP TBannotator. Contrairement au filtre `system_name`,
+> ces requêtes ne rendent pas un ensemble vide : elles **lèvent une erreur** `relation does not exist`.
+>
+> | table citée ici | remplacer par | fondement |
+> |---|---|---|
+> | `mv_spdi_mutations` | **tb_report_spdi ⋈ tb_report_spdi_annotations sur spdi_id** | le variant dans la première, l'annotation (`locus_tag`, `hgvs_p`, `impact`) dans la seconde |
+>
+> Correspondances établies en comparant les colonnes, pas devinées. Détail et schéma complet :
+> `~/.agents/knowledge/tblearn-migration.md`.
+
+
+> [!WARNING]
+> **[2026-09-08] Les requêtes de ce skill qui filtrent sur un système de lignée MAISON ne rendent
+> plus rien.** Le MCP TBannotator est arrêté ; le serveur `tblearn` qui le remplace ne porte que
+> huit systèmes **externes** (Coll, Coscolla, Freschi, Lipworth, Napier, Palittapongarnpim,
+> Shitikov, Stucki). `system_name = 'guyeux'` et `system_name = 'tblearn'` y rendent **zéro ligne
+> sans lever d'erreur**, ce qu'un script lira comme « aucune souche ne satisfait le critère ».
+>
+> **Substitution, décidée le 2026-09-08 :** les lignées maison se lisent désormais dans la base
+> LOCALE `bdd/actuelle/`, qui fait déjà autorité selon
+> `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
+>
+> ```bash
+> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
+> python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
+> python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable
+> python3 $B/bdd_query.py strains <clade>       # souches d'un clade
+> ```
+>
+> `tblearn` reste utilisable pour tout le reste (SPDI, QC, métadonnées, RD, IS, CRISPR) et pour
+> **comparer** à une taxonomie externe, mais ce n'est plus la source des lignées maison. Toute
+> requête qui filtre sur `system_name` doit d'abord vérifier que le filtre a matché :
+> `SELECT system_name, count(*) FROM mv_strain_lineage WHERE system_name = '<x>' GROUP BY 1;`
+> — zéro ligne signifie « ce système n'existe pas ici », jamais « aucune souche ».
+>
+> Détail complet : `~/.agents/knowledge/tblearn-migration.md`.
+
+
 # /sra-geolocate -- Origine geographique des SRA
 
 Deux modes d'emploi complementaires :

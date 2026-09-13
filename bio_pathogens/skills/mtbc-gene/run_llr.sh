@@ -14,6 +14,9 @@
 #   ./run_llr.sh katG S315T
 #   ./run_llr.sh eccE1 G346A
 #   ./run_llr.sh --smoke            # torch-free self-check (no weight download)
+#   ./run_llr.sh --protein-fasta mbovis_mmpL6.faa mmpL6_Mbovis N551K
+#     (residue absent from H37Rv -- inside a region of difference such as TbD1 --
+#     score against the full-length protein of a strain with the intact locus)
 set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

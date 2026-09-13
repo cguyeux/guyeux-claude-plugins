@@ -34,6 +34,51 @@ un \\textbf en legende ou en en-tete de tableau est legitime (cf. SKILL.md R1), 
 compteur le remonte quand meme pour que l'humain/l'agent tranche avec le contexte
 sous les yeux, plutot que de re-ecrire la regex a la main a chaque manuscrit.
 
+  R17    Jetons \\texttt{} longs et non coupables (identifiants, checkpoints,
+         chemins, accessions), ajoutee le 2026-08-29 apres un incident vecu sur
+         Rv1557 : un checkpoint de modele (esm1v_t33_650M_UR90S_1, 22 caracteres,
+         aucun tiret, uniquement des underscores echappes \\_) place en \\texttt{}
+         a fait deborder la marge droite de pres de 2cm dans le PDF compile.
+         Piege decouvert a cette occasion : le log pdflatex n'est PAS fiable pour
+         cette classe de defaut -- la version anglaise du meme manuscrit a bien
+         emis un `Overfull \\hbox`, la version francaise NON, pour le meme
+         probleme au meme endroit. Detection uniquement possible sur le SOURCE,
+         avant toute compilation : un \\_ est une macro, jamais un caractere
+         ordinaire, donc n'offre par construction AUCUN point de coupure a TeX,
+         contrairement a un tiret litteral (`-`) ou une espace, que TeX sait
+         rompre meme en police \\texttt. Voir SKILL.md R17 pour la correction
+         (`\\path{}`, jamais `\\seqsplit{}` seul -- ce dernier ne sait pas traiter
+         un `\\_` echappe et produit "Undefined control sequence").
+
+  R18    Debordement de marge sur le PDF RENDU (tableaux et contenu large en
+         general), ajoutee le 2026-09-01 apres un incident vecu sur Rv0007 :
+         un `tabular{lccccc}` a six colonnes deborde la marge droite de ~37pt
+         (~1,3cm, en-tete "Complex pLDDT"), un Overfull \\hbox de 43pt bien
+         present dans le log mais ECARTE A TORT comme "pre-existant, deja vu
+         a la passe precedente" sans etre revisualise -- alors qu'un warning
+         DEJA CONNU n'est pas moins reel qu'un nouveau, et que sa PLAGE en pt
+         n'avait jamais ete comparee a un seuil de negligeabilite (un 0.97pt
+         de legende est invisible a l'impression, un 43pt de tableau ne l'est
+         pas). R17 ne couvre que les jetons \\texttt{} non coupables du SOURCE
+         et rate donc structurellement tout debordement d'un tableau, d'une
+         formule large ou de tout contenu qui deborde par accumulation de
+         colonnes plutot que par un seul jeton insecable -- R18 comble cet
+         angle mort en mesurant directement, sur le PDF compile, la position
+         de chaque mot via `pdftotext -bbox-layout` et en la comparant a la
+         marge de droite lue dans le preambule (`\\usepackage[margin=...]`
+         ou `left=`/`right=` de `geometry`). Seuil de negligeabilite retenu
+         par calibrage sur cet incident : sous 2pt, invisible a l'impression,
+         RAS ; au-dessus, a corriger, quel que soit le nombre de sessions
+         precedentes qui l'ont laisse passer. Correction validee sur Rv0007 :
+         `\\small` sur le tableau (`\\begin{table}` scope la commande, pas
+         besoin de `\\normalsize` apres) PLUS raccourcissement d'un en-tete
+         redondant avec la legende ("Complex pLDDT" -> "pLDDT", deja explicite
+         par "predicted lDDT of the complex (pLDDT)" dans la legende) --
+         `\\small` seul avait reduit le debordement de 43pt a 8,9pt, encore
+         au-dessus du seuil. **A refaire sur CHAQUE version linguistique
+         separement** (meme piege que R17 : le meme tableau peut deborder
+         differemment en anglais et en francais selon la largeur des mots).
+
   R7     Longueur de paragraphe.
          Piege VECU (Rv3222c, 2026-08-12) : R7 disait "> 20 lignes : envisager de
          scinder", mais un paragraphe de 759 mots (compte APRES coupure) a
@@ -47,6 +92,17 @@ sous les yeux, plutot que de re-ecrire la regex a la main a chaque manuscrit.
          colonne chacun dans ce meme document (elsarticle 5p, deux colonnes) --
          d'ou les seuils ci-dessous, deliberement plus stricts en mise en page
          a deux colonnes qu'a une colonne.
+
+         Second piege VECU (Rv0810c, 2026-08-17) : detect_two_column() repliait
+         sur "deux colonnes" des qu'une classe n'etait pas explicitement reconnue,
+         y compris `\\documentclass{article}` SANS option -- alors qu'`article` est
+         a UNE colonne par defaut. Trois faux WARN (352/309/302 mots) verifies a la
+         main avant d'etre ecartes. Corrige le 2026-08-26 : classes standard a une
+         colonne par defaut (article, report, book, memoir, KOMA-Script, amsart,
+         elsarticle...) et a deux colonnes par defaut (IEEEtran, acmart, revtex4...)
+         sont desormais reconnues explicitement, avec verification d'un `\\twocolumn`
+         litteral pour les cas ou la classe l'invoque hors options. Le repli prudent
+         "deux colonnes" ne s'applique plus qu'aux classes vraiment inconnues.
 
 Usage :
     python3 latex_metrics.py main.tex                 # abstract + R1/R2/R7/R8/R9
@@ -217,6 +273,70 @@ def scan_pdf_for_local_paths(pdf: Path) -> list[dict] | None:
     return hits
 
 
+# R18 : seuil sous lequel un debordement de marge est invisible a l'impression
+# (calibre sur l'incident Rv0007 -- un 0.97pt de legende deja vu au meme
+# manuscrit est du bruit de justification normal, un 8-43pt de tableau ne l'est
+# pas). Volontairement bas plutot que permissif : un WARN ecarte a tort coute
+# beaucoup moins cher qu'un debordement reel qui passe.
+MARGIN_OVERFLOW_PT = 2.0
+
+_PT_PER_UNIT = {"pt": 1.0, "mm": 72 / 25.4, "cm": 72 / 2.54, "in": 72.0}
+
+
+def parse_right_margin_pt(tex: str) -> float | None:
+    """Marge de droite en pt, lue dans le preambule `geometry`. None si absente
+    ou non reconnue -- R18 se desactive alors plutot que de deviner."""
+    m = re.search(r"\\usepackage(?:\[([^\]]*)\])?\{geometry\}", tex)
+    if not m:
+        return None
+    opts = m.group(1) or ""
+
+    def to_pt(value: str, unit: str) -> float | None:
+        factor = _PT_PER_UNIT.get(unit)
+        return float(value) * factor if factor else None
+
+    unit_pat = r"([\d.]+)\s*(pt|mm|cm|in)"
+    right = re.search(rf"\bright\s*=\s*{unit_pat}", opts)
+    if right:
+        return to_pt(right.group(1), right.group(2))
+    margin = re.search(rf"\bmargin\s*=\s*{unit_pat}", opts)
+    if margin:
+        return to_pt(margin.group(1), margin.group(2))
+    return None
+
+
+def scan_pdf_for_margin_overflow(pdf: Path, right_margin_pt: float) -> list[dict] | None:
+    """R18 : mots dont la boite deborde la marge de droite sur le PDF RENDU.
+    Un seul test qui fait foi (comme R12) : le log pdflatex n'est pas fiable
+    pour cette classe de defaut (cf. R17 -- meme silence possible d'une langue
+    a l'autre). None si pdftotext indisponible."""
+    try:
+        out = subprocess.run(
+            ["pdftotext", "-bbox-layout", str(pdf), "-"],
+            capture_output=True, text=True, timeout=60,
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return None
+    if out.returncode != 0:
+        return None
+    hits: list[dict] = []
+    page_no = 0
+    for page_m in re.finditer(r'<page width="([\d.]+)"[^>]*>(.*?)</page>', out.stdout, re.S):
+        page_no += 1
+        page_width = float(page_m.group(1))
+        limit = page_width - right_margin_pt
+        for w in re.finditer(
+            r'<word xMin="[\d.]+" yMin="([\d.]+)" xMax="([\d.]+)" yMax="[\d.]+">([^<]*)</word>',
+            page_m.group(2),
+        ):
+            y_min, x_max, text = float(w.group(1)), float(w.group(2)), w.group(3)
+            overflow = x_max - limit
+            if overflow > MARGIN_OVERFLOW_PT:
+                hits.append({"page": page_no, "y": round(y_min, 1),
+                             "overflow_pt": round(overflow, 1), "word": text})
+    return hits
+
+
 # Environnements dont le \textbf est une convention legitime (SKILL.md R1) :
 # titres de section, labels de description, captions, en-tetes de tableau.
 # On ne les EXCLUT pas du comptage (trop de faux negatifs possibles selon la
@@ -263,6 +383,59 @@ def find_orphan_labels(body: str) -> list[str]:
     return [l for l in labels if l not in refs]
 
 
+# R17 : seuils au-dela desquels un jeton \texttt{} sans point de coupure devient
+# un risque. Calibre sur l'incident vecu (Rv1557, 2026-08-29) : le token fautif
+# faisait 22 caracteres (esm1v_t33_650M_UR90S_1) et depassait la marge d'environ
+# 59pt sur une colonne de 455pt. Deux paliers, comme R7 (WARN/FLAG), plutot qu'un
+# seuil unique : un premier passage sur le manuscrit reel qui a motive cette regle
+# a remonte deux sondes alleliques de 15 caracteres (`...AAAGGAACT...`) qui ne
+# debordent en pratique nulle part (verifie visuellement) -- un seuil unique a 15
+# aurait fait crier l'outil sur un cas benin a chaque manuscrit citant une courte
+# sequence ADN entre \texttt{}. WARN signale (a verifier visuellement une fois
+# compile), FLAG est le palier ou l'incident reel s'est produit (>= 20 caracteres,
+# marge de securite d'un caractere sous les 22 vecus).
+UNBREAKABLE_TOKEN_WARN_LEN = 15
+UNBREAKABLE_TOKEN_FLAG_LEN = 20
+
+# Deja proteges par construction : deja enveloppes dans un mecanisme de coupure,
+# ou deja porteurs d'un veritable point de coupure (tiret ou espace normaux, que
+# TeX sait rompre meme en police \texttt -- seul le souligne \_ n'offre AUCUN
+# point de coupure, car c'est une macro, pas un caractere ordinaire).
+_ALREADY_SAFE = re.compile(r"\\path\{|\\url\{|\\seqsplit\{|\\allowbreak|\\-|-| ")
+
+
+def find_unbreakable_tokens(body: str) -> list[dict]:
+    """R17 : \\texttt{} (ou \\verb) contenant un identifiant long et NON coupable.
+
+    Piege vecu (Rv1557, 2026-08-29) : un checkpoint de modele
+    (esm1v_t33_650M_UR90S_1) place en \\texttt{} a fait deborder la marge de
+    pres de 2cm dans le PDF compile -- SANS emettre d'Overfull \\hbox dans le
+    log de l'une des deux versions linguistiques du meme manuscrit (l'autre
+    l'a bien signale). Le log n'est donc PAS une garantie fiable pour cette
+    classe de defaut : la detection doit se faire sur le SOURCE, avant meme
+    la compilation, en reperant le motif qui cause structurellement le
+    probleme -- un \\texttt{} sans aucun caractere coupable (ni tiret, ni
+    espace, ni protection explicite), assez long pour qu'un point de coupure
+    lui manque un jour a la fin d'une ligne justifiee. Une sous-chaine
+    d'accession, un hash, un chemin de fichier ou un nom de checkpoint
+    ecrits avec des underscores (`\\_`) sont typiquement AUCUNEMENT coupables :
+    `\\_` est une macro (pas un caractere ordinaire), donc n'offre par
+    construction aucun point de rupture, contrairement a un tiret litteral.
+    """
+    hits: list[dict] = []
+    for m in re.finditer(r"\\(texttt|verb\|)\{?([^{}|]*)\}?", body):
+        raw = m.group(2)
+        plain = raw.replace("\\_", "_").replace("\\,", " ")
+        if " " in plain or len(plain) < UNBREAKABLE_TOKEN_WARN_LEN:
+            continue
+        if _ALREADY_SAFE.search(raw):
+            continue
+        line = body.count("\n", 0, m.start()) + 1
+        severity = "FLAG" if len(plain) >= UNBREAKABLE_TOKEN_FLAG_LEN else "WARN"
+        hits.append({"line": line, "token": plain, "length": len(plain), "severity": severity})
+    return sorted(hits, key=lambda h: -h["length"])
+
+
 
 # Blocs a ne JAMAIS compter comme un paragraphe de prose : un \begin{...} n'importe
 # ou dans le bloc signale un flottant (figure/table/equation), une liste, ou
@@ -281,6 +454,22 @@ PARA_BANDS_TWOCOL = {"warn": 300, "flag": 450}
 PARA_BANDS_ONECOL = {"warn": 500, "flag": 750}
 
 
+# Classes LaTeX standard dont la mise en page par defaut est UNE colonne. Vecu
+# (Rv0810c, 2026-08-17) : le repli prudent "classe non reconnue => deux colonnes"
+# a produit un faux WARN sur `\documentclass{article}` sans option, alors que
+# `article` est a une colonne par defaut sauf `\twocolumn` explicite -- decouvert
+# a la main, en recomptant sur le PDF, ce que ce repli aurait du rendre inutile.
+ONE_COL_DEFAULT_CLASSES = frozenset({
+    "article", "report", "book", "letter", "memoir",
+    "scrartcl", "scrreport", "scrbook", "amsart", "amsbook",
+    "extarticle", "extreport", "extbook", "elsarticle",
+})
+# Classes ou gabarits de revue a deux colonnes par defaut, meme sans option explicite.
+TWO_COL_DEFAULT_CLASSES = frozenset({
+    "ieeetran", "ieeeconf", "acmart", "revtex4-1", "revtex4-2", "aastex631",
+})
+
+
 def detect_two_column(tex: str) -> tuple[bool, str]:
     """Heuristique sur \\documentclass : renvoie (est_deux_colonnes, comment_su)."""
     m = re.search(r"\\documentclass(\[([^\]]*)\])?\{([^}]*)\}", tex)
@@ -294,8 +483,17 @@ def detect_two_column(tex: str) -> tuple[bool, str]:
     if "twocolumn" in opt_list or "3p" in opt_list or "5p" in opt_list:
         tok = next(o for o in ("twocolumn", "3p", "5p") if o in opt_list)
         return True, f"option '{tok}' de {cls}"
-    if cls in ("ieeetran",):
+    # `\twocolumn` peut aussi etre invoque comme COMMANDE de document (hors options
+    # de classe), notamment sur des classes a une colonne par defaut.
+    has_twocolumn_cmd = bool(re.search(r"\\twocolumn\b", tex))
+    if cls in TWO_COL_DEFAULT_CLASSES:
         return True, f"classe {cls} (deux colonnes par defaut)"
+    if cls in ONE_COL_DEFAULT_CLASSES:
+        if has_twocolumn_cmd:
+            return True, f"classe {cls} (une colonne par defaut) avec \\twocolumn explicite"
+        return False, f"classe {cls} (une colonne par defaut), aucune option ni \\twocolumn"
+    if has_twocolumn_cmd:
+        return True, f"classe {cls} inconnue, mais \\twocolumn explicite dans le document"
     return True, f"classe {cls} sans option de colonnes reconnue, hypothese prudente (deux colonnes)"
 
 
@@ -336,6 +534,7 @@ def structural_checks(tex: str) -> dict:
         "r7_long_paragraphs": find_long_paragraphs(tex, two_col),
         "r8_em_dash": count_em_dashes(body),
         "r9_orphan_labels": find_orphan_labels(body),
+        "r17_unbreakable_tokens": find_unbreakable_tokens(body),
     }
 
 
@@ -366,6 +565,20 @@ def main() -> int:
             if hits is None
             else {"available": True, "hits": hits, "clean": not hits}
         )
+
+        margin_pt = parse_right_margin_pt(tex)
+        if margin_pt is None:
+            res["r18"] = {"available": False,
+                           "reason": "marge non reconnue (geometry absent ou "
+                                     "options margin=/right= non trouvees)"}
+        else:
+            overflow_hits = scan_pdf_for_margin_overflow(Path(a.pdf), margin_pt)
+            res["r18"] = (
+                {"available": False, "reason": "pdftotext indisponible ou echec"}
+                if overflow_hits is None
+                else {"available": True, "margin_pt": round(margin_pt, 1),
+                      "hits": overflow_hits, "clean": not overflow_hits}
+            )
 
     if a.json:
         print(json.dumps(res, indent=2, ensure_ascii=False))
@@ -401,6 +614,14 @@ def main() -> int:
             print(f"    {lbl}")
     else:
         print("R9  labels orphelins : aucun")
+    if s["r17_unbreakable_tokens"]:
+        n_flag = sum(1 for t in s["r17_unbreakable_tokens"] if t["severity"] == "FLAG")
+        print(f"R17 jetons \\texttt non coupables (>= {UNBREAKABLE_TOKEN_WARN_LEN} car.) : "
+              f"{len(s['r17_unbreakable_tokens'])} ({n_flag} FLAG >= {UNBREAKABLE_TOKEN_FLAG_LEN} car.)")
+        for t in s["r17_unbreakable_tokens"][:15]:
+            print(f"    [{t['severity']}] ligne {t['line']} ({t['length']} car.) : {t['token']}")
+    else:
+        print("R17 jetons \\texttt non coupables : aucun")
 
     if "r12" in res:
         r = res["r12"]
@@ -412,6 +633,19 @@ def main() -> int:
             print(f"R12 (PDF rendu) : {len(r['hits'])} occurrence(s) A TRAITER")
             for h in r["hits"][:15]:
                 print(f"  [{h['kind']}] {h['match']}  <<  {h['context']}")
+
+    if "r18" in res:
+        r = res["r18"]
+        if not r["available"]:
+            print(f"R18 (marge, PDF) : {r['reason']}")
+        elif r["clean"]:
+            print(f"R18 (marge, PDF rendu, marge droite {r['margin_pt']}pt) : "
+                  f"aucun debordement > {MARGIN_OVERFLOW_PT}pt")
+        else:
+            print(f"R18 (marge, PDF rendu) : {len(r['hits'])} mot(s) A TRAITER "
+                  f"(seuil {MARGIN_OVERFLOW_PT}pt, marge {r['margin_pt']}pt)")
+            for h in r["hits"][:15]:
+                print(f"  page {h['page']}, y={h['y']}pt : +{h['overflow_pt']}pt -- \"{h['word']}\"")
     return 0
 
 

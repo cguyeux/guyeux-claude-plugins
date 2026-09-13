@@ -55,7 +55,7 @@ class PluginInventoryTests(unittest.TestCase):
             skills_dir = plugin_root / "skills"
             if skills_dir.is_dir():
                 visible_names.update(entry.name for entry in skills_dir.iterdir() if entry.is_dir())
-        self.assertEqual(190, len(registry))
+        self.assertEqual(192, len(registry))
         self.assertEqual(visible_names, set(registry))
         self.assertEqual(
             [
@@ -107,9 +107,9 @@ class PluginInventoryTests(unittest.TestCase):
         desired, omitted = self.codex_sync.inventory()
         omitted_names = {name for names in omitted.values() for name in names}
         registry = self.codex_sync.load_registry()
-        self.assertEqual(190, len(registry))
+        self.assertEqual(192, len(registry))
         self.assertEqual(53, len(desired))
-        self.assertEqual(137, len(omitted_names))
+        self.assertEqual(139, len(omitted_names))
         self.assertEqual(set(registry), set(desired) | omitted_names)
         self.assertTrue(set(desired).isdisjoint(omitted_names))
         self.assertIn("tbmonitor-papers", omitted_names)

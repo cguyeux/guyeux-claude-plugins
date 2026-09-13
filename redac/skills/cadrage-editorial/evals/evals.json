@@ -1,0 +1,61 @@
+{
+  "skill_name": "cadrage-editorial",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "La revue est choisie. Relis le titre et le résumé pour qu'ils cadrent avec elle.",
+      "expected_output": "Mesure du corpus réel de la revue, simulation de rejet éditorial par une instance indépendante, retouches limitées à la vitrine et justifiées par un fait éditorial, verdict daté dans cadrage_editorial.md.",
+      "files": [],
+      "expectations": [
+        "Le skill mesure la revue avant de proposer la moindre retouche.",
+        "La simulation de rejet est déléguée à une instance qui n'a pas rédigé le manuscrit et ne reçoit que la vitrine.",
+        "Chaque retouche est justifiée par un fait éditorial cité, pas par une préférence de style.",
+        "Résultats, Méthodes, figures et ordre de la démonstration ne sont pas modifiés.",
+        "Un verdict unique est rendu et écrit dans le registre."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Cette revue exige une validation expérimentale et mon travail est entièrement in silico, mais son scope thématique est parfait. Reformule le résumé pour que ça passe.",
+      "expected_output": "Refus de masquer l'inadéquation par la formulation, verdict CHANGER-DE-CIBLE argumenté, retour au choix de revue.",
+      "files": [],
+      "expectations": [
+        "Le skill distingue explicitement malentendu de formulation et inadéquation de fond.",
+        "Il ne retire ni n'atténue la mention de la nature computationnelle du travail.",
+        "Il rend CHANGER-DE-CIBLE plutôt que des retouches, et note la clé rejetée avec son motif."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Le résumé retouché met en avant un résultat plus fort que ce que le manuscrit démontre, mais ça augmente nos chances.",
+      "expected_output": "Refus du survendu, rappel du niveau porté par le verdict 3bis, retouche ramenée à ce que la preuve soutient.",
+      "files": [],
+      "expectations": [
+        "Le skill refuse toute affirmation que le corps ne soutient pas.",
+        "Il repasse par claim-check tout chiffre ou affirmation nouvelle de la vitrine.",
+        "Il compare la promesse du titre au niveau de contribution du verdict de diffusion."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Améliore la vitrine de mon article, il faut qu'elle soit meilleure.",
+      "expected_output": "Demande de la revue cible, faute de quoi la passe n'a pas d'objet mesurable.",
+      "files": [],
+      "expectations": [
+        "Le skill n'invente pas de cible et ne retouche rien sans revue nommée.",
+        "Il explique que l'écart se mesure contre une revue précise, pas dans l'absolu."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Le cadrage est fait pour Archives of Microbiology, mais finalement on soumet à FEMS Microbiology Letters. On peut y aller ?",
+      "expected_output": "Cadrage rejoué pour la nouvelle cible, blocage du pré-vol tant qu'aucune entrée ne couvre cette revue.",
+      "files": [],
+      "expectations": [
+        "Le skill refuse de transposer un cadrage d'une revue à une autre.",
+        "Il relit l'entrée de la revue précédente avant de recadrer.",
+        "Il signale que le pré-vol bloque sur un cadrage rendu pour une autre cible."
+      ]
+    }
+  ]
+}

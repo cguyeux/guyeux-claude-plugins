@@ -14,6 +14,20 @@ user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 ---
 
+> [!WARNING]
+> **[2026-09-08] TABLES ABSENTES du serveur tblearn.** Ce skill interroge 2 objet(s) qui
+> n'existent plus depuis le remplacement du MCP TBannotator. Contrairement au filtre `system_name`,
+> ces requêtes ne rendent pas un ensemble vide : elles **lèvent une erreur** `relation does not exist`.
+>
+> | table citée ici | remplacer par | fondement |
+> |---|---|---|
+> | `tb_ncbi_biosample` | **mv_strain_metadata** | porte `sample_accession`, `host`, `isolation_source`, `country`, `latitude`, `longitude`, `collection_date_*` |
+> | `tb_ncbi_strain` | **mv_strain_metadata** | porte `run_accession`, `tax_id`, `scientific_name`, `study_accession`, `center_name`, `first_public` |
+>
+> Correspondances établies en comparant les colonnes, pas devinées. Détail et schéma complet :
+> `~/.agents/knowledge/tblearn-migration.md`.
+
+
 # pectinated-subclade-mining : Extraction iterative de sous-lignees MTBC
 
 ## Quand l'utiliser

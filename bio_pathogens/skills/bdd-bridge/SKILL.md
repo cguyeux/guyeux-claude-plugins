@@ -15,7 +15,7 @@ description: >-
   phylogenomics manuscript, extracting synapomorphies to define a published
   sub-lineage, or building a scientific-publication phylogeny for an MTBC clade
   from the local research database.
-argument-hint: "clades | strain <clade> <SRA> | synapo <clade> | phylo run <clade>"
+argument-hint: "clades | denominator <clade> | strain <clade> <SRA> | synapo <clade> | polarize <SPDI> [--strains liste] | phylo run <clade>"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 ---
@@ -27,6 +27,28 @@ Claude Code (shell-out) et depuis un agent de calcul. Le but : que la lecture de
 la base locale de souches et l'inférence phylo se fassent **de la même façon**
 dans les deux environnements, sans serveur à maintenir.
 
+## Deux pièges de comptage, à connaître avant d'annoncer un effectif
+
+**1. Un répertoire d'accession ne garantit pas une souche exploitable.** Balayage exhaustif du
+2026-09-06 (168 155 répertoires) : 86,99 % portent un `report.json`, 12,41 % un `spdi.txt` seul, et
+**1 025 ne portent AUCUNE donnée génomique** — dont **943 dans la seule lignée L4.7**, où ils font
+**41,4 % des répertoires** (548 entièrement vides créés en un lot le 2026-03-17, 395 ne contenant
+qu'un `crispr_reads_report.json`). Compter L4.7 par énumération de répertoires **surestime de
+69 %**. D'où la colonne `exploitables` de `clades` et la commande `denominator`.
+
+**2. `bdd/` n'est pas un miroir de TBannotator, c'est le sous-ensemble CURÉ de ce qui a été
+ÉTUDIÉ** (politique énoncée par CG le 2026-09-06). 105 929 souches de la base n'ont aucun répertoire
+local : elles ne sont pas écartées, elles n'ont pas encore été prises pour objet. Un effectif local
+décrit donc **l'échantillon travaillé, jamais la population**. Symétriquement, 18 849 souches
+locales sont inconnues de la base, dont 17 846 vivent sur le pipeline `mp` sans y avoir été
+ingérées, la base étant **figée à février 2026** le temps de la reprise de TBannotator par
+C. Lecarpentier (déploiement IDEEV / Paris-Saclay). Mesures et listes :
+`mtbc/résultats/p63_diff_bdd_tbannotator/`, pistes P63 et P64.
+
+Enfin, `denominator` ne prétend pas que les deux nombres mesurent la même chose : le placement local
+fait autorité (`bdd/actuelle` est vivante) et peut diverger de la classification de la base. Il les
+affiche côte à côte et le dit.
+
 ## Localisation de la BDD
 
 Par priorité : `--bdd <chemin>` → `$TBANNOTATOR_BDD` → `../bdd` remonté depuis le
@@ -37,7 +59,8 @@ sont **strictement en lecture**, aucun script n'écrit dans `bdd/`.
 
 ```bash
 S=bio_pathogens/skills/bdd-bridge/scripts     # ou le canonical réel
-python3 $S/bdd_query.py clades                 # tous les clades + effectif
+python3 $S/bdd_query.py clades                 # tous les clades + effectif (repertoires / exploitables)
+python3 $S/bdd_query.py denominator L4.7       # garde de denominateur : local exploitable vs TBannotator
 python3 $S/bdd_query.py strains L4.15          # souches d'un clade
 python3 $S/bdd_query.py --json strain L4.15 ERR1023322   # QC + nb SNP d'une souche
 python3 $S/bdd_query.py matrix L4.15 --min-frac 0.1       # matrice SNP binaire -> TSV
@@ -46,11 +69,15 @@ python3 $S/bdd_query.py synapo L5.2.1 --recursive --min-frac 0.90  # agrège L5.
 python3 $S/bdd_query.py align L4.15 --mask MASK.txt --rd-table RD.csv --out aln.phy  # alignement propre pour datation
 ```
 
-- `clades` : `<clade>\t<n_souches>` (ignore les `_flatten_*_undo_log.tsv`).
+- `clades` : `<clade>\t<repertoires>\t<exploitables>` (ignore les `_flatten_*_undo_log.tsv`). La colonne **exploitables** compte les souches qui portent réellement une donnée génomique (`report.json` ou `spdi.txt`) ; voir l'encadré ci-dessous.
+- `denominator <clade>` : **garde de dénominateur**. Met côte à côte l'effectif local EXPLOITABLE et l'effectif que TBannotator classe sous le code correspondant, avec les avertissements qui empêchent de confondre l'échantillon étudié et la population. `--system` (défaut `guyeux`), `--local-only` pour ne pas interroger la base. **À appeler avant d'écrire un effectif dans un manuscrit.**
 - `strain` : lit `report.json` (couverture, profondeur, MAPQ, GC) + compte les SPDI.
 - `matrix` : lignes = souches, colonnes = positions SPDI présentes chez ≥ `min_frac`
   des souches ; `--json` renvoie aussi le vecteur 0/1 par souche.
 - `synapo` : positions partagées par ≥ seuil (défaut 0.95), candidates marqueurs de clade.
+- `polarize <SPDI>` : distribution d'**un** site à travers les clades, en **3 états**
+  `ON` / `OFF` / `UNKNOWN`, avec polarisation par un groupe externe et, en option, la
+  **dose-réponse** couverture × non-portage. Voir la section dédiée ci-dessous.
 - `--recursive` (sur `strains`/`matrix`/`synapo`) : agrège le conteneur `clade` avec TOUT son
   sous-arbre `clade.*`. Indispensable dès qu'une lignée a été matérialisée en plusieurs
   sous-conteneurs (géographiques, phylogénétiques...) : sans ce flag, `synapo L5.2.1` ne voit que
@@ -60,6 +87,88 @@ python3 $S/bdd_query.py align L4.15 --mask MASK.txt --rd-table RD.csv --out aln.
   (voir section dédiée ci-dessous).
 
 Toute commande accepte `--json` (sortie structurée) et `--bdd`.
+
+## `polarize` : un site, tous les clades, et la distinction ABSENT / NON COUVERT
+
+```bash
+python3 $S/bdd_query.py polarize 'NC_000962.3:2887961:GGC:G' --clades Bovis.2 --outgroup Canettii
+python3 $S/bdd_query.py polarize 'NC_000962.3:2889632:T:C' --outgroup Canettii --dose-response
+python3 $S/bdd_query.py polarize '<SPDI>' --clades L4 L2 --gene Rv2566 --json
+python3 $S/bdd_query.py polarize '<SPDI>' --strains clade_souches.tsv --strains-name mon_clade --gene Rv2566 --dose-response
+```
+
+**Le problème que cette commande résout.** Compter les porteurs d'un SPDI dans un clade est trivial
+(`rg -l` sur les `spdi.txt`). Ce qui ne l'est pas, c'est de distinguer les deux causes possibles
+d'une ABSENCE : la souche porte l'allèle de référence (`OFF`), ou la position n'était pas
+appelable (`UNKNOWN`). Sans cette distinction, une fréquence de 98,6 % ne se distingue pas d'une
+fixation totale entachée de 1,4 % de non-appels, et deux lectures opposées du même chiffre restent
+également défendables. `polarize` lit la couverture réelle du gène dans `report.json`
+(`median_coverage`, `percent_missing`, et `mean_ratio` = couverture du gène / profondeur du génome)
+et rend les trois états, plus la fréquence corrigée `ON/(ON+OFF)`.
+
+Seuils par défaut, calqués sur les critères réels du pipeline : `--min-median-cov 10` (Snippy exige
+une profondeur ≥ 10 pour appeler), `--max-pct-missing 0.10`, `--min-mean-ratio 0.10` (seuil
+`missing_genes`). Le gène portant le site est déduit de l'annotation du premier porteur ; `--gene`
+le force si aucun porteur n'existe dans le périmètre demandé.
+
+### `--dose-response` : le test qui tranche vraiment, et pourquoi le seuil 3 états ne suffit pas
+
+### `--strains` : quand le clade réel n'a PAS de nom dans la taxonomie de répertoires
+
+`--clades` prend des PRÉFIXES de répertoires. Or un clade réel n'a pas toujours de répertoire :
+sur `Rv2566` (2026-09-08), le sous-clade L1 portant un frameshift fixé est réparti entre un
+conteneur NU `L1` de 21 163 souches, `L_1.A.2` et `L_1.A.2.1`. Aucun préfixe ne le désigne, et
+il a fallu écrire un scanner local — exactement le doublon que ce skill existe pour supprimer.
+
+`--strains <fichier>` prend une liste explicite `<clade>/<sra>`, une par ligne, et en fait un
+groupe nommé (`--strains-name`, défaut : le nom du fichier). Le lecteur tolère un TSV dont la
+première colonne porte le chemin, une ligne d'en-tête, les commentaires `#`, un préfixe `./` et
+un suffixe `/NC_000962.3[/spdi.txt]` : les sorties de `rg -l` et les tables d'analyse passent
+telles quelles. Le dédoublonnage sur (clade, accession) est fait dans le lecteur, contre les
+chemins qui DOUBLENT l'accession.
+
+Se combine avec `--clades` et `--outgroup` : le groupe nommé s'ajoute aux préfixes, et la
+dose-réponse reste rendue PAR GROUPE.
+
+**Calibrage mesuré, et il contredit le défaut.** Sur ce cas, le codage 3 états avec le seuil par
+défaut (`--min-median-cov 10`) rend 148 ON / 9 OFF / 0 UNKNOWN, donc une fréquence de 94,27 % et
+neuf « vrais sauvages ». La dose-réponse dit l'inverse : 26,47 % de non-portage dans la tranche
+[10,20) et **0,00 % dans TOUTES les tranches au-dessus de 20x**. Décroissance vers zéro sans
+plateau : les neuf sont des non-appels et le site est fixé à 100 %. Pour un indel de 1 pb, le
+seuil par défaut de 10x est donc trop bas ; c'est la FORME de la courbe qui tranche, jamais le
+compte 3 états.
+
+**À lire avant d'utiliser `polarize` sur un INDEL, un microsatellite ou une région répétée.** Le
+codage 3 états repose sur la couverture du GÈNE, qui fait plusieurs kilobases, alors que l'appel se
+joue à la POSITION. Pour un SNP dans un gène bien couvert, l'approximation tient. Pour un indel,
+elle peut rendre le verdict **inverse** du bon : sur l'indel de 2 pb de `Rv2566` chez *M. bovis*,
+le seuil de gène classe 176 des 177 non-porteurs en `OFF`, c'est-à-dire en « vrais sauvages »,
+alors que la fixation est en réalité **totale**.
+
+Ce qui tranche est la **forme de la courbe** non-portage × couverture, que `--dose-response` rend :
+
+| Profil observé | Lecture |
+|---|---|
+| décroissance monotone vers **zéro**, sans plateau | ce sont des **non-appels** ; le site est en réalité fixé |
+| **plateau** non nul quand la couverture monte | ce sont de **vrais allèles de référence** |
+| **plat à 100 %** à toutes les couvertures | absence **réelle** — profil attendu d'un groupe externe |
+
+Exemple réel (site Bovis, sortie de la commande ci-dessus) : *M. bovis* passe de 57,1 % de
+non-portage sous 20× à 0,03 % au-dessus de 80× et **0,00 % au-dessus de 120×** — décroissance vers
+zéro, donc fixation totale ; *M. canettii* reste à 100 % à toutes les tranches — absence réelle.
+Les deux profils, dans une même sortie, se lisent d'un coup d'œil.
+
+`--dose-response` lit `report.json` pour TOUTES les souches du périmètre et non pour les seuls
+non-porteurs : c'est le mode coûteux. La courbe est rendue **par groupe**, jamais agrégée —
+mélanger un clade cible et son groupe externe, qui est par construction non porteur, fabrique un
+plateau là où il n'y en a pas, donc le verdict inverse du bon.
+
+### Précaution de lecture sur les conteneurs nus
+
+Un « clade » de `bdd/actuelle` peut être un conteneur NON subdivisé de dizaines de milliers de
+souches (`L1` en compte 21 163, `L2.2.1` 35 405). Stratifier dessus ne contrôle presque rien de la
+sous-structure. Vérifier l'effectif de la strate avant de conclure qu'une fréquence par clade
+« contrôle la lignée ».
 
 ## `align` : alignement propre pour datation (BEAST2 / RAxML)
 

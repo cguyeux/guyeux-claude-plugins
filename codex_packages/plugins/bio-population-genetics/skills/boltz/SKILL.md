@@ -104,9 +104,15 @@ sans GPU CUDA utilisable. Avec l'index CPU : venv ≈ 1,5 Go.
 > (l'égress réseau des nœuds de calcul n'est pas garanti, contrairement à `/Home` en lecture seule
 > qui lui est documenté) — appeler `boltz.data.msa.mmseqs2.run_mmseqs2` (cf. plus bas, 1-10 s par
 > séquence) sur la frontale pour chaque séquence distincte des YAML du lot, sauver en `.a3m`, et
-> réécrire chaque YAML avec `msa: <chemin local>` avant `sbatch`. Le job array Slurm se heurte à
-> `QOSMaxGRESPerUser` (1 GPU concurrent par utilisateur sur `gpu`) : les tâches au-delà de la
-> première restent `PENDING` et s'enchaînent seules, ce n'est pas une erreur de soumission.
+> réécrire chaque YAML avec `msa: <chemin local>` avant `sbatch`. **(2026-09-07, change le
+> dimensionnement des campagnes Boltz)** le job array ne se heurte plus forcément à
+> `QOSMaxGRESPerUser` : la QOS `3gpu` est désormais attachée au compte `cguyeux`, et
+> `#SBATCH --qos=3gpu` avec `--array=1-N%3` fait tourner **trois prédictions de front** au lieu
+> d'une (vérifié le 2026-09-08 : trois jobs `RUNNING` simultanés). Sans cette ligne `--qos`, rien
+> ne change, la QOS par défaut restant `normal` : les tâches au-delà de la première restent
+> `PENDING` et s'enchaînent seules, ce qui n'est pas une erreur de soumission mais un oubli de
+> trois mots. Une campagne de 196 jobs passe ainsi d'environ trois semaines à une bonne semaine.
+> Détail des plafonds et de la restitution des QOS prêtées : skill `remote-compute`.
 >
 > **Trou de couverture corrigé dans le gabarit ci-dessous (2026-08-18, `Rv3909`) : le retry ne
 > couvrait que les échecs de PRÉ-VOL** (mémoire, exclusivité), pas un job qui démarre puis échoue en

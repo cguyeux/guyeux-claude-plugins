@@ -157,3 +157,26 @@ Le skill doit produire, dans l'ordre :
 > SRR21277048 (L4.4.2, d = 0.0023), SRR21291145 (L4.4.2, d = 0.0023)
 > and ERR2179762 (L4.4.2, d = 0.0023), confirming unambiguous
 > assignment to L4.4.2.
+
+## Portée réelle de l'historique, et quand passer à `/phylo-forest`
+
+Ce skill lit `investigate_phylo/history/strain_history.json`, qui n'est alimenté
+que par un appel explicite à `get_phylo.py`. Mesuré le 2026-08-30 : **3 arbres
+archivés, aucun depuis le 2026-05-15**, alors que le dépôt porte environ
+1 500 arbres de résultat. Un diagnostic rendu ici est donc, sauf coïncidence,
+fondé sur trois reconstructions de mai 2026 — ce qui reste utile, mais n'est pas
+« tous les arbres où la souche a figuré », et ne doit pas être présenté comme tel.
+
+Pour la même question sur la forêt entière, utiliser `/phylo-forest`, qui
+moissonne les Newick existants sans rien demander :
+
+```bash
+F=~/docs/codes/claude_plugins/bio_pathogens/skills/phylo-forest/scripts/forest.py
+python3 $F find --taxa <SRA>          # tous les arbres contenant cette souche
+python3 $F support --taxa <SRA>,<voisins présumés>   # ce voisinage tient-il ?
+```
+
+Garde-fou propre à la comparaison inter-arbres : une souche peut changer de
+place simplement parce que ses voisins ne sont pas dans l'arbre suivant. Ne
+comparer que des arbres à échantillonnage comparable avant de conclure à une
+instabilité de la souche elle-même.

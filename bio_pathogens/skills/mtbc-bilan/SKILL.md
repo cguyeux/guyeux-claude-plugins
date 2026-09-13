@@ -13,6 +13,34 @@ allowed-tools: Bash, Read, Write, Grep, Glob, WebSearch, WebFetch
 user-invocable: true
 ---
 
+> [!WARNING]
+> **[2026-09-08] Les requêtes de ce skill qui filtrent sur un système de lignée MAISON ne rendent
+> plus rien.** Le MCP TBannotator est arrêté ; le serveur `tblearn` qui le remplace ne porte que
+> huit systèmes **externes** (Coll, Coscolla, Freschi, Lipworth, Napier, Palittapongarnpim,
+> Shitikov, Stucki). `system_name = 'guyeux'` et `system_name = 'tblearn'` y rendent **zéro ligne
+> sans lever d'erreur**, ce qu'un script lira comme « aucune souche ne satisfait le critère ».
+>
+> **Substitution, décidée le 2026-09-08 :** les lignées maison se lisent désormais dans la base
+> LOCALE `bdd/actuelle/`, qui fait déjà autorité selon
+> `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
+>
+> ```bash
+> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
+> python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
+> python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable
+> python3 $B/bdd_query.py strains <clade>       # souches d'un clade
+> ```
+>
+> `tblearn` reste utilisable pour tout le reste (SPDI, QC, métadonnées, RD, IS, CRISPR) et pour
+> **comparer** à une taxonomie externe, mais ce n'est plus la source des lignées maison. Toute
+> requête qui filtre sur `system_name` doit d'abord vérifier que le filtre a matché :
+> `SELECT system_name, count(*) FROM mv_strain_lineage WHERE system_name = '<x>' GROUP BY 1;`
+> — zéro ligne signifie « ce système n'existe pas ici », jamais « aucune souche ».
+>
+> Détail complet : `~/.agents/knowledge/tblearn-migration.md`.
+
+
 # /mtbc-bilan -- Etat actuel des connaissances et plan d'action
 
 Parcourt un projet MTBC (ou tout le dossier `mtbc/`) pour produire un bilan
@@ -598,6 +626,11 @@ Meme procedure pour le bilan global, frontmatter adapte, sortie dans
 `mtbc/bilans_globaux/`. **Detail : `references/mode_full.md`.**
 
 ### 9.4 Presentation Beamer
+
+> Ce deck est un point d'etape INTERNE. Pour un expose destine a un public
+> (seminaire, conference, audition, soutenance), ne pas partir d'ici : utiliser
+> `beamer-slides` (`/slides`), qui part du public et de la duree et controle le
+> resultat. Motif dans `references/beamer_slides.md`.
 
 Ecrire `<projet>/bilans/YYYY-MM-DD_bilan_slides.tex` (Beamer natif, pas un
 Markdown converti) ; le template Metropolis fournit preambule, theme et

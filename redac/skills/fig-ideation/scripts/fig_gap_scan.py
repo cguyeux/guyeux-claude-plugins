@@ -341,15 +341,39 @@ def score_markers(prose: str) -> dict[str, int]:
 
 
 def scan_orphan_files(project_root: Path, used: set[str]) -> list[str]:
-    """Images produites sur disque et jamais incluses dans le manuscrit."""
+    """Images produites sur disque et jamais incluses dans le manuscrit.
+
+    Une image incluse par la SOURCE d'une figure (un `.tex` standalone qui compose
+    la figure) n'est pas orpheline : c'est un intrant. Le premier jet ne lisait que
+    le manuscrit et signalait donc comme orphelines les icones d'une figure qu'il
+    venait lui-meme de faire integrer.
+    """
     used_stems = set()
     for u in used:
-        stem = Path(u).stem
-        used_stems.add(stem)
+        used_stems.add(Path(u).stem)
         used_stems.add(Path(u).name)
+    # Graphiques references depuis n'importe quel .tex du projet (sources de figures
+    # standalone comprises), pas seulement depuis la chaine du manuscrit.
+    for tex in project_root.rglob("*.tex"):
+        if any(p in {".git", ".venv", "_build", "node_modules"} for p in tex.parts):
+            continue
+        try:
+            body = strip_comments(tex.read_text(encoding="utf-8", errors="replace"))
+        except OSError:
+            continue
+        for g in re.findall(r"\\includegraphics(?:\[[^\]]*\])?\s*\{([^}]+)\}", body):
+            used_stems.add(Path(g).stem)
+            used_stems.add(Path(g).name)
+
     exts = {".pdf", ".png", ".svg", ".tiff", ".tif", ".jpg", ".eps"}
+    # `_build` est le repertoire de compilation de tikz_build.py : ses sorties sont
+    # des intermediaires. `icons`/`assets` sont des MAGASINS D'ASSETS : leur contenu
+    # est inclus par la source d'une figure, souvent A TRAVERS UNE MACRO que la regex
+    # ci-dessus ne peut pas resoudre. D'ou la convention : ranger les assets d'une
+    # figure dans un sous-repertoire nomme, jamais a plat a cote des figures.
     skip = {".git", ".venv", "node_modules", "__pycache__", "site-packages",
-            "archives", "archive", ".claude", "worktrees"}
+            "archives", "archive", ".claude", "worktrees", "_build",
+            "icons", "assets", "logos"}
     orphans = []
     for d in ("article/figures", "figures", "résultats", "resultats",
               "results", "article/fig", "supplementary"):

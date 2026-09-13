@@ -17,8 +17,15 @@ Sous-commandes :
     strain  <clade> <SRA>  Détail d'une souche (QC + nb SNP)
     matrix  <clade>        Matrice SNP binaire (présence/absence) du clade -> TSV/JSON
     synapo  <clade>        Positions SPDI partagées par (presque) toutes les souches du clade
+    polarize <SPDI>        Distribution d'UN SPDI par clade en 3 états ON/OFF/UNKNOWN,
+                           polarisation par l'outgroup, et dose-réponse couverture x
+                           non-portage (le test qui sépare un non-appel d'un vrai
+                           allèle de référence)
+    denominator <clade>    Effectif local EXPLOITABLE vs effectif TBannotator, avec
+                           les avertissements qui empêchent de confondre l'échantillon
+                           étudié et la population (garde de dénominateur, P63.3)
 """
-import os, sys, json, argparse, re, csv
+import os, sys, json, argparse, re, csv, pathlib
 from collections import Counter
 
 GENOME_LEN_H37RV = 4411532  # NC_000962.3
@@ -44,6 +51,42 @@ def actuelle(bdd):
 def is_strain_dir(p):
     return os.path.isdir(os.path.join(p, REF))
 
+# --- Contenu réel d'un répertoire de souche (P63.7, 2026-09-06) -------------
+# Un répertoire d'accession NE GARANTIT PAS une souche exploitable : le balayage
+# exhaustif du 2026-09-06 a trouvé 1 025 répertoires sans aucune donnée génomique
+# sur 168 155, dont 943 dans la seule lignée L4.7 (41,4 % de ses répertoires :
+# 548 entièrement vides créés en un lot le 2026-03-17, 395 ne portant qu'un
+# crispr_reads_report.json). Compter des répertoires y surestime de 70 %.
+CONTENT_REPORT = "report"    # report.json présent : souche complète
+CONTENT_SPDI = "spdi"        # spdi.txt seul : format ancien, exploitable
+CONTENT_CRISPR = "crispr"    # crispr_reads_report.json seul : PAS de génomique
+CONTENT_EMPTY = "vide"       # NC_000962.3 vide : rien du tout
+CONTENT_OTHER = "autre"      # ni spdi ni report
+USABLE = (CONTENT_REPORT, CONTENT_SPDI)
+
+
+def strain_content(path):
+    """Classe le contenu réel de <path>/NC_000962.3. Voir CONTENT_* ci-dessus."""
+    d = os.path.join(path, REF)
+    try:
+        files = set(os.listdir(d))
+    except OSError:
+        return CONTENT_EMPTY
+    if not files:
+        return CONTENT_EMPTY
+    if "report.json" in files:
+        return CONTENT_REPORT
+    if "spdi.txt" in files:
+        return CONTENT_SPDI
+    if files == {"crispr_reads_report.json"}:
+        return CONTENT_CRISPR
+    return CONTENT_OTHER
+
+
+def is_usable_strain_dir(p):
+    """Vrai si le répertoire porte une donnée génomique exploitable."""
+    return is_strain_dir(p) and strain_content(p) in USABLE
+
 def list_clades(bdd):
     root = actuelle(bdd)
     out = []
@@ -52,7 +95,12 @@ def list_clades(bdd):
         if not os.path.isdir(d):
             continue  # ignore _flatten_*_undo_log.tsv etc.
         strains = [s for s in os.listdir(d) if is_strain_dir(os.path.join(d, s))]
-        out.append({"clade": name, "n_strains": len(strains)})
+        kinds = Counter(strain_content(os.path.join(d, s)) for s in strains)
+        usable = sum(kinds[k] for k in USABLE)
+        out.append({"clade": name, "n_strains": len(strains),
+                    "n_exploitables": usable,
+                    "n_sans_donnee": len(strains) - usable,
+                    "contenu": dict(kinds)})
     return out
 
 def list_strains(bdd, clade):
@@ -125,13 +173,37 @@ def is_transition(spdi):
     return (ref, alt) in _TRANSITIONS
 
 def load_mask(path):
-    """Ensemble de positions génomiques à exclure (une position par ligne).
+    """Ensemble de positions génomiques à exclure, une par ligne.
+
+    Accepte DEUX écritures, délibérément, parce que `align` écrit lui-même son
+    `.positions.txt` en SPDI et qu'un masque dérivé de sa propre sortie doit
+    pouvoir lui être redonné sans conversion (le refuser obligeait à un `awk`
+    jetable à chaque usage — corrigé le 2026-09-10, P72.4) :
+      - position nue            : `103835`
+      - SPDI complet            : `NC_000962.3:103835:G:T`  (2e champ = position)
+    Les lignes vides et les commentaires `#` sont ignorés ; une ligne
+    inexploitable est signalée plutôt que silencieusement perdue.
     Ex. global_supplementary/traces_mask/traces_mask_positions.txt (PE/PPE +
     répétitions + résistance)."""
     if not path or not os.path.exists(path):
         return set()
+    out, bad = set(), []
     with open(path) as f:
-        return {int(l) for l in f if l.strip() and not l.startswith("#")}
+        for lineno, raw in enumerate(f, 1):
+            l = raw.strip()
+            if not l or l.startswith("#"):
+                continue
+            tok = l.split()[0]
+            field = tok.split(":")[1] if ":" in tok else tok
+            try:
+                out.add(int(field))
+            except ValueError:
+                bad.append((lineno, l[:60]))
+    if bad:
+        head = "; ".join(f"l.{n}: {t}" for n, t in bad[:3])
+        print(f"# masque {path} : {len(bad)} ligne(s) illisible(s) ignorée(s) ({head})",
+              file=sys.stderr)
+    return out
 
 _CUS = re.compile(r"CUS_GS_(\d+)_(\d+)")
 
@@ -263,10 +335,150 @@ def build_matrix(bdd, clade, min_frac=0.0, recursive=False):
 def cmd_clades(bdd, args):
     data = list_clades(bdd)
     total = sum(d["n_strains"] for d in data)
+    usable = sum(d["n_exploitables"] for d in data)
     if args.json:
-        return {"bdd": bdd, "n_clades": len(data), "n_strains_total": total, "clades": data}
-    lines = [f"{d['clade']}\t{d['n_strains']}" for d in data]
-    return "\n".join(lines) + f"\n# {len(data)} clades, {total} souches"
+        return {"bdd": bdd, "n_clades": len(data), "n_strains_total": total,
+                "n_exploitables_total": usable,
+                "n_sans_donnee_total": total - usable, "clades": data}
+    lines = [f"{d['clade']}\t{d['n_strains']}\t{d['n_exploitables']}" for d in data]
+    hdr = "# clade\trepertoires\texploitables"
+    foot = (f"# {len(data)} clades, {total} repertoires, {usable} exploitables, "
+            f"{total - usable} sans donnee genomique")
+    return hdr + "\n" + "\n".join(lines) + "\n" + foot
+
+# --- Garde de dénominateur (P63.3, 2026-09-06) ------------------------------
+# `bdd/` est le sous-ensemble CURÉ de ce qui a été ÉTUDIÉ (politique CG,
+# 2026-09-06), pas un miroir de TBannotator : 105 929 souches de la base n'y ont
+# aucun répertoire. Un effectif local décrit donc l'ÉCHANTILLON TRAVAILLÉ, jamais
+# la population. Cette commande met les deux comptes côte à côte pour qu'aucun
+# manuscrit n'annonce l'un en croyant dire l'autre.
+TBA_URL_DEFAUT = "https://tblearn.tbannotator.ideev.universite-paris-saclay.fr/mcp"
+TBA_GEL = ("La base publique est un INSTANTANÉ FIGÉ à 2026-02 (reprise de TBannotator "
+           "par C. Lecarpentier, déploiement IDEEV/Paris-Saclay). Le pipeline `mp` a "
+           "continué de produire depuis : 17 846 souches calculées n'y sont pas encore "
+           "ingérées. Le compte distant est donc un plancher.")
+
+
+def _tba_query(sql, timeout=60):
+    """Interroge le MCP TBannotator en JSON-RPC (stdlib uniquement)."""
+    import urllib.request
+    url = os.environ.get("TBANNOTATOR_MCP_URL", TBA_URL_DEFAUT).rstrip("/")
+
+    def post(payload, sid=None):
+        req = urllib.request.Request(url, data=json.dumps(payload).encode(), method="POST")
+        req.add_header("Content-Type", "application/json")
+        req.add_header("Accept", "application/json, text/event-stream")
+        if sid:
+            req.add_header("mcp-session-id", sid)
+        r = urllib.request.urlopen(req, timeout=timeout)
+        out = None
+        for line in r.read().decode().splitlines():
+            if line.startswith("data:"):
+                out = json.loads(line[5:].strip())
+        return out, r.headers.get("mcp-session-id", sid)
+
+    _, sid = post({"jsonrpc": "2.0", "id": 1, "method": "initialize",
+                   "params": {"protocolVersion": "2024-11-05", "capabilities": {},
+                              "clientInfo": {"name": "bdd-bridge", "version": "1"}}})
+    post({"jsonrpc": "2.0", "method": "notifications/initialized", "params": {}}, sid)
+    res, _ = post({"jsonrpc": "2.0", "id": 2, "method": "tools/call",
+                   "params": {"name": "tool_query_postgres",
+                              "arguments": {"query": sql, "max_rows": 50,
+                                            "compress": False,
+                                            "timeout_seconds": timeout}}}, sid)
+    txt = [c["text"] for c in res.get("result", {}).get("content", [])
+           if c.get("type") == "text"][0]
+    try:
+        d = json.loads(txt)
+    except Exception:
+        import ast
+        d = ast.literal_eval(txt)
+    if not d.get("success"):
+        raise RuntimeError(str(d.get("error"))[:200])
+    return list(csv.reader(io_StringIO(d["data"]["csv"])))
+
+
+def io_StringIO(txt):
+    import io as _io
+    return _io.StringIO(txt)
+
+
+def clade_to_lineage_code(clade):
+    """Traduit un nom de répertoire local en code de lignée TBannotator.
+
+    Les codes du système `guyeux` sont sans préfixe « L » (`4.15`, `Bovis La1`).
+    Renvoie None si la traduction n'est pas sûre : mieux vaut ne rien affirmer que
+    comparer deux choses différentes.
+    """
+    c = clade.strip()
+    if re.match(r"^L\d+(\.\d+)*$", c):
+        return c[1:]
+    if re.match(r"^\d+(\.\d+)*$", c):
+        return c
+    if c.lower().startswith(("bovis", "caprae", "orygis", "bcg", "canettii", "pinipedii")):
+        return c
+    return None
+
+
+def cmd_denominator(bdd, args):
+    clade = args.clade
+    d = os.path.join(actuelle(bdd), clade)
+    if not os.path.isdir(d):
+        raise SystemExit(f"clade introuvable sur disque : {clade}")
+    kinds = Counter()
+    for s in os.listdir(d):
+        p = os.path.join(d, s)
+        if is_strain_dir(p):
+            kinds[strain_content(p)] += 1
+    n_dirs = sum(kinds.values())
+    n_usable = sum(kinds[k] for k in USABLE)
+    code = clade_to_lineage_code(clade)
+    remote = {"systeme": args.system, "code": code, "n": None, "erreur": None}
+    if args.local_only:
+        remote["erreur"] = "--local-only : base non interrogée"
+    elif code is None:
+        remote["erreur"] = ("nom de répertoire non traduisible en code de lignée ; "
+                            "comparer à la main plutôt que de deviner")
+    else:
+        sql = ("SELECT count(DISTINCT strain_name) AS n FROM mv_strain_classification "
+               f"WHERE system_name = '{args.system}' AND lineage_code = '{code}'")
+        try:
+            rows = _tba_query(sql)
+            remote["n"] = int(rows[1][0]) if len(rows) > 1 else 0
+        except Exception as exc:                      # serveur injoignable, etc.
+            remote["erreur"] = str(exc)[:200]
+    out = {"clade": clade, "bdd": bdd,
+           "local": {"repertoires": n_dirs, "exploitables": n_usable,
+                     "sans_donnee": n_dirs - n_usable, "contenu": dict(kinds)},
+           "tbannotator": remote,
+           "avertissements": [
+               "Un effectif bdd/ décrit l'ÉCHANTILLON ÉTUDIÉ, pas la population.",
+               TBA_GEL,
+           ]}
+    if n_dirs != n_usable:
+        out["avertissements"].insert(0, (
+            f"{n_dirs - n_usable} des {n_dirs} répertoires de {clade} ne portent AUCUNE "
+            f"donnée génomique : compter les répertoires surestime de "
+            f"{100.0 * (n_dirs - n_usable) / max(n_usable, 1):.0f} %."))
+    if remote["n"] is not None and remote["n"] != n_usable:
+        out["avertissements"].append(
+            "Le placement local fait autorité et peut diverger de la classification "
+            "de la base : ces deux nombres ne sont pas deux mesures de la même chose.")
+    if args.json:
+        return out
+    lines = [f"clade {clade}",
+             f"  bdd/ répertoires          : {n_dirs}",
+             f"  bdd/ EXPLOITABLES         : {n_usable}",
+             f"  bdd/ sans donnée          : {n_dirs - n_usable}  {dict(kinds)}"]
+    if remote["n"] is not None:
+        lines.append(f"  TBannotator ({args.system}, code {code}) : {remote['n']}")
+    else:
+        lines.append(f"  TBannotator               : non comparé — {remote['erreur']}")
+    lines.append("")
+    for w in out["avertissements"]:
+        lines.append(f"  ! {w}")
+    return "\n".join(lines)
+
 
 def cmd_strains(bdd, args):
     if getattr(args, "recursive", False):
@@ -359,6 +571,245 @@ def cmd_synapo(bdd, args):
     out += [f"{d['spdi']}\t{d['n']}/{n}\t{d['frac']}" for d in synapo]
     return "\n".join(out)
 
+
+# --- polarize : distribution d'UN SPDI par clade, en 3 états ON/OFF/UNKNOWN ---
+# Forgé le 2026-09-08 (projet Rv2566, piste P13) après que le MÊME scanner par-souche eut été
+# réécrit six fois dans un seul projet. La valeur ajoutée n'est pas le comptage, que trois lignes
+# de `grep` rendent, c'est la distinction ABSENT / NON COUVERT : sans elle, une fréquence de
+# 98,6 % ne se distingue pas d'une fixation totale entachée de 1,4 % de non-appels, et deux
+# lectures opposées du même chiffre restent également défendables.
+#
+# LEÇON INTÉGRÉE, ET ELLE DÉPASSE LA SPÉCIFICATION D'ORIGINE. Le codage 3 états au seuil de
+# COUVERTURE DU GÈNE ne suffit pas et peut rendre le verdict INVERSE du bon : sur l'indel de 2 pb
+# de Rv2566 chez M. bovis, il classait 176 des 177 non-porteurs en « vrais sauvages » alors que la
+# fixation est en réalité totale. Un seuil de gène (plusieurs kb) est bien trop permissif pour un
+# indel, dont l'appel dépend de la profondeur LOCALE. Le test qui tranche est la DOSE-RÉPONSE
+# (--dose-response) : si le non-portage décroît vers zéro quand la couverture monte, ce sont des
+# non-appels ; s'il atteint un PLATEAU non nul, ce sont de vrais allèles de référence. Livrer la
+# seule spécification d'origine aurait donc livré un outil qui se trompe sur le cas qui l'a motivé.
+
+_COV_BINS = [(0, 10), (10, 20), (20, 30), (30, 50), (50, 80), (80, 120), (120, 200),
+             (200, float("inf"))]
+
+
+def read_gene_coverage(bdd, clade, sra, gene):
+    """Couverture d'un gène + profondeur génome, depuis report.json.
+
+    PIÈGE, coût d'un passage entier perdu avant d'être compris (2026-09-07) : les report.json de
+    la BDD existent sous DEUX formats mêlés dans un même clade, pretty-printé et COMPACT (une
+    seule ligne, ~75 % des fichiers). Un motif calé sur l'indentation ne voit que le quart
+    pretty-printé et rend silencieusement une couverture manquante pour le reste, ce qui bascule à
+    tort les souches concernées en UNKNOWN. D'où les `\\s*` partout et le mode DOTALL.
+    """
+    fp = os.path.join(actuelle(bdd), clade, sra, REF, "report.json")
+    if not os.path.exists(fp):
+        return None
+    try:
+        txt = open(fp, encoding="utf-8", errors="replace").read()
+    except OSError:
+        return None
+    num = r"[-0-9.eE+]+"
+    m = re.search(rf'"locus_tag":\s*"{re.escape(gene)}",\s*"mean_coverage":\s*({num}),'
+                  rf'\s*"median_coverage":\s*({num}),\s*"percent_missing":\s*({num})', txt)
+    if not m:
+        return None
+    out = {"mean": float(m.group(1)), "median": float(m.group(2)),
+           "pct_missing": float(m.group(3)), "genome_depth": None}
+    d = re.search(r'"mapping_stats":\s*\{[^}]*?"mean_depth":\s*([-0-9.eE+]+)', txt, re.S)
+    if d:
+        out["genome_depth"] = float(d.group(1))
+    return out
+
+
+def gene_of_spdi(bdd, clade, sra, spdi):
+    """Locus tag du gène portant ce SPDI, lu dans l'annotation que le pipeline produit déjà."""
+    fp = os.path.join(actuelle(bdd), clade, sra, REF, "report.json")
+    if not os.path.exists(fp):
+        return None
+    try:
+        d = json.load(open(fp, encoding="utf-8", errors="replace"))
+    except Exception:
+        return None
+    for s in d.get("snp", []):
+        if s.get("spdi") != spdi:
+            continue
+        for a in (s.get("annotations") or []):
+            tag = (a.get("gene_locus_tag") or "").replace("gene-", "")
+            if tag and tag != "null" and not tag.startswith("Rv0215c"):
+                return tag
+    return None
+
+
+def call_state(has, cov, thr):
+    if has:
+        return "ON"
+    if not cov or cov.get("median") is None:
+        return "UNKNOWN"
+    ratio = (cov["mean"] / cov["genome_depth"]) if (cov.get("genome_depth") and cov.get("mean")) else None
+    if (cov["median"] < thr["min_median_cov"] or cov["pct_missing"] > thr["max_pct_missing"]
+            or (ratio is not None and ratio < thr["min_mean_ratio"])):
+        return "UNKNOWN"
+    return "OFF"
+
+
+def lire_liste_souches(chemin):
+    """Lit une liste explicite de souches, une par ligne, au format `<clade>/<sra>`.
+
+    Tolère un TSV dont la PREMIÈRE colonne porte le chemin (les colonnes suivantes sont
+    ignorées), une ligne d'en-tête, les commentaires `#`, un préfixe `./`, et un suffixe
+    `/NC_000962.3[/spdi.txt]` -- c'est-à-dire, telles quelles, les sorties de `rg -l` et les
+    tables produites par les scripts d'analyse.
+
+    RAISON D'ÊTRE (2026-09-08, projet Rv2566). Un clade RÉEL n'a pas toujours de nom : le
+    sous-clade L1 portant un frameshift fixé de Rv2566 est réparti par la taxonomie de
+    répertoires entre un conteneur NU `L1` de 21 163 souches, `L_1.A.2` et `L_1.A.2.1`. Aucun
+    préfixe ne le désigne, si bien que `--clades` ne pouvait pas l'atteindre et qu'il a fallu
+    écrire un scanner local. C'est exactement le motif que cette sous-commande existe pour
+    supprimer.
+    """
+    pairs = []
+    for ligne in pathlib.Path(chemin).read_text().splitlines():
+        t = ligne.strip()
+        if not t or t.startswith("#"):
+            continue
+        t = t.split("\t")[0].strip().lstrip("./")
+        for suffixe in ("/NC_000962.3/spdi.txt", "/NC_000962.3/report.json", "/NC_000962.3"):
+            if t.endswith(suffixe):
+                t = t[: -len(suffixe)]
+                break
+        parts = [x for x in t.split("/") if x]
+        if len(parts) < 2:
+            continue                      # en-tête ou ligne libre : ignorée en silence
+        clade, sra = parts[0], parts[-1]
+        pairs.append((clade, sra))
+    # dédoublonnage : certains chemins DOUBLENT l'accession (`<clade>/ERRxxx/ERRxxx/...`),
+    # et compter des FICHIERS pour des SOUCHES gonfle les effectifs (vécu, Caprae 286 vs 278).
+    vus, res = set(), []
+    for c, s in pairs:
+        if (c, s) in vus:
+            continue
+        vus.add((c, s))
+        res.append((c, s))
+    return res
+
+
+def cmd_polarize(bdd, args):
+    spdi = args.spdi
+    thr = {"min_median_cov": args.min_median_cov, "max_pct_missing": args.max_pct_missing,
+           "min_mean_ratio": args.min_mean_ratio}
+    liste = getattr(args, "strains", None)
+    prefixes = args.clades or ([] if liste else [c for c in list_clades(bdd)])
+    if args.outgroup and args.outgroup not in prefixes:
+        prefixes = list(prefixes) + [args.outgroup]
+
+    pairs = []
+    seen = set()
+    for pref in prefixes:
+        for clade, sra in list_strains_recursive(bdd, pref):
+            if (clade, sra) in seen:
+                continue
+            seen.add((clade, sra))
+            pairs.append((pref, clade, sra))
+    if liste:
+        nom = args.strains_name or pathlib.Path(liste).stem
+        for clade, sra in lire_liste_souches(liste):
+            if (clade, sra) in seen:
+                continue
+            seen.add((clade, sra))
+            pairs.append((nom, clade, sra))
+
+    gene = args.gene
+    rows = []
+    for pref, clade, sra in pairs:
+        has = spdi in set(read_spdi(bdd, clade, sra))
+        if gene is None and has:
+            gene = gene_of_spdi(bdd, clade, sra, spdi)
+        rows.append({"groupe": pref, "clade": clade, "sra": sra, "on": has})
+    if gene is None:
+        return {"erreur": "gène indéterminable : aucun porteur trouvé pour déduire le locus_tag ; "
+                          "relancer avec --gene <locus_tag>", "spdi": spdi,
+                "n_souches": len(rows)}
+
+    # report.json lu pour les non-porteurs (obligatoire) et pour tous si --dose-response
+    for r in rows:
+        need = (not r["on"]) or args.dose_response
+        cov = read_gene_coverage(bdd, r["clade"], r["sra"], gene) if need else None
+        r["cov"] = cov
+        r["etat"] = call_state(r["on"], cov, thr)
+
+    par_groupe = {}
+    for r in rows:
+        g = par_groupe.setdefault(r["groupe"], {"n": 0, "ON": 0, "OFF": 0, "UNKNOWN": 0})
+        g["n"] += 1
+        g[r["etat"]] += 1
+    for g in par_groupe.values():
+        den = g["ON"] + g["OFF"]
+        g["freq_naive"] = round(g["ON"] / g["n"], 4) if g["n"] else None
+        g["freq_corrigee"] = round(g["ON"] / den, 4) if den else None
+
+    out = {"spdi": spdi, "gene": gene, "seuils": thr, "n_souches": len(rows),
+           "par_groupe": par_groupe}
+    if args.outgroup and args.outgroup in par_groupe:
+        o = par_groupe[args.outgroup]
+        out["polarisation"] = {
+            "outgroup": args.outgroup, "n": o["n"], "ON": o["ON"],
+            "lecture": ("état DÉRIVÉ : absent de l'outgroup" if o["ON"] == 0 else
+                        "état présent chez l'outgroup : NE PAS revendiquer une acquisition "
+                        "spécifique de lignée sans réexaminer la polarité")}
+    if args.dose_response:
+        # BUG CORRIGÉ LE JOUR MÊME DE LA FORGE, et il vaut d'être consigné : agréger toutes les
+        # souches dans une seule courbe mélange les clades CIBLES avec l'OUTGROUP, qui est par
+        # construction non porteur du site. Sur le test de non-régression (site Bovis, outgroup
+        # Canettii), les 149 Canettii se répartissaient dans les tranches comme autant de faux
+        # non-porteurs et faisaient remonter la tranche [120,200) de 0,00 % à 2,10 % — c'est-à-dire
+        # qu'ils fabriquaient un PLATEAU là où il n'y en a pas, donc le verdict exactement inverse
+        # du bon. La dose-réponse est donc rendue PAR GROUPE, jamais agrégée.
+        dr = {}
+        for grp in sorted(par_groupe):
+            sub_g = [r for r in rows if r["groupe"] == grp]
+            bins = []
+            for lo, hi in _COV_BINS:
+                sub = [r for r in sub_g if r["cov"] and r["cov"].get("median") is not None
+                       and lo <= r["cov"]["median"] < hi]
+                non = sum(1 for r in sub if not r["on"])
+                bins.append({"couverture_mediane_gene": (f"[{lo},{hi})" if hi != float("inf")
+                                                        else f">={lo}"),
+                             "n": len(sub), "n_non_porteurs": non,
+                             "pct_non_porteurs": round(100.0 * non / len(sub), 3) if sub else None})
+            dr[grp] = bins
+        out["dose_reponse"] = dr
+        out["lecture_dose_reponse"] = (
+            "décroissance vers zéro sans plateau = NON-APPELS (le site est en réalité fixé) ; "
+            "plateau non nul = vrais allèles de référence. C'est ce test, et non le seuil 3 états, "
+            "qui tranche pour un INDEL ou un microsatellite.")
+    if args.json:
+        return out
+
+    lines = [f"SPDI {spdi}   gène {gene}   {len(rows)} souches",
+             f"seuils : median>={thr['min_median_cov']}  pct_missing<={thr['max_pct_missing']}  "
+             f"mean_ratio>={thr['min_mean_ratio']}", ""]
+    lines.append(f"{'groupe':22s} {'n':>7s} {'ON':>7s} {'OFF':>6s} {'UNK':>6s} "
+                 f"{'f_naive':>9s} {'f_corr':>8s}")
+    for g, v in sorted(par_groupe.items(), key=lambda x: -x[1]["n"]):
+        fn = "-" if v["freq_naive"] is None else f"{100*v['freq_naive']:.2f}"
+        fc = "-" if v["freq_corrigee"] is None else f"{100*v['freq_corrigee']:.2f}"
+        lines.append(f"{g:22s} {v['n']:7d} {v['ON']:7d} {v['OFF']:6d} {v['UNKNOWN']:6d} "
+                     f"{fn:>9s} {fc:>8s}")
+    if "polarisation" in out:
+        lines += ["", f"polarisation ({out['polarisation']['outgroup']}) : "
+                      f"{out['polarisation']['ON']}/{out['polarisation']['n']} — "
+                      f"{out['polarisation']['lecture']}"]
+    if args.dose_response:
+        for grp, bins in out["dose_reponse"].items():
+            lines += ["", f"dose-réponse — {grp} (couverture du gène x non-portage) :"]
+            for b in bins:
+                pc = "-" if b["pct_non_porteurs"] is None else f"{b['pct_non_porteurs']:.2f}"
+                lines.append(f"  {b['couverture_mediane_gene']:>12s}  n={b['n']:6d}  "
+                             f"non-porteurs={b['n_non_porteurs']:5d}  {pc:>7s} %")
+        lines += ["", "  " + out["lecture_dose_reponse"]]
+    return "\n".join(lines)
+
+
 def main():
     ap = argparse.ArgumentParser(description="Pont lecture read-only bdd/actuelle MTBC")
     ap.add_argument("--bdd", help="chemin racine bdd/ (défaut: $TBANNOTATOR_BDD ou ../bdd)")
@@ -367,11 +818,32 @@ def main():
     sub.add_parser("clades")
     p = sub.add_parser("strains"); p.add_argument("clade")
     p.add_argument("--recursive", action="store_true", help="agréger clade + tout son sous-arbre clade.*")
+    p = sub.add_parser("denominator", help="effectif local EXPLOITABLE vs effectif TBannotator (garde de dénominateur)")
+    p.add_argument("clade")
+    p.add_argument("--system", default="guyeux", help="système de classification distant (défaut: guyeux)")
+    p.add_argument("--local-only", action="store_true", dest="local_only", help="ne pas interroger la base")
     p = sub.add_parser("strain"); p.add_argument("clade"); p.add_argument("sra")
     p = sub.add_parser("matrix"); p.add_argument("clade"); p.add_argument("--min-frac", type=float, default=0.0, dest="min_frac")
     p.add_argument("--recursive", action="store_true", help="agréger clade + tout son sous-arbre clade.*")
     p = sub.add_parser("synapo"); p.add_argument("clade"); p.add_argument("--min-frac", type=float, default=0.0, dest="min_frac")
     p.add_argument("--recursive", action="store_true", help="agréger clade + tout son sous-arbre clade.*")
+    p = sub.add_parser("polarize", help="distribution d'UN SPDI par clade en 3 états ON/OFF/UNKNOWN "
+                       "(+ polarisation par l'outgroup, + dose-réponse couverture x non-portage)")
+    p.add_argument("spdi", help="ex. NC_000962.3:2887961:GGC:G")
+    p.add_argument("--clades", nargs="+", help="préfixes de clades (défaut : tous, sauf si --strains)")
+    p.add_argument("--strains", help="fichier de souches `<clade>/<sra>` (une par ligne, TSV "
+                                     "toléré) formant un GROUPE nommé : sert quand le clade réel "
+                                     "n'a pas de nom dans la taxonomie de répertoires")
+    p.add_argument("--strains-name", dest="strains_name", default=None,
+                   help="nom du groupe défini par --strains (défaut : nom du fichier)")
+    p.add_argument("--outgroup", default=None, help="clade servant de groupe externe (ex. Canettii)")
+    p.add_argument("--gene", default=None, help="locus_tag portant le site ; déduit du 1er porteur si omis")
+    p.add_argument("--min-median-cov", type=float, default=10.0, dest="min_median_cov")
+    p.add_argument("--max-pct-missing", type=float, default=0.10, dest="max_pct_missing")
+    p.add_argument("--min-mean-ratio", type=float, default=0.10, dest="min_mean_ratio")
+    p.add_argument("--dose-response", action="store_true", dest="dose_response",
+                   help="lit report.json pour TOUTES les souches (coûteux) et rend la courbe "
+                        "non-portage x couverture — LE test qui tranche pour un indel")
     p = sub.add_parser("align", help="alignement binaire masqué + RD->? prêt pour BEAST2")
     p.add_argument("clades", nargs="+", help="un ou plusieurs clades")
     p.add_argument("--mask", help="fichier positions à masquer (ex. traces_mask_positions.txt)")
@@ -390,7 +862,8 @@ def main():
         raise SystemExit(f"bdd/actuelle introuvable sous : {bdd}")
 
     fn = {"clades": cmd_clades, "strains": cmd_strains, "strain": cmd_strain,
-          "matrix": cmd_matrix, "synapo": cmd_synapo, "align": cmd_align}[args.cmd]
+          "matrix": cmd_matrix, "synapo": cmd_synapo, "align": cmd_align,
+          "denominator": cmd_denominator, "polarize": cmd_polarize}[args.cmd]
     res = fn(bdd, args)
     if isinstance(res, (dict, list)) or args.json:
         print(json.dumps(res, ensure_ascii=False, indent=2))

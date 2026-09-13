@@ -80,7 +80,10 @@ def query_for(ident):
     """Construit la requête Europe PMC selon la forme de l'identifiant fourni."""
     ident = ident.strip()
     if re.fullmatch(r"PMC\d+", ident, re.I):
-        return f'PMCID:"{ident.upper()}"'
+        # Pas de guillemets : Europe PMC renvoie 0 résultat pour PMCID:"PMCxxxx" (verifie
+        # 2026-08-26) alors que PMCID:PMCxxxx (sans guillemets) fonctionne. DOI et EXT_ID
+        # tolerent les guillemets, PMCID non.
+        return f"PMCID:{ident.upper()}"
     if re.fullmatch(r"\d{6,9}", ident):
         return f'EXT_ID:{ident} AND SRC:MED'
     if ident.lower().startswith("10.") or "doi.org/" in ident.lower():

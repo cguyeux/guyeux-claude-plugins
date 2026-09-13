@@ -13,6 +13,20 @@ argument-hint: "<organisme|mot-cle> [--country <pays>] [--resistance <mot-cle,..
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebFetch, mcp__tbannotator__tool_query_postgres
 ---
 
+> [!WARNING]
+> **[2026-09-08] TABLES ABSENTES du serveur tblearn.** Ce skill interroge 2 objet(s) qui
+> n'existent plus depuis le remplacement du MCP TBannotator. Contrairement au filtre `system_name`,
+> ces requêtes ne rendent pas un ensemble vide : elles **lèvent une erreur** `relation does not exist`.
+>
+> | table citée ici | remplacer par | fondement |
+> |---|---|---|
+> | `mv_spdi_mutations` | **tb_report_spdi ⋈ tb_report_spdi_annotations sur spdi_id** | le variant dans la première, l'annotation (`locus_tag`, `hgvs_p`, `impact`) dans la seconde |
+> | `tb_ncbi_strain` | **mv_strain_metadata** | porte `run_accession`, `tax_id`, `scientific_name`, `study_accession`, `center_name`, `first_public` |
+>
+> Correspondances établies en comparant les colonnes, pas devinées. Détail et schéma complet :
+> `~/.agents/knowledge/tblearn-migration.md`.
+
+
 # /bioproject-scout — Veille BioProject NCBI pour le MTBC
 
 ## Objectif, et ce que ce skill n'est PAS

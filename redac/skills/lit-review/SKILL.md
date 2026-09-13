@@ -219,6 +219,35 @@ Ne pas tomber directement sur l'API live ou sur `WebSearch` pour un sujet
 TB : c'est le mode d'echec le plus courant (lent, quota, et couverture
 inferieure a celle de l'index).
 
+#### ⚠️ Si `tbmonitor` est injoignable : degrader, jamais stagner (2026-09-12)
+
+**Le serveur tbmonitor est MORT depuis le 2026-09-12** — son alias `nip.io`
+sur IP personnelle rend `HTTP 400` avec un en-tete `oc_sessionPassphrase`,
+c'est-a-dire qu'un **Nextcloud occupe desormais cette IP**. Ce n'est donc pas
+une panne a attendre mais une adresse a ne plus utiliser. Detail et replis :
+en tete de `tbmonitor-papers/SKILL.md`.
+
+La regle de priorite ci-dessus est **imperative quand la source existe**, et
+ne doit jamais devenir un point de blocage quand elle n'existe pas. Conduite
+a tenir, dans cet ordre :
+
+1. **Passer aux couches 2 et 3 sans demander** — la revue se fait, elle ne
+   s'ajourne pas.
+2. **Le dire dans la fiche du sujet et dans `index.md`**, avec la date et la
+   nature du verrou. Un repli silencieux cache au lecteur un trou de
+   couverture, ce qui est le vrai dommage.
+3. **Nommer ce qui manque, precisement** : la seule capacite sans substitut
+   est l'indexation des titres et resumes **non open access**. Europe PMC ne
+   lit que l'OA, les E-utilities donnent titres et resumes mais pas de SQL.
+   Donc toute affirmation d'ABSENCE de litterature faite sans tbmonitor est
+   **datee et provisoire**, et se rejoue au retablissement.
+4. **Compenser par le rappel plein texte** (`scripts/europepmc_fulltext.py
+   search`), qui rattrape une partie de la perte : mesure du 2026-09-12,
+   `Rv0537c` = 4 articles en plein texte contre 0 en resume.
+
+Le meme raisonnement vaut pour toute source prioritaire d'un skill : une
+priorite est un ORDRE de preference, pas une condition d'execution.
+
 1. **PubMed** via E-utilities (lancees en parallele pour toutes directions) :
    - `ESearch` : obtenir les PMIDs correspondant a la requete
    - `ESummary` : obtenir titre, auteurs, journal, annee, DOI pour chaque resultat
@@ -522,7 +551,8 @@ texte OA les phrases contenant le motif (une mention incidente d'un gene se
 lit ainsi sans ouvrir chaque article). `--oa` restreint aux articles au
 plein texte recuperable ; sans lui, `search` trouve plus large (Europe PMC
 indexe le corps bien au-dela de l'OA) mais les non-OA ne sont pas lisibles
-ici (passer par la cascade d'acces : Unpaywall, preprint, TDM institutionnel).
+ici -- passer par `/literature-access` (cascade Unpaywall/preprint/TDM
+institutionnel, puis en dernier recours la session BU, un article a la fois).
 
 **Lire la section Data Availability avant de decider qu'un travail merite
 d'etre refait.** Un depot public de code, de modeles ou de matrices

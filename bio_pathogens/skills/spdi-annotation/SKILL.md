@@ -14,6 +14,20 @@ disable-model-invocation: false
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres, mcp__tbannotator__tool_get_schema
 ---
 
+> [!WARNING]
+> **[2026-09-08] TABLES ABSENTES du serveur tblearn.** Ce skill interroge 2 objet(s) qui
+> n'existent plus depuis le remplacement du MCP TBannotator. Contrairement au filtre `system_name`,
+> ces requêtes ne rendent pas un ensemble vide : elles **lèvent une erreur** `relation does not exist`.
+>
+> | table citée ici | remplacer par | fondement |
+> |---|---|---|
+> | `mv_lineage_markers` | **tb_lineage_marker** | mêmes colonnes (`lineage_code`, `spdi_variant_name`, `lineage_level`, `lineage_parent`, `is_negative`) |
+> | `mv_spdi_mutations` | **tb_report_spdi ⋈ tb_report_spdi_annotations sur spdi_id** | le variant dans la première, l'annotation (`locus_tag`, `hgvs_p`, `impact`) dans la seconde |
+>
+> Correspondances établies en comparant les colonnes, pas devinées. Détail et schéma complet :
+> `~/.agents/knowledge/tblearn-migration.md`.
+
+
 # SPDI Annotation : Functional annotation of MTBC variants
 
 Annotate SPDI variants (format `NC_000962.3:pos:ref:alt`) with gene location, protein effect, amino acid change, impact severity, and Mycobrowser functional category.

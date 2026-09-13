@@ -39,11 +39,11 @@ REFERENCES_DIR = SKILL_DIR / "references"
 LOCAL_LIGNEES_FALLBACK = REFERENCES_DIR / "lignees.py"
 
 HOME = Path.home()
-UPSTREAM_LIGNEES = HOME / "Documents" / "docs" / "codes" / "mtbc" / \
+UPSTREAM_LIGNEES = HOME / "docs" / "codes" / "mtbc" / \
                    "investigate_phylo" / "lignees.py"
 
 # Enrichment (never source of truth)
-ENRICHMENT_CSV = HOME / "Documents" / "docs" / "codes" / "mtbc" / \
+ENRICHMENT_CSV = HOME / "docs" / "codes" / "mtbc" / \
                  "global_supplementary" / "snp_barcoding.csv"
 
 # Special-case data files (in this skill's data/ subdir)
@@ -342,8 +342,11 @@ def cmd_lookup(args):
     # Nothing found anywhere in lignees.py.
     print(f"Lineage '{code}' not found in any system of lignees.py.")
     print("Last-resort fallback: query TBannotator PostgreSQL via MCP")
-    print("  (mcp__tbannotator__tool_query_postgres on mv_lineage_markers")
-    print("   or mv_strain_classification).")
+    print("  (mcp__tbannotator__tool_query_postgres on tb_lineage_marker")
+    print("   or mv_strain_classification). NOTE 2026-09-08: the server is now")
+    print("   tblearn; mv_lineage_markers no longer exists, use tb_lineage_marker,")
+    print("   and the in-house systems (guyeux, tblearn) are absent from it --")
+    print("   for those, read bdd/actuelle via the bdd-bridge skill.")
 
     # Closest-match suggestions.
     all_codes = set()

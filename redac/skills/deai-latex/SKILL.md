@@ -7,11 +7,14 @@ description: >-
   redactionnels et ameliore la coherence des temps verbaux. Fait aussi l'ECONOMIE DU TEXTE :
   coupe le narratif des essais infructueux qui n'apprennent rien, elimine les redites entre
   sections, mesure la longueur face a la limite de la revue cible et bascule le materiel de
-  moindre impact vers les supplementary materials. A utiliser quand l'utilisateur demande de
-  nettoyer les marqueurs de texte genere par IA, de retirer les tirets cadratin, de
-  depuceliser un texte trop liste, de raccourcir un manuscrit trop long, de supprimer les
-  repetitions, d'alleger le recit des pistes qui n'ont mene nulle part, d'harmoniser le style
-  d'un manuscrit, ou avant une soumission.
+  moindre impact vers les supplementary materials. Detecte aussi les jetons \texttt{} longs
+  et non coupables (checkpoints, chemins, accessions a underscores) qui debordent
+  silencieusement la marge sans le signaler dans le log de compilation. A utiliser quand
+  l'utilisateur demande de nettoyer les marqueurs de texte genere par IA, de retirer les
+  tirets cadratin, de depuceliser un texte trop liste, de raccourcir un manuscrit trop long,
+  de supprimer les repetitions, d'alleger le recit des pistes qui n'ont mene nulle part,
+  d'harmoniser le style d'un manuscrit, de corriger un identifiant ou un nom de fichier qui
+  deborde de la marge, ou avant une soumission.
 argument-hint: "<chemin vers main.tex>"
 ---
 
@@ -132,6 +135,8 @@ Diagnostic deai-latex :
   Redites             : N n-grammes partages, M chiffres dans >= 3 sections
   Narratif d'echec    : N passages a trier (informatif vs impasse de chantier)
   Supplementaire      : N fichiers, M renvois depuis le corps
+  Jetons non coupables (R17) : N (dont M FLAG >= 20 car.) -- a verifier apres compilation
+  Debordement de marge (R18) : N mot(s) > 2pt -- mesure sur le PDF rendu, chaque langue
 ```
 
 Ne pas commencer les corrections avant que le diagnostic soit affiche.
@@ -347,9 +352,15 @@ a la main un abstract donne un chiffre faux mais credible). Utiliser :
 python3 ${CLAUDE_PLUGIN_ROOT}/skills/deai-latex/scripts/latex_metrics.py main.tex
 ```
 
-Le script (i) detecte la mise en page (deux colonnes : `twocolumn`, elsarticle
-`3p`/`5p`, IEEEtran ; une colonne : `1p`/`onecolumn` ; sinon hypothese prudente
-deux colonnes), (ii) compte les mots RENDUS de chaque paragraphe de prose
+Le script (i) detecte la mise en page (deux colonnes : option `twocolumn`,
+elsarticle `3p`/`5p`, ou classe a deux colonnes par defaut comme IEEEtran,
+acmart, revtex4 ; une colonne : option `1p`/`onecolumn`, ou classe a une
+colonne par defaut comme `article`/`report`/`book`/elsarticle sans option/
+KOMA-Script/amsart, sauf `\twocolumn` explicite dans le document ; seulement
+si la classe est reellement inconnue, hypothese prudente deux colonnes --
+correctif du 2026-08-26, avant quoi `article` sans option tombait a tort dans
+ce dernier cas, cf. faux WARN vecu sur Rv0810c le 2026-08-17), (ii) compte les
+mots RENDUS de chaque paragraphe de prose
 (memes regles de rendu que R13.1 : `\emph`/`\textit`/... gardent leur
 contenu, `\cite`/`\label`/... sont retires, une formule `$...$` compte pour un
 mot), en excluant les blocs qui contiennent un flottant, une liste, un titre de
@@ -408,6 +419,122 @@ Les references utilisent `\cref{}` (package cleveref).
   - Mauvais : "Results of the analysis"
   - Bon : "Distribution of SNP distances among L4 lineage strains (n=342)"
 
+### R17. Jetons longs non coupables (identifiants, checkpoints, chemins, accessions)
+
+**Regle** : tout `\texttt{}` (ou `\verb`) portant un identifiant technique --
+checkpoint de modele, chemin de fichier, accession, hash -- doit rester **coupable**
+en fin de ligne justifiee. Un `\_` (underscore echappe) est une **macro**, jamais un
+caractere ordinaire : il n'offre par construction **aucun** point de rupture a TeX,
+contrairement a un tiret litteral (`-`) ou une espace, que TeX sait rompre meme en
+police `\texttt`. Un identifiant long compose uniquement de lettres/chiffres/`\_`
+est donc un bloc **entierement insecable**, qui deborde silencieusement la marge
+des qu'il tombe pres de la fin d'une ligne -- sans qu'il faille attendre une
+soumission ou une relecture pour le decouvrir.
+
+**Incident fondateur (Rv1557, 2026-08-29)** : `\texttt{esm1v\_t33\_650M\_UR90S\_1}`
+(22 caracteres, aucun tiret) a fait deborder la marge droite de pres de 2cm dans le
+PDF compile. **Piege decouvert a cette occasion, imperatif a retenir** : le log
+`pdflatex` n'est **pas fiable** pour cette classe de defaut -- sur les DEUX
+versions linguistiques du meme manuscrit, portant le meme `\texttt{}` au meme
+endroit structurel, la version anglaise a emis un `Overfull \hbox`, la version
+**francaise n'a rien signale du tout**, alors que le meme debordement visuel de
+~59pt y etait bel et bien present (confirme par mesure de pixels sur le PDF
+rendu). **Ne jamais conclure "aucun Overfull dans le log = aucun debordement"**
+pour ce type de contenu : c'est precisement l'inverse de ce qu'un log propre
+donne a croire.
+
+**Detection** : `latex_metrics.py` (Phase 1) scanne desormais le SOURCE --
+avant toute compilation, donc independamment du piege de log ci-dessus -- pour
+tout `\texttt{}`/`\verb` sans tiret ni espace, a partir de 15 caracteres (`WARN`,
+signal a verifier visuellement une fois compile) et 20 caracteres (`FLAG`, palier
+de l'incident reel). Un `WARN` court (ex. une sequence ADN de 15 pb citee entre
+`\texttt{}`) n'est pas forcement fautif -- verifier avec le contexte, comme pour
+R1/R2/R8/R9 -- mais tout `FLAG` doit etre corrige.
+
+**Actions** :
+- Remplacer `\texttt{esm1v\_t33\_650M\_UR90S\_1}` par `\path{esm1v_t33_650M_UR90S_1}`
+  (package `url`, deja charge via `hyperref` -- underscores **litteraux**, pas
+  echappes, `\path` lit son argument en mode verbatim). `\path` casse
+  automatiquement aux underscores, points et slashes quand la ligne l'exige, et
+  rend dans la meme police que `\texttt` (`\ttfamily`) : aucun changement visuel
+  quand la coupure n'est pas necessaire.
+- **Dans un `\caption{}`, un titre de section, une note de bas de page ou tout
+  autre argument mobile** : `\protect\path{...}`, sinon erreur fatale a la
+  compilation (`\Url Error -> \url used in a moving argument`) -- vecu sur
+  `figures/icons/ATTRIBUTION\_icons.tex` dans une legende de figure, corrige de
+  la meme session.
+- **Ne jamais utiliser `\seqsplit{}` seul sur un contenu portant des `\_`
+  echappes** : `\seqsplit` scanne caractere par caractere et ne sait pas
+  interpreter une macro comme `\_` -- `\texttt{\seqsplit{esm1v\_t33\_650M\_UR90S\_1}}`
+  produit `! Undefined control sequence.` a la compilation (essaye et ecarte sur
+  cet incident). `\seqsplit` reste utile pour un jeton SANS caractere special
+  LaTeX (un hash hexadecimal, un DOI deja compose de chiffres/lettres/points) --
+  jamais pour un identifiant a underscores.
+- **Test final, imperatif au vu du piege de log ci-dessus** : recompiler et
+  **rendre visuellement la page concernee** (`pdftoppm -r 200`, `Read` sur le
+  PNG, ou a defaut comparer la longueur de la ligne `pdftotext -layout` porteuse
+  du jeton a celle des lignes voisines) plutot que de se fier a l'absence
+  d'`Overfull \hbox` dans le log -- et refaire ce test sur **chaque version
+  linguistique** du manuscrit, jamais une seule : le meme defaut peut se
+  manifester dans le log de l'une et rester totalement silencieux dans l'autre.
+
+### R18. Debordement de marge sur le PDF rendu (tableaux, titres, contenu large)
+
+**Regle** : tout mot dont la boite deborde la marge de droite du texte, quelle
+qu'en soit la cause (tableau a trop de colonnes, titre de section trop long,
+URL longue), doit etre corrige -- **y compris un debordement deja present dans
+une passe precedente**. Un `Overfull \hbox` connu depuis plusieurs sessions
+n'est pas moins reel qu'un nouveau : ce que change une session qui le revoit
+n'est pas sa realite mais seulement l'attention qu'on lui porte.
+
+**Incident fondateur (Rv0007, 2026-09-01)** : un `tabular{lccccc}` a six
+colonnes debordait la marge droite de ~37pt (~1,3cm) sur son en-tete "Complex
+pLDDT" -- signale par un `Overfull \hbox (43.15652pt too wide)` present dans le
+log **depuis la toute premiere compilation de la session**, mais ecarte a
+chaque relecture comme "avertissement pre-existant, deja vu, sans regression" --
+sans jamais etre revisualise. C'est l'utilisateur, pas l'outillage, qui a
+repere le debordement a l'oeil dans le PDF final. Reprise systematique au
+moyen d'une mesure de bounding-box (`pdftotext -bbox-layout`) plutot que d'une
+relecture visuelle seule (qui avait deja echoue une fois sur ce meme
+manuscrit) : deux autres debordements reels sont apparus, plus discrets --
+un titre de sous-section trop long (`peptidoglycan-synthase`, 51pt) et deux
+paragraphes de Methods/Data availability portant un `\texttt{}`/`\url{}` en
+fin de ligne (3,5 a 8,8pt), aucun des trois signale au meme endroit dans les
+deux versions linguistiques (meme piege que R17).
+
+**Detection** : `latex_metrics.py --pdf <compile>.pdf` (Phase 1) lit la marge
+de droite dans le preambule (`\usepackage[margin=...]{geometry}` ou
+`right=...`) puis mesure, via `pdftotext -bbox-layout` sur le PDF **rendu**,
+la position de chaque mot de chaque page. Seuil de negligeabilite : 2pt (sous
+ce seuil, invisible a l'impression -- calibre sur un 0,97pt de legende du meme
+manuscrit, laisse tel quel a bon droit). R18 se desactive proprement (et le
+signale) si la marge n'est pas reconnaissable dans le preambule plutot que de
+deviner une valeur.
+
+**Actions, du cas le plus frequent au plus rare** :
+- **Tableau trop large** : `\small` (ou `\footnotesize`) juste avant
+  `\begin{tabular}` (`\begin{table}` scope la commande : pas de `\normalsize`
+  a remettre apres `\end{table}`), et/ou raccourcir un en-tete de colonne deja
+  redondant avec la legende ("Complex pLDDT" -> "pLDDT" quand la legende dit
+  deja "predicted lDDT of the complex (pLDDT)"). `\small` seul ne suffit pas
+  toujours : mesurer a nouveau plutot que de supposer la correction acquise.
+- **Titre de section trop long** : `\\` manuel dans l'argument de
+  `\section{}`/`\subsection{}`, place a la meilleure coupure syntaxique
+  (apres un adjectif compose, jamais au milieu d'un groupe nominal).
+- **Paragraphe de prose legerement overfull sans jeton isole responsable**
+  (justification tendue par l'accumulation de mots, pas par un seul token
+  insecable -- distinct de R17) : envelopper le seul paragraphe concerne dans
+  `\begin{sloppypar}...\end{sloppypar}` plutot que de reformuler le contenu
+  scientifique -- convertit l'Overfull en un Underfull (espacement legerement
+  plus lache, jamais un debordement visible), sans toucher au texte.
+- **Jeton `\texttt{}` isole responsable** (ex. `rest.uniprot.org`, sous le
+  seuil FLAG de R17 mais reellement debordant en pratique) : meme correction
+  que R17, `\path{}`.
+- **Test final, imperatif** : recompiler puis relancer `latex_metrics.py
+  --pdf` sur **chaque version linguistique separement** -- "aucun
+  debordement > 2pt" doit apparaitre pour les deux, jamais suppose de l'une a
+  l'autre.
+
 ### R10. Coherence des temps verbaux
 
 **Regle** : dans un article scientifique :
@@ -456,6 +583,8 @@ credibilite du manuscrit.
 | Noms de fichiers internes | `convergence_inter_species.tsv`, `known_coverage.ESP{1..43}` | "a curated list of N genes", "per-spacer read coverage" |
 | Endpoints d'API internes | `validationFormulaire AJAX endpoint`, noms de tables SQL | Omettre, decrire en prose ("queried against SITVIT2") |
 | URLs de dev | `tbannotator.univ-fcomte.fr`, `freeboxos.fr`, `82.64...nip.io` | En footnote, URL publique definitive |
+| Auto-reference narrative au labo/projet comme sujet | *"the group's own earlier work"*, *"across the group's MTBC projects"*, *"the project's null-model infrastructure"*, *"the rest of the project"*, *"our team's pipeline"* | Reformuler sans sujet grammatical "le groupe"/"le projet" : soit citer le travail anterieur publie (`\citep{...}`), soit decrire la methode en prose sans meta-reference organisationnelle |
+| Note de suivi interne laissee dans le texte (TODO destine a une session future) | *"this should be repeated ... before formal submission, not treated as a substitute for it"*, *"a verifier au prochain passage"*, *"reste a faire avant soumission"* | Ce n'est jamais un defaut de forme a reformuler : c'est la preuve que l'action n'a pas ete faite. Executer l'action (ou la retirer si elle ne s'applique plus), PUIS retirer la phrase -- ne jamais neutraliser seulement la phrase |
 
 **Detection automatique** : rechercher **dans tout le manuscrit, captions
 de tableaux et figures incluses** (les chemins internes s'incrustent souvent
@@ -485,6 +614,30 @@ complete (ainsi que plusieurs `\texttt{supplementary\_materials/...}` dans
 des captions de tableaux). La detection doit couvrir TOUTES les extensions
 de fichiers locaux (json, csv, h5, pkl, nwk, html, yaml...) et TOUTES les
 enveloppes LaTeX (`\texttt`, `\textit`, `\verb`).
+
+**Apprentissage 2026-08-26 (SpacerEgalVirus)** : la regex ci-dessus ne detecte
+QUE la cuisine locale a signature de chemin/fichier. Deux formes distinctes de
+"raconter sa vie" lui echappent totalement, car ce sont des phrases de prose
+sans aucun slash ni extension -- elles ont survecu telles quelles a un
+`/manuscript-review` ET a un `/deai-latex` complets : (1) l'**auto-reference
+narrative**, ou "le groupe" ou "le projet" devient le sujet grammatical d'une
+phrase du corps (*"correcting an assumption occasionally repeated in the
+group's own earlier work"*) -- un lecteur externe n'a aucun interet a savoir
+qu'une hypothese anterieure DU LABO etait fausse, seul l'etat de connaissance
+actuel compte ; (2) la **note de suivi interne**, phrase imperative ou au futur
+qui s'adresse a une session de travail future et non au lecteur (*"this should
+be repeated through [la base interne] before formal submission, not treated as
+a substitute for it"*, trouvee dans une section Limitations censee etre
+soumise en l'etat). Une note de ce type prouve a elle seule que la porte 3 du
+cycle de vie (`/cycle-projet`, point fixe de redaction) n'est PAS franchie,
+quel que soit l'etat des registres claim-check/bib-check/fig-check : elle est
+donc a chercher explicitement, a l'oeil, dans la Discussion et les Limitations,
+sans attendre qu'un script la trouve. Recherche manuelle minimale avant de
+declarer R12 acquis :
+```
+grep -inE "\b(the (group|project|team|lab(oratory)?)('s)?|our (group|project|team|lab))\b.{0,60}(work|infrastructure|pipeline|projects?|classification)" main.tex
+grep -inE "(should be (repeated|redone|revisited)|reste (a|à) (faire|verifier|verifier)|a (verifier|refaire) au prochain|before (formal )?submission,? not)" main.tex
+```
 
 **Exemples concrets avant / apres** (pipeline MTBC) :
 
@@ -830,6 +983,20 @@ des revues auxquelles l'article peut etre soumis**. Un manuscrit qui grossit san
 surveillance se ferme des cibles, et l'auteur ne s'en apercoit qu'au moment de
 choisir, quand tout est ecrit.
 
+> [!IMPORTANT]
+> **Mais la revue n'arbitre ni l'article, ni le message, ni la longueur** (regle CG
+> 2026-09-09). On mesure la longueur pour SAVOIR quelles cibles restent ouvertes,
+> jamais pour amputer une demonstration qui a besoin de sa place. Si aucune revue
+> n'admet la taille que la demonstration exige, **le preprint (bioRxiv, HAL) est une
+> reponse legitime**, et l'amputation n'en est pas une. Un beau travail bien ecrit et
+> depose vaut mieux qu'une compromission editoriale payee en qualite scientifique.
+
+**Contrepartie amont.** Cette regle est curative : elle coupe des mots deja ecrits.
+Sa jumelle preventive est le skill **`/narratif`**, en phase 2, qui decide AVANT
+redaction du temps et du lieu de chaque fait. Un manuscrit passe par `/narratif` puis
+ecrit le long de son squelette arrive ici avec peu a couper — et ce qui reste a couper
+est signale par son propre plan, pas devine.
+
 **Mesure**. Le perimetre sur lequel une revue exprime sa limite varie (texte seul ;
 resume inclus ; legendes et references exclues presque toujours). Le script rend les
 trois. **Verifier la limite et son perimetre dans le guide auteurs de la revue
@@ -838,6 +1005,18 @@ trois. **Verifier la limite et son perimetre dans le guide auteurs de la revue
 **Ordre des leviers -- il n'est pas interchangeable** (verifie sur dark_enzymes,
 7779 -> 6500 mots) :
 
+0. **Mesurer la derive contre le plan narratif, s'il existe.** Une section sans ligne
+   `% narratif:` est une section que personne n'a decidee : c'est la premiere a
+   examiner, et souvent la seule a supprimer entierement.
+
+   ```bash
+   python3 ${CLAUDE_PLUGIN_ROOT}/skills/narratif/scripts/plan_vs_manuscrit.py [projet]
+   ```
+
+   Le script rend aussi les sections tres au-dela de leur taille visee et les items
+   classes SUPPLEMENTAIRE que le corps developpe malgre tout. **Signal, jamais
+   verdict** : une derive peut etre legitime, la redaction decouvre des choses. Elle
+   se corrige alors AU PLAN, datee et motivee, jamais en silence.
 1. **Epuiser les redites (R15) d'abord.** Rendement le plus eleve, perte nulle.
 2. **Migrer, jamais reecrire, vers le supplementaire.** Le materiel supplementaire
    ne compte pas dans la limite de mots de la plupart des revues (le **verifier** :
@@ -959,6 +1138,8 @@ versions, pas leur longueur.
 | R15. Redites | N n-grammes partages, M chiffres multi-sections | K passages remplaces par conclusion + renvoi, −W mots |
 | R16. Longueur | N mots (texte seul) | M mots — limite revue L : conforme / depassement de D |
 | R16b. Supplementaire | N items avant | M items apres (S1…S{M}), −W mots migres verbatim |
+| R17. Jetons non coupables | N WARN + M FLAG (script) | K corriges (`\path{}`), P laisses (WARN benins, verifies) |
+| R18. Debordement de marge | N mot(s) > 2pt (script, PDF rendu, chaque langue) | K corriges (`\small`/`\\`/`sloppypar`/`\path{}`), 0 restant |
 
 ## Economie du texte -- detail
 

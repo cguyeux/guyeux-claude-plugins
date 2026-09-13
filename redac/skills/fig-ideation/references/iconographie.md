@@ -101,11 +101,17 @@ et plusieurs éditeurs qui exigent une cession exclusive le refusent.
 python3 scripts/sci_icons.py taxon 9606 9913 9925 9709 --libre
 ```
 
-`--libre` écarte les share-alike et dit lesquelles, plutôt que de les substituer en
-silence. Sans `--libre`, la licence de chaque icône est affichée et les SA sont marquées.
+`--libre` ne se contente pas d'écarter : il **cherche dans le même clade une silhouette
+non share-alike** et le dit. L'image « primaire » d'un nœud PhyloPic est souvent en
+CC BY-SA alors que le clade en porte d'autres en CC0 — écarter sans chercher priverait
+d'une icône qui existe. Sur les quatre hôtes du MTBC, les deux images primaires en CC BY-SA
+ont été remplacées automatiquement par une CC BY 4.0 et une CC0 du même clade. Sans
+`--libre`, la licence de chaque icône est affichée et les SA sont marquées.
 
 Dans tous les cas le script écrit `ATTRIBUTION_icons.tex`, prêt à reporter dans la légende
-ou les remerciements. **Une icône sans sa ligne d'attribution n'est pas utilisable** : une
+ou les remerciements. Ce fichier est **fusionné, jamais écrasé** : le flux naturel étant un
+appel par icône, un fichier écrasé après huit appels serait incomplet **en ayant l'air
+complet**, ce qui est exactement le défaut qu'il existe pour empêcher. **Une icône sans sa ligne d'attribution n'est pas utilisable** : une
 figure d'article engage l'auteur sur les droits de tout ce qu'elle contient, y compris ce
 qu'un agent y a déposé.
 

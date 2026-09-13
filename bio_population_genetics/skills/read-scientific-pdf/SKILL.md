@@ -36,6 +36,10 @@ user-invocable: true
   fonctionne plus directement
 - L'utilisateur veut explicitement voir les figures ou images : `Read`
   natif est necessaire pour le rendu multimodal
+- **Plusieurs documents, ou un document de plus de 60 pages que le projet
+  consultera a repetition** : c'est le skill `corpus-ingest` (triage, structure par
+  chapitres, index, repérage borne, sous-agent bibliothécaire) qui s'applique ; ce
+  skill-ci ne traite qu'UN PDF pour UNE lecture
 
 ## Pourquoi extraire le texte separement
 
@@ -63,6 +67,15 @@ Extraire le texte via `pdftotext` ou `markitdown` puis le relire avec
 | `pages` | `pdftotext` page par page | PDFs longs, lecture incrementale |
 | `ocr` | `mistral_ocr.py` (Mistral OCR 4) | **Scans SANS couche texte** : manuscrits, archives, lots |
 | `ocr --audit` | idem + confiance par mot | OCR **corrige par le LLM** : triage → sémantique → arbitrage multimodal |
+
+> [!TIP]
+> **Alternative sans API payante pour un GROS lot de scans** : le mésocentre a installé
+> `deep/chandra-ocr/0.1.8` sur les nœuds GPU de `mh`, un modèle d'OCR pour documents complexes
+> (écriture manuscrite, tableaux, formules, formulaires). `module load deep/chandra-ocr/0.1.8`
+> puis `chandra --method hf ENTREE SORTIE`, dans un job GPU. Cela ne remplace pas l'audit de
+> confiance de `mistral_ocr.py --audit`, et le garde-fou de la KB `htr-ecritures-anciennes`
+> reste entier : tester une pièce PAR RÉGIME D'ÉCRITURE avant tout lot ancien, la confiance d'un
+> OCR mesurant la netteté du tracé et non la justesse de la lecture. Voir `remote-compute`.
 
 ### 2. Sequence
 
@@ -437,3 +450,8 @@ Cela evite de retraiter le meme PDF a chaque session.
   longue.
 - **`fetch-tbannotator`** / `pubmed-database` : telecharger puis extraire
   via ce skill.
+
+## Tableaux : rendus à part par l'API, inlinés par le script (corrigé le 2026-09-01)
+
+L'API rend chaque tableau dans `page["tables"]` et laisse dans `page["markdown"]` une référence `[tbl-0.md](tbl-0.md)` vers un fichier qui n'existe pas. Avant le correctif, `to_markdown()` ne prenait que le markdown et perdait tout contenu tabulaire sans aucune erreur : sur le corpus d'archives lepoutre, 363 tableaux évaporés, dont des bulletins de casier judiciaire, si bien qu'une condamnation présente sur l'image était absente de la transcription et lue comme un casier vierge. `inliner_tables()` remplace désormais chaque référence par le tableau en markdown (balise `<!-- tbl-N.md -->`), et ajoute en fin de page tout tableau non référencé. Sur une transcription ancienne, `grep -c "\[tbl-"` révèle les pertes ; ré-océriser les seules pages concernées. L'OCR d'un tableau MANUSCRIT reste faux sur le contenu : il indique qu'une ligne est remplie, l'image dit ce qu'elle porte.
+

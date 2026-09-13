@@ -1,0 +1,308 @@
+% ======================================================================
+%  beamerthemeguyeux -- theme de presentation scientifique
+%  Groupe Guyeux, FEMTO-ST (UMR 6174 CNRS) / Universite Marie et Louis Pasteur
+%
+%  Une grille, deux intensites :
+%    \usetheme[academique]{guyeux}   seminaire, conference    (defaut)
+%    \usetheme[affirmee]{guyeux}     audition, keynote, soutenance
+%
+%  Base : metropolis + Fira Sans (natif TeX Live et Overleaf, aucune
+%  installation requise). Compile en pdflatex, xelatex et lualatex.
+%
+%  Documentation : references/theme.md du skill beamer-slides.
+% ======================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeguyeux}[2026/09/09 v1.0 theme de presentation scientifique]
+
+% ---------------------------------------------------------------- options
+\newif\ifguyeux@affirmee \guyeux@affirmeefalse
+\DeclareOption{academique}{\guyeux@affirmeefalse}
+\DeclareOption{affirmee}{\guyeux@affirmeetrue}
+\DeclareOption*{}
+\ProcessOptions\relax
+
+% ---------------------------------------------------------------- socle
+\usetheme[progressbar=frametitle, block=fill, sectionpage=progressbar,
+          numbering=fraction]{metropolis}
+\metroset{titleformat=regular, titleformat title=regular}
+
+\RequirePackage{etoolbox}
+\RequirePackage{xcolor}
+\RequirePackage{tikz}
+\usetikzlibrary{positioning, arrows.meta, calc, fit, backgrounds, shapes.geometric,
+                decorations.pathreplacing}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{skins}
+\RequirePackage{booktabs}
+\RequirePackage{appendixnumberbeamer}
+
+% Fira Sans : police native de metropolis, presente dans TeX Live et sur
+% Overleaf. Chargee ici pour que le preambule d'un deck tienne en une ligne.
+\@ifpackageloaded{fontspec}{%
+  \setsansfont{Fira Sans}[Scale=1.0]%
+}{%
+  \RequirePackage[sfdefault,scaled=1.0,lining]{FiraSans}%
+  \RequirePackage[T1]{fontenc}%
+}
+
+% ---------------------------------------------------------------- palette
+% Consolidee depuis les decks existants (Musee de l'Homme, L5L6) : ces
+% couleurs ont deja servi, elles sont donc reconnaissables d'un expose a
+% l'autre. Ne pas les changer sans raison.
+\definecolor{gxencre}{HTML}{1B1F23}      % texte
+\definecolor{gxprofond}{HTML}{1F4E3D}    % structure, aplats
+\definecolor{gxaccent}{HTML}{C0563B}     % accent unique, terracotta
+\definecolor{gxsauge}{HTML}{7FA37F}      % accent secondaire, doux
+\definecolor{gxacier}{HTML}{2E5E8C}      % troisieme accent, froid
+\definecolor{gxsable}{HTML}{E7E8D1}      % fond d'encadre
+\definecolor{gxcreme}{HTML}{FAF8F0}      % fond clair / texte sur aplat
+\definecolor{gxardoise}{HTML}{6B7079}    % texte secondaire, pieds de page
+
+\colorlet{gxfond}{white}
+
+% ---------------------------------------------------------------- couleurs
+\setbeamercolor{normal text}{fg=gxencre, bg=gxfond}
+\setbeamercolor{alerted text}{fg=gxaccent}
+\setbeamercolor{example text}{fg=gxprofond}
+\setbeamercolor{structure}{fg=gxprofond}
+\setbeamercolor{progress bar}{fg=gxaccent, bg=gxsable}
+\setbeamercolor{title separator}{fg=gxaccent}
+\setbeamercolor{progress bar in head/foot}{fg=gxaccent, bg=gxsable}
+\setbeamercolor{progress bar in section page}{fg=gxaccent, bg=gxsable}
+\setbeamercolor{block title}{bg=gxsable!55, fg=gxprofond}
+\setbeamercolor{block body}{bg=gxsable!22, fg=gxencre}
+\setbeamercolor{block title alerted}{bg=gxaccent!18, fg=gxprofond}
+\setbeamercolor{block body alerted}{bg=gxaccent!7, fg=gxencre}
+\setbeamercolor{block title example}{bg=gxsauge!35, fg=gxprofond}
+\setbeamercolor{block body example}{bg=gxsauge!12, fg=gxencre}
+\setbeamercolor{palette primary}{bg=gxprofond, fg=gxcreme}
+\setbeamercolor{footline}{fg=gxardoise}
+\setbeamercolor{page number in head/foot}{fg=gxardoise}
+
+\ifguyeux@affirmee
+  % Intensite affirmee : le titre de slide s'assoit sur un aplat profond,
+  % les pages de section et de rupture sont pleine couleur.
+  \setbeamercolor{frametitle}{bg=gxprofond, fg=gxcreme}
+  \setbeamercolor{section title}{fg=gxcreme}
+\else
+  % Intensite academique : titre a l'encre sur fond clair, filet d'accent.
+  \setbeamercolor{frametitle}{bg=gxfond, fg=gxencre}
+\fi
+
+% ---------------------------------------------------------------- typographie
+\setbeamerfont{title}{size=\Large, series=\bfseries}
+\setbeamerfont{subtitle}{size=\small, series=\mdseries}
+\setbeamerfont{author}{size=\small}
+\setbeamerfont{institute}{size=\scriptsize}
+\setbeamerfont{date}{size=\scriptsize}
+\setbeamerfont{frametitle}{size=\large, series=\bfseries}
+\setbeamerfont{section title}{size=\LARGE, series=\bfseries}
+\setbeamerfont{footline}{size=\tiny}
+\setbeamerfont{caption}{size=\scriptsize}
+
+\setlength{\parskip}{3pt}
+\setbeamersize{text margin left=7mm, text margin right=7mm}
+\linespread{1.06}
+
+% Puces : discretes, sans fioriture. La liste est un pis-aller, elle ne
+% merite pas d'ornement.
+\setbeamertemplate{itemize item}{\small\raise1pt\hbox{\textbullet}}
+\setbeamertemplate{itemize subitem}{\scriptsize\raise1pt\hbox{--}}
+\setbeamercolor{itemize item}{fg=gxaccent}
+\setbeamercolor{itemize subitem}{fg=gxardoise}
+
+% ---------------------------------------------------------------- titre de slide
+% En intensite academique, un filet court d'accent sous le titre plutot
+% qu'un trait pleine largeur : il souligne le titre, il ne barre pas la slide.
+\ifguyeux@affirmee\else
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \vskip2.2ex%
+  \begin{beamercolorbox}[wd=\paperwidth, leftskip=7mm, rightskip=7mm]{frametitle}%
+    \usebeamerfont{frametitle}\insertframetitle\par
+    \vskip0.7ex
+    {\color{gxaccent}\rule{9mm}{1.6pt}}%
+  \end{beamercolorbox}%
+  \vskip1.4ex%
+}
+\fi
+
+% ---------------------------------------------------------------- page de titre
+\setbeamertemplate{title page}{%
+  \ifguyeux@affirmee
+    \begin{tikzpicture}[remember picture, overlay]
+      \fill[gxprofond] (current page.north west) rectangle (current page.south east);
+    \end{tikzpicture}%
+    \color{gxcreme}%
+  \fi
+  \vspace*{7mm}\par
+  {\color{gxaccent}\rule{18mm}{2.2pt}}\par
+  \vskip4.5mm
+  {\usebeamerfont{title}\inserttitle\par}%
+  \ifx\insertsubtitle\@empty\else
+    \vskip2.5mm{\usebeamerfont{subtitle}\ifguyeux@affirmee\color{gxsable}\else\color{gxardoise}\fi\insertsubtitle\par}%
+  \fi
+  \vfill
+  {\usebeamerfont{author}\insertauthor\par}%
+  \ifx\insertinstitute\@empty\else
+    \vskip1.2mm{\usebeamerfont{institute}\ifguyeux@affirmee\color{gxsable}\else\color{gxardoise}\fi\insertinstitute\par}%
+  \fi
+  \ifx\insertdate\@empty\else
+    \vskip1.2mm{\usebeamerfont{date}\ifguyeux@affirmee\color{gxsable}\else\color{gxardoise}\fi\insertdate\par}%
+  \fi
+  \vspace*{5mm}%
+}
+
+% ------------------------------------------------------------- page de section
+% En intensite affirmee, `section title` est en creme : sans aplat, le titre de
+% section s'ecrit creme sur blanc, donc invisible (mesure 2026-09-10, deck
+% predictops-skills-sdis). Le gabarit ci-dessous pose l'aplat que la couleur
+% suppose deja, et garde la meme grille que la page de titre.
+\setbeamertemplate{section page}{%
+  \ifguyeux@affirmee
+    \begin{tikzpicture}[remember picture, overlay]
+      \fill[gxprofond] (current page.north west) rectangle (current page.south east);
+    \end{tikzpicture}%
+  \fi
+  \vfill
+  {\color{gxaccent}\rule{18mm}{2.2pt}}\par
+  \vskip4mm
+  {\usebeamerfont{section title}%
+   \ifguyeux@affirmee\color{gxcreme}\else\color{gxprofond}\fi
+   \insertsectionhead\par}%
+  \vfill
+}
+
+% ---------------------------------------------------------------- pied de page
+\setbeamertemplate{frame footer}{%
+  \color{gxardoise}\insertshorttitle}
+
+% ======================================================================
+%  GRAMMAIRE DES SLIDES
+%  Chaque type est une macro : la composition ne se refait pas a la main
+%  a chaque slide, et le deck ne derive donc pas vers un gabarit unique.
+%  Emploi de chaque type : references/grammaire_slides.md.
+% ======================================================================
+
+% --- 1. Slide de rupture : une phrase, pleine couleur, rien d'autre. -----
+% \begin{sliderupture} Le pathogene est une patriline sociale. \end{sliderupture}
+\newenvironment{sliderupture}[1][gxprofond]{%
+  \setbeamercolor{palette primary}{bg=#1, fg=gxcreme}%
+  \begin{frame}[standout]%
+  \centering\Large
+}{%
+  \end{frame}%
+}
+
+% --- 2. Grand chiffre : le chiffre porte, la phrase explique. ------------
+% \bigchiffre{x15}{Le chromosome Y est quinze fois plus structure que l'ADN
+%                  mitochondrial.}
+\newcommand{\bigchiffre}[3][gxaccent]{%
+  \vspace*{\fill}%
+  \begin{center}%
+    {\fontsize{58}{62}\selectfont\bfseries\color{#1}#2}\par
+    \vskip5mm
+    {\large\color{gxencre}#3}\par
+  \end{center}%
+  \vspace*{\fill}%
+}
+
+% --- 3. Cle de lecture : ce qu'il faut voir dans la figure. --------------
+% Une figure sans cle de lecture oblige l'auditoire a chercher ; il cherche
+% au lieu d'ecouter. (\lecture est deja pris par beamer : ne pas le reprendre.)
+\newcommand{\cle}[1]{%
+  \par\vskip2mm
+  {\centering\small\color{gxardoise}#1\par}}
+
+% --- 4. Figure dominante : la figure occupe la slide, une ligne la lit. --
+% \slidefigure{fig.pdf}{Le Y separe le nord du sud ; le mtDNA non.}
+% Option : \slidefigure[0.62]{...}{...} pour brider la hauteur.
+% La hauteur de l'image est CALCULEE en retranchant la hauteur reelle de la
+% cle de lecture : une constante magique deborde des que la cle fait deux
+% lignes, et le debordement est silencieux (mesure : 12,1 pt sous le pied de
+% page, invisible a l'oeil, 2026-09-09). L'argument optionnel est la part de
+% \textheight que le bloc entier a le droit d'occuper.
+\newsavebox{\gx@clebox}
+\newlength{\gx@figh}
+\newlength{\gx@corps}
+% Hauteur REELLEMENT disponible dans le corps d'une frame. Beamer n'expose
+% pas cette valeur : \textheight (221,7 pt en 16:9 a 11 pt) compte AUSSI le
+% titre de slide, sa barre de progression et le pied de page, qui consomment
+% environ un quart. Mesure du 2026-09-09 sur ce theme : corps utile ~= 175 pt,
+% soit 0,79\textheight ; on retient 0,76 pour garder une marge, et
+% slide_audit.py rattrape tout residu de debordement.
+% Les deux intensites ne consomment pas la meme hauteur de titre : le filet
+% d'accent de l'academique coute environ 6 % de \textheight de plus que la
+% bande pleine de l'affirmee (mesure 2026-09-09 : 14,3 pt de debordement
+% residuel a 0,76 en academique, nul en affirmee).
+\ifguyeux@affirmee
+  \AtBeginDocument{\setlength{\gx@corps}{0.76\textheight}}
+\else
+  \AtBeginDocument{\setlength{\gx@corps}{0.70\textheight}}
+\fi
+\newcommand{\slidefigure}[3][1.0]{%
+  \sbox{\gx@clebox}{\parbox{\linewidth}{\centering\small\color{gxardoise}#3}}%
+  \setlength{\gx@figh}{\dimexpr #1\gx@corps - \ht\gx@clebox - \dp\gx@clebox - 5mm\relax}%
+  {\centering\includegraphics[width=\linewidth, height=\gx@figh, keepaspectratio]{#2}\par}%
+  \vskip3mm\usebox{\gx@clebox}}
+
+% --- 5. Comparaison appariee : deux etats, meme grille. ------------------
+% \slidecompare{Avant}{contenu gauche}{Apres}{contenu droit}
+% Commande et non environnement : \begin{column} ne se coupe pas au milieu
+% d'une macro sans casser la minipage de beamer.
+\newcommand{\slidecompare}[4]{%
+  \begin{columns}[T, onlytextwidth]%
+    \begin{column}{0.47\textwidth}%
+      {\color{gxardoise}\footnotesize\MakeUppercase{#1}}\par
+      \vskip1.2mm {\color{gxaccent}\rule{6mm}{1.2pt}}\par\vskip2mm
+      #2
+    \end{column}\hfill
+    \begin{column}{0.47\textwidth}%
+      {\color{gxardoise}\footnotesize\MakeUppercase{#3}}\par
+      \vskip1.2mm {\color{gxsauge}\rule{6mm}{1.2pt}}\par\vskip2mm
+      #4
+    \end{column}%
+  \end{columns}}
+
+% --- 5bis. Figure + commentaire, quand la figure ne se suffit pas. -------
+% A n'employer que si la figure exige un commentaire simultane ; sinon
+% preferer \slidefigure, qui laisse la figure respirer.
+\newcommand{\slidefiguretexte}[3][0.55]{%
+  \begin{columns}[T, onlytextwidth]%
+    \begin{column}{#1\textwidth}\centering
+      \includegraphics[width=\linewidth, height=0.98\gx@corps, keepaspectratio]{#2}%
+    \end{column}\hfill
+    \begin{column}{\dimexpr0.94\textwidth-#1\textwidth\relax}
+      #3
+    \end{column}%
+  \end{columns}}
+
+% --- 6. Take-away : une phrase, jamais un paragraphe. --------------------
+% Au-dela de 25 mots ce n'est plus un take-away : slide_audit.py le signale.
+\newcommand{\kb}[2][gxprofond]{%
+  \begin{tcolorbox}[colback=#1!6, colframe=#1, arc=2pt, boxrule=0.9pt,
+    top=3pt, bottom=3pt, left=6pt, right=6pt, before skip=3mm]
+  \small #2
+  \end{tcolorbox}}
+
+% ---------------------------------------------------------------- encadres
+% Repris de mtbc-bilan. Sur une slide ils restent COURTS : le detail va
+% dans notes_techniques.md, pas sur l'ecran.
+\newcommand{\gx@encadre}[4]{%
+  \begin{tcolorbox}[colback=#1!6, colframe=#1, arc=2pt, boxrule=0.6pt,
+    top=3pt, bottom=3pt, left=6pt, right=6pt, before skip=2.5mm,
+    title={\scriptsize\bfseries #2 --- #3}, coltitle=white, colbacktitle=#1,
+    fonttitle=\scriptsize\bfseries]
+  \scriptsize #4
+  \end{tcolorbox}}
+\newcommand{\notion}[2]{\gx@encadre{gxacier}{Notion}{#1}{#2}}
+\newcommand{\methode}[2]{\gx@encadre{gxsauge}{M\'ethode}{#1}{#2}}
+\newcommand{\nouveau}[2]{\gx@encadre{gxprofond}{Nouveau}{#1}{#2}}
+\newcommand{\remarquable}[2]{\gx@encadre{gxaccent}{Remarquable}{#1}{#2}}
+\newcommand{\fragilite}[2]{\gx@encadre{gxaccent}{\`A consolider}{#1}{#2}}
+
+% ---------------------------------------------------------------- divers
+\newcommand{\src}[1]{{\scriptsize\color{gxardoise}#1}}   % source d'une figure
+\newcommand{\gxaccenttext}[1]{{\color{gxaccent}#1}}
+
+\endinput

@@ -6,6 +6,13 @@ allowed-tools: Read, Edit, Bash
 
 # LaTeX Tables with tabularray
 
+> **Tableau d'article scientifique : passer d'abord par `sci-table`.** Ce skill-ci documente
+> la syntaxe du paquet `tabularray` et rien d'autre. Il ne dit pas ce que le tableau doit
+> contenir, et ses exemples `hlines, vlines` produisent une grille que la typographie
+> scientifique proscrit (aucun filet vertical, trois filets horizontaux `booktabs`).
+> Pour un manuscrit : `sci-table` décide du fond puis de la forme, et revient ici quand la
+> structure exige réellement `tblr` (cellules fusionnées complexes, largeurs fixes, couleur).
+
 ## When to Use This Skill
 
 Use this skill when:

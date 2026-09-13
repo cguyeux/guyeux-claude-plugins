@@ -370,9 +370,16 @@ def cmd_match(args) -> int:
     want_dom = {d.strip() for d in args.domain.split(",")}
     manu_tier = TIER_RANK.get(args.tier, 3)
 
-    # charge editoriale en cours, pour la regle de variation
+    # charge editoriale en cours, pour la regle de variation. `preparing` compte
+    # comme actif au meme titre que dans submissions.py (ACTIVE + `or status ==
+    # "preparing"`, cf. son commentaire du 2026-08-25) : un paquet deja coupe au
+    # gabarit et pret au depot pour une revue precise est une charge editoriale
+    # reelle, pas une hypothese. Sans ce cas, `match` peut recommander une revue
+    # que `preflight.py --journal` signale ensuite en ALERTE de variation (trouve
+    # sur Rv0007 le 2026-09-01 : bpal_resistance_emergence "preparing" pour JAC,
+    # invisible du classement `match` qui l'a pourtant remontee premiere).
     active = [s for s in subs if (s.get("status") or "") in
-              {"submitted", "under-review", "revision", "with-editor"}]
+              {"submitted", "under-review", "revision", "with-editor", "preparing"}]
     per_journal, per_pub = {}, {}
     for s in active:
         per_journal[s.get("journal_key", "")] = per_journal.get(s.get("journal_key", ""), 0) + 1
@@ -592,6 +599,26 @@ def cmd_lint(args) -> int:
                     "beneficiaires", "beneficiaries", "publish and read",
                     "subscribe to open", "sous reserve d'un accord",
                     "depend de l'affiliation", "si l'etablissement")
+    # `computational_only` reste `unknown` alors que `notes` porte deja la clause
+    # d'exclusion qui aurait du la trancher : c'est l'ecart trouve sur
+    # computers-in-biology-and-medicine le 2026-08-30 (desk-reject d'un manuscrit
+    # entierement in silico) — la note capturait deja « sont refuses les travaux
+    # reposant sur des outils in silico elementaires ... ou par des validations
+    # experimentales detaillees », mais la colonne structuree, seule lue par
+    # `match --computational`, etait restee `unknown` et n'a donc jamais penalise
+    # la revue dans un classement. Meme mecanisme que le piege free_route
+    # ci-dessus : un signal capture en prose ne protege personne s'il ne migre pas
+    # dans le champ que les filtres lisent reellement.
+    EXCLUSION_SIGNAL = (
+        "in silico elementaire", "in silico elementaires", "sont refuses les travaux",
+        "sans implication experimentale", "sans travail experimental",
+        "validations experimentales detaillees", "validation experimentale detaillee",
+        "meta-analyse fondee sur des bases publiques", "reanalyse de donnees publiees",
+        "experimental validation is a mandatory", "experimental validation is required",
+        "does not publish purely", "purely bioinformatic", "purely in silico",
+        "purely computational approaches", "outside the scope of this journal",
+        "requires experimental", "wet-lab validation",
+    )
     for r in rows:
         if is_free(r) and (r.get("free_route") or "").lower() == "unknown":
             problems.append(f"{r['key']} : free_route deduit de oa_model, non verifie")
@@ -604,6 +631,16 @@ def cmd_lint(args) -> int:
                     f"({', '.join(mots)}). Une gratuite conditionnelle doit etre "
                     f"free_route=no tant que la condition n'est pas verifiee pour cet "
                     f"auteur, sinon la revue remonte a tort dans les classements")
+        if (r.get("computational_only") or "unknown").strip().lower() == "unknown":
+            blob = (r.get("notes") or "").lower()
+            mots = [m for m in EXCLUSION_SIGNAL if m in blob]
+            if mots:
+                problems.append(
+                    f"{r['key']} : computational_only=unknown mais les notes portent deja "
+                    f"un signal d'exclusion methodologique ({', '.join(mots)}). Trancher le "
+                    f"champ (accepted/conditional/excluded) avant de laisser cette revue "
+                    f"remonter dans `match --computational`, ou elle echappe a la penalite "
+                    f"que la colonne existe pour appliquer")
         st = staleness_days(r)
         if st is None:
             problems.append(f"{r['key']} : verified_on absent ou mal forme")

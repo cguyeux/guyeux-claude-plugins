@@ -1,0 +1,87 @@
+% =====================================================================
+%  <TITRE DE L'EXPOSÉ>
+%  <occasion> · <public> · <durée> · slides <langue> / oral <langue>
+%
+%  Plan : plan_presentation.md          Notes : notes_orateur.md
+%  Émis par /slides le <date>.          Support : notes_techniques.md
+%
+%  Compilation : pdflatex deck.tex (×2, pour la table des matières)
+%  Contrôle    : slide_audit.py deck.tex --duree <n> --pixels
+% =====================================================================
+\documentclass[aspectratio=169,11pt]{beamer}
+\usetheme[academique]{guyeux}          % ou [affirmee] : audition, keynote, soutenance
+\usepackage[french]{babel}             % ou [english]
+\usepackage{graphicx}
+\usetikzlibrary{calc}
+\graphicspath{{figures/}{../../article/figures/}{../../résultats/}}
+
+\title{<Le message, en une phrase nominale>}
+\subtitle{<précision, ou rien>}
+\author{Christophe Guyeux}
+\institute{FEMTO-ST, UMR 6174 CNRS \textperiodcentered\ Universit\'e Marie et Louis Pasteur}
+\date{<date de l'exposé>}
+
+\begin{document}
+
+\begin{frame}[plain]\titlepage\end{frame}
+
+% =====================================================================
+\section{<Acte 1 : la mise en place>}
+% presentation: maillon M1 | budget <n> min | <n> slides
+
+% ---------------------------------------------------------------------
+% Slide 2 — <message, qui devient le titre>
+% Rôle    : <rôle dans l'arc>
+% Durée   : <n> min · Modalité : <forme choisie>
+\begin{frame}{<Le message, formulé comme une assertion>}
+  \slidefigure{<fichier>}{<ce qu'il faut voir, pas ce que c'est>}
+\end{frame}
+
+% =====================================================================
+\section{<Acte 2 : la démonstration>}
+% presentation: maillons M2,M3 | bascule B1 -> slide de preuve | budget <n> min
+
+% Slide de preuve d'un point de bascule : une figure due, pas une liste.
+\begin{frame}{<L'assertion que cette preuve établit>}
+  \slidecompare{<état 1>}{%
+    <contenu, court>}{<état 2>}{%
+    <contenu, court>}
+  \kb{<la phrase à retenir, moins de 25 mots>}
+\end{frame}
+
+% Un seul nombre porte le message.
+\begin{frame}{<L'assertion>}
+  \bigchiffre{<chiffre>}{<la phrase qui l'explique>}
+\end{frame}
+
+% Le moment où la salle lève les yeux. Deux ou trois par exposé, pas plus.
+\begin{sliderupture}
+<L'assertion centrale, en une phrase.>
+\end{sliderupture}
+
+% =====================================================================
+\section{<Acte 3 : la portée>}
+% presentation: budget <n> min
+
+\begin{frame}{<Ce que tout cela veut dire>}
+  % La slide la plus importante : ne pas répéter les résultats, montrer
+  % l'image intégrée.
+  \nouveau{<en une ligne>}{<ce qui est neuf par rapport à la littérature>}
+\end{frame}
+
+\begin{frame}{<Ce qui reste ouvert>}
+  % Réserves et perspectives. Les dire soi-même vaut mieux que se les
+  % faire dire. Source : pistes.md.
+  \fragilite{<le fait le plus fragile>}{<amplitude, et ce qui le consoliderait>}
+\end{frame}
+
+% =====================================================================
+\appendix
+% Les annexes sont gratuites : elles ne coûtent rien au budget de temps et
+% elles font la différence en questions. En préparer généreusement, et les
+% indexer dans notes_orateur.md pour les retrouver en direct.
+
+\begin{frame}{Annexe — <sujet>}
+\end{frame}
+
+\end{document}

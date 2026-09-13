@@ -26,7 +26,7 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | claude-in-chrome-automation.md | common-identical | 342 | 342 |
 | claude-plugins-aup.md | common-identical | 773 | 773 |
 | claude-workflow-tool.md | common-identical | 58 | 58 |
-| collaborators.md | common-identical | 2123 | 2123 |
+| collaborators.md | common-identical | 2272 | 2272 |
 | corpus-archives-numerisees.md | common-identical | 982 | 982 |
 | cv-workflow.md | common-identical | 76 | 76 |
 | data-provenance.md | common-identical | 331 | 331 |
@@ -42,7 +42,7 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | iconographie-et-licences-figures.md | common-identical | 152 | 152 |
 | journals/README.md | common-identical | 51 | 51 |
 | journals/SCHEMA.md | common-identical | 39 | 39 |
-| journals/author_profile.json | common-identical | 66 | 66 |
+| journals/author_profile.json | common-identical | 103 | 103 |
 | journals/journals.tsv | common-identical | 129 | 129 |
 | journals/journals.tsv.lock | common-identical | None | None |
 | journals/parts/ai_securite.tsv | common-identical | 27 | 27 |
@@ -50,11 +50,11 @@ Il compare les vues `~/.claude/knowledge` et `~/.Codex/knowledge`, puis controle
 | journals/parts/gratuit.tsv | common-identical | 36 | 36 |
 | journals/parts/societies.tsv | common-identical | 38 | 38 |
 | journals/parts/springer.tsv | common-identical | 22 | 22 |
-| journals/portal_lessons.md | common-identical | 409 | 409 |
+| journals/portal_lessons.md | common-identical | 426 | 426 |
 | journals/portals.tsv | common-identical | 11 | 11 |
-| journals/preprints_et_delais.md | common-identical | 797 | 797 |
+| journals/preprints_et_delais.md | common-identical | 820 | 820 |
 | journals/rejections.md | common-identical | 29 | 29 |
-| journals/submissions.tsv | common-identical | 12 | 12 |
+| journals/submissions.tsv | common-identical | 13 | 13 |
 | journals/submissions.tsv.lock | common-identical | None | None |
 | latex-babel-french-bibtex-colon.md | common-identical | 38 | 38 |
 | latex-elsevier-elsarticle.md | common-identical | 110 | 110 |

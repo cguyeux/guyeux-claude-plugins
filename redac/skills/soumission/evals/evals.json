@@ -34,6 +34,18 @@
         "Une leçon n'est ajoutée que si elle est réutilisable.",
         "Aucun mail, préprint, dépôt de code ou nouvelle soumission n'est envoyé."
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Ça y est, l'article est déposé sur le portail. Voilà, on a fini.",
+      "expected_output": "Enregistrement de la soumission, puis point d'état complet du portefeuille sans qu'on le demande : ce qui est en cours, ce qui est bloqué, ce qui exige une vérification externe, avec l'action due pour chaque anomalie.",
+      "files": [],
+      "expectations": [
+        "Le skill ne s'arrête pas à la ligne qu'il vient d'écrire et passe en revue tout le registre.",
+        "Un paquet resté en `preparing` ou un rejet sans cible suivante est signalé comme tel, pas rangé en silence.",
+        "Les vérifications qui exigent un portail ou une boîte mail sont proposées, pas exécutées sans demande explicite.",
+        "La restitution est en prose, manuscrit par manuscrit, et non un vidage du registre."
+      ]
     }
   ]
 }

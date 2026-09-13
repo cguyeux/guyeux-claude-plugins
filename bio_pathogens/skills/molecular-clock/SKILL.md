@@ -14,6 +14,34 @@ user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
 ---
 
+> [!WARNING]
+> **[2026-09-08] Les requêtes de ce skill qui filtrent sur un système de lignée MAISON ne rendent
+> plus rien.** Le MCP TBannotator est arrêté ; le serveur `tblearn` qui le remplace ne porte que
+> huit systèmes **externes** (Coll, Coscolla, Freschi, Lipworth, Napier, Palittapongarnpim,
+> Shitikov, Stucki). `system_name = 'guyeux'` et `system_name = 'tblearn'` y rendent **zéro ligne
+> sans lever d'erreur**, ce qu'un script lira comme « aucune souche ne satisfait le critère ».
+>
+> **Substitution, décidée le 2026-09-08 :** les lignées maison se lisent désormais dans la base
+> LOCALE `bdd/actuelle/`, qui fait déjà autorité selon
+> `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
+>
+> ```bash
+> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
+> python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
+> python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable
+> python3 $B/bdd_query.py strains <clade>       # souches d'un clade
+> ```
+>
+> `tblearn` reste utilisable pour tout le reste (SPDI, QC, métadonnées, RD, IS, CRISPR) et pour
+> **comparer** à une taxonomie externe, mais ce n'est plus la source des lignées maison. Toute
+> requête qui filtre sur `system_name` doit d'abord vérifier que le filtre a matché :
+> `SELECT system_name, count(*) FROM mv_strain_lineage WHERE system_name = '<x>' GROUP BY 1;`
+> — zéro ligne signifie « ce système n'existe pas ici », jamais « aucune souche ».
+>
+> Détail complet : `~/.agents/knowledge/tblearn-migration.md`.
+
+
 # Molecular Clock : Datation moléculaire MTBC
 
 > [!TIP]
@@ -626,9 +654,33 @@ Compatible avec Sabin 2020, Bos 2014, Menardo 2019. Exclut Comas 2013 (70 000 BP
 | Vågene 2022 (3 pinnipedii) | Tip date ¹⁴C | `b(1250,1470)` etc. | Étage intermédiaire |
 | Winstrup (Sabin 2020) | Tip date historique | `1679` | Ancrage L4 |
 | Body 68 (Kay 2015) | Tip date historique | `b(1731,1838)` | Second ancrage L4 |
+
+> ⛔ **RÉFUTÉ le 2026-09-06 (Bovis_full, P13.5.i) — la contrainte `MRCA(proto-BCG ∪ BCG) b(1880,1908)`
+> NE DOIT PLUS ÊTRE UTILISÉE.** Mesurée par formule à trois points (qui annule la dérive in vitro du
+> BCG au lieu de l'estimer), la branche des souches nommées proto-BCG vers leur nœud commun avec le
+> clade vaccinal vaut **178-215 SNP**, quand la dérive **interne** au clade vaccinal (MRCA daté 1921)
+> n'est que de **43 SNP**. Un nœud à 1908 imposerait **1,99 SNP/génome/an, soit 14× Biek 2012** ; au
+> taux mesuré indépendamment sur la même base (0,128-0,190 SNP/génome/an), ces 181 SNP valent
+> **950-1 400 ans**, soit un nœud vers **586-1048 CE** — au voisinage de la racine de *M. bovis*.
+>
+> **Ce n'est pas un défaut d'identification des souches** : sur 1 800 souches tirées de tout Bovis,
+> aucune n'est à moins de 406 SNP du clade vaccinal. **La population source du vaccin n'a aucun
+> descendant séquencé.** Une date d'archive documente la séparation d'une lignée d'avec *sa
+> population source*, pas d'avec *les parents qu'on a séquencés* : les deux ne coïncident que si la
+> source a des descendants échantillonnés, ce qui se mesure et ne se présume pas.
+>
+> **Ce qui reste valide : `MRCA(BCG vaccinal) b(1908,1921)` seul**, interne au clade vaccinal. Mais
+> son horloge est **in vitro** (~1,21 SNP/génome/an) : il date des nœuds internes au BCG et ne
+> calibre **pas** une horloge naturelle. Le complexe BCG n'offre donc aucun ancrage profond à
+> l'horloge de *M. bovis*.
+>
+> Méthode, mesures et contrôle d'asymétrie : `mtbc/Bovis_full/résultats/lot5g_ancre_bcg/README.md` ;
+> KB `taxonomy-node-validation.md` §44 ; mémoire `reference-bcg-node-calibrations` (corrigée).
+
+
 | **H37Rv stocks** | **Contrainte nodale** | **MRCA = `b(1900,1910)`** | Ancrage L4.9 (1905) |
 | **MRCA(BCG vaccinal)** | **Contrainte nodale** | **`b(1908,1921)`** | Ancrage Bovis1.2.1 (Pasteur strain divulguée 1921 ; passages CG dès 1908) |
-| **MRCA(proto-BCG ∪ BCG)** | **Contrainte nodale** | **`b(1880,1908)`** | Souche-source Nocard 1902 isolée de mammite tuberculeuse à Garches ; le MRCA avec la pop sauvage parente est borné supérieurement à 1908 (début Calmette-Guérin), inférieurement par l'estimation antérieure raisonnable |
+| ~~**MRCA(proto-BCG ∪ BCG)**~~ ⛔ RÉFUTÉ 2026-09-06 | ~~Contrainte nodale~~ | ~~`b(1880,1908)`~~ | Souche-source Nocard 1902 isolée de mammite tuberculeuse à Garches ; le MRCA avec la pop sauvage parente est borné supérieurement à 1908 (début Calmette-Guérin), inférieurement par l'estimation antérieure raisonnable |
 | **BCG sub-souches** | **Tip dates historiques** | dates individuelles | Russia 1924, Tokyo 1924, Sweden 1926, Moreau 1925, Phipps 1928, Birkhaug 1929, Danish 1931, Frappier 1937, Connaught 1948, Glaxo 1954 (Behr&Small 1999, Brosch 2007) |
 | Modernes datés | Tip date BioSample | variable | Ancrage récent |
 
@@ -657,22 +709,37 @@ Le complexe BCG constitue un **système modèle exceptionnel** pour la calibrati
 
 1. **Le MRCA est daté avec quasi-certitude historique** (1908-1921) : les sous-souches mondiales sont toutes issues d'une lignée propagée par Calmette-Guérin à l'Institut Pasteur de Lille à partir de 1908, et distribuée internationalement à partir de 1921 (Pasteur strain). Pas d'analyse phylogénétique nécessaire pour ce nœud, c'est de l'histoire des sciences documentée.
 2. **Chaque sous-souche vaccinale a une date d'isolement publiée** (cf. table ci-dessus), donc tip dates fiables.
-3. **Une population sauvage parente est disponible** à la base du clade `Bovis1.2.1.BCG` (souches françaises Bos taurus 1999-2009, RD1 intact, basales aux sous-souches vaccinales RD1-délétées ; l'ancien nom de dossier `Bovis1.2.1.proto-BCG` a été fusionné dans `Bovis1.2.1.BCG`), qui donne le deuxième nœud calibré.
-4. **Sur l'arbre Bovis1, ces deux nœuds sont *enchâssés***, ce qui contraint très fortement le taux de substitution local et permet une **validation en aveugle de l'horloge moléculaire** : si l'algorithme retrouve 1921 ± qq années pour le MRCA des sous-souches BCG en utilisant uniquement les tips datés du reste de l'arbre, c'est une démonstration spectaculaire de la précision de la méthode.
+3. ⛔ **CE QUI SUIT ÉTAIT FAUX ET A ÉTÉ RETIRÉ (2026-09-06, P13.5.i/j).** On lisait ici qu'« une
+   population sauvage parente est disponible à la base du clade BCG, qui donne le deuxième nœud
+   calibré ». Aucune population parente n'est disponible : la plus proche souche sauvage séquencée
+   est à **299 SNP** du vaccin (**406 SNP** au minimum sur 1 800 souches tirées de tout Bovis), quand
+   la dérive interne au clade vaccinal n'est que de **43 SNP**. Le nœud « proto-BCG ∪ BCG » n'est pas
+   le nœud de 1908, c'est un nœud de ~586-1048 CE. **Le BCG n'offre qu'UN seul nœud calibré**, le
+   MRCA vaccinal, et son horloge est in vitro.
+4. ⛔ **ET LE « DEUXIÈME NŒUD » RENDAIT LA VALIDATION EN AVEUGLE CIRCULAIRE.** On lisait ici que les
+   deux nœuds « enchâssés » permettaient une validation en aveugle spectaculaire (retrouver 1908 ou
+   1921 sans les utiliser). Le piège est que ce critère de succès **sélectionnait les runs les plus
+   comprimés** : un pipeline qui retrouve 1906 pour un nœud réellement millénaire s'est trompé d'un
+   facteur ~10 sur l'échelle, et le critère le déclarait excellent (`molecular_clock`,
+   `Bovis_full/protocole_brites`, `Liban/phase7b` : ce dernier a rendu 1971 au lieu de 1906 et l'a
+   lu comme un défaut de SON dataset). **Règle générale à retenir : une validation en aveugle ne
+   vaut que ce que vaut sa cible ; si la cible n'est pas mesurée indépendamment, « ça retombe pile
+   dessus » n'est pas une preuve de justesse mais une preuve de conformité à une hypothèse.**
+   La seule validation qui reste ici est interne au clade vaccinal (MRCA ≈ 1921), à horloge in vitro.
 
 Format LSD2/TreeTime pour ces contraintes :
 
 ```text
 # mrca_constraints.txt (LSD2 via -g)
 mrca(BCG_Pasteur_CUS...,BCG_Russia_CUS...,BCG_Tokyo_CUS...,...) b(1908,1921)
-mrca(BCG_*,SRR7851309,SRR7851316,SRR7851346,SRR7851359) b(1880,1908)
+# SUPPRIMÉ (réfuté 2026-09-06) : mrca(BCG_*,SRR7851309,...) b(1880,1908)
 ```
 
 ```python
 # TreeTime via --clade-dates clades.tsv :
 # node_name<TAB>date_or_range
 BCG_vaccinal_MRCA	1921
-proto_BCG_BCG_MRCA	1908
+# SUPPRIMÉ (réfuté 2026-09-06) : proto_BCG_BCG_MRCA	1908
 ```
 
 ### Commande complète (pipeline validé)

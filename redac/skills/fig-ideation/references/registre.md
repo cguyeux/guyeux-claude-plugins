@@ -14,14 +14,20 @@ chaque passage, pas empilé, mais les fiches déjà décidées sont conservées 
 # Plan de figures — <projet>
 
 **Passage :** 3    **Mis à jour le :** 2026-08-24    **Manuscrit :** article/main.tex
-**Message de l'article :** <la phrase falsifiable du squelette, recopiée telle quelle>
-**Cible :** <revue>, <n> figures maximum dans le corps
+**Message de l'article :** <la phrase falsifiable de `plan_narratif.md`, recopiée telle quelle>
+**Bascules :** <n> points de bascule au plan narratif, donc <n> figures dues dans le corps
 **Diagnostic mécanique :** <n> pendante(s), <n> orpheline(s), <n> muette(s),
 part conceptuelle <x> % (corpus MTBC 16 %)
 ```
 
-Le message est recopié depuis le squelette, jamais reformulé. Une figure se juge contre le
-message ; si le message change, tout le plan est à rejuger.
+Le message est recopié depuis **`plan_narratif.md`**, jamais reformulé (à défaut, depuis le
+squelette). Une figure se juge contre le message ; si le message change, tout le plan est à
+rejuger.
+
+Le champ **Bascules** remplace l'ancien champ `Cible :`, qui dérivait un nombre de figures
+d'un format de revue. Il n'en dérive plus : le nombre de figures du corps vient des points
+de bascule du plan narratif, et la revue se choisit en phase 4, après l'écriture. Toute
+figure du corps au-delà de ce compte porte, ici même, la ligne qui la justifie.
 
 ## Fiche d'une figure retenue
 
@@ -85,6 +91,15 @@ Une ligne par candidate tuée, pour qu'elle ne revienne pas à chaque passage.
 
 Section obligatoire dès que le diagnostic mécanique en signale. Chaque orpheline reçoit une
 décision explicite, sinon elle sera re-signalée à chaque passage sans jamais être traitée.
+
+**La question se pose dans cet ordre, et l'ordre compte : « pourquoi ne l'a-t-on pas
+intégrée ? » AVANT « peut-on l'intégrer ? »** Une part des orphelines a été écartée pour
+une bonne raison — résultat depuis réfuté, chiffre périmé, figure remplacée. Chercher la
+réponse dans le cahier, le `CLAUDE.md` du projet et `claim_check.md` avant de décider.
+Cas vécu : une frise portait un jalon nommé d'après un résultat que le projet déclarait
+invalidé, et l'intégrer aurait réintroduit dans le manuscrit une affirmation dont il
+s'était débarrassé. Une quatrième décision existe donc à côté d'intégrer, supplementary
+et abandonner : **enquêter**, quand la raison de l'abandon n'est pas retrouvée.
 
 ```markdown
 ## Images produites et non intégrées

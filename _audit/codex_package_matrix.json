@@ -2,7 +2,7 @@
   "summary": {
     "source_plugin": {
       "bio_bacteria": 8,
-      "bio_pathogens": 43,
+      "bio_pathogens": 45,
       "bio_population_genetics": 48,
       "bio_redac": 1,
       "ia": 14,
@@ -14,7 +14,7 @@
     },
     "package_candidate": {
       "bio-bacteria": 8,
-      "bio-pathogens": 39,
+      "bio-pathogens": 41,
       "bio-population-genetics": 47,
       "bio-redac": 3,
       "guyeux-phylo-pilot": 5,
@@ -25,6 +25,7 @@
       "web": 2
     },
     "classification": {
+      "needs-payload-package-audit": 2,
       "packaged-direct": 48,
       "packaged-payload": 15,
       "packaged-pilot": 5,
@@ -735,7 +736,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 15,
+      "file_count": 16,
       "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
@@ -787,6 +788,25 @@
       "unsupported_frontmatter": [],
       "file_count": 10,
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
+    },
+    {
+      "name": "gwas-clonal-lineage",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/gwas-clonal-lineage",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 6,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
     },
     {
       "name": "helicobacter-pylori-phylogeography",
@@ -1051,7 +1071,7 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 3,
+      "file_count": 4,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
@@ -1663,6 +1683,24 @@
       ],
       "file_count": 2,
       "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
+    },
+    {
+      "name": "phylo-forest",
+      "source_plugin": "bio_pathogens",
+      "canonical_path": "bio_pathogens/skills/phylo-forest",
+      "package_candidate": "bio-pathogens",
+      "packaged_in": [],
+      "classification": "needs-payload-package-audit",
+      "signals": [
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 2,
+      "action": "Copier scripts, donnees et references, puis tester le payload installe."
     },
     {
       "name": "phylo-history",

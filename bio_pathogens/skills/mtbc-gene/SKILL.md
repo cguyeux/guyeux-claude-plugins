@@ -151,6 +151,34 @@ missing): `python3 -m venv --system-site-packages /home/christophe/venvs/esm1v &
 ESM-1v weights download on the first real score). See the module docstring for the
 `--system-site-packages` recipe when a fresh-venv torch is broken.
 
+### Candidate complementary axis: structural ΔΔG (RaSP installed and confirmed 2026-09-08, not wired into this skill's CLI yet)
+
+ESM-1v LLR scores evolutionary/sequence likelihood; it says nothing about structural
+stability. Dissanayake et al. 2026 (BMC Microbiology, `10.1186/s12866-026-04876-1`,
+pyrazinamide resistance in PncA via a GCN on AlphaFold2-predicted structures) found that
+of all node features tested, a structure-based ΔΔG predictor, **DeepDDG** (Cao et al. 2019,
+`10.1021/acs.jcim.8b00697`), had by far the highest gradient-based feature importance for
+predicting resistance, ahead of RaSP, MAPP and SNAP2 and ahead of any raw structural/chemical
+feature (their Fig. 7). DeepDDG itself has no installable official release (web server only,
+`protein.org.cn/ddg`); its stand-in, **RaSP** (Blaabjerg et al. 2023 eLife), was installed on
+`mp` via a lighter path than its own README documents (recipe in
+`~/.agents/knowledge/bioinformatics.md`, [2026-09-08] entries) and tested end to end on PncA
+itself (PDB 3PL1, H37Rv numbering, no offset): saturation-mutagenesis ΔΔG on the 364 unique
+pncA missense variants of `Resistance_antibio`'s catalogue separates WHO R-associated from
+S-associated calls at AUC=0.829 (Mann-Whitney p=7e-5), consistent with the univariate RaSP
+AUC (73%) reported by Carter et al. on a different dataset. **Wired end to end into
+`Resistance_antibio`'s operational PZA predictor** (`analyses/pnca_rasp_feature.py`,
+`phase10_predict.py --rasp`): on the full 20413-strain PZA set, adding this ddG as one extra
+feature alongside the genomic ones raises the residual XGBoost from AUC 0.784 to **0.855
+(Δ+0.071)** and sensitivity at spec≥0.98 from 0.240 to **0.365 (Δ+0.125)** — the univariate
+signal translates into a real, substantial gain, concentrated where the ML model was weakest,
+even though the score only covers 14% of strains. Not done yet: wiring RaSP as a citable second
+opinion in this skill's own `mutation` mode CLI (it currently requires a per-protein
+saturation-mutagenesis run rather than a single on-demand call like ESM-1v LLR, so the
+integration shape differs) — the PZA result lives in `Resistance_antibio`, not here. sbmlcore
+(`github.com/fowler-lab/sbmlcore`), the per-residue chemical/structural feature package used by
+the same article, remains unevaluated.
+
 ### Exploratory lens: per-residue SAE deltas
 
 Answers *how does the per-residue SAE feature profile move at exactly this position?*

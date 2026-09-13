@@ -143,6 +143,15 @@ déjà ouvert au bon endroit pour que son intervention dure dix secondes.
 pour les informations éditoriales ASM, passer par WebSearch ou par `asm.org`, et
 ne tenter aucune manipulation d'user-agent.
 
+**`sciencedirect.com` n'est PAS dans ce cas : c'est un blocage à contourner, pas un
+mur.** WebFetch et curl reçoivent un 403 sur toute page `sciencedirect.com`
+(guide-for-authors compris), ce qui a laissé des clauses d'exclusion methodologique
+non vérifiées pendant plusieurs jours sur au moins une fiche (`computers-in-
+biology-and-medicine`, cf. `rejections.md` 2026-08-30). `agent-browser` passe sans
+difficulté (navigateur réel, pas de défi anti-bot rencontré) : sur un guide aux
+auteurs Elsevier, préférer directement `agent-browser` à WebFetch plutôt que de
+constater l'échec puis basculer.
+
 ## Mémoriser ce qui a marché
 
 Chaque portail a sa fiche dans `portals.tsv`, tenue par

@@ -33,8 +33,10 @@ qu'on paie (ou qu'on contourne) pour un accès dont on n'avait pas besoin.
 
 > [!IMPORTANT]
 > Ce skill ne contourne AUCUN paywall et n'appelle jamais Sci-Hub ni équivalent. Il maximise
-> l'accès *légal*. Le seul geste sous licence (récupérer un PDF via l'abonnement de la bibliothèque)
-> reste HUMAIN ; le skill le prépare et lit ce que l'humain dépose.
+> l'accès *légal*. Le geste sous licence (récupérer un PDF via l'abonnement de la bibliothèque) reste
+> HUMAIN par défaut ; le skill le prépare et lit ce que l'humain dépose. Une automatisation existe
+> pour la session institutionnelle elle-même (§ hand-off, point 1bis) mais reste un outil PERSONNEL
+> invoqué explicitement à la demande, jamais un geste que ce skill déclenche de lui-même.
 
 ## Moteur 1 — Rappel par le corps du texte (`search`)
 
@@ -94,16 +96,38 @@ Quand `access` ne trouve aucune voie OA (rang 0), l'accès légal existe encore,
 
 1. **Résolveur de la BU (Ariane / Primo VE)**, geste HUMAIN sous licence. La bibliothèque de
    l'Université Marie et Louis Pasteur tourne sur **Ex Libris Primo VE / Alma**, institution
-   `33UBFC_INST` (consortium Bourgogne-Franche-Comté). Lien OpenURL à ouvrir dans un navigateur
-   AUTHENTIFIÉ (il pointe la copie sous licence de l'abonnement) :
+   **`33UFC_INST`**, vue **`33UFC_INST:33UFC_testNDE`** (codes vérifiés le 2026-08-31 ; PAS
+   `33UBFC_INST`/`...:openview`, qui n'existent plus et rendent respectivement un 404 direct et une
+   attente infinie sur le spinner Primo). Lien OpenURL à ouvrir dans un navigateur AUTHENTIFIÉ (il
+   pointe la copie sous licence de l'abonnement) :
    ```
-   https://ariane.umlp.fr/discovery/openurl?institution=33UBFC_INST&vid=33UBFC_INST:openview&rft.doi=<DOI>
+   https://ariane.umlp.fr/discovery/openurl?institution=33UFC_INST&vid=33UFC_INST:33UFC_testNDE&rft.doi=<DOI>
    ```
    Le login empêche l'automatisation propre (l'API `pnxs` de Primo exige un jeton d'invité, semi-
    officiel et fragile — ne pas la scraper). C'est donc un geste humain : l'utilisateur suit le
    lien, récupère le PDF sous licence, et le dépose dans le dossier d'ingestion (ci-dessous).
-   Catalogue de découverte : `https://ariane.umlp.fr`. Archive ouverte institutionnelle : HAL-uFC
-   (déjà couverte par la voie `hal` du moteur 2, automatisée).
+   **Limite constatée** : un DOI seul peut ne pas suffire à Primo pour peupler un lien direct (notice
+   pauvre, type générique, seule option « Contacter votre bibliothèque ») même sur un titre bien
+   couvert par l'abonnement ; ajouter `rft.jtitle=`/`rft.issn=`/`rft.volume=`/`rft.spage=` améliore
+   probablement la résolution, non vérifié à ce jour. Catalogue de découverte : `https://ariane.umlp.fr`.
+   Archive ouverte institutionnelle : HAL-uFC (déjà couverte par la voie `hal` du moteur 2, automatisée).
+1bis. **Session EZproxy/Shibboleth scriptée (outil personnel, dernier recours explicite)** —
+   variante automatisée du point 1, construite et validée le 2026-08-26. La BU UMLP route l'accès
+   distant via EZproxy (`scd1.univ-fcomte.fr`) adossé à une fédération Shibboleth
+   (`idp1.univ-fcomte.fr`) et un portail LemonLDAP::NG (`auth.univ-fcomte.fr/cas`). Le script
+   `~/.config/umlp-ent/ezproxy_fetch.py` (hors dépôt, personnel, jamais poussé sur un dépôt partagé)
+   rejoue cette chaîne : `python3 ~/.config/umlp-ent/ezproxy_fetch.py "<url_ressource>"
+   ~/.config/umlp-ent/user ~/.config/umlp-ent/password <fichier_sortie>`. Trois règles
+   non négociables, actées avec l'utilisateur avant construction :
+   - **un article à la fois, à la demande** — ne JAMAIS boucler ce script sur une liste de DOI/URL.
+     Les CGU d'EZproxy et des éditeurs (Elsevier en tête) interdisent le téléchargement
+     automatisé/systématique ; un usage en boucle expose la plage IP de TOUT l'établissement à un
+     blocage éditeur, pas seulement le compte de l'auteur ;
+   - **dernier recours**, seulement après échec de la cascade OA (moteur 2, points 3-4 ci-dessous
+     compris) — ce n'est pas un raccourci pour éviter Unpaywall/Europe PMC ;
+   - **ne jamais lire le fichier d'identifiants** (`~/.config/umlp-ent/{user,password}`, chmod 600,
+     hors de tout dépôt git) avec `Read` ni l'un ni l'autre : seul le script les lit, via leur
+     chemin, jamais leur valeur ne doit apparaître dans une commande, un log ou un registre.
 2. **TDM institutionnel** — la vraie équivalente légale du contournement. Elsevier (`insttoken`),
    Springer Nature, Wiley exposent des API de *text and data mining* qui rendent le plein texte des
    articles couverts par l'abonnement, programmatiquement. Le droit TDM est généralement DÉJÀ inclus
@@ -167,3 +191,6 @@ automatiquement par ce skill.
   faux) : partir du DOI, `europepmc_fulltext.py` recoupe déjà.
 - Le TDM institutionnel est légal MAIS soumis aux CGU de l'éditeur (débit, usage non commercial) :
   respecter les quotas, ne pas re-diffuser les plein textes récupérés.
+- La session EZproxy/Shibboleth scriptée (point 1bis) est un accès légitime (l'abonnement de
+  l'utilisateur), mais un usage RÉPÉTÉ ou EN BOUCLE ressemble à un robot aux yeux de l'éditeur et
+  risque un blocage IP côté établissement : rester strictement à l'article demandé, un par un.

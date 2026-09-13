@@ -39,8 +39,15 @@ import pathlib
 import re
 import sys
 
-# nombre complet suivi de \% : ni précédé d'un chiffre, ni d'un point décimal
-MOTIF_PCT = re.compile(r"(?<![\d.])(\d+(?:[.,]\d+)?)\s*\\%")
+# nombre complet suivi de \% : ni précédé d'un chiffre, ni d'un point décimal.
+# Le séparateur avant \% n'est pas forcément un espace : la convention de groupe impose une
+# espace fine LaTeX (\,) devant \%, ex. « 61\,\% » -- \s* seul ne matche ni le `\` ni la `,` de
+# cette séquence, donc la version initiale ratait TOUT pourcentage écrit ainsi (faux négatif
+# systématique, découvert le 2026-09-08 sur Rv2520c où c'est la convention unique du manuscrit :
+# 0 collision annoncée alors que le script n'avait en réalité rien pu comparer). `~` (espace
+# insécable) est le même besoin pour la même raison. Accepter aussi bien l'espace ordinaire que
+# ces deux séparateurs LaTeX, dans n'importe quel ordre/répétition raisonnable.
+MOTIF_PCT = re.compile(r"(?<![\d.])(\d+(?:[.,]\d+)?)\s*(?:\\,|~)?\s*\\%")
 # nombres nus : au moins deux chiffres, pour éviter le bruit des « 1 », « 2 » de comptage.
 # La première alternative capture les séparateurs de milliers (2,618 / 2\,618 / 2~618) AVANT
 # que la seconde ne s'applique : sans elle « 2,618 » était tronqué en « 618 » (le lookbehind

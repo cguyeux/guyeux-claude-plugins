@@ -96,10 +96,14 @@ def upload_tree(
     """
     if not api_key:
         raise RuntimeError(
-            "iTOL API key required for upload. Provide via:\n"
+            "iTOL API key required for upload (needs a paid iTOL batch/API "
+            "subscription). Provide via:\n"
             "  --api-key KEY\n"
             "  ITOL_API_KEY environment variable\n"
-            "  ~/.config/itol/api_key file"
+            "  ~/.config/itol/api_key file\n"
+            "No iTOL account? Use the 'etetoolkit' skill instead (ete4, "
+            "local rendering, no credentials required) for a small focused "
+            "tree that does not need iTOL's interactive web features."
         )
 
     tree_path = Path(tree_file)

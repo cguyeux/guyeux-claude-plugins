@@ -12,6 +12,7 @@ Sous-commandes
     show      detail d'une soumission
     variety   verdict de la regle de variation avant de viser une revue
     stale     soumissions dont le statut n'a pas bouge depuis trop longtemps
+    review    point d'etat complet : ou en est chaque manuscrit, ce qui cloche
     reject    enregistre une decision negative et son enseignement
 """
 
@@ -43,12 +44,31 @@ STATUSES = [
     # restent `preparing`, donc comptes comme actifs par la regle de variation,
     # et ils bloquent l'editeur pour une vraie cible.
     "abandoned",
+    # `returned-to-draft` n'est ni `preparing` ni `revision` : le dossier EXISTE chez
+    # l'editeur, avec son numero de manuscrit, mais il a ete renvoye a l'auteur AVANT
+    # toute evaluation, pour un manque de forme (declarations ethique / conflit
+    # d'interets / copyright, sections a fusionner). Constate le 2026-09-02 sur
+    # Molecular Microbiology 3557325, ou le registre disait `submitted` alors que le
+    # manuscrit dormait en brouillon depuis trois jours, et ou aucun mail n'etait
+    # arrive sur l'adresse gmail : seul le portail le montrait.
+    "returned-to-draft",
 ]
+# `returned-to-draft` n'est PAS actif : le dossier est revenu chez l'auteur, il
+# n'occupe plus l'editeur et ne compte donc pas dans la regle de variation.
 ACTIVE = {"submitted", "with-editor", "under-review", "revision"}
 
 # Seuils de la regle de variation. Voir references/choix-revue.md pour le pourquoi.
 MAX_ACTIVE_SAME_JOURNAL = 1      # au-dela : refus
 MAX_ACTIVE_SAME_PUBLISHER = 2    # au-dela : alerte
+# Cles de revue SYNTHETIQUES : elles ne designent aucun lieu de publication reel, mais
+# un mode de diffusion (mode b/c du cycle : preprint seul, code seul). La regle de
+# variation ne s'y applique pas -- concentrer trois manuscrits "sans revue" n'expose a
+# aucun editeur, et un refus de criblage de preprint n'est pas le refus d'une revue.
+# Sans cette exemption, un refus bioRxiv enregistre sous 'preprint-only' mettait la cle
+# en cooldown 365 j et faisait repondre REFUS a toute future diffusion en preprint seul,
+# tous projets confondus (faux blocage constate le 2026-09-05 sur Rv1125).
+SYNTHETIC_JOURNAL_KEYS = {"preprint-only", "no-journal", "none", "n/a"}
+
 REJECT_COOLDOWN_DAYS = 365       # ne pas retenter une revue qui a rejete depuis moins de
 
 
@@ -325,6 +345,10 @@ def variety_verdict(rows: list[dict], journal_key: str, publisher: str,
     impose d'expliquer a l'auteur pourquoi on passerait outre.
     """
     motifs = []
+    if (journal_key or "").strip().lower() in SYNTHETIC_JOURNAL_KEYS:
+        return "OK", [f"'{journal_key}' n'est pas une revue mais un mode de diffusion : "
+                      f"la regle de variation ne s'y applique pas (ni concentration chez "
+                      f"un editeur, ni cooldown apres refus)"]
     active = [r for r in rows if r.get("status") in ACTIVE]
     same_j = [r for r in active if r.get("journal_key") == journal_key]
     same_p = [r for r in active if publisher and r.get("publisher") == publisher]
@@ -441,6 +465,213 @@ def cmd_stale(args) -> int:
               f"manuscrit {r.get('manuscript_id') or '?'}")
     print("\nVerifier chaque statut dans le systeme de gestion (portail ou mails), "
           "jamais dans le depot local.")
+    return 0
+
+
+# ---------------------------------------------------------------------------
+# Point d'etat du portefeuille. Les seuils ci-dessous ne mesurent pas la vitesse
+# d'un editeur, mais le temps pendant lequel PERSONNE n'a regarde. Le cas qui les
+# justifie : un paquet reste `preparing` apres une session de soumission, l'auteur
+# croit l'article depose, et personne ne s'en apercoit avant des semaines.
+REVIEW_PREPARING_DAYS = 7        # prepare, jamais depose
+REVIEW_PREPARING_URGENT = 21
+REVIEW_REVISION_DAYS = 30        # revision demandee : l'horloge de l'editeur tourne
+REVIEW_RETURNED_DAYS = 2         # renvoye en brouillon : rien ne se passe tant qu'on n'agit pas
+REVIEW_DORMANT_DAYS = 14         # rejet ou abandon sans cible suivante
+REVIEW_ACCEPTED_DAYS = 30        # accepte, jamais passe a `published`
+_TERMINAL_NEGATIF = {"rejected", "abandoned", "withdrawn", "transferred"}
+_VIVANT = ACTIVE | {"preparing", "accepted", "returned-to-draft"}
+
+
+def _last_move(r: dict) -> str:
+    """Date du dernier mouvement connu : changement de statut, sinon depot."""
+    return (r.get("status_on") or r.get("submitted_on") or "").strip()
+
+
+def _age(r: dict) -> int | None:
+    return days_since(_last_move(r))
+
+
+def _fmt_age(r: dict) -> str:
+    d = _age(r)
+    return "?" if d is None else f"{d} j"
+
+
+def _finding(sev: str, code: str, rid: str, constat: str, action: str) -> dict:
+    return {"sev": sev, "code": code, "id": rid, "constat": constat, "action": action}
+
+
+def review_findings(rows: list[dict], stale_days: int) -> list[dict]:
+    """Anomalies deductibles du seul registre, sans rien consulter d'externe."""
+    out: list[dict] = []
+
+    for r in rows:
+        rid, st, age = r["id"], (r.get("status") or "").strip(), _age(r)
+        revue = r.get("journal_name") or r.get("journal_key") or "?"
+
+        if st not in STATUSES:
+            out.append(_finding(
+                "bloquant", "statut-hors-vocabulaire", rid,
+                f"statut '{st or 'vide'}' inconnu du registre",
+                f"corriger vers un statut valide ({', '.join(STATUSES[:6])}...) : "
+                f"submissions.py set {rid} status=<valide> ; tant qu'il est faux, "
+                f"la ligne echappe aux compteurs d'actives et a la regle de variation"))
+            continue
+
+        if st == "preparing" and age is not None and age >= REVIEW_PREPARING_DAYS:
+            out.append(_finding(
+                "bloquant" if age >= REVIEW_PREPARING_URGENT else "a-traiter",
+                "prepare-jamais-depose", rid,
+                f"prepare pour {revue} il y a {age} j, jamais depose",
+                "finir le depot, ou acter l'abandon de la cible : "
+                f"submissions.py set {rid} status=abandoned"))
+
+        if st in ACTIVE and not (r.get("manuscript_id") or "").strip():
+            out.append(_finding(
+                "a-traiter", "sans-identifiant", rid,
+                f"donne pour {st} chez {revue} sans identifiant de manuscrit",
+                "verifier sur le portail que le depot existe vraiment, puis "
+                f"submissions.py set {rid} manuscript_id=<id>"))
+
+        if st == "returned-to-draft" and age is not None and age >= REVIEW_RETURNED_DAYS:
+            out.append(_finding(
+                "bloquant", "renvoye-en-brouillon", rid,
+                f"renvoye en brouillon par {revue} il y a {age} j",
+                "le dossier n'est PAS en evaluation : corriger ce que le bureau "
+                "editorial demande, puis resoumettre depuis le tableau de bord. "
+                "Tant que ce n'est pas fait, le manuscrit n'existe pour personne")) 
+
+        if st == "revision" and age is not None and age >= REVIEW_REVISION_DAYS:
+            out.append(_finding(
+                "bloquant", "revision-qui-traine", rid,
+                f"revision demandee par {revue} il y a {age} j",
+                "verifier la date limite de renvoi sur le portail (souvent 60 a 90 j) "
+                "et reprendre la revision, ou demander un delai"))
+
+        if st == "accepted":
+            # L'acceptation est le seul moment ou l'affiliation deposee chez
+            # l'editeur peut encore etre corrigee sans rien couter : les epreuves
+            # passent sous les yeux de l'auteur, et la fiche auteur du portail
+            # alimente l'indexation. Arbitrage CG du 2026-09-09 : on ne touche PAS
+            # aux bases auteurs d'un manuscrit en cours d'evaluation, on le fait a
+            # l'acceptation. D'ou ce rappel des l'entree en `accepted`, sans delai.
+            retard = (f" (accepte il y a {age} j, toujours pas 'published')"
+                      if age is not None and age >= REVIEW_ACCEPTED_DAYS else "")
+            out.append(_finding(
+                "a-verifier", "acceptation-a-solder", rid,
+                f"accepte chez {revue}{retard}",
+                "trois gestes, dans cet ordre : (1) sur les EPREUVES, verifier la "
+                "signature scientifique et les remerciements (mesocentre, financeurs) "
+                "-- c'est la derniere fenetre ou ils se corrigent ; (2) mettre a jour "
+                "l'affiliation dans la BASE AUTEURS du portail, ce que la direction de "
+                "l'institut demande explicitement et qui commande l'indexation ; "
+                "(3) a la parution, passer le statut a published et declarer la "
+                "publication (ticket Publiweb)"))
+
+        if st in ACTIVE and age is not None and age >= stale_days:
+            out.append(_finding(
+                "a-verifier", "statut-fige", rid,
+                f"{st} chez {revue} sans changement depuis {age} j",
+                "lire l'etat dans le systeme de gestion ou les mails de l'editeur, "
+                "jamais dans le depot local ; au-dela de trois mois, relancer"))
+
+    # Projet dormant : la derniere ligne du projet est une decision negative et
+    # rien d'autre n'est vivant. C'est un manuscrit fini que plus rien ne porte.
+    by_project: dict[str, list[dict]] = {}
+    for r in rows:
+        by_project.setdefault((r.get("project") or "?"), []).append(r)
+    for proj, rs in sorted(by_project.items()):
+        if any((x.get("status") or "") in _VIVANT for x in rs):
+            continue
+        derniere = sorted(rs, key=lambda x: (_last_move(x), x["id"]))[-1]
+        st = (derniere.get("status") or "")
+        age = _age(derniere)
+        if st in _TERMINAL_NEGATIF and age is not None and age >= REVIEW_DORMANT_DAYS:
+            out.append(_finding(
+                "a-traiter", "projet-dormant", derniere["id"],
+                f"projet '{proj}' : {st} il y a {age} j, aucune cible suivante",
+                "choisir la revue suivante (submissions.py variety <cle>) et "
+                "resoumettre, ou acter que le manuscrit s'arrete la"))
+
+    # Concentration editeur : la regle de variation, mais lue sur l'existant.
+    actives = [r for r in rows if (r.get("status") or "") in ACTIVE]
+    for champ, seuil, code in (("journal_key", MAX_ACTIVE_SAME_JOURNAL, "concentration-revue"),
+                               ("publisher", MAX_ACTIVE_SAME_PUBLISHER, "concentration-editeur")):
+        groupes: dict[str, list[str]] = {}
+        for r in actives:
+            v = (r.get(champ) or "").strip().lower()
+            if v and v not in SYNTHETIC_JOURNAL_KEYS:
+                groupes.setdefault(v, []).append(r["id"])
+        for v, ids in sorted(groupes.items()):
+            if len(ids) > seuil:
+                out.append(_finding(
+                    "a-verifier", code, ", ".join(ids),
+                    f"{len(ids)} soumissions actives sur {champ}={v} (seuil {seuil})",
+                    "ne pas viser cette cible pour le prochain manuscrit avant "
+                    "qu'une des lignes soit tranchee"))
+
+    ordre = {"bloquant": 0, "a-traiter": 1, "a-verifier": 2}
+    out.sort(key=lambda f: (ordre.get(f["sev"], 9), f["code"], f["id"]))
+    return out
+
+
+def cmd_review(args) -> int:
+    rows = load()
+    if args.project:
+        rows = [r for r in rows
+                if args.project.lower() in (r.get("project") or "").lower()]
+    if not rows:
+        print("registre vide pour ce filtre")
+        return 0
+
+    par_statut: dict[str, list[dict]] = {}
+    for r in rows:
+        par_statut.setdefault((r.get("status") or "vide"), []).append(r)
+
+    print(f"POINT D'ETAT DES SOUMISSIONS -- {date.today().isoformat()}")
+    print(f"{len(rows)} lignes au registre "
+          f"({sum(1 for r in rows if (r.get('status') or '') in ACTIVE)} en evaluation, "
+          f"{len(par_statut.get('preparing', []))} en preparation)\n")
+
+    for st in STATUSES + sorted(k for k in par_statut if k not in STATUSES):
+        lot = par_statut.get(st)
+        if not lot:
+            continue
+        print(f"{st.upper()} ({len(lot)})")
+        for r in sorted(lot, key=lambda x: _last_move(x), reverse=True):
+            print(f"  {_fmt_age(r):>6}  {r['id'][:44]:44s} "
+                  f"{(r.get('journal_name') or r.get('journal_key') or '')[:28]:28s} "
+                  f"{(r.get('manuscript_id') or '-')[:22]}")
+        print()
+
+    findings = review_findings(rows, args.days)
+    if not findings:
+        print("A REPRENDRE : rien. Aucun ecart deductible du registre.")
+    else:
+        bloc = sum(1 for f in findings if f["sev"] == "bloquant")
+        print(f"A REPRENDRE ({len(findings)}, dont {bloc} bloquant(s))\n")
+        for f in findings:
+            print(f"  [{f['sev']}] {f['code']} -- {f['id']}")
+            print(f"      constat : {f['constat']}")
+            print(f"      action  : {textwrap.fill(f['action'], 92, subsequent_indent=' ' * 16)}")
+            print()
+
+    externes = [f for f in findings
+                if f["code"] in ("statut-fige", "sans-identifiant", "renvoye-en-brouillon",
+                                 "acceptation-a-solder", "revision-qui-traine")]
+    if externes:
+        print("VERIFICATION EXTERNE DUE (le registre ne peut pas la faire seul)")
+        idx = {r["id"]: r for r in rows}
+        for f in externes:
+            r = idx.get(f["id"])
+            if r:
+                print(f"  {r['id']}  portail={r.get('portal') or '?'}  "
+                      f"manuscrit={r.get('manuscript_id') or '?'}")
+        print()
+
+    print("Le registre ne connait que ce qu'on lui a dit : une decision arrivee par "
+          "mail et non enregistree reste invisible ici. Confronter aux mails de "
+          "l'editeur avant de conclure que tout va bien.")
     return 0
 
 
@@ -756,6 +987,12 @@ def main() -> int:
     sp = sub.add_parser("stale", help="soumissions sans nouvelle")
     sp.add_argument("--days", type=int, default=60)
     sp.set_defaults(func=cmd_stale)
+
+    sp = sub.add_parser("review", help="point d'etat complet et anomalies a reprendre")
+    sp.add_argument("--project", help="restreindre a un projet")
+    sp.add_argument("--days", type=int, default=60,
+                    help="au-dela de combien de jours un statut actif fige est signale")
+    sp.set_defaults(func=cmd_review)
 
     sp = sub.add_parser("audit", help="ecarts entre le registre et les cahiers de projet")
     sp.add_argument("--self-test", action="store_true",

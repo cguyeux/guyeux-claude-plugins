@@ -222,11 +222,23 @@ FOLDSEEK_COLS = ("query,target,evalue,prob,fident,alnlen,qstart,qend,tstart,tend
                  "qcov,tcov,alntmscore,qtmscore,ttmscore,lddt,qaln,taln")
 
 
+def safe_tag(tag: str) -> str:
+    """Sanitise `tag` for use as a bare filesystem path COMPONENT (never a path itself): any
+    `/` (or `os.sep` on non-POSIX) silently turns a one-level `out_dir / f"..._{tag}_..."` into
+    a multi-level path whose parent was never created, so Foldseek fails opening the .m8 with a
+    generic "could not open for writing" that gives no hint the cause is the tag, not the run
+    (hit with a gene label like "Rv3130c/tgs1" -- caught 2026-08-31, mtbc/Rv1125 P1.6.a)."""
+    import os
+    return tag.replace("/", "_").replace(os.sep, "_")
+
+
 def run_foldseek(foldseek_bin: Path, query_files: list[Path], target_files: list[Path],
                   out_dir: Path, tag: str, *, extra_args: list[str] | None = None) -> list[dict]:
     """`foldseek easy-search` between `query_files` and `target_files`, parsed into row dicts.
 
-    Copies inputs into per-run query/target dirs under `out_dir` (Foldseek indexes by directory)."""
+    Copies inputs into per-run query/target dirs under `out_dir` (Foldseek indexes by directory).
+    `tag` is sanitised via `safe_tag` -- pass any label (including one with "/") safely."""
+    tag = safe_tag(tag)
     qdir, tdir = out_dir / f"_fs_{tag}_q", out_dir / f"_fs_{tag}_t"
     for d in (qdir, tdir):
         d.mkdir(parents=True, exist_ok=True)
@@ -375,7 +387,9 @@ def superposition(foldseek_bin: Path, qfile: Path, qname: str, tcif: Path, out_d
                    ) -> Callable[[Point], Point]:
     """Foldseek (u, t) rigid transform bringing the TEMPLATE into the query's frame, as a callable.
     The u/t convention is not documented unambiguously by Foldseek, so `spatial_probe` validates it
-    on already-aligned pairs before trusting it -- never assumed."""
+    on already-aligned pairs before trusting it -- never assumed. `tag` is sanitised via
+    `safe_tag`."""
+    tag = safe_tag(tag)
     m8 = out_dir / f"_sup_{tag}.m8"
     cmd = [str(foldseek_bin), "easy-search", str(qfile), str(tcif), str(m8),
            str(out_dir / f"_sup_{tag}_tmp"), "--format-output", "query,target,u,t",

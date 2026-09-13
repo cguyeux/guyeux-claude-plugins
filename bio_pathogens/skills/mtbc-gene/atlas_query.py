@@ -50,10 +50,66 @@ def _get(base: str, path: str, params: dict | None = None, timeout: int = 30) ->
             except Exception:
                 msg = str(e)
             sys.exit(f"API error {e.code}: {msg}  ({url})")
-        except Exception as e:  # transient (scale-to-zero cold start, network): retry
+        except Exception as e:  # transient (network, CDN): retry
             last = e
     sys.exit(f"Could not reach the atlas API after 3 tries: {last}\n  URL: {url}\n"
-             "  (the container scales to zero; a first request may be slow — retry.)")
+             "  (since 2026-09-08 the atlas is a STATIC site on GitHub Pages, so there is no\n"
+             "   cold start to wait out: a persistent failure here is DNS, CDN or a wrong path,\n"
+             "   not a container waking up. The API is frozen at the same URLs and returns valid\n"
+             "   JSON, but served with Content-Type text/html — never gate on the MIME type.)")
+
+
+# --- Repli sur déploiement STATIQUE de l'atlas (depuis 2026-09-06) -----------
+# L'atlas n'est plus servi par un container mais par des fichiers figés (le container
+# se dégradait en ~90 s sous trafic, cf. annotation_mtbc/pistes/P37.md). Toutes les URL
+# de l'API restent valides, à deux réserves près, que ces deux fonctions absorbent :
+#  - `/genes/{rv}/{layer}` n'est pas figé (3974 x 54 fichiers) ; la couche est servie
+#    dans la fiche complète, sous la clé `layers` ;
+#  - `/genes` ne FILTRE plus (la query string ne choisit plus le fichier) et rend la
+#    collection entière, ce qu'elle annonce par un champ `static_note` : on refait alors
+#    le filtrage ici plutôt que de laisser croire à une recherche qui n'a pas eu lieu.
+
+def _get_layer(base: str, rv: str, layer: str) -> dict:
+    """Une couche d'évidence, que l'API soit dynamique ou figée."""
+    try:
+        return _get(base, f"/genes/{rv}/{layer}")
+    except SystemExit:
+        pass  # 404 attendu sur un déploiement statique : on passe par la fiche complète
+    full = _get(base, f"/genes/{rv}")
+    layers = full.get("layers") or {}
+    if layer not in layers:
+        sys.exit(f"layer '{layer}' absent for {rv} (available: {', '.join(sorted(layers)) or 'none'})")
+    return {"rv": rv, "layer": layer, "description": "", "data": layers[layer]}
+
+
+def _match(g: dict, q: str) -> bool:
+    q = q.strip().lower()
+    return any(q in str(g.get(k) or "").lower()
+               for k in ("rv", "gene_name", "mtbc0", "product_h37rv", "product_pgap",
+                         "function_revised"))
+
+
+def _search(base: str, params: dict) -> dict:
+    """Recherche de gènes, avec repli de filtrage local si l'API est figée."""
+    res = _get(base, "/genes", params)
+    if "static_note" not in res:
+        return res
+    rows = res.get("results", [])
+    if params.get("q"):
+        rows = [g for g in rows if _match(g, params["q"])]
+    if params.get("verdict"):
+        rows = [g for g in rows if g.get("verdict") == params["verdict"]]
+    if params.get("hypothetical"):
+        rows = [g for g in rows if g.get("is_hypothetical")]
+    if params.get("has_layer"):
+        # les résumés ne portent pas les couches : on ne peut pas filtrer sans mentir
+        sys.exit("--has-layer is not available on the static atlas deployment; "
+                 "use `layers` then `get --layer` per gene, or query the local pipeline.")
+    off = int(params.get("offset") or 0)
+    lim = int(params.get("limit") or 50)
+    return {"total": len(rows), "limit": lim, "offset": off,
+            "results": rows[off:off + lim],
+            "static_note": "filtered locally (static atlas deployment)"}
 
 
 def _print(data, raw: bool, view=None):
@@ -128,13 +184,13 @@ def main(argv=None):
         _print(_get(a.base, "/layers"), a.raw, v_layers)
     elif a.cmd == "get":
         if a.layer:
-            _print(_get(a.base, f"/genes/{a.rv}/{a.layer}"), a.raw, v_layer)
+            _print(_get_layer(a.base, a.rv, a.layer), a.raw, v_layer)
         else:
             _print(_get(a.base, f"/genes/{a.rv}"), a.raw, v_gene)
     elif a.cmd == "search":
         params = {"q": a.query, "verdict": a.verdict, "hypothetical": a.hypothetical or None,
                   "has_layer": a.has_layer, "limit": a.limit, "offset": a.offset}
-        _print(_get(a.base, "/genes", params), a.raw, v_search)
+        _print(_search(a.base, params), a.raw, v_search)
 
 
 if __name__ == "__main__":

@@ -22,6 +22,7 @@ import hashlib
 import json
 import os
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -133,10 +134,26 @@ def _annotate_channels(rows: list[dict]) -> list[dict]:
     return out
 
 
+# interaction_partners silently defaults to a SMALL limit (observed: 10) when the
+# `limit` param is omitted from the request -- and this client's own _build_url()
+# drops any param whose value is None, so calling partners(limit=None) (or the old
+# default below) silently returns only the top ~10 partners with NO error or
+# warning. Discovered 2026-08-29 (nucs_deletion_mutators, phase25_p2_1_6): three
+# genes each returned exactly 10/10/10 identical-looking partner counts before this
+# fix. Default to "effectively unbounded" so omitting `limit` does the right thing;
+# pass an explicit small `limit` only when a caller genuinely wants just the top N.
+ALL_PARTNERS_LIMIT = 100_000
+
+
 def partners(identifiers: list[str], *, species: int | None = DEFAULT_SPECIES,
-             limit: int | None = None, required_score: int | None = None,
+             limit: int | None = ALL_PARTNERS_LIMIT, required_score: int | None = None,
              physical: bool = False, **kw) -> list[dict]:
-    """Functional (or physical) interaction partners of the query protein(s)."""
+    """Functional (or physical) interaction partners of the query protein(s).
+
+    `limit` defaults to effectively unbounded (see ALL_PARTNERS_LIMIT above) --
+    STRING itself truncates to ~10 partners if `limit` is left out of the HTTP
+    request entirely, which is what happens if you pass `limit=None` explicitly.
+    """
     rows = fetch_json("interaction_partners", identifiers, species=species,
                       limit=limit, required_score=required_score,
                       network_type="physical" if physical else "functional", **kw)

@@ -12,6 +12,20 @@ argument-hint: "<main.tex> [--force] [--stale-days 90]"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebSearch, WebFetch, mcp__tbannotator__tool_query_postgres, mcp__tbannotator__tool_get_schema, mcp__tbmonitor__execute_sql, mcp__tbmonitor__show_schema
 ---
 
+> [!WARNING]
+> **[2026-09-08] TABLES ABSENTES du serveur tblearn.** Ce skill interroge 2 objet(s) qui
+> n'existent plus depuis le remplacement du MCP TBannotator. Contrairement au filtre `system_name`,
+> ces requêtes ne rendent pas un ensemble vide : elles **lèvent une erreur** `relation does not exist`.
+>
+> | table citée ici | remplacer par | fondement |
+> |---|---|---|
+> | `mv_lineage_markers` | **tb_lineage_marker** | mêmes colonnes (`lineage_code`, `spdi_variant_name`, `lineage_level`, `lineage_parent`, `is_negative`) |
+> | `mv_spdi_mutations` | **tb_report_spdi ⋈ tb_report_spdi_annotations sur spdi_id** | le variant dans la première, l'annotation (`locus_tag`, `hgvs_p`, `impact`) dans la seconde |
+>
+> Correspondances établies en comparant les colonnes, pas devinées. Détail et schéma complet :
+> `~/.agents/knowledge/tblearn-migration.md`.
+
+
 # /claim-check -- Verification systematique des affirmations scientifiques
 
 Extrait toutes les affirmations factuelles verifiables d'un article scientifique,
@@ -409,7 +423,10 @@ Regles d'emploi :
 
 - **Portee** : open access uniquement (mesure 2026-08 : 35 264 papiers TB en
   OA). `resolve` affiche `fullTextAvailable` ; si c'est `False`, le claim se
-  verifie sur le resume, et le registre doit dire que la preuve est un resume.
+  verifie sur le resume, et le registre doit dire que la preuve est un resume
+  -- sauf si le plein texte est vraiment necessaire pour trancher, auquel cas
+  voir `/literature-access` (cascade Unpaywall/OpenAlex/HAL, puis en dernier
+  recours la session institutionnelle BU, un article a la fois).
 - **Ne jamais deviner un PMCID.** L'API repond `200` avec un AUTRE article
   quand le PMCID est faux (verifie : `PMC8945347` au lieu de `PMC8945471`
   rend un article de revue differente sans lever la moindre erreur). Passer

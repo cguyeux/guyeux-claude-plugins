@@ -4,6 +4,20 @@ Reference de `mtbc-bilan` : texte integral de la section 9.4. Squelette complet
 des slides en quatre actes, dix regles de redaction, compilation, cas du mode
 `--full`.
 
+> **Perimetre, depuis 2026-09-09.** Ce gabarit sert au BILAN, un point d'etape
+> interne destine a l'auteur, ou l'exhaustivite prime sur l'impact. Il ne sert
+> PAS a un expose destine a un public : pour un seminaire, une conference, une
+> audition ou une soutenance, utiliser `beamer-slides` (`/slides`), qui part du
+> public et de la duree, ideate une forme visuelle par slide, produit les notes
+> d'orateur et controle le resultat.
+>
+> Motif mesure : applique tel quel a des exposes, ce gabarit produit des decks
+> a puces. Audit du 2026-09-09 sur neuf decks du parc, dont plusieurs derives de
+> `bilans/*_bilan_slides.tex` : zero graphique de donnees, jusqu'a 5,8 commandes
+> de reduction de police par frame, et 75 a 96 frames pour 20 minutes. La
+> grammaire des slides d'un expose est dans
+> `redac/skills/beamer-slides/references/grammaire_slides.md`.
+
 ### 9.4 Generation de la presentation Beamer
 
 Apres le PDF du bilan, generer automatiquement une presentation Beamer
@@ -176,8 +190,13 @@ preambule, le theme, et les commandes MTBC (\mtb, \spdi, \lignee, \kb).
    types.
 4. **Titres specifiques** : "28 marqueurs SNP exclusifs au proto-L4.2",
    pas "Resultats phylogenetiques".
-5. **Max 6 bullets par slide**, max 10 mots par bullet.
-6. **Keybox sur chaque slide de resultat** : le take-away en une phrase.
+5. **Max 6 bullets par slide**, max 10 mots par bullet. Pour un expose, ce
+   plafond est trop haut : voir `grammaire_slides.md`, qui traite la liste a
+   puces comme un dernier recours a justifier, et non comme le gabarit par
+   defaut.
+6. **Keybox sur chaque slide de resultat** : le take-away en une phrase. Dans un
+   bilan, la repetition du gabarit est acceptable, le lecteur parcourt. Dans un
+   expose elle produit la monotonie que l'audit signale en `M1`.
 7. **Total** : 12-20 slides de contenu (hors titre et merci). Adapter
    a la richesse du projet — un projet avec 2 resultats = 12 slides,
    un projet riche = 20 slides.

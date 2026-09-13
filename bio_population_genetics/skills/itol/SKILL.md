@@ -24,11 +24,27 @@ direct-API client kept for reference.
 
 ## Requirements
 
-- An iTOL account with batch/API access (programmatic export needs an iTOL
-  subscription).
+- An iTOL account with batch/API access (programmatic export needs an **iTOL
+  subscription** — this is a paid tier, not the free web account).
 - `pip install itolapi` (recommended) or `pip install requests` (fallback).
 - API key resolved from, in order: `--api-key/-k`, the `ITOL_API_KEY` env var, or
   `~/.config/itol/api_key`.
+
+**Before starting: check whether an API key is actually configured**
+(`echo $ITOL_API_KEY` or `cat ~/.config/itol/api_key`). If neither exists, this
+whole skill is a dead end — there is no local/offline mode, `upload` and
+`export` both hard-fail without a key (see `resolve_api_key()` in
+`itol_pipeline.py`). For a manuscript or slide figure of a tree that does not
+need iTOL's interactive web feature set (drag-and-drop annotation editing,
+persistent shareable links, SmartView-style large-tree navigation), use the
+**`etetoolkit`** skill (ETE 4) instead: local rendering, no account, no API
+key, PNG via SmartView (`ete4[render-sm]`) or PNG/PDF/SVG via the legacy Qt
+treeview (`ete4[treeview]`) — see its `references/visualization.md`. Reach
+for iTOL specifically when the destination is the interactive web view itself,
+when annotation tracks must stay editable by a co-author without touching
+code, or when a subscription is already available; reach for `etetoolkit`
+for a one-off static vector figure, which is the common case for a single
+focused clade tree going straight into a LaTeX manuscript.
 
 ## Usage
 
@@ -93,3 +109,4 @@ track and pass them all to `upload`/`pipeline`.
 | `phylogeography`, `resistance-profiler`, `ancestral-reconstruction` | emit iTOL annotation `.txt` tracks (country, AMR, ancestral states) |
 | `mtbc-lineages` | lineage colour scheme for the colour-strip track |
 | `pastml` | alternative: compressed-tree HTML for ancestral states (no iTOL account needed) |
+| `etetoolkit` | alternative: local static PNG/PDF/SVG rendering of the same `.nwk`, no iTOL account needed — preferred default for a one-off manuscript/slide figure |

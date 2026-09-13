@@ -19,24 +19,71 @@ Targeted, low-latency searches against the tbmonitor PubMed corpus.
 Companion of `tbannotator-mcp`: tbannotator answers genome/strain
 questions, tbmonitor answers literature questions about those genomes.
 
-## Prerequisite : local MCP registration
+## ⚠️ SERVER DOWN SINCE 2026-09-12 — READ THIS FIRST
 
-The tbmonitor server is **separate** from tbannotator. Before this
-skill works, register it locally:
+**The tbmonitor endpoint is dead, and it is not a transient outage: the IP
+has been reassigned to another service.** Measured 2026-09-12 from
+`mtbc/Rv0537c` (P1.1):
+
+```
+POST https://tbmonitor.82.64.250.114.nip.io/mcp  ->  HTTP 400
+set-cookie: oc_sessionPassphrase=...   # ownCloud/Nextcloud
+server: nginx
+```
+
+The `oc_sessionPassphrase` header is the diagnostic that matters: a
+**Nextcloud instance now occupies that personal IP**. So the verdict is
+not "server is down, wait for it" but "**IP reassigned, stop relying on
+this address**". A `nip.io` alias on a personal IP was always a
+single point of failure, and this is it failing.
+
+**What this means operationally.** Any workflow that treats tbmonitor as
+its *priority* source for TB/MTBC literature (this skill, `/lit-review`,
+`/claim-check`, `/bib-check`, `/manuscript-review`, `mtbc-gene`) must
+**fall back rather than stall**, and must say so in its output — a silent
+fallback hides a coverage gap from the reader. Do not attempt to
+re-register the MCP: it will connect to a Nextcloud and fail confusingly.
+
+**Substitution actually exercised on 2026-09-12, and its measured limits:**
+
+| Layer | Tool | Covers | Does NOT cover |
+|---|---|---|---|
+| 1 | PubMed E-utilities (`esearch`/`esummary`/`efetch`) | titles, abstracts, MeSH, full history (1848→), **recall maximal** | no sub-second SQL; 3 req/s without key; MeSH filtering is clumsier |
+| 2 | `europepmc_fulltext.py` (in `lit-review/scripts/`) | **body text** of OA articles, sections, `--grep` | **non-OA is invisible** — this is the real loss vs tbmonitor |
+| 3 | WebSearch / WebFetch | preprints, theses, institutional reports | unreliable for systematic recall |
+
+The one capability that has **no** substitute is tbmonitor's indexing of
+**non-open-access** titles/abstracts. State that gap explicitly in any
+review written while the server is down, and plan a re-run if it returns.
+
+Reusable sweep script (thematic PubMed queries, header-documented):
+`mtbc/Rv0537c/analyses/phase14_litreview_pubmed_sweep.py`. For **locus-tag /
+ortholog-alias** sweeps use `annotation_mtbc/analyses/phase73_pubmed_sweep.py`
+instead — it carries the identifier-specific guards (PubMed splits
+underscored identifiers; quoting destroys true positives too).
+
+**When the server comes back**, restore the priority order below and
+re-run any absence claim that was made on layers 1-3 alone. Verify with
+an actual query, not with `claude mcp list` alone.
+
+## Prerequisite : local MCP registration (valid only once a live endpoint exists)
+
+The tbmonitor server is **separate** from tbannotator. Registration:
 
 ```bash
 claude mcp add --transport http --scope user \
-  tbmonitor https://tbmonitor.82.64.250.114.nip.io/mcp
+  tbmonitor <LIVE_ENDPOINT>/mcp
 claude mcp list   # confirm 'tbmonitor: ... ✓ Connected'
 ```
 
-The URL is currently a `nip.io` alias on a personal IP and **will
-migrate to a permanent domain**, re-run the `add` (or edit
-`~/.claude/.claude.json`) when that happens.
+The old URL was a `nip.io` alias on a personal IP and **has been lost to
+IP reassignment** (see above); a permanent domain is needed. Ask the user
+for the current endpoint rather than guessing one.
 
 If the MCP tools `mcp__tbmonitor__execute_sql` and
-`mcp__tbmonitor__show_schema` are not available, abort and tell the
-user to register the server.
+`mcp__tbmonitor__show_schema` are not available, **do not abort the calling
+task**: drop to the fallback layers above, and tell the user the server is
+unreachable so they can decide whether to fix it.
 
 ## Server contract (must respect)
 

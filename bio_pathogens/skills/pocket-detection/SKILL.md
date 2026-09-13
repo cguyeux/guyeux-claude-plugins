@@ -66,6 +66,14 @@ sais pas encore » est plus honnête que d'en tirer une conclusion.
 
 ## Installation locale (recettes validées, sans root, CPU uniquement)
 
+> [!TIP]
+> Le repli CPU décrit ci-dessous reste la voie normale pour quelques structures. Pour un CRIBLE
+> (plusieurs dizaines de protéines, ou AE-PocketMiner sur un protéome), le GPU du mésocentre est
+> disponible : partition `gpu` de `mh` (A100 40 Go), avec le module `deep/tensorflow-gpu/2.12.0`
+> qui évite de reconstruire un environnement. Ne pas viser `gpu_l40`, qui est une partition privée. Voir le skill
+> `remote-compute` (sonde d'état, modèles `sbatch`, plafond d'un GPU par utilisateur). Prérequis :
+> VPN monté (`sudo vpn up`).
+
 ### P2Rank
 Nécessite Java 17 spécifiquement (le défaut système est souvent 8) :
 ```bash
@@ -74,14 +82,17 @@ JAVA_HOME=/usr/lib/jvm/java-17-openjdk <chemin>/prank predict targets.ds -o out 
 
 ### fpocket
 ```bash
-git clone https://github.com/Discngine/fpocket.git
-cd fpocket
-git checkout 4bb0d8447f62fee77e2c3c29f54b5fcaf5e2c066
-make CC="gcc -Wno-error=incompatible-pointer-types -Wno-error=implicit-function-declaration -Wno-error=int-conversion -Wno-error=implicit-int"
+scripts/build_fpocket.sh
 ```
-**PIÈGE, GCC 14+/16** : `make` seul échoue, ces avertissements sont promus en ERREURS dures
-depuis GCC 14. Le workaround ci-dessus ne touche PAS le Makefile, ~1-2 min, produit `bin/fpocket`
-(+ `dpocket`/`mdpocket`/`tpocket`). Empreinte disque ~360 Mo (dépôt Git inclus).
+Wrapper de build DURCI (piste Rv1025 P5.3, 2026-08-24) : clone le commit épinglé
+(`4bb0d8447f62fee77e2c3c29f54b5fcaf5e2c066`) dans `~/.cache/fpocket_build/` (hors scratchpad,
+réutilisé d'un projet à l'autre), détecte la version de GCC et n'applique le contournement
+`-Wno-error=...` que si GCC >= 14, vérifie que le binaire produit répond bien comme fpocket
+(pas seulement qu'il existe) avant de l'installer dans `~/.local/bin/fpocket`, et est idempotent
+(ne reconstruit pas si un binaire fonctionnel est déjà installé ; `--force` pour reconstruire).
+**PIÈGE, GCC 14+/16** : `make` seul échoue, `-Wincompatible-pointer-types` &co. sont promus en
+ERREURS dures depuis GCC 14 — c'est ce que le script contourne, sans toucher au Makefile. Build
+~1-2 min, source mise en cache ~360 Mo, binaire installé quelques Mo.
 
 ### PocketMiner / AE-PocketMiner
 Le README officiel dit « requires Linux and a GPU » et l'`environment.yml` épingle

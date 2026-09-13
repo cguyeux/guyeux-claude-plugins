@@ -626,7 +626,7 @@ Compatible avec Sabin 2020, Bos 2014, Menardo 2019. Exclut Comas 2013 (70 000 BP
 | Body 68 (Kay 2015) | Tip date historique | `b(1731,1838)` | Second ancrage L4 |
 | **H37Rv stocks** | **Contrainte nodale** | **MRCA = `b(1900,1910)`** | Ancrage L4.9 (1905) |
 | **MRCA(BCG vaccinal)** | **Contrainte nodale** | **`b(1908,1921)`** | Ancrage Bovis1.2.1 (Pasteur strain divulguée 1921 ; passages CG dès 1908) |
-| **MRCA(proto-BCG ∪ BCG)** | **Contrainte nodale** | **`b(1880,1908)`** | Souche-source Nocard 1902 isolée de mammite tuberculeuse à Garches ; le MRCA avec la pop sauvage parente est borné supérieurement à 1908 (début Calmette-Guérin), inférieurement par l'estimation antérieure raisonnable |
+| ~~**MRCA(proto-BCG ∪ BCG)**~~ ⛔ **RÉFUTÉE 2026-09-06** | ~~Contrainte nodale~~ | ~~`b(1880,1908)`~~ | **NE PLUS UTILISER.** Le nœud n'existe pas dans la base : branche des souches nommées proto-BCG vers leur nœud commun avec le clade vaccinal = **178-215 SNP**, contre **43 SNP** de dérive interne au clade vaccinal (MRCA 1921). Un nœud à 1908 imposerait **1,99 SNP/génome/an, 14× Biek 2012** ; au taux mesuré indépendamment (0,128-0,190) il date de **~586-1048 CE**. Aucune souche sauvage à moins de **406 SNP** du vaccin sur 1 800 tirées de tout Bovis : la population source n'a **aucun descendant séquencé**, l'ancre est NON INSTRUISIBLE. La « validation en aveugle à 1906,6 » qui la soutenait était le symptôme d'un run comprimé (R²=0,06), pas une preuve — ce critère récompense les runs les plus faux. Seul `MRCA(BCG vaccinal) b(1908,1921)` survit, à horloge IN VITRO. Cf. mtbc/Bovis_full/résultats/lot5g_ancre_bcg/, KB taxonomy-node-validation.md §44. |
 | **BCG sub-souches** | **Tip dates historiques** | dates individuelles | Russia 1924, Tokyo 1924, Sweden 1926, Moreau 1925, Phipps 1928, Birkhaug 1929, Danish 1931, Frappier 1937, Connaught 1948, Glaxo 1954 (Behr&Small 1999, Brosch 2007) |
 | Modernes datés | Tip date BioSample | variable | Ancrage récent |
 
@@ -663,14 +663,14 @@ Format LSD2/TreeTime pour ces contraintes :
 ```text
 # mrca_constraints.txt (LSD2 via -g)
 mrca(BCG_Pasteur_CUS...,BCG_Russia_CUS...,BCG_Tokyo_CUS...,...) b(1908,1921)
-mrca(BCG_*,SRR7851309,SRR7851316,SRR7851346,SRR7851359) b(1880,1908)
+# SUPPRIMÉ (RÉFUTÉ 2026-09-06, Bovis_full P13.5.i) : mrca(BCG_*,SRR7851309,...) b(1880,1908)
 ```
 
 ```python
 # TreeTime via --clade-dates clades.tsv :
 # node_name<TAB>date_or_range
 BCG_vaccinal_MRCA	1921
-proto_BCG_BCG_MRCA	1908
+# SUPPRIMÉ (RÉFUTÉ 2026-09-06) : proto_BCG_BCG_MRCA	1908
 ```
 
 ### Commande complète (pipeline validé)

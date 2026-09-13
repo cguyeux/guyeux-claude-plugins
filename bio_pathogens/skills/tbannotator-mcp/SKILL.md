@@ -1,25 +1,96 @@
 ---
 name: tbannotator-mcp
 description: >-
-  Query TBannotator v3.6 MCP server (~255,000 MTBC genomes) via PostgreSQL:
-  strain metadata, lineage classifications (default: tblearn; also guyeux [ex-Senelle],
-  Coll, Napier, Freschi, Shitikov23, Thawornwattana...), SNP/SPDI
-  frequencies, phylogenetic trees (NJ, RAxML), drug resistance. Use when:
-  counting strains per lineage, getting metadata for a lineage code, finding
-  core-exclusive markers, validating supplementary files, or building trees for
-  an MTBC lineage characterisation article.
+  Query the tblearn MCP server (successor of TBannotator, ~256,000 MTBC genomes)
+  via read-only PostgreSQL: strain metadata, lineage classifications from EIGHT
+  EXTERNAL systems (Coll, Coscolla, Freschi, Lipworth, Napier, Palittapongarnpim,
+  Shitikov, Stucki), SNP/SPDI frequencies, drug resistance. Use when: counting
+  strains per lineage, getting metadata for a lineage code, finding core-exclusive
+  markers, or validating supplementary files. WARNING (2026-09-08): the in-house
+  classifications (tblearn, guyeux/ex-Senelle) are NO LONGER in this database and a
+  query naming them returns zero rows without error; tree building (NJ, RAxML) is
+  gone with the old server. See ~/.agents/knowledge/tblearn-migration.md.
 argument-hint: "<SQL query or question about MTBC strains>"
 user-invocable: true
-allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres, mcp__tbannotator__tool_get_schema, mcp__tbannotator__tool_get_version, mcp__tbannotator__tool_build_nj_tree, mcp__tbannotator__tool_submit_raxml_job
+allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres, mcp__tbannotator__tool_get_schema
 ---
+
+> [!WARNING]
+> **[2026-09-08] TABLES ABSENTES du serveur tblearn.** Ce skill interroge 4 objet(s) qui
+> n'existent plus depuis le remplacement du MCP TBannotator. Contrairement au filtre `system_name`,
+> ces requêtes ne rendent pas un ensemble vide : elles **lèvent une erreur** `relation does not exist`.
+>
+> | table citée ici | remplacer par | fondement |
+> |---|---|---|
+> | `job_raxml` | **aucun équivalent** | la file de jobs est morte avec le serveur ; passer par `bdd-bridge/scripts/phylo_job.py` |
+> | `mv_lineage_markers` | **tb_lineage_marker** | mêmes colonnes (`lineage_code`, `spdi_variant_name`, `lineage_level`, `lineage_parent`, `is_negative`) |
+> | `mv_spdi_mutations` | **tb_report_spdi ⋈ tb_report_spdi_annotations sur spdi_id** | le variant dans la première, l'annotation (`locus_tag`, `hgvs_p`, `impact`) dans la seconde |
+> | `mv_strain_reference_snp_distance` | **la colonne snp_count de mv_strain_lineage ou tb_report_strain** | commentaire du schéma : « Distance to the H37Rv reference, in number of SNPs » |
+>
+> Correspondances établies en comparant les colonnes, pas devinées. Détail et schéma complet :
+> `~/.agents/knowledge/tblearn-migration.md`.
+
+
+> [!WARNING]
+> **[2026-09-08] Les requêtes de ce skill qui filtrent sur un système de lignée MAISON ne rendent
+> plus rien.** Le MCP TBannotator est arrêté ; le serveur `tblearn` qui le remplace ne porte que
+> huit systèmes **externes** (Coll, Coscolla, Freschi, Lipworth, Napier, Palittapongarnpim,
+> Shitikov, Stucki). `system_name = 'guyeux'` et `system_name = 'tblearn'` y rendent **zéro ligne
+> sans lever d'erreur**, ce qu'un script lira comme « aucune souche ne satisfait le critère ».
+>
+> **Substitution, décidée le 2026-09-08 :** les lignées maison se lisent désormais dans la base
+> LOCALE `bdd/actuelle/`, qui fait déjà autorité selon
+> `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
+>
+> ```bash
+> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
+> python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
+> python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable
+> python3 $B/bdd_query.py strains <clade>       # souches d'un clade
+> ```
+>
+> `tblearn` reste utilisable pour tout le reste (SPDI, QC, métadonnées, RD, IS, CRISPR) et pour
+> **comparer** à une taxonomie externe, mais ce n'est plus la source des lignées maison. Toute
+> requête qui filtre sur `system_name` doit d'abord vérifier que le filtre a matché :
+> `SELECT system_name, count(*) FROM mv_strain_lineage WHERE system_name = '<x>' GROUP BY 1;`
+> — zéro ligne signifie « ce système n'existe pas ici », jamais « aucune souche ».
+>
+> Détail complet : `~/.agents/knowledge/tblearn-migration.md`.
+
 
 # TBannotator MCP Server : Usage Guide
 
 ## Overview
 
-The TBannotator MCP server (`tbannotator`) exposes the **TBannotator v3.6 PostgreSQL database** containing ~255,000 MTBC whole-genome sequences (`tb_report_strain`: 255,182; ~250,000 classified). It provides five tools for querying genomic metadata, lineage classifications, SNP markers, phylogenetic analysis, and more.
+> [!WARNING]
+> **Migrated on 2026-09-08 — read `~/.agents/knowledge/tblearn-migration.md` before any query.**
+> The historical TBannotator MCP endpoint (`tbannotator.82.64.250.114.nip.io/mcp`) is **dead, HTTP
+> 404**. The MCP server keyed `tbannotator` now points to **`tblearn` 4.0.3**, which changes three
+> things that silently break old habits:
+>
+> 1. **Three tools instead of five.** `tool_query_postgres` and `tool_get_schema` survive;
+>    **`tool_build_nj_tree`, `tool_submit_raxml_job` and `tool_get_version` are gone**, so the
+>    tree-building paths of this skill and of `raxml` no longer have a server behind them.
+> 2. **The in-house lineage systems are gone.** The database carries eight systems, all external:
+>    Coll, Coscolla, Freschi, Lipworth, Napier, Palittapongarnpim, Shitikov, Stucki. Neither
+>    `tblearn` nor `guyeux`/ex-Senelle is among them, and asking for one returns **zero rows with no
+>    error**. `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md` remains the authority for
+>    in-house lineages; this server is now an *external comparison* source.
+> 3. **The query argument is `sql`, not `query`**, and every tool call needs the bearer token
+>    (`~/.config/tblearn/token`) even though `initialize` and `tools/list` succeed without it.
+>
+> The old host still serves a REST API (`/fastapi/openapi.json`, 21 gene-centric endpoints plus
+> embeddings and a strain/SPDI matrix builder) which tblearn does not replace.
 
-> **Migré 2026-07-31 vers l'infra IDEEV / Université Paris-Saclay.** Ancien endpoint `darthos.freeboxos.fr` MORT. **13 systèmes de classification** ; le **défaut est désormais `tblearn`** (classifieur ML) ; le système « maison » du groupe a été **renommé `Senelle` → `guyeux`**. Nouveaux systèmes vs anciennes notes : `tblearn`, `Thawornwattana`. Conventions de colonnes du serveur actuel : clé souche = **`strain_id`** (+ `strain_name`), champ système = **`system_name`** (les anciens exemples en `sra_id`/`system` sont périmés).
+The `tbannotator` MCP server exposes the **tblearn read-only PostgreSQL database** containing
+~256,575 MTBC whole-genome sequences (`tb_report_strain`, measured 2026-09-08). Materialised views
+are rebuilt in batch every fifteen minutes and are empty right after a deployment: query `tb_refresh`
+(`object_name`, `refreshed_at`, `row_count`) before concluding anything about recently ingested
+strains. The schema's own comments carry a standing prohibition worth repeating: lineage, geography,
+host and status are **a posteriori validation labels only, and none may enter an inference path**.
+
+> **Migré 2026-07-31 vers l'infra IDEEV / Université Paris-Saclay.** Ancien endpoint `darthos.freeboxos.fr` : **il RÉPOND encore** (vérifié le 2026-09-06, HTTP 200, hôte distinct — Freebox IPv6 contre 129.175.188.8) et sert des données **identiques** (255 182 souches, mêmes bornes, même somme de contrôle sur les noms, `report.json` identique octet pour octet). Ne pas s'y fier pour autant : les deux ne coïncident que parce que la base est **gelée depuis février 2026**, le temps de la reprise de TBannotator par C. Lecarpentier. À la première nouvelle alimentation, un client resté sur l'ancien hôte lira des données périmées **sans aucune erreur**. Un point unique de configuration existe côté dépôt : `mtbc/investigate_phylo/tbannotator_endpoint.py` (variable `TBANNOTATOR_MCP_URL`). **13 systèmes de classification** ; le **défaut est désormais `tblearn`** (classifieur ML) ; le système « maison » du groupe a été **renommé `Senelle` → `guyeux`**. Nouveaux systèmes vs anciennes notes : `tblearn`, `Thawornwattana`. Conventions de colonnes du serveur actuel : clé souche = **`strain_id`** (+ `strain_name`), champ système = **`system_name`** (les anciens exemples en `sra_id`/`system` sont périmés).
 
 **MCP Name**: `tbannotator`  
 **Endpoint**: `https://tblearn.tbannotator.ideev.universite-paris-saclay.fr/mcp/sse` (SSE transport)

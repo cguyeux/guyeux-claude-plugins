@@ -44,8 +44,11 @@ Mesuré sur le dépôt `mtbc/` en août 2026, sur 105 manuscrits actifs et un é
 | Scripts important matplotlib | 354, pour **0** feuille de style partagée |
 | Appels `dpi=` respectant la règle des 600 DPI du `CLAUDE.md` | **moins d'un tiers** |
 
-Cas emblématiques, tous vérifiables : `animal_vs_human` porte 21 figures dont 17 arbres,
-**aucune carte et aucune frise**, sur un sujet de saut d'hôte animal vers humain.
+Cas emblématiques, tous vérifiables : `animal_vs_human` porte 21 figures et **aucune ne
+nomme un hôte**, sur un article dont le titre porte sur l'adaptation d'hôte ; il n'a non
+plus aucune figure de flux de données. Sa part conceptuelle est pourtant de 24 %, au-dessus
+du corpus — **le déficit n'est donc pas une question de quantité mais de registres
+entièrement absents**, ce qu'une moyenne ne montre jamais.
 `SpacerEgalVirus` compte 5 075 mots, zéro figure, et une sous-section intitulée
 « An evolutionary sketch » qui décrit en prose un scénario évolutif complet.
 `data-quality` décrit quatre portes de contrôle qualité successives et laisse trois lignes
@@ -75,6 +78,18 @@ publication. Un arbre se fait avec `itol` ou `ete3`, une carte avec `geo-map`, u
 distribution avec `sci-figure`. TikZ sert au **conceptuel** : ce qu'aucune donnée ne trace
 toute seule.
 
+**Piège connu — export PDF/SVG direct d'`ete3`.** Vérifié 2026-09-01 (`nucs_deletion_mutators`,
+arbre annoté à 42 feuilles, sans clé API iTOL configurée) : `Tree.render('*.pdf', ...)` **segfault
+systématiquement** (PyQt5/QPrinter), reproductible sur un arbre minimal à 2 feuilles ; l'export
+SVG fonctionne mais rend des `TextFace`/légendes à une taille démesurée par rapport aux branches
+(moteur `QSvgGenerator` non calibré comme le moteur raster). **Seul l'export PNG direct est
+fiable** (`t.render('*.png', tree_style=ts, w=..., units="mm", dpi=600)`) ; pour obtenir malgré
+tout un PDF, encapsuler ce PNG via Pillow (`Image.save(path, "PDF", resolution=600.0)`) plutôt que
+de chercher à réparer le rendu PDF/SVG natif d'ete3. Détail complet et code :
+`~/.agents/knowledge/python-patterns.md`, entrée « [2026-09-01] ete3 : l'export PDF/SVG direct
+segfault ou déforme les polices ». Si un PDF réellement vectoriel est requis, préférer `itol`
+(nécessite une clé API) plutôt que de dépendre du rendu PDF/SVG natif d'ete3.
+
 ### Donner un corps aux schémas : iconographie libre
 
 Un schéma fait uniquement de boîtes reste abstrait. Deux sources libres, vectorielles et
@@ -92,8 +107,10 @@ conversion se fait en PDF vectoriel par `rsvg-convert`, sans Inkscape.
 
 **Le garde-fou décisif est la licence.** Deux des quatre silhouettes d'hôtes du MTBC sont en
 CC BY-SA : un share-alike **contamine la figure, donc l'article**, et plusieurs éditeurs le
-refusent. Le script affiche toujours la licence, `--libre` écarte les SA en le disant, et il
-écrit `ATTRIBUTION_icons.tex`. **Une icône sans sa ligne d'attribution n'est pas utilisable.**
+refusent. Le script affiche toujours la licence et écrit `ATTRIBUTION_icons.tex` (fusionné,
+jamais écrasé) ; `--libre` ne se contente pas d'écarter, il **cherche dans le même clade une
+silhouette libre** et le dit — sur les quatre hôtes du MTBC, les deux images primaires en
+CC BY-SA ont été remplacées automatiquement par une CC BY 4.0 et une CC0. **Une icône sans sa ligne d'attribution n'est pas utilisable.**
 Détail complet et pièges dans `references/iconographie.md` ; chaîne montée de bout en bout
 dans le patron `saut_hote.tex`.
 
@@ -123,11 +140,23 @@ conceptuel sans lignées, l'Okabe-Ito réduit des patrons TikZ. Rien d'autre.
 
 Trois points d'entrée dans le cycle de `/cycle-projet`, et un quatrième hors cycle.
 
-1. **Phase 2, écriture du squelette — le moment nominal.** Le cycle impose déjà, avant toute
-   rédaction, un squelette listant « sections, figures, tables, et pour chacune ce qu'elle
-   démontre ». Ce skill *est* l'outil de cette étape : il transforme les acquis de
-   `etat_des_decouvertes.md` en plan de figures, chacune portant sa charge de preuve.
-   Le faire ici coûte une heure ; le faire en phase 3 coûte une réécriture.
+1. **Phase 2, écriture du squelette — le moment nominal, et il vient APRÈS `/narratif`.**
+   Le cycle impose déjà, avant toute rédaction, un squelette listant « sections, figures,
+   tables, et pour chacune ce qu'elle démontre ». Ce skill *est* l'outil de cette étape :
+   il transforme les acquis de `etat_des_decouvertes.md` en plan de figures, chacune
+   portant sa charge de preuve. Le faire ici coûte une heure ; le faire en phase 3 coûte
+   une réécriture.
+
+   **Les emplacements où une figure est due sont déjà décidés.** `plan_narratif.md`
+   (skill `/narratif`) porte les **points de bascule** de l'article, c'est-à-dire les
+   deux à quatre endroits où une explication alternative meurt et où la croyance du
+   lecteur change. Le nombre de figures du corps égale le nombre de bascules ; ce skill
+   dit **quelle** figure remplit chaque emplacement, il ne décide pas combien il en faut.
+   Une candidate qui ne sert aucune bascule se justifie en une ligne au registre — les
+   cas légitimes sont l'orientation sans laquelle la suite est illisible, le schéma de
+   mécanisme, le flux de sélection des données — ou elle part au supplémentaire.
+   **Le nombre de figures ne se dérive JAMAIS d'un format de revue** : la revue n'arbitre
+   ni l'article, ni le message, ni sa longueur (règle CG 2026-09-09), et se choisit après.
 2. **Phase 3, après `/manuscript-review`.** Mode `review` : chaque objection est examinée
    sous l'angle « une figure serait-elle la meilleure réponse ? ». Voir la section dédiée.
 3. **Phase 3, quand un tour de `/fig-check` revient propre.** Une figure propre n'est pas une
@@ -145,6 +174,7 @@ Trois points d'entrée dans le cycle de `/cycle-projet`, et un quatrième hors c
 | `/fig-ideation review` | Part des objections de `review/` et cherche lesquelles se répondent par une figure. |
 | `/fig-ideation build F3` | Passe d'une fiche du plan à un prototype compilé et inspecté. |
 | `/fig-ideation <concept>` | Ciblé : « un schéma du mécanisme de délétion médiée par IS6110 ». |
+| `/fig-ideation triage` | Trie les orphelines de TOUT le dépôt par récupérabilité (`fig_triage.py`). |
 
 `--force` réexamine les figures déjà décidées dans le registre au lieu de les considérer
 comme acquises.
@@ -155,8 +185,11 @@ comme acquises.
 
 ### Étape 0 — Lire la mémoire du projet, avant tout
 
-Comme tout skill de la chaîne. Dans cet ordre : `etat_des_decouvertes.md` (l'intrant
-principal, et le seul en phase 2), le squelette et le message de l'article s'ils existent,
+Comme tout skill de la chaîne. Dans cet ordre : `plan_narratif.md` s'il existe — c'est de
+lui que viennent le **message**, recopié tel quel et jamais reformulé, et les **bascules**
+qui fixent les emplacements de figures ; `etat_des_decouvertes.md` (l'intrant principal des
+figures elles-mêmes, et le seul en phase 2 si aucun plan narratif n'existe encore, auquel
+cas signaler que `/narratif` aurait dû précéder) ; le squelette de l'article s'il existe,
 les trois dernières entrées de `cahier_de_labo.md`, `pistes.md`, puis les registres
 `fig_check.md`, `claim_check.md`, `review/INDEX.md` s'ils existent. Si `fig_plan.md` existe
 déjà, ne rejouer que ce qui n'y est pas décidé, sauf `--force`.
@@ -180,6 +213,12 @@ Le point clé : chaque famille de marqueurs pointe vers un archétype. Une secti
 marqueurs de mécanisme appelle un M1, une section dense en dates appelle un T1, une section
 dense en filtres et seuils appelle un P1. Un titre de section qui annonce déjà un dessin
 (« sketch », « overview », « architecture ») est le signal le plus sûr du corpus.
+
+**Regarder les figures existantes, pas seulement leurs légendes.** Le script classe par
+mots-clés de légende ; il ne voit pas ce que la figure porte réellement. Lire chaque image
+avec `Read` avant de passer à l'étape 2 : c'est ce qui distingue « il manque une figure qui
+montrerait X » de « la figure qui montre X existe mais est illisible », deux diagnostics qui
+appellent des actions opposées.
 
 **Ce que le script rend est une liste de candidats à inspecter, jamais un verdict.** Il
 produit des faux positifs et il en produira toujours : lire les sections signalées avant de
@@ -212,8 +251,15 @@ poser pour **chaque famille** la question : *quelle serait la version de cet art
 | **D** données structurées | Quelle matrice, quel appariement, quelle correspondance ? |
 | **S** structure | Quel locus, quelle protéine, quelle architecture ? |
 
-Le balayage est obligatoire même quand il ne rend rien : c'est lui qui a montré que
-`animal_vs_human` n'a ni carte ni frise sur un sujet de saut d'hôte.
+**Le balayage est obligatoire même quand il ne rend rien, et un vide est un résultat.**
+Sur `animal_vs_human`, la famille T n'a rien rendu — non par oubli, mais parce que le
+manuscrit **n'avance aucune date** (aucune occurrence de « years ago », « kya », ni d'âge
+de MRCA). Ce vide a servi deux fois : il a écarté une frise candidate, et il a surtout
+justifié d'**abandonner** une frise déjà produite qui dormait sur le disque. Un balayage
+qui ne rend rien vous dit ce qu'il ne faut pas produire, et parfois ce qu'il faut jeter.
+
+Le même balayage a montré que, sur un article dont le titre porte sur l'adaptation d'hôte,
+**aucune des 21 figures ne nommait un hôte**.
 
 ### Étape 4 — Le test du lecteur pressé
 
@@ -286,6 +332,58 @@ de figure n'est **acquise qu'après ré-inspection** : chaque déplacement d'él
 zone et en occupe une autre. Deux tours sont la norme, pas l'exception. Les patrons livrés
 avec ce skill ont tous demandé au moins une correction après la première lecture visuelle.
 
+**`--embed-width-pt` est OBLIGATOIRE dès qu'une figure sera insérée avec `width=\textwidth`
+(ou toute fraction) dans un manuscrit plus étroit que sa taille native.** Bug constaté
+(`variant_nucs`, fig1_mechanism_verdict, 2026-09-03) : un panneau A + panneau B côte à côte
+produit une figure native large (764pt), du texte en `\tiny`/`\scriptsize` (5-7pt source) y
+est parfaitement net à 220 DPI — le DPI ne fixe que la résolution des pixels, jamais la
+taille angulaire finale. Une fois insérée à `width=\textwidth` dans un article a4 marges
+2.5cm (`\textwidth` ≈ 455pt), la figure est réduite d'un facteur ≈0.6 et ce même texte tombe
+à 3-4pt effectifs, illisible — défaut resté invisible à plusieurs tours de la boucle native.
+Obtenir la largeur cible en pt pour le documentclass/geometry du manuscrit visé :
+
+```
+python3 -c "
+import subprocess
+tex = r'''\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\begin{document}\typeout{TEXTWIDTH=\the\textwidth}\end{document}'''
+open('/tmp/tw.tex','w').write(tex)
+out = subprocess.run(['pdflatex','-interaction=nonstopmode','/tmp/tw.tex'],
+                      capture_output=True, text=True, cwd='/tmp').stdout
+print([l for l in out.splitlines() if 'TEXTWIDTH' in l][0])
+"
+```
+
+puis :
+
+```
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/fig-ideation/scripts/tikz_build.py article/figures/fig1.tex --embed-width-pt 455.24 --crops
+```
+
+Le script calcule le facteur d'échelle réel, imprime la taille effective (en pt) de chaque
+style de police utilisé, échoue (code retour 1) si l'une tombe sous 6pt effectifs (`--min-
+effective-pt` pour ajuster), et produit un PNG `*_embedpreview*` qui simule fidèlement le
+rendu inséré — c'est **ce PNG-là**, pas le natif, qu'il faut relire avant de conclure qu'une
+figure large-format est lisible.
+
+**Piège distinct, constaté immédiatement après le premier correctif (`variant_nucs`,
+2026-09-03) : `tikz_build.py` compile TOUJOURS dans `--outdir` (par défaut
+`<figure>/_build/`), jamais dans le fichier que le manuscrit inclut réellement
+(`article/figures/<nom>.pdf`).** Corriger le `.tex`, relire le PNG `_build/` et lancer `make`
+ne suffit PAS : `make` recompile le manuscrit avec l'ANCIEN PDF resté dans `figures/`, et rien
+dans la chaîne (ni `make`, ni `pdflatex`) ne signale ce décalage puisque les deux fichiers
+existent. Après toute correction validée par la boucle `compiler -> regarder`, copier
+explicitement le PDF du dossier de build vers l'emplacement inclus par `\includegraphics`
+AVANT de recompiler le manuscrit :
+
+```
+cp article/figures/_build/fig1.pdf article/figures/fig1.pdf
+```
+
+puis seulement alors relancer `make` et rouvrir la page concernée du `main.pdf` (pas seulement
+le PNG isolé) pour confirmer que le changement y apparaît bel et bien.
+
 ### Étape 7 — Inscrire
 
 Écrire `fig_plan.md` à la racine du projet (format dans `references/registre.md`), une fiche
@@ -330,6 +428,81 @@ Le résultat de ce mode s'écrit dans `fig_plan.md` **et** se rattache à la rem
 
 ---
 
+---
+
+## Mode `triage` — que faire des orphelines, projet par projet
+
+`fig_gap_scan.py` rend des FICHIERS jamais inclus. `fig_triage.py` en fait des
+FIGURES, puis les trie :
+
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/fig-ideation/scripts/fig_triage.py <racine> \
+        --gap /tmp/gap_all.json --json /tmp/triage.json
+```
+
+**Le compte en fichiers sur-évalue d'environ 40 %.** Un même graphique existe en
+`.png`, `.pdf` et `.svg`, parfois dans deux répertoires, et pèse alors cinq
+orphelines. Mesuré sur `mtbc/` le 2026-08-31 : **585 fichiers orphelins pour 351
+figures distinctes**. Le regroupement par stem est donc la première opération, pas
+un raffinement.
+
+Six classes, dans l'ordre où les regarder :
+
+- **CANDIDAT** (164) — un script du projet la produit, ses entrées existent, et
+  aucun registre ne l'a déjà tranchée. C'est le gisement, sous réserve de lire le
+  registre du projet avant d'agir (voir ci-dessous).
+- **INDÉTERMINÉ** (141) — aucun script ne la nomme. Ni régénérable ni datable
+  autrement que par son `mtime` ; contient aussi les faux positifs du scan
+  (assets de template, logos d'éditeur).
+- **REBUT** (11) — un membre de la même famille de noms est plus RÉCENT sur le
+  disque, ou une version est déjà incluse dans le manuscrit.
+- **OUTILLAGE** (11) — nom de contrôle interne (checklist, validation, guide de
+  style) : jamais destinée à un manuscrit.
+- **DONNÉE MORTE** (5) — un script la produit, mais son arbre ou son fichier
+  d'entrée a disparu.
+- **ARBITRÉE** (19) — un registre du projet (`fig_plan.md`, `fig_check.md`,
+  `claim_check.md`, `supp_check.md`) a DÉJÀ décidé de son sort. Cette classe
+  passe avant toutes les autres : reproposer ce qu'un humain a tranché est
+  précisément le travers que ce skill combat.
+
+**Le tri mécanique doit lire les registres, sinon il rouvre des décisions
+prises.** Ajouté après l'avoir payé : `SpacerEgalVirus` ressortait avec dix
+figures candidates et un manuscrit sans aucune figure, cas d'école du
+raccordement facile. Son `fig_check.md`, écrit le 2026-08-12, disait déjà que
+ces figures « proviennent de l'ancien cadre 2019-2022 et prédatent le cadre
+statistique actuel », donc qu'aucune n'est réutilisable sans régénération. Et le
+`fig_plan.md` d'`animal_vs_human` ouvre sa section par la même phrase : « le
+premier réflexe, le travail visuel est déjà fait, il suffit de le raccorder, est
+faux ici ».
+
+Une décision peut aussi porter sur un LOT sans nommer une seule figure (« les
+sept fichiers de `résultats/` prédatent le cadre »). Le mode affiche donc en tête
+la liste des projets dont un registre statue en bloc, avant tout classement :
+sur `mtbc/`, sept projets sont dans ce cas, dont les deux plus chargés en
+orphelines.
+
+**Trois pièges de classement, chacun payé par un faux résultat.** La récence se
+lit sur le `mtime`, jamais sur la longueur du nom : `fig2_geographic_enhanced`
+était classé périmé au profit de `fig2_geographic_distribution` alors que
+« enhanced » était la version suivante. Un `.tex` ne compte comme producteur que
+s'il est `standalone` ou `tikz` : un manuscrit qui nomme un stem ne le produit
+pas, et le compter donnait « SCITEPRESS ← main.tex », un logo d'éditeur pris pour
+une figure régénérable. Enfin une entrée n'est morte que si elle est absente de la
+forêt ET du disque, sans quoi une phrase de documentation entre guillemets et un
+`partition.nex` d'IQ-TREE passent pour des arbres perdus.
+
+**« DONNÉE MORTE » ne veut pas dire perte.** Vérifié sur les trois figures de
+`MTBC-roman-expansion-skyline` qui dépendent d'un `lsd_run1.timetree` absent : le
+cahier du projet montre que ce premier run a été remplacé par `iqtree_validated`.
+Ces figures appartiennent à une génération de données abandonnée. Lire le cahier
+avant d'alerter, toujours.
+
+**Ce que le tri change pour un manuscrit sans figure.** Trois des six manuscrits
+rédigés sans aucune figure ont en réalité des figures déjà produites et jamais
+raccordées — `SpacerEgalVirus` en a dix, toutes avec un script vivant. Les trois
+autres n'ont rien du tout et relèvent bien du mode plan. C'est le même symptôme
+pour deux causes opposées, et seul le tri les sépare.
+
 ## Modes d'échec connus
 
 - **La figure décorative.** Elle est belle, elle est citée, elle ne démontre rien.
@@ -337,6 +510,25 @@ Le résultat de ce mode s'écrit dans `fig_plan.md` **et** se rattache à la rem
   couper, ou fusionner avec la figure voisine qui, elle, démontre quelque chose.
 - **La figure qui redit la table.** Un barplot de sept valeurs qu'on veut lire au chiffre
   près. Remède : la table, et la place rendue sert une figure conceptuelle.
+- **L'idéation qui lit les légendes sans REGARDER les figures.** Une légende dit ce que la
+  figure est, rarement tout ce qu'elle porte. Cas vécu sur `animal_vs_human` : une candidate
+  « annoter le cladogramme avec les gènes lipidiques par nœud » a été retenue à l'étape 5,
+  puis classée sans objet le jour même — la figure les portait déjà, losanges compris, ce
+  que sa légende (« schematic cladogram showing the five annotated internal nodes ») ne
+  laissait pas deviner. **Regarder chaque figure existante avant l'étape 3**, avec `Read` sur
+  le fichier image : c'est le même geste que `/fig-check`, pour un coût de quelques minutes,
+  et il évite de proposer ce qui existe. Corollaire : ce qui manquait à cette figure n'était
+  pas l'annotation mais la **lisibilité**, un diagnostic qu'aucune lecture de légende ne rend.
+- **L'orpheline réintégrée sans enquête.** Le réflexe « le travail visuel est déjà fait,
+  il suffit de le raccorder » est faux dans une part des cas : **une figure orpheline est
+  orpheline pour une raison, et la raison est parfois qu'elle est fausse.** Cas vécu sur
+  `animal_vs_human` : une frise chronologique dormait sur le disque, l'article n'ayant
+  aucune figure temporelle ; elle portait un jalon nommé d'après un résultat que le
+  `CLAUDE.md` du projet déclare **invalidé**, et une chronologie que le manuscrit n'assume
+  nulle part. L'intégrer aurait réintroduit un résultat réfuté dans un manuscrit qui s'en
+  était débarrassé. **La première question sur une orpheline n'est jamais « peut-on
+  l'intégrer ? » mais « pourquoi ne l'a-t-on pas intégrée ? »** — chercher la réponse dans
+  le cahier, le `CLAUDE.md` du projet et le registre des claims avant de décider.
 - **Le schéma qui affirme plus que les données.** Une flèche entre deux boîtes est une
   affirmation causale. Un connecteur de frise entre un événement humain et un événement
   pathogène affirme une co-occurrence. Remède : ne tracer que ce qui est testé quelque part
@@ -355,9 +547,9 @@ Le résultat de ce mode s'écrit dans `fig_plan.md` **et** se rattache à la rem
 
 - `references/bestiaire.md` — les 25 archétypes en 7 familles : ce que chacun démontre, quand
   il s'impose, sa déclinaison MTBC, son outil, son piège propre.
-- `references/patrons_tikz.md` — cinq patrons TikZ compilés et inspectés (frise à double
-  registre, flux CONSORT, mécanisme IS, avant/après de topologie, tanglegram), plus les
-  pièges de compilation vécus.
+- `references/patrons_tikz.md` — six patrons TikZ compilés et inspectés (frise à double
+  registre, flux CONSORT, mécanisme IS, avant/après de topologie, tanglegram, saut d'hôte),
+  plus les pièges de compilation vécus, dont la liste de contrôle du préambule minimal.
 - `references/iconographie.md` — PhyloPic et Bioicons, résolution par taxid NCBI, chaîne
   SVG vers PDF vectoriel sans Inkscape, piège de la teinte, et le garde-fou de licence
   share-alike qui peut coûter une soumission.

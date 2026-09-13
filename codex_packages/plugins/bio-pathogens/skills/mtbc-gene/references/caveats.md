@@ -51,9 +51,20 @@ This file holds the operational quirks that only matter once a command misbehave
 - `pathway`: a gene that fails annotation lands in `missing`, the rest of the set still
   gets a payload; Atlas downtime empties the per-gene `top_features` / `cluster` blocks
   but pathway-level metadata is still returned.
-- `atlas`: the container behind `mtbc.gclab.fr` scales to zero, so the first request
-  after idle may be slow; the client retries transient failures. Unknown layers or genes
-  return a clean 4xx reported verbatim.
+- `atlas`: **since 2026-09-06 the atlas is served as STATIC files, not by a container**
+  (the serverless container degraded within ~90 s under even light traffic and could not
+  be stabilised by any sizing). Every API URL still answers, but two things changed and
+  `atlas_query.py` absorbs both:
+  - `GET /genes/{rv}/{layer}` is **not** frozen (3974 x 54 files). The client falls back to
+    the full record `GET /genes/{rv}` and reads the layer from its `layers` key, so
+    `get --layer` keeps working; the returned `description` is then empty.
+  - the search route no longer **filters** (a query string no longer selects the file
+    served): it returns the COMPLETE collection and says so via a `static_note` field. The
+    client re-applies `q`, `verdict` and `hypothetical` locally. `--has-layer` cannot be
+    honoured this way (summaries carry no layers) and exits with a clear message rather
+    than silently returning unfiltered rows.
+  Responses are served with `Content-Type: text/html` rather than `application/json`; the
+  body is still valid JSON. Unknown genes return a 404 reported verbatim.
 
 ## Scope limits
 

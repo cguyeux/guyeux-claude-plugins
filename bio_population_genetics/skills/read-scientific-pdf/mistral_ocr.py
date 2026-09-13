@@ -110,9 +110,46 @@ def ocr(path, pages=None, tables="markdown", confidence=False):
     })
 
 
+# L'API rend les tableaux a PART, dans `page["tables"]`, et laisse dans le
+# markdown une simple reference `[tbl-0.md](tbl-0.md)` vers un fichier qui
+# n'existe nulle part. Ne prendre que `p["markdown"]` PERD donc silencieusement
+# tout le contenu tabulaire. Constate sur le corpus lepoutre : 363 tableaux
+# evapores sur 85 dossiers, dont les bulletins n° 2 du casier judiciaire, qui
+# SONT des tableaux — une condamnation (ROMANO, cour d'Alger, 16 fevrier 1908,
+# blessures involontaires) etait ainsi invisible dans la transcription alors
+# qu'elle figurait sur l'image. Un tableau vide se lit « pas de condamnation »,
+# ce qui transforme une perte de donnees en affirmation fausse.
+_REF_TABLE = re.compile(r"^[ \t]*\[(tbl-[^\]]+)\]\([^)]*\)[ \t]*$", re.M)
+
+
+def inliner_tables(page):
+    """Remplace les references `[tbl-N.md](...)` par le contenu du tableau."""
+    md = page.get("markdown", "")
+    tables = {t["id"]: t.get("content", "") for t in (page.get("tables") or [])}
+    if not tables:
+        return md
+    vus = set()
+
+    def _sub(m):
+        tid = m.group(1)
+        vus.add(tid)
+        contenu = tables.get(tid)
+        if contenu is None:
+            return m.group(0)
+        return f"<!-- {tid} -->\n{contenu.strip()}"
+
+    md = _REF_TABLE.sub(_sub, md)
+    # Filet : un tableau que le markdown ne referencait pas est ajoute en fin de
+    # page plutot que perdu.
+    for tid, contenu in tables.items():
+        if tid not in vus and contenu.strip():
+            md += f"\n\n<!-- {tid} (non reference dans le markdown) -->\n{contenu.strip()}"
+    return md
+
+
 def to_markdown(resp):
     return "\n\n".join(
-        f"<!-- page {p['index'] + 1} -->\n{p['markdown']}" for p in resp["pages"]
+        f"<!-- page {p['index'] + 1} -->\n{inliner_tables(p)}" for p in resp["pages"]
     )
 
 

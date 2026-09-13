@@ -11,6 +11,19 @@ argument-hint: "<SIT number, octal code, or clade name>"
 user-invocable: true
 ---
 
+> [!WARNING]
+> **[2026-09-08] TABLES ABSENTES du serveur tblearn.** Ce skill interroge 1 objet(s) qui
+> n'existent plus depuis le remplacement du MCP TBannotator. Contrairement au filtre `system_name`,
+> ces requêtes ne rendent pas un ensemble vide : elles **lèvent une erreur** `relation does not exist`.
+>
+> | table citée ici | remplacer par | fondement |
+> |---|---|---|
+> | `tb_ncbi_biosample` | **mv_strain_metadata** | porte `sample_accession`, `host`, `isolation_source`, `country`, `latitude`, `longitude`, `collection_date_*` |
+>
+> Correspondances établies en comparant les colonnes, pas devinées. Détail et schéma complet :
+> `~/.agents/knowledge/tblearn-migration.md`.
+
+
 # SITVITweb (SITVIT2) : Usage Guide
 
 ## Overview

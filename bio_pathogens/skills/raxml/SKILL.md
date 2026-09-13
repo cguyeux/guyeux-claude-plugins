@@ -2,24 +2,72 @@
 name: raxml
 description: >-
   Academic research toolkit (Guyeux group, FEMTO-ST): peer-reviewed
-  phylogenomic inference with RAxML-NG, submitted and monitored via the
-  TBannotator MCP. Matrix, clustering and contextual-placement modes.
+  phylogenomic inference with RAxML-NG. Matrix, clustering and
+  contextual-placement modes. BROKEN PATH SINCE 2026-09-08: the job submission
+  and NJ tree tools it relied on (mcp__tbannotator__tool_submit_raxml_job,
+  tool_build_nj_tree) no longer exist -- the tblearn server that replaced
+  TBannotator exposes only SQL. Build the alignment by SQL, then run RAxML-NG
+  locally or on mp/mh via remote-compute. See ~/.agents/knowledge/tblearn-migration.md.
 
   Use when: building MTBC phylogenies, placing new strains on a reference
   tree, producing Newick files for iTOL annotation, running RAxML-NG for an
   article.
 argument-hint: "<strain_sql or lineage> [--mode matrix|clustering|contextual] [--model GTR+G]"
 user-invocable: true
-allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres, mcp__tbannotator__tool_submit_raxml_job, mcp__tbannotator__tool_build_nj_tree
+allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
 ---
+
+> [!WARNING]
+> **[2026-09-08] Les requêtes de ce skill qui filtrent sur un système de lignée MAISON ne rendent
+> plus rien.** Le MCP TBannotator est arrêté ; le serveur `tblearn` qui le remplace ne porte que
+> huit systèmes **externes** (Coll, Coscolla, Freschi, Lipworth, Napier, Palittapongarnpim,
+> Shitikov, Stucki). `system_name = 'guyeux'` et `system_name = 'tblearn'` y rendent **zéro ligne
+> sans lever d'erreur**, ce qu'un script lira comme « aucune souche ne satisfait le critère ».
+>
+> **Substitution, décidée le 2026-09-08 :** les lignées maison se lisent désormais dans la base
+> LOCALE `bdd/actuelle/`, qui fait déjà autorité selon
+> `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
+>
+> ```bash
+> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
+> python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
+> python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable
+> python3 $B/bdd_query.py strains <clade>       # souches d'un clade
+> ```
+>
+> `tblearn` reste utilisable pour tout le reste (SPDI, QC, métadonnées, RD, IS, CRISPR) et pour
+> **comparer** à une taxonomie externe, mais ce n'est plus la source des lignées maison. Toute
+> requête qui filtre sur `system_name` doit d'abord vérifier que le filtre a matché :
+> `SELECT system_name, count(*) FROM mv_strain_lineage WHERE system_name = '<x>' GROUP BY 1;`
+> — zéro ligne signifie « ce système n'existe pas ici », jamais « aucune souche ».
+>
+> Détail complet : `~/.agents/knowledge/tblearn-migration.md`.
+
+
+> [!WARNING]
+> **[2026-09-08] La voie de soumission décrite plus bas n'a plus de serveur derrière elle.**
+> `mcp__tbannotator__tool_submit_raxml_job` et `mcp__tbannotator__tool_build_nj_tree` ont disparu
+> avec l'ancien MCP TBannotator (endpoint mort, HTTP 404). Le serveur `tblearn` qui le remplace
+> n'expose que `tool_query_postgres` et `tool_get_schema`, donc du SQL en lecture seule et rien
+> d'autre : ni construction d'arbre NJ, ni soumission de job.
+>
+> Ce qui reste valable ici : la sélection des souches et la construction de la matrice binaire par
+> requête SQL, les conventions de modèle (BIN+G pour les alignements SNP 0/1) et l'annotation iTOL.
+> Ce qui doit changer : l'exécution de RAxML-NG passe désormais en local ou sur `mp`/`mh` via le
+> skill `remote-compute`, et le skill `bdd-bridge` (`phylo_job.py`) fait déjà exactement cela depuis
+> la base locale, sans dépendre d'aucun serveur distant.
+>
+> Détail de la migration : `~/.agents/knowledge/tblearn-migration.md`.
 
 # RAxML-NG : Inférence phylogénétique MTBC
 
 > [!TIP]
-> **Trois routes de calcul, dans cet ordre.** (1) Ce skill soumet le job **côté serveur TBannotator**
-> (`tool_submit_raxml_job`) : aucun transfert, c'est la bonne route quand les souches sont déjà en
-> base. (2) `mp` porte `raxmlHPC` dans `/usr/bin` (version ancienne, pas `raxml-ng`) et n'a aucune
-> limite de temps. (3) `mh` (Slurm) pour du multi-nœuds : **`raxml-ng` 2.0.2 y est prêt** dans
+> **Trois routes de calcul, dans cet ordre.** (1) **Exécution locale** via `phylo_job.py run` du
+> skill `bdd-bridge` : aucun transfert, la base est déjà sur le disque, et c'est la bonne route
+> jusqu'à quelques milliers de souches. (La route historique, un job soumis au serveur TBannotator,
+> n'existe plus : ce serveur est arrêté depuis le 2026-09-08.) (2) `mp` porte `raxmlHPC` dans
+> `/usr/bin` (version ancienne, pas `raxml-ng`) et n'a aucune limite de temps. (3) `mh` (Slurm) pour du multi-nœuds : **`raxml-ng` 2.0.2 y est prêt** dans
 > `/Work/Users/cguyeux/envs/phylo/bin`, mais il **exige**
 > `LD_LIBRARY_PATH=/Work/Users/cguyeux/envs/phylo/lib` (le `libstdc++` de Rocky 8 est trop ancien ;
 > ni `micromamba run` ni `micromamba activate` ne suffisent).
@@ -49,9 +97,12 @@ Avant de lancer un job, **poser ces questions** à l'utilisateur :
    - `GTR+G` (défaut, recommandé pour MTBC)
    - `GTR+G4`, `GTR+I+G` pour plus de flexibilité
 
-4. **NJ rapide d'abord ?**
-   - Recommandé pour valider la sélection de souches avant un long job RAxML
-   - `tool_build_nj_tree` : résultat en quelques minutes vs heures/jours pour RAxML
+4. **Validation rapide de la sélection avant un long calcul ?**
+   - La construction d'arbre NJ côté serveur n'existe plus (`tool_build_nj_tree`, arrêté le
+     2026-09-08). Deux substituts, tous deux locaux : `bdd_query.py denominator <clade>` pour
+     vérifier l'effectif réellement exploitable, et `/tsne-hdbscan` sur la matrice de distances
+     pour voir la structure en quelques minutes au lieu d'attendre l'arbre.
+   - Et d'abord `/phylo-forest`, pour savoir si l'arbre existe déjà.
 
 5. **Filtrage des variants ?**
    - `all` : tous les variants (défaut)
@@ -59,153 +110,91 @@ Avant de lancer un job, **poser ces questions** à l'utilisateur :
    - `no_core0_excl0` : exclure aussi les exclus du core
    - `no_char0` : exclure les variants non caractéristiques
 
-## Phase 2 : Validation rapide (optionnel, recommandé)
+## Phase 2 : Alignement binaire
 
-### Neighbor-Joining exploratoire
-
-```
-tool_build_nj_tree(
-  strain_sql = "SELECT strain_id AS strain_id FROM mv_strain_classification WHERE system_name='guyeux' AND lineage_code LIKE '4.15%'",
-  max_strains = 5000,
-  remove_invariant = true
-)
-```
-
-**Retour** : Newick string. Vérifier :
-- Le nombre de feuilles correspond au nombre attendu de souches
-- Pas de branche aberrante (contamination, mauvaise classification)
-- La topologie générale est plausible
-
-Si le NJ est satisfaisant → lancer RAxML. Sinon, ajuster la sélection.
-
-## Phase 3 : Soumission RAxML-NG
-
-### Mode 1 : Matrix (standard)
-
-```
-tool_submit_raxml_job(
-  strain_sql = "SELECT strain_id AS strain_id FROM mv_strain_classification WHERE system_name='guyeux' AND lineage_code LIKE '4.15%'",
-  model = "GTR+G",
-  starting_trees = "pars{2},rand{2}",
-  seed = 42
-)
-```
-
-**Retour** : `job_id` (entier). Le job tourne en arrière-plan sur le serveur.
-
-### Mode 2 : Clustering (gros jeux)
-
-Nécessite un `clustering_job_id` d'un job de clustering HDBSCAN déjà terminé.
-
-```
-tool_submit_raxml_job(
-  clustering_job_id = 42,
-  model = "GTR+G",
-  hdbscan_min_cluster_size = 50,
-  hdbscan_min_samples = 10,
-  cluster_selection_epsilon = 0.5
-)
-```
-
-Crée un job RAxML par cluster identifié. Utile pour >5000 souches.
-
-### Mode 3 : Contextual (placement sur arbre existant)
-
-```
-tool_submit_raxml_job(
-  strain_sql = "SELECT strain_id AS strain_id FROM mv_strain_classification WHERE system_name='guyeux' AND lineage_code = '4.15.1'",
-  reference_raxml_job_id = 100,
-  use_clustering = true,
-  max_query_strains = 1000
-)
-```
-
-Place les souches de la requête sur l'arbre de référence (job 100) en utilisant `--tree-constraint`.
-
-## Phase 4 : Suivi du job
-
-### Polling via SQL
-
-```sql
-SELECT id, status, strain_count, snp_count, model,
-       created_at, started_at, completed_at, error_message
-FROM job_raxml
-WHERE id = {job_id};
-```
-
-| Status | Signification |
-|--------|--------------|
-| `pending` | En attente de traitement |
-| `building_matrix` | Construction de la matrice SNP |
-| `running` | RAxML-NG en cours d'exécution |
-| `completed` | Terminé avec succès |
-| `failed` | Erreur (voir `error_message`) |
-
-### Durée estimée
-
-| Nombre de souches | Durée typique |
-|-------------------|---------------|
-| < 100 | 5-30 min |
-| 100-500 | 30 min - 2h |
-| 500-2000 | 2-12h |
-| 2000-5000 | 12-48h |
-| > 5000 | Utiliser le mode clustering |
-
-### Script de monitoring
+L'alignement se construit depuis la base LOCALE `bdd/actuelle/`, avec `phylo_job.py` du skill
+`bdd-bridge`. Il n'y a plus de matrice distante à demander ni de job à faire construire.
 
 ```bash
-python3 scripts/raxml_monitor.py --job-id {JOB_ID} \
-  --poll-interval 60 --output tree.nwk --timeout 86400
+B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
+
+python3 $B/phylo_job.py --out /tmp/arbre_L4.8 --min-frac 0.02 align L4.8
 ```
 
-Le script poll le statut et télécharge automatiquement le Newick quand le job est terminé.
+`--min-frac` fixe la fréquence minimale d'un variant pour entrer dans l'alignement ; c'est le
+paramètre qui décide de la taille de la matrice, donc du temps de calcul. Contrôler ensuite le
+nombre de souches et de sites retenus AVANT de lancer l'inférence : un alignement de trois sites
+produira un arbre, et il ne voudra rien dire.
 
-## Phase 5 : Récupération du Newick
-
-### Téléchargement
+Pour connaître l'effectif exploitable d'un clade avant de commencer, et ne pas confondre nombre de
+répertoires et nombre de souches réellement utilisables :
 
 ```bash
-# Via le script
-python3 scripts/raxml_monitor.py --job-id {JOB_ID} --output tree.nwk
-
-# Via curl (URL directe)
-curl -o tree.nwk "https://tblearn.tbannotator.ideev.universite-paris-saclay.fr/mcp/download/tree_newick/{JOB_ID}"
+python3 $B/bdd_query.py clades                 # les 760 clades et leurs effectifs
+python3 $B/bdd_query.py denominator L4.8       # garde-fou de dénominateur
 ```
 
-### Vérification
+## Phase 3 : Exécution de RAxML-NG
 
-```python
-import re
-with open("tree.nwk") as f:
-    newick = f.read()
-leaf_ids = re.findall(r'([A-Z]{3}\d+)', newick)
-print(f"{len(leaf_ids)} feuilles dans l'arbre")
+Deux voies, selon la taille. `detect-raxml` dit d'abord si un binaire est disponible localement.
+
+```bash
+python3 $B/phylo_job.py detect-raxml
+
+# petit à moyen jeu : exécution locale
+python3 $B/phylo_job.py --out /tmp/arbre_L4.8 --threads 8 --seed 12345 run L4.8
+
+# gros jeu : paquet SLURM portable, à déposer sur mh
+python3 $B/phylo_job.py --out /tmp/arbre_L4.8 --bs 100 submit L4.8
 ```
 
-## Phase 6 : Enchaînement
+Le modèle reste **BIN+G** pour les alignements SNP binaires 0/1, conformément aux conventions du
+dépôt ; c'est la valeur par défaut et il n'y a pas de raison de la changer sans motif écrit.
 
-Après récupération du Newick, proposer automatiquement :
+Pour le mode `submit`, le paquet produit est autonome et se transfère sur `mh` selon le skill
+`remote-compute` (VPN requis, lancé par l'utilisateur avec `sudo vpn up`). Le suivi est celui de
+SLURM (`squeue`, `sacct`), pas une table de jobs distante.
+
+## Phase 4 : Récupération et contrôle
+
+Le Newick est écrit dans le répertoire `--out`. Il n'y a plus ni téléchargement ni URL à composer.
+Contrôler avant toute exploitation :
+
+- le nombre de feuilles correspond au nombre de souches attendu ;
+- aucune branche aberrante isolant une souche unique à très longue distance, signal classique de
+  contamination ou de couverture défaillante — passer la souche suspecte au skill `strain-qc` ;
+- la topologie est cohérente avec les marqueurs connus du clade, à croiser avec
+  `bdd_query.py synapo <clade>`.
+
+## Phase 5 : Enchaînement
 
 1. **`/itol`** : annoter l'arbre (coloration par lignée, strips de métadonnées)
 2. **`/thd`** : calculer le THD et le superposer en heatmap
 3. **`/tsne-hdbscan`** : comparer la structure de clustering avec la phylogénie
+4. **`/phylo-forest`** : verser l'arbre à la forêt, pour qu'il soit retrouvable et comparable
 
-## Lister les jobs existants
+Et avant de lancer quoi que ce soit, l'inverse : **`/phylo-forest` d'abord**, pour vérifier qu'un
+arbre équivalent n'existe pas déjà. C'est la raison d'être de ce skill.
 
-```sql
--- Derniers jobs RAxML
-SELECT id, status, strain_count, snp_count, model,
-       created_at, completed_at
-FROM job_raxml
-ORDER BY created_at DESC
-LIMIT 20;
+## Ce que la migration du 2026-09-08 a changé, et ce qu'elle a résolu
 
--- Jobs terminés avec succès pour une lignée
-SELECT r.id, r.strain_count, r.completed_at
-FROM job_raxml r
-WHERE r.status = 'completed'
-ORDER BY r.completed_at DESC;
-```
+L'ancienne voie passait par `tool_submit_raxml_job` et `tool_build_nj_tree` du MCP TBannotator, tous
+deux disparus avec ce serveur. Les pièges qui lui étaient propres sont donc caducs, et l'un d'eux
+méritait mieux qu'une note : la soumission distante **dédoublonnait silencieusement** sur
+`strain_hash` + modèle **en ignorant la graine**, si bien que deux soumissions du même jeu avec des
+`seed` différents rendaient le même job au lieu de deux. Cela rendait impossible toute mesure de
+bruit d'inférence, c'est-à-dire la stabilité topologique entre exécutions identiques, sur un jeu
+figé.
+
+**L'exécution locale lève cette limite** : `--seed` y est réellement honoré, et des réplicats à
+graines contrôlées redeviennent possibles. Ce qui était consigné comme un blocage sans contournement
+propre est résolu par le changement de voie, non par un correctif.
+
+Deuxième point caduc, à ne pas rechercher dans les nouvelles sorties : `snp_matrix_job_id`
+n'identifiait pas un alignement particulier mais une matrice nucléotidique globale, ce qui trompait
+quiconque essayait de figer un alignement entre deux soumissions. Ici l'alignement est un fichier,
+sur le disque, et il se fige en le gardant.
 
 ## Paramètres RAxML-NG
 
