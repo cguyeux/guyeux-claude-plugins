@@ -1,23 +1,27 @@
 ---
 name: aap
 description: >
-  Gère tout le cycle d'un appel à projets, de l'arrivée de l'appel à la décision du
-  financeur, pour ANR (AAPG, LabCom), ANRS MIE, ERC et Horizon Europe, IUF, Interreg,
-  PHC (CEDRE, Maghreb, Toubkal), AUF, ARS, Région, UMLP (Sunergia), Smart MI, OPCO,
-  EDIH. Quatre gestes : instruire un appel qui arrive et rendre un verdict go/no-go
-  argumenté avant d'écrire quoi que ce soit ; amorcer un dossier pré-rempli des
-  informations administratives récurrentes (SIRET, RNSR, signataires, coûts, track
-  record) ; relire un brouillon contre la grille de critères de l'appel ; enregistrer
-  la décision et en tirer l'enseignement réutilisable. Tient le registre CENTRAL des
-  candidatures, seul endroit d'où se voient la limite d'implication de l'ANR, les
-  clauses de non-cumul et les mandats qui interdisent un dépôt. Utiliser quand
-  l'utilisateur reçoit ou mentionne un appel à projets, demande s'il faut candidater,
-  prépare ou dépose un dossier de financement, cherche une information administrative
-  pour un formulaire, veut savoir où en sont ses candidatures, ou reçoit une réponse
-  du financeur. Trigger phrases : "appel à projets", "faut-il candidater", "on dépose
-  ou pas", "monter un dossier ANR", "candidature IUF", "où en sont mes dossiers",
-  "j'ai reçu un mail pour un AAP", "quel est le SIRET", "on a été refusé", "on est
-  lauréat", "deadline de l'appel".
+  Gère tout le cycle d'un appel à projets, de la veille sur les appels ouverts à la
+  décision du financeur, pour ANR (AAPG, LabCom), ANRS MIE, ERC et Horizon Europe,
+  IUF, Interreg, PHC (CEDRE, Maghreb, Toubkal), AUF, ARS, Région, UMLP (Sunergia),
+  Smart MI, OPCO, EDIH. Cinq gestes : repérer les appels ouverts ou à venir sur des
+  portails agrégateurs (sujet et date limite, sans instruire) ; instruire un appel
+  qui arrive et rendre un verdict go/no-go argumenté avant d'écrire quoi que ce
+  soit ; amorcer un dossier pré-rempli des informations administratives récurrentes
+  (SIRET, RNSR, signataires, coûts, track record) ; relire un brouillon contre la
+  grille de critères de l'appel ; enregistrer la décision et en tirer l'enseignement
+  réutilisable. Tient le registre CENTRAL des candidatures, seul endroit d'où se
+  voient la limite d'implication de l'ANR, les clauses de non-cumul et les mandats
+  qui interdisent un dépôt. Utiliser quand l'utilisateur reçoit ou mentionne un appel
+  à projets, demande s'il faut candidater, cherche des sources de financement ou des
+  appels ouverts sur un sujet, prépare ou dépose un dossier de financement, cherche
+  une information administrative pour un formulaire, veut savoir où en sont ses
+  candidatures, ou reçoit une réponse du financeur. Trigger phrases : "appel à
+  projets", "faut-il candidater", "on dépose ou pas", "monter un dossier ANR",
+  "candidature IUF", "où en sont mes dossiers", "j'ai reçu un mail pour un AAP",
+  "quel est le SIRET", "on a été refusé", "on est lauréat", "deadline de l'appel",
+  "quels appels sont ouverts", "cherche-moi un financement pour", "y a-t-il un AAP
+  sur", "fais une veille sur les appels à projets", "sources de financement".
 ---
 
 # Appels à projets — instruire, décider, déposer, capitaliser
@@ -43,6 +47,8 @@ Tout vit dans `~/.agents/knowledge/funding/`, central et jamais par dossier.
 
 ```bash
 SK=~/docs/codes/claude_plugins/redac/skills/aap/scripts
+python3 $SK/veille.py search --terms "..." --status open           # sujet + échéance
+python3 $SK/veille.py due --days 60                                 # clôtures proches, tous portails ouverts
 python3 $SK/calls.py list --instructed          # dispositifs réellement instruits
 python3 $SK/calls.py show anrs-mie-generique    # fiche complète, blockers en évidence
 python3 $SK/calls.py due --days 120             # clôtures qui approchent
@@ -53,9 +59,28 @@ python3 $SK/admin_profile.py get siret          # valeur prête à coller
 python3 $SK/admin_profile.py missing            # ce qui reste à obtenir, et où
 ```
 
+## Geste 0 — repérer un appel
+
+Avant même qu'un mail de financeur n'arrive : `veille.py search` interroge un portail
+agrégateur (`appelsprojetsrecherche.fr` pour l'instant, voir `references/sources.md`
+pour le contrat et pour ajouter une autre source) et affiche, par résultat, le sujet
+et la date limite — jamais plus, ce n'est pas une instruction.
+
+```bash
+python3 $SK/veille.py search --terms "sécurité civile" --status open,upcoming
+python3 $SK/veille.py due --days 90 --terms "intelligence artificielle"
+```
+
+Un résultat qui mérite d'aller plus loin passe au geste 1, avec l'URL trouvée ici
+comme point de départ pour lire le règlement complet — la veille ne dit jamais si un
+appel est pertinent ou éligible, elle dit seulement qu'il existe et jusqu'à quand.
+Un `status=upcoming` n'a le plus souvent aucune date publiée (pré-annonce) : c'est
+normal, pas un défaut d'extraction.
+
 ## Geste 1 — un appel arrive
 
-Déclenché par un mail du financeur, un relais du directeur d'unité, ou un lien.
+Déclenché par la veille du geste 0, un mail du financeur, un relais du directeur
+d'unité, ou un lien.
 
 1. Lire le règlement en entier. Pas le flyer, le règlement. Les verrous d'éligibilité
    n'apparaissent jamais dans le résumé.

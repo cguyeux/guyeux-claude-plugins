@@ -292,6 +292,17 @@ iqtree2 -s alignment.phy -m GTR2+G \
 - `-r a` : recherche automatique de la racine sur toutes les branches
 - `-u 0` : branches de longueur minimale 0 dans l'arbre temporel
 
+> [!WARNING]
+> **Outgroup d'une AUTRE lignée/espèce → `--date-no-outgroup` obligatoire.** Si l'outgroup passé à
+> `-o` appartient à une autre lignée du complexe (ex. *M. caprae* pour dater un panel *M. bovis*), il
+> porte des dates de collecte modernes comme l'ingroup mais sa branche mesure une divergence
+> inter-lignées bien plus ancienne que l'horloge intra-espèce appliquée à l'ingroup : LSD2 échoue
+> sec (`Error: There's conflict or not enough signal...`) à l'étape « Estimating the root position on
+> the branch defined by given outgroups », de façon identique à plusieurs taux (signe d'un conflit
+> d'ORDRE, pas d'échelle) — `--date-outlier` ne le corrige pas. Mécanisme, diagnostic complet et
+> option `--date-no-outgroup` : skill `iqtree-lsd2`, section *Conflit outgroup / ingroup sur une
+> horloge différente*.
+
 ### Résultat de référence : Pinnipedii (validé 2026-04-11)
 
 | Paramètre | Valeur | IC 95% |

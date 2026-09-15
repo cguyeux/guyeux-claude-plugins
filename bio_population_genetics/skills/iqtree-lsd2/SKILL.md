@@ -72,7 +72,14 @@ quick-turnaround time-scaled trees used in **exploratory analysis**.
   handling)
 - **Main site**: `https://iqtree.github.io/` (IQ-TREE 3 / ongoing) and
   `http://www.iqtree.org/` (classical)
+- **Dating tutorial** (source of the `--date-*` options documented below,
+  checked 2026-09-14): `https://iqtree.github.io/doc/Dating`. Some `--date-*`
+  flags exist only in `iqtree2 --help` / the `iqtree2` man page and are
+  **absent from this tutorial page** — flagged explicitly where relevant.
 - **GitHub**: `https://github.com/iqtree/iqtree2`
+- **LSD2 GitHub** (source for the standalone `lsd2` options table below):
+  `https://github.com/tothuhien/lsd2`. No PDF manual or extended doc file in
+  the repo; the README points to `lsd2 -h` for the exhaustive option list.
 - **License**: **GPL**
 - **Current versions** (verified April 2026 via GitHub API):
   - **`iqtree/iqtree2`** → **v2.4.0** (Feb 2025), stable line
@@ -240,14 +247,137 @@ lsd2 -i mtbc.treefile -d dates.tsv -o mtbc_lsd2 -f 100 -c
 ### Outlier detection
 
 `--date-outlier 3` flags tips whose dates are inconsistent with the
-tree topology by more than 3 standard deviations. Outliers are
-usually:
+tree topology by more than 3 standard deviations (Z-score cutoff on
+the root-to-tip residual). It is documented on the official tutorial
+page (`iqtree.github.io/doc/Dating`, section *Full list of LSD2
+options*) as `--date-outlier NUM` — "Z-score cutoff to remove outlier
+tips/nodes". Outliers are usually:
 - Modern contamination in an ancient sample
 - Misidentified sequencing dates
 - Real accelerated / decelerated lineages
 
 Report any detected outliers in the Methods and investigate before
-removing.
+removing. **`--date-outlier` self-removes ingroup tips before LSD2
+runs** — it replaces a manual exclusion list (accessions identified
+beforehand by a separate TreeTime run) that does not generalise across
+a multi-clade panel: point it at the same panel used for the final
+dating run instead of re-deriving a fixed blacklist per subset.
+
+> [!WARNING]
+> **`--date-outlier` cannot fix a structural conflict at the root — only
+> individual point outliers.** The Z-score residual it computes presupposes
+> that an initial clock fit is already achievable; if the failure is a
+> genuine ordering conflict (an ancestor forced younger than a descendant,
+> typically from an outgroup on an incompatible timescale, see
+> `--date-no-outgroup` below), no per-tip removal threshold will fix it,
+> because the diagnostic that would flag the guilty tip cannot itself be
+> computed before the conflict is resolved. Verified case (Bovis_full,
+> 2026-09-14): an IQR×3 filter on 1633 root-to-tip residuals found only 2
+> candidate outliers, and removing them changed nothing — the true cause was
+> the outgroup's dates (see below), identical failure at three widely
+> different fixed rates (0.147 / 0.35 / 0.65 SNP/genome/year), which itself
+> is the tell that the problem is a temporal *ordering* conflict rather than
+> a scale/rate problem.
+
+### Conflit outgroup / ingroup sur une horloge différente : `--date-no-outgroup`
+
+**Symptôme.** `iqtree2 --date ... -te tree.nwk -o outgroup1,outgroup2 ...`
+échoue net avec :
+
+```
+Error: There's conflict or not enough signal in the input temporal constraints.
+```
+
+au stade précis, visible dans le log, « Estimating the root position on the
+branch defined by given outgroups ». Le message ne dit pas quel tip est en
+cause, et l'échec survient **après** l'étape la plus coûteuse du calcul
+(l'optimisation ML des longueurs de branche sous topologie fixée, `-te`) —
+voir la technique de diagnostic par reprise de checkpoint ci-dessous pour
+itérer sans repayer cette étape à chaque essai.
+
+**Cause typique : un outgroup emprunté à une autre lignée/espèce, daté sur
+la même échelle de collecte que l'ingroup.** Un outgroup phylogénétiquement
+éloigné (ex. *M. caprae* utilisé pour enraciner et dater un panel
+*M. bovis*) porte des dates de COLLECTE modernes comme n'importe quel tip de
+l'ingroup, mais sa branche mesure une divergence INTER-lignées bien plus
+ancienne que ce que l'horloge INTRA-espèce appliquée à l'ingroup peut
+représenter. Verser ses dates dans la même contrainte temporelle que
+l'ingroup force donc un ordre impossible à la racine. Cas vérifié
+(`Bovis_full/analyses/phaseP13_3_lsd2_squelette.py`, 2401 tips, outgroup
+*M. caprae* 12 tips, 2026-09-14) : l'échec est **identique au mot près** à
+trois taux très éloignés testés isolément, ce qui prouve d'emblée un
+conflit d'ordre temporel, pas un problème d'échelle.
+
+**Correctif** : `--date-no-outgroup`. D'après le manpage IQ-TREE2 (option
+absente de la page tutoriel `iqtree.github.io/doc/Dating`, trouvée en
+creusant `iqtree2 --help`) :
+
+```
+--date-no-outgroup    Exclude outgroup from time tree
+```
+
+Comportement observé sur le cas ci-dessus (`clade_dating.py::dater()`,
+`lineage_navigator/`) : la topologie garde l'outgroup pour placer la racine
+(`-o`/`-g`, comme d'habitude), mais ses PROPRES dates de tips sont retirées
+de la contrainte temporelle appliquée par LSD2. Le calcul est passé du
+premier coup une fois cette option ajoutée, sans autre changement. La
+description terse du `--help` ("exclude outgroup from time tree") est plus
+ambiguë que ce comportement observé — vérifier sur `timetree.nwk`/`.nex` en
+sortie si l'outgroup y figure encore avant de présumer l'un ou l'autre sur
+un nouveau jeu de données.
+
+**Règle transposable** : avant de dater un panel avec un outgroup emprunté à
+une AUTRE lignée ou espèce (nécessaire à la topologie, pas forcément à la
+même échelle temporelle que le clade qu'on date), retirer PAR PRINCIPE ses
+dates de la contrainte temporelle plutôt que de les y laisser par défaut.
+L'échec, quand il vient de là, ne pointe jamais vers l'outgroup dans le
+message d'erreur, et se distingue mal d'un problème d'outlier individuel
+sans avoir isolé les deux hypothèses par élimination (voir l'encadré
+`--date-outlier` ci-dessus). Détail complet, mesures et code de production :
+`~/.agents/knowledge/bioinformatics.md` (entrée 2026-09-14, « LSD2 …
+échoue sec … `--date-no-outgroup` corrige ») et
+`lineage_navigator/analyses/clade_dating.py::dater()` (paramètres
+`date_outlier`, `date_no_outgroup`).
+
+### Diagnostic rapide par reprise de checkpoint (sans `-redo`)
+
+Relancer IQ-TREE **sans** `-redo` sur le même `--prefix` reprend directement
+à l'étape de dating (LSD2) sans repayer l'optimisation ML des longueurs de
+branche sous topologie fixée (`-te`), qui est l'étape la plus coûteuse.
+Mesuré sur un panel de 2401 tips / 61959 colonnes : ~5 minutes de
+branch-length optimization contre 2-3 secondes pour rejouer LSD2 seul depuis
+le checkpoint. Méthode de débogage standard pour tout script de datation
+IQ-TREE+LSD2, pas seulement pour le cas outgroup ci-dessus : elle permet de
+tester plusieurs hypothèses (outliers, `--date-no-outgroup`, plusieurs taux
+via `--date-options "-w fichier_taux"`) en quelques secondes chacune plutôt
+qu'en plusieurs minutes. **Attention** : ceci ne fonctionne que si
+l'alignement, la topologie (`-te`) et le modèle sont inchangés d'un run à
+l'autre — tout run avec `-redo` explicite ou une entrée modifiée repaie
+l'étape complète.
+
+### Autres options `--date-*` et LSD2 repérées mais non exploitées ici
+
+Non intégrées faute de cas d'usage concret actuel dans le pipeline MTBC,
+listées pour mémoire (sources : `iqtree.github.io/doc/Dating`, manpage
+`iqtree2`, `github.com/tothuhien/lsd2` README + `lsd2 -h`) :
+
+| Option | Where | Description (verbatim quand citée) |
+|---|---|---|
+| `--date-root STRING` | IQ-TREE | Root date as a real number or YYYY-MM-DD |
+| `--clock-sd NUM` | IQ-TREE | Std-dev for lognormal relaxed clock (default: 0.2) — équivalent LSD2 `-q` |
+| `--dating mcmctree` (IQ-TREE 3) | IQ-TREE | Bascule sur MCMCtree (datation bayésienne PAML) au lieu de LSD2 : workflow en 3 étapes (arbre ML → génération de la matrice Hessienne → run MCMCtree), clock models EQUAL/IND/CORR, calibrations fossiles sur nœuds internes. Alternative rigoureuse mais lourde à LSD2 ; se recouvre avec `beast2-dating`/`beast2-phylogeography` côté bayésien complet. |
+| `-c` (LSD2 natif) | LSD2 standalone | Contraintes temporelles (activées par défaut) |
+| `-v 0\|1\|2` (LSD2 natif) | LSD2 standalone | Mode de variance des longueurs de branche ; ce skill et `molecular-clock` n'utilisent que `-v 1` |
+| `-e NUM` (LSD2 natif) | LSD2 standalone | Seuil Z-score outlier — équivalent natif LSD2 de `--date-outlier`, accessible via `--date-options "-e N"` si l'on veut un seuil différent sans repasser par le flag IQ-TREE |
+| `-u`, `-U` (LSD2 natif) | LSD2 standalone | Longueur de branche minimale, interne / externe, dans l'arbre chronologique produit |
+| `-S NUM` (LSD2 natif) | LSD2 standalone | Seuil de valeur de support en dessous duquel une branche est traitée comme non résolue |
+| `-l NUM` (LSD2 natif) | LSD2 standalone | Seuil de longueur de branche non-informative (défaut 0.5/longueur de séquence) |
+| `-G` / `-k` (LSD2 natif) | LSD2 standalone | Suppression vs conservation explicite des outgroups dans l'arbre chronologique final — distinct de `--date-no-outgroup` côté IQ-TREE (celui-ci agit sur la contrainte temporelle, pas sur la présence dans l'arbre) |
+| `-R NUM` (LSD2 natif) | LSD2 standalone | Facteur d'arrondi des dates estimées |
+| Fichier de calibration ancestrale (IQ-TREE) | IQ-TREE | Format alternatif à `mrca(...) b(min,max)` : `taxon1,taxon2<TAB>-50` (une valeur ponctuelle par groupe de tips, pas d'espace dans la liste), utilisé avec `--date-tip 0` |
+
+Aucun de ces mécanismes n'a été mesuré sur un jeu MTBC par ce skill ; les
+introduire demande une validation dédiée avant citation en Methods.
 
 ## Workflows
 
@@ -368,7 +498,7 @@ iqtree2 -s mtbc_aln.fasta -p mtbc.partitions.nex -m MFP+MERGE -B 1000
 | **`bayesian-skyline`** | Use IQ-TREE tree as starting tree for BEAST2 skyline analysis |
 | **TBannotator MCP** | Source of modern MTBC sequences and dates for `--date` input |
 | **`spaam-ancient-metagenome-dir`** | Ancient tips for tip-calibrated LSD2 dating |
-| **`molecular-clock` skill** | Catalogue of MTBC TMRCA-as-prior constraints (see section *Contraintes temporelles dérivées de phylogénies récentes*). Format LSD2 `-g constraints.txt` lines provided per sub-clade (e.g. L4.6.2.2 Madagascar `b(1750,1900)`) |
+| **`molecular-clock` skill** | Catalogue of MTBC TMRCA-as-prior constraints (see section *Contraintes temporelles dérivées de phylogénies récentes*). Format LSD2 `-g constraints.txt` lines provided per sub-clade (e.g. L4.6.2.2 Madagascar `b(1750,1900)`). Also see its per-lineage outgroup/calibration strategy table when choosing an outgroup across lineages — cross-check against `--date-no-outgroup` above if that outgroup sits on a different timescale. |
 | **snippy, MTBseq, nf-core/bactmap** | Reference-based alignment pipelines feeding IQ-TREE |
 | **FigTree / Icytree / baltic** | Tree visualisation |
 | **gotree / nw_utils** | Newick manipulation utilities |

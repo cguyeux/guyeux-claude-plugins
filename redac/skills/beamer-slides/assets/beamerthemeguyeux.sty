@@ -186,12 +186,28 @@
 
 % --- 1. Slide de rupture : une phrase, pleine couleur, rien d'autre. -----
 % \begin{sliderupture} Le pathogene est une patriline sociale. \end{sliderupture}
+%
+% PIEGE MESURE (2026-09-14) : l'option [standout] de metropolis appelle en
+% interne \setkeys{beamerframe}{noframenumbering}, donc \c@framenumber n'est
+% PAS incremente pour cette frame -- mais le patron de pied de page (herite
+% de metropolis, non conditionne par standout) continue de s'afficher, avec
+% le numero (perime, celui de la frame precedente) et le total. Resultat vu
+% a l'ecran : deux frames consecutives affichant le meme "n/N", suivies d'un
+% saut. Corrige en masquant le pied de page pendant la duree de la frame de
+% rupture, ce qui est de toute facon coherent avec sa nature (page hors du
+% compte des slides du corps, cf. grammaire_slides.md) : aucun numero errone
+% ne peut plus etre montre puisqu'aucun n'est montre.
 \newenvironment{sliderupture}[1][gxprofond]{%
+  \begingroup
+  \setbeamertemplate{footline}{}% doit preceder \begin{frame} : le gabarit est
+                                 % fige au calcul de la tete/pied de la frame,
+                                 % trop tard si pose dans le corps (mesure).
   \setbeamercolor{palette primary}{bg=#1, fg=gxcreme}%
   \begin{frame}[standout]%
   \centering\Large
 }{%
   \end{frame}%
+  \endgroup
 }
 
 % --- 2. Grand chiffre : le chiffre porte, la phrase explique. ------------
