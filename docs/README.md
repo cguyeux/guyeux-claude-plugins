@@ -1,6 +1,6 @@
 # Documentation des skills de recherche du groupe Guyeux
 
-Cette collection outille les travaux du groupe Guyeux (FEMTO-ST), dont la phylogénomique évolutive du complexe *Mycobacterium tuberculosis* (MTBC), la génétique des populations et la génomique bactérienne hors MTBC. Elle réunit **185 noms de skills actifs** sur **15 plugins**. Chaque skill est décrit par sa raison d'être et ses compétences ; les skills partagés entre plugins (symlinks) sont documentés une seule fois, sur la page de leur plugin d'origine.
+Cette collection outille les travaux du groupe Guyeux (FEMTO-ST), dont la phylogénomique évolutive du complexe *Mycobacterium tuberculosis* (MTBC), la génétique des populations et la génomique bactérienne hors MTBC. Elle réunit **186 noms de skills actifs** sur **15 plugins**. Chaque skill est décrit par sa raison d'être et ses compétences ; les skills partagés entre plugins (symlinks) sont documentés une seule fois, sur la page de leur plugin d'origine.
 
 [Retour au README du dépôt](../README.md)
 
@@ -34,7 +34,7 @@ Les plugins `maboss` et `droit` relèvent d'autres domaines et sont documentés 
 
 | Plugin | Rôle dans un projet M. tuberculosis | Skills propres |
 |--------|-------------------------------------|----------------|
-| [mtbc](mtbc.md) | Academic research toolkit for computational genomic studies of the Mycobacterium tuberculosis complex (MTBC): phylogenomics, comparative genomics,… | 41 |
+| [mtbc](mtbc.md) | Academic research toolkit for computational genomic studies of the Mycobacterium tuberculosis complex (MTBC): phylogenomics, comparative genomics,… | 42 |
 | [bacteria](bacteria.md) | Academic research toolkit for comparative genomics of bacteria beyond the Mycobacterium tuberculosis complex stricto sensu: non-tuberculous mycobac… | 18 |
 | [popgen](popgen.md) | Academic research toolkit for ancient and modern human population genetics, archaeology, paleoclimate, linguistics and historical migration corpora… | 26 |
 | [ia](ia.md) | Machine learning et data science au service des analyses MTBC : classification de lignées, prédiction de phénotypes de résistance à partir de génot… | 15 |
@@ -190,6 +190,7 @@ Les plugins `maboss` et `droit` relèvent d'autres domaines et sont documentés 
 - [`pectinated-subclade-mining`](mtbc.md#pectinated-subclade-mining) : Méthodologie d'extraction itérative des sous-lignées pectinées au sein d'une lignée MTBC (…
 - [`phylo-forest`](phylo.md#phylo-forest) : Bibliothèque interrogeable des arbres phylogénétiques déjà calculés dans un dépôt de reche…
 - [`phylo-history`](mtbc.md#phylo-history) : Rédige un paragraphe de manuscrit décrivant le placement phylogénétique d'une souche MTBC…
+- [`phylo-narrative`](mtbc.md#phylo-narrative) : Rédige un paragraphe pour un manuscrit scientifique décrivant le placement phylogénétique…
 - [`phylogeography`](mtbc.md#phylogeography) : Boîte à outils académique (groupe Guyeux, FEMTO-ST) pour l'analyse de distribution géograp…
 - [`pleiades`](popgen.md#pleiades) : Interroge Pleiades, le gazetteer communautaire et graphe des lieux antiques (NYU ISAW + UN…
 - [`pocket-detection`](structure.md#pocket-detection) : Academic research toolkit (Guyeux group, FEMTO-ST) : détection de poches de liaison sur un…

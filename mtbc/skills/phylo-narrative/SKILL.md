@@ -1,5 +1,5 @@
 ---
-name: phylo-history
+name: phylo-narrative
 description: >-
   Rédige un paragraphe pour un manuscrit scientifique décrivant le placement
   phylogénétique d'une souche MTBC à travers les arbres dans lesquels elle
@@ -17,7 +17,7 @@ user-invocable: true
 allowed-tools: Bash, Read, Glob
 ---
 
-# /phylo-history — Narration phylogénétique d'une souche pour manuscrit
+# /phylo-narrative — Narration phylogénétique d'une souche pour manuscrit
 
 Produit un paragraphe prêt à coller dans un manuscrit (Results,
 Supplementary Material, ou rebuttal à un reviewer) décrivant la position
@@ -27,8 +27,8 @@ reconstruits et archivés dans `investigate_phylo/experiments/`.
 ## Déclenchement
 
 ```
-/phylo-history SRR18391710
-/phylo-history SRR25515834 --k 8
+/phylo-narrative SRR18391710
+/phylo-narrative SRR25515834 --k 8
 ```
 
 ## Pré-requis
@@ -131,7 +131,7 @@ Le skill doit produire, dans l'ordre :
 
 ## Exemple complet
 
-**Entrée** : `/phylo-history SRR25515834`
+**Entrée** : `/phylo-narrative SRR25515834`
 
 **Sortie brute** (du script) :
 > Strain SRR25515834 was included in 1 independently reconstructed

@@ -2,13 +2,13 @@
 
 > Academic research toolkit for computational genomic studies of the Mycobacterium tuberculosis complex (MTBC): phylogenomics, comparative genomics, lineage assignment, antimicrobial-resistance allele frequencies from published research isolates, and TB surveillance literature. Guyeux group (FEMTO-ST, Universite Marie et Louis Pasteur), peer-reviewed research only.
 
-Skills propres (canoniques) : **41** ; skills partagés utilisés (symlinks) : **0**.
+Skills propres (canoniques) : **42** ; skills partagés utilisés (symlinks) : **0**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [atlas-add-lineage](#atlas-add-lineage) ; [bdd-bridge](#bdd-bridge) ; [binary-coclustering](#binary-coclustering) ; [bioproject-scout](#bioproject-scout) ; [convergent-evolution](#convergent-evolution) ; [denovo-content-qc](#denovo-content-qc) ; [fetch-tbannotator](#fetch-tbannotator) ; [gwas-clonal-lineage](#gwas-clonal-lineage) ; [lineage-comparison](#lineage-comparison) ; [lineage-subdivision](#lineage-subdivision) ; [marker-laminarity](#marker-laminarity) ; [miru-vntr](#miru-vntr) ; [mixed-infection](#mixed-infection) ; [mk-ascertainment](#mk-ascertainment) ; [mtbc-bilan](#mtbc-bilan) ; [mtbc-epistasis](#mtbc-epistasis) ; [mtbc-gene](#mtbc-gene) ; [mtbc-gene-network](#mtbc-gene-network) ; [mtbc-lineages](#mtbc-lineages) ; [mtbc-prospect](#mtbc-prospect) ; [mtbc-reboot](#mtbc-reboot) ; [pangenome-enrichment](#pangenome-enrichment) ; [pectinated-subclade-mining](#pectinated-subclade-mining) ; [phylo-history](#phylo-history) ; [phylogeography](#phylogeography) ; [rd-detection](#rd-detection) ; [registres-sans-referent](#registres-sans-referent) ; [resistance-catalogue](#resistance-catalogue) ; [resistance-profiler](#resistance-profiler) ; [sitvitweb](#sitvitweb) ; [snp-distance](#snp-distance) ; [spdi-annotation](#spdi-annotation) ; [sra-geolocate](#sra-geolocate) ; [strain-qc](#strain-qc) ; [tb-cli](#tb-cli) ; [tbannotator-es](#tbannotator-es) ; [tbannotator-mcp](#tbannotator-mcp) ; [tbannotator-upstream](#tbannotator-upstream) ; [tbmonitor-papers](#tbmonitor-papers) ; [tsne-hdbscan](#tsne-hdbscan) ; [variant-reality-check](#variant-reality-check)
+Sommaire : [atlas-add-lineage](#atlas-add-lineage) ; [bdd-bridge](#bdd-bridge) ; [binary-coclustering](#binary-coclustering) ; [bioproject-scout](#bioproject-scout) ; [convergent-evolution](#convergent-evolution) ; [denovo-content-qc](#denovo-content-qc) ; [fetch-tbannotator](#fetch-tbannotator) ; [gwas-clonal-lineage](#gwas-clonal-lineage) ; [lineage-comparison](#lineage-comparison) ; [lineage-subdivision](#lineage-subdivision) ; [marker-laminarity](#marker-laminarity) ; [miru-vntr](#miru-vntr) ; [mixed-infection](#mixed-infection) ; [mk-ascertainment](#mk-ascertainment) ; [mtbc-bilan](#mtbc-bilan) ; [mtbc-epistasis](#mtbc-epistasis) ; [mtbc-gene](#mtbc-gene) ; [mtbc-gene-network](#mtbc-gene-network) ; [mtbc-lineages](#mtbc-lineages) ; [mtbc-prospect](#mtbc-prospect) ; [mtbc-reboot](#mtbc-reboot) ; [pangenome-enrichment](#pangenome-enrichment) ; [pectinated-subclade-mining](#pectinated-subclade-mining) ; [phylo-history](#phylo-history) ; [phylo-narrative](#phylo-narrative) ; [phylogeography](#phylogeography) ; [rd-detection](#rd-detection) ; [registres-sans-referent](#registres-sans-referent) ; [resistance-catalogue](#resistance-catalogue) ; [resistance-profiler](#resistance-profiler) ; [sitvitweb](#sitvitweb) ; [snp-distance](#snp-distance) ; [spdi-annotation](#spdi-annotation) ; [sra-geolocate](#sra-geolocate) ; [strain-qc](#strain-qc) ; [tb-cli](#tb-cli) ; [tbannotator-es](#tbannotator-es) ; [tbannotator-mcp](#tbannotator-mcp) ; [tbannotator-upstream](#tbannotator-upstream) ; [tbmonitor-papers](#tbmonitor-papers) ; [tsne-hdbscan](#tsne-hdbscan) ; [variant-reality-check](#variant-reality-check)
 
 ### atlas-add-lineage
 
@@ -151,6 +151,12 @@ Compétences : on observe une topologie pectinée dans un arbre RAxML focalisé 
 Rédige un paragraphe de manuscrit décrivant le placement phylogénétique d'une souche MTBC à travers les arbres où elle a figuré. Exploite investigate_phylo/history/ et les fichiers Newick archivés pour produire une narration sourcée sur les voisins, la sister clade, la stabilité de l'assignation et le voisinage inter-reconstructions.
 
 Compétences : rédiger la section Résultats d'un article de lignée et justifier le placement d'une souche ; documenter pourquoi une souche a été retenue, reclassée ou exclue ; préparer un supplément décrivant la position phylogénétique de souches aberrantes ; répondre à un relecteur demandant des preuves sur la lignée d'une souche précise
+
+### phylo-narrative
+
+Rédige un paragraphe pour un manuscrit scientifique décrivant le placement phylogénétique d'une souche MTBC à travers les arbres dans lesquels elle a figuré. Exploite investigate_phylo/history/ et les fichiers Newick archivés pour produire une narration sourcée sur les voisins, la sister clade, la stabilité de l'assignation et le voisinage inter-reconstructions
+
+Compétences : writing the Results section of a lineage paper and needing a justified sentence about a strain's placement ; documenting why a strain was retained, reclassified or excluded ; preparing supplementary material describing the phylogenetic position of outlier strains ; responding to a reviewer asking for evidence about a specific strain's lineage
 
 ### phylogeography
 

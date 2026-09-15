@@ -63,16 +63,18 @@ chemin (`audit/2026-09-15/table_affectation.tsv`, colonne `cible_fine`), et ne r
 coquille correspondante que lorsque plus aucun fichier ne la référence
 (`grep -rl "<ancien>/skills" ~/docs/codes ~/docs/projects`).
 
-## Cas particulier : phylo-history
+## phylo-history et phylo-narrative (séparés le 2026-09-15)
 
-`mtbc/skills/phylo-history` porte deux implémentations réelles et intentionnellement
-différentes : le SKILL.md à sa racine est la version diagnostic (placement phylogénétique
-d'une souche, analyse), et un sous-dossier nié `phylo-history-bio-redac/` conserve la
-version narration (paragraphe de manuscrit) qui vivait avant dans `bio_redac`. Ce n'est pas
-un doublon accidentel : `plugins/CLAUDE.md` documentait déjà les deux comme « les seuls
-skills à maintenir manuellement en parallèle » avant la refonte. Décision de fond réservée
-à CG : garder deux skills séparés (nommer la variante narration à part), fusionner pour de
-bon les deux fonctions dans un seul skill à modes, ou abandonner l'une des deux.
+`mtbc` portait avant refonte deux implémentations réelles et intentionnellement différentes
+sous le même nom `phylo-history` (une dans `bio_pathogens`, une dans `bio_redac`) : ce
+n'était pas un doublon accidentel, `plugins/CLAUDE.md` les documentait déjà comme « les
+seuls skills à maintenir manuellement en parallèle ». Décision de CG le 2026-09-15 : les
+séparer plutôt que les fusionner ou en abandonner une.
+- `mtbc/skills/phylo-history` — version diagnostic, placement phylogénétique d'une souche
+  (analyse : k plus proches voisins, sister clade, stabilité).
+- `mtbc/skills/phylo-narrative` — version narration, rédige un paragraphe de manuscrit
+  décrivant ce placement (Results, Supplementary, rebuttal). Ex-`bio_redac/skills/
+  phylo-history`, renommé et promu skill à part entière.
 
 ## Plugins par phase et par famille : pas encore branché (P5.4-P5.5)
 
