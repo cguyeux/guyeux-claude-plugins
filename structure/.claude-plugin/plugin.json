@@ -1,0 +1,8 @@
+{
+  "name": "structure",
+  "description": "Academic research toolkit for structural bioinformatics: protein structure prediction and complex modelling (Boltz, ESM Atlas), pocket detection, active-site validation, small-molecule handling. Guyeux group (FEMTO-ST), peer-reviewed research.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "litterature",
+  "description": "Academic literature-mining toolkit: full-text and supplementary-table recall, open-access resolution, systematic review synthesis, biomedical entity annotation. Guyeux group (FEMTO-ST), peer-reviewed research, transverse to all domains.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  }
+}

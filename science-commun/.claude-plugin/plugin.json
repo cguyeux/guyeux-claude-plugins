@@ -1,0 +1,8 @@
+{
+  "name": "science-commun",
+  "description": "Transverse scientific toolkit used across every research domain of the Guyeux group (FEMTO-ST): figures and maps for publication, PDF extraction, remote compute, problem selection, statistical analysis.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  }
+}

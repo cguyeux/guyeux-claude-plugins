@@ -1,18 +1,18 @@
 # Plugin `ia`
 
-> Un plugin faire de l'IA
+> Machine learning, statistics and data science toolkit: classification, dimensionality reduction, causal inference, model explainability, applied to genomic and other research data. Guyeux group (FEMTO-ST).
 
 ## Rôle dans un projet M. tuberculosis
 
 Machine learning et data science au service des analyses MTBC : classification de lignées, prédiction de phénotypes de résistance à partir de génotypes, réduction de dimension sur des matrices de SNP, explication des modèles obtenus.
 
-Skills propres (canoniques) : **14** ; skills partagés utilisés (symlinks) : **4**.
+Skills propres (canoniques) : **15** ; skills partagés utilisés (symlinks) : **0**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [causal-inference](#causal-inference) ; [geopandas](#geopandas) ; [ml-model-explainer](#ml-model-explainer) ; [networkx](#networkx) ; [numpy](#numpy) ; [numpy-low-level](#numpy-low-level) ; [pandas-performance](#pandas-performance) ; [scipy](#scipy) ; [senior-data-scientist](#senior-data-scientist) ; [shapely](#shapely) ; [sklearn-advanced](#sklearn-advanced) ; [sklearn-explainability](#sklearn-explainability) ; [statistical-analysis](#statistical-analysis) ; [xgboost-iterative-optimizer](#xgboost-iterative-optimizer)
+Sommaire : [causal-inference](#causal-inference) ; [geopandas](#geopandas) ; [ml-model-explainer](#ml-model-explainer) ; [networkx](#networkx) ; [numpy](#numpy) ; [numpy-low-level](#numpy-low-level) ; [pandas-performance](#pandas-performance) ; [scikit-learn](#scikit-learn) ; [scipy](#scipy) ; [senior-data-scientist](#senior-data-scientist) ; [shapely](#shapely) ; [sklearn-advanced](#sklearn-advanced) ; [sklearn-explainability](#sklearn-explainability) ; [statsmodels](#statsmodels) ; [xgboost-iterative-optimizer](#xgboost-iterative-optimizer)
 
 ### causal-inference
 
@@ -56,6 +56,12 @@ Sous-skill pandas avance pour l'empreinte memoire et la vitesse d'execution sur 
 
 Compétences : une operation DataFrame est trop lente ou epuise la memoire ; remplacer apply ou iterrows par des operations vectorisees ; un groupby ou un merge explose ; charger un fichier trop gros pour la RAM
 
+### scikit-learn
+
+La bibliotheque de reference d'apprentissage automatique en Python : classification, regression, clustering, reduction de dimension, selection de modele et pretraitement. Quand les echantillons sont apparentes (isolats clonaux, ascendance partagee), decouper par groupe et non au hasard : voir senior-data-scientist pour les regles de conception.
+
+Compétences : ajuster ou comparer des modeles predictifs sur des donnees tabulaires ; construire un Pipeline ou un ColumnTransformer ; lancer une validation croisee ou une recherche d'hyperparametres ; calculer des metriques de classification ; reduire la dimension par ACP, t-SNE ou UMAP
+
 ### scipy
 
 Guide complet de SciPy, bibliothèque fondamentale du calcul scientifique et technique en Python. Sert à l'intégration, l'optimisation, l'interpolation, l'algèbre linéaire, le traitement du signal, les statistiques, les EDO, les transformées de Fourier et les algorithmes scientifiques avancés. Bâtie sur NumPy.
@@ -86,25 +92,14 @@ Sous-skill scikit-learn d'interpretation d'un modele ajuste : importance par per
 
 Compétences : savoir quelles variables comptent et pourquoi ; defendre un classement d'importance dans un article ; les importances natives par impurete semblent suspectes sur des variables a forte cardinalite ; produire une figure d'interpretabilite
 
-### statistical-analysis
+### statsmodels
 
-Applique des méthodes statistiques : statistiques descriptives, analyse de tendance, détection d'aberrants et tests d'hypothèses.
+Modélisation statistique avancée et tests d'hypothèses. Complémentaire du module stats de SciPy, il fournit des classes et fonctions pour estimer de nombreux modèles statistiques et conduire tests et exploration. Sert à la régression linéaire, aux GLM, aux séries temporelles, à l'ANOVA, à l'analyse de survie, à l'inférence causale et aux tests d'hypothèses.
 
-Compétences : analyser des distributions ; tester la significativité ; détecter des anomalies ; calculer des corrélations ; interpréter des résultats statistiques
+Compétences : OLS/WLS, régression logistique ou de Poisson ; ARIMA/SARIMAX ; diagnostics statistiques, p-values, intervalles de confiance ; analyse statistique à la R
 
 ### xgboost-iterative-optimizer
 
 Optimisation itérative de modèles XGBoost selon un workflow de chercheur en ML scientifique. Diagnostique les erreurs de prédiction par inspection visuelle des courbes prédit-vs-observé (primaire), renforcée par SHAP, analyse des résidus et métriques. Améliore les modèles par feature engineering, réglage d'hyperparamètres, choix de fonction objectif et stratégies d'ensemble.
 
-Compétences : prédictions XGBoost médiocres ; MAE/RMSE à réduire ; résidus montrant des motifs ; sous/sur-apprentissage ;  prédictions trop plates/biaisées 
-
-## Skills partagés (via symlink)
-
-Documentés sur la page de leur plugin d'origine.
-
-| Skill | Origine |
-|-------|---------|
-| [remote-compute](bio_population_genetics.md#remote-compute) | `bio_population_genetics` |
-| [scientific-problem-selection](bio_population_genetics.md#scientific-problem-selection) | `bio_population_genetics` |
-| [scikit-learn](bio_population_genetics.md#scikit-learn) | `bio_population_genetics` |
-| [statsmodels](bio_population_genetics.md#statsmodels) | `bio_population_genetics` |
+Compétences : prédictions XGBoost médiocres ; MAE/RMSE à réduire ; résidus montrant des motifs ; sous/sur-apprentissage ;  prédictions trop plates/biaisées

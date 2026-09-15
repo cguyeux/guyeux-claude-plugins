@@ -1,0 +1,8 @@
+{
+  "name": "phylo",
+  "description": "Academic research toolkit for phylogenetic and phylodynamic inference: tree building (RAxML-NG, IQ-TREE), molecular dating (BEAST2, LSD2), ancestral reconstruction, and iTOL annotation. Guyeux group (FEMTO-ST), peer-reviewed research, transverse to all taxa.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  }
+}

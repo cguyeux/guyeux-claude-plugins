@@ -1,0 +1,8 @@
+{
+  "name": "diffusion",
+  "description": "Submission and dissemination of a finished manuscript: journal targeting, reviewer response, conference posters and talks, Zenodo deposit. Guyeux group (FEMTO-ST), phase 4 of the research cycle.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  }
+}

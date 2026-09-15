@@ -1,1 +1,0 @@
-../../lit-review/scripts/europepmc_fulltext.py

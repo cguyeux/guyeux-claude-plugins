@@ -1,0 +1,8 @@
+{
+  "name": "bioinfo",
+  "description": "Generic bioinformatics libraries and registries: Biopython, pysam, sequence retrieval, ontologies, the STRING network, Nextflow pipelines. Guyeux group (FEMTO-ST), peer-reviewed research, transverse to all taxa.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  }
+}

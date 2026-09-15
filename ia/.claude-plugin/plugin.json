@@ -1,8 +1,8 @@
 {
-"name": "ia",
-"description": "Un plugin faire de l'IA",
-"version": "1.0.0",
-"author": {
-"name": "Christophe Guyeux"
-}
+  "name": "ia",
+  "description": "Machine learning, statistics and data science toolkit: classification, dimensionality reduction, causal inference, model explainability, applied to genomic and other research data. Guyeux group (FEMTO-ST).",
+  "version": "1.1.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  }
 }

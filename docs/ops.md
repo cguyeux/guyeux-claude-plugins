@@ -6,7 +6,7 @@
 
 Projets applicatifs du groupe (PrédictOps, OptimOps, DoctrinOps), hors du champ M. tuberculosis ; présents dans la collection pour d'autres travaux.
 
-Skills propres (canoniques) : **4** ; skills partagés utilisés (symlinks) : **2**.
+Skills propres (canoniques) : **4** ; skills partagés utilisés (symlinks) : **0**.
 
 [Retour à l'index de la documentation](README.md)
 
@@ -37,12 +37,3 @@ Compétences :  on a un incident », « la production est tombée », une alerte
 Prépare (et, sur autorisation explicite, pousse) une contribution vers un dépôt open source amont à partir d'une réimplémentation ou d'un fork local qui l'a dépassé
 
 Compétences : sur "proposer ça en amont", "remonter ce correctif au dépôt d'origine", "contribuer à [dépôt GitHub]", "faire une PR/issue sur le repo de X", ou quand un outil local corrige ou étend un outil externe dont il dérive
-
-## Skills partagés (via symlink)
-
-Documentés sur la page de leur plugin d'origine.
-
-| Skill | Origine |
-|-------|---------|
-| [create-viz](bio_population_genetics.md#create-viz) | `bio_population_genetics` |
-| [remote-compute](bio_population_genetics.md#remote-compute) | `bio_population_genetics` |

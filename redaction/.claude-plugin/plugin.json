@@ -1,0 +1,8 @@
+{
+  "name": "redaction",
+  "description": "Manuscript writing and quality control: LaTeX typesetting, reference and figure verification, stylistic cleanup, table design, Overleaf synchronisation. Guyeux group (FEMTO-ST), phases 2-3 of the research cycle.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  }
+}

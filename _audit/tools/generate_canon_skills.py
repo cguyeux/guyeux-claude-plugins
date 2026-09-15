@@ -20,12 +20,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_OUTPUT = ROOT / "canon_skills.json"
 
-# Deux implementations reelles et intentionnellement divergentes portent ce
-# nom. Le registre historique exposait la version narrative de bio_redac ; la
-# conserver pour compatibilite et signaler l'autre variante a l'execution.
-CANONICAL_OVERRIDES = {
-    "phylo-history": Path("bio_redac/skills/phylo-history"),
-}
+# P5.2 (2026-09-15) : phylo-history n'a plus qu'une copie physique reelle,
+# mtbc/skills/phylo-history (version diagnostic), qui porte en reference
+# nichee l'ancienne variante narrative de bio_redac (sous-dossier
+# phylo-history-bio-redac/, non un skill frere). Plus de doublon a arbitrer ;
+# override conserve vide au cas ou une vraie fusion future en recree un.
+CANONICAL_OVERRIDES: dict[str, Path] = {}
 
 
 def marketplace_plugins(root: Path = ROOT) -> list[tuple[str, Path]]:

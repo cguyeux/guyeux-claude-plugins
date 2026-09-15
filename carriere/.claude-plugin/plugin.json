@@ -1,0 +1,8 @@
+{
+  "name": "carriere",
+  "description": "Funding applications, CV maintenance and grant proposals for the Guyeux group (FEMTO-ST). Activated manually, outside the research-project cycle.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  }
+}

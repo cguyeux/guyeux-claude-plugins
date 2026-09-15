@@ -1,0 +1,8 @@
+{
+  "name": "popgen",
+  "description": "Academic research toolkit for ancient and modern human population genetics, archaeology, paleoclimate, linguistics and historical migration corpora, plus host-pathogen co-evolution. Guyeux group (FEMTO-ST), peer-reviewed research.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  }
+}

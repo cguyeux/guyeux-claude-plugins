@@ -1,0 +1,8 @@
+{
+  "name": "bacteria",
+  "description": "Academic research toolkit for comparative genomics of bacteria beyond the Mycobacterium tuberculosis complex stricto sensu: non-tuberculous mycobacteria, Yersinia, Helicobacter, Salmonella and other genera. Genome assembly and characterisation, core-genome MLST clonality, ab initio mobile-element detection, from published research isolates. Guyeux group (FEMTO-ST).",
+  "version": "1.0.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  }
+}

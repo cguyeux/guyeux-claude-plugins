@@ -10,49 +10,24 @@
   },
   "plugins": [
     {
-      "name": "bio_pathogens",
-      "source": "./bio_pathogens",
-      "description": "Academic research toolkit for computational genomic studies of bacterial pathogens (MTBC phylogenomics, comparative genomics, published-research surveillance literature)."
+      "name": "mtbc",
+      "source": "./mtbc",
+      "description": "Academic research toolkit for computational genomic studies of the Mycobacterium tuberculosis complex (MTBC): phylogenomics, comparative genomics, lineage assignment, antimicrobial-resistance allele frequencies from published research isolates, and TB surveillance literature. Guyeux group (FEMTO-ST, Universite Marie et Louis Pasteur), peer-reviewed research only."
     },
     {
-      "name": "bio_bacteria",
-      "source": "./bio_bacteria",
-      "description": "Academic research toolkit for comparative genomics of bacteria BEYOND the Mycobacterium tuberculosis complex stricto sensu: non-tuberculous mycobacteria (M. abscessus, M. avium, M. ulcerans...) and other genera. Genome assembly and characterisation, core-genome MLST clonality, ab initio mobile-element detection, antimicrobial-resistance allele frequencies from published research isolates."
+      "name": "bacteria",
+      "source": "./bacteria",
+      "description": "Academic research toolkit for comparative genomics of bacteria beyond the Mycobacterium tuberculosis complex stricto sensu: non-tuberculous mycobacteria, Yersinia, Helicobacter, Salmonella and other genera. Genome assembly and characterisation, core-genome MLST clonality, ab initio mobile-element detection, from published research isolates. Guyeux group (FEMTO-ST)."
     },
     {
-      "name": "bio_population_genetics",
-      "source": "./bio_population_genetics",
-      "description": "Academic research toolkit for ancient and modern human population genetics, archaeology, paleoclimate, migration corpora, plus general phylogenetics, statistics and literature-mining tools."
-    },
-    {
-      "name": "bio_redac",
-      "source": "./bio_redac",
-      "description": "Phase hybride analyse bioinformatique et rédaction d'articles (agrège les skills des autres plugins via symlinks)."
-    },
-    {
-      "name": "redac",
-      "source": "./redac",
-      "description": "Rédaction pure : LaTeX, slides, manuscrits, vérification de références et de figures."
+      "name": "popgen",
+      "source": "./popgen",
+      "description": "Academic research toolkit for ancient and modern human population genetics, archaeology, paleoclimate, linguistics and historical migration corpora, plus host-pathogen co-evolution. Guyeux group (FEMTO-ST), peer-reviewed research."
     },
     {
       "name": "ia",
       "source": "./ia",
-      "description": "Outils d'intelligence artificielle, machine learning et data science."
-    },
-    {
-      "name": "multimedia",
-      "source": "./multimedia",
-      "description": "Outils multimédia : sous-titrage de films muets, audio/vidéo, synthèse vocale, métadonnées de films."
-    },
-    {
-      "name": "ops",
-      "source": "./ops",
-      "description": "Outils pour les projets PrédictOps, OptimOps, DoctrinOps."
-    },
-    {
-      "name": "web",
-      "source": "./web",
-      "description": "Développement et test d'applications web."
+      "description": "Machine learning, statistics and data science toolkit: classification, dimensionality reduction, causal inference, model explainability, applied to genomic and other research data. Guyeux group (FEMTO-ST)."
     },
     {
       "name": "maboss",
@@ -60,9 +35,64 @@
       "description": "MaBoSS / CoLoMoTo toolkit: .bnd/.cfg Boolean-model authoring (official refcard grammar), the pyMaBoSS API and Oscar Dufossez's CCT temporal-logic evaluator, and the ecosystem map (WebMaBoSS by Vincent Noel, model repositories, positioning vs INDRA). For cancer signalling modelling and the mabossDemo literature-coherency project."
     },
     {
+      "name": "ops",
+      "source": "./ops",
+      "description": "Outils pour les projets PrédictOps, OptimOps, DoctrinOps."
+    },
+    {
       "name": "droit",
       "source": "./droit",
       "description": "Academic research toolkit for French legal scholarship (droit public, constitutionnel, penal, droit de la nationalite et de la citoyennete): detailed references in footnotes following the conventions of Camille Aynes' doctoral thesis, and verification of case-law and statutory citations against official sources before publication."
+    },
+    {
+      "name": "multimedia",
+      "source": "./multimedia",
+      "description": "Outils multimédia : sous-titrage de films muets, audio/vidéo, synthèse vocale, métadonnées de films."
+    },
+    {
+      "name": "web",
+      "source": "./web",
+      "description": "Développement et test d'applications web."
+    },
+    {
+      "name": "phylo",
+      "source": "./phylo",
+      "description": "Academic research toolkit for phylogenetic and phylodynamic inference: tree building (RAxML-NG, IQ-TREE), molecular dating (BEAST2, LSD2), ancestral reconstruction, and iTOL annotation. Guyeux group (FEMTO-ST), peer-reviewed research, transverse to all taxa."
+    },
+    {
+      "name": "bioinfo",
+      "source": "./bioinfo",
+      "description": "Generic bioinformatics libraries and registries: Biopython, pysam, sequence retrieval, ontologies, the STRING network, Nextflow pipelines. Guyeux group (FEMTO-ST), peer-reviewed research, transverse to all taxa."
+    },
+    {
+      "name": "structure",
+      "source": "./structure",
+      "description": "Academic research toolkit for structural bioinformatics: protein structure prediction and complex modelling (Boltz, ESM Atlas), pocket detection, active-site validation, small-molecule handling. Guyeux group (FEMTO-ST), peer-reviewed research."
+    },
+    {
+      "name": "litterature",
+      "source": "./litterature",
+      "description": "Academic literature-mining toolkit: full-text and supplementary-table recall, open-access resolution, systematic review synthesis, biomedical entity annotation. Guyeux group (FEMTO-ST), peer-reviewed research, transverse to all domains."
+    },
+    {
+      "name": "science-commun",
+      "source": "./science-commun",
+      "description": "Transverse scientific toolkit used across every research domain of the Guyeux group (FEMTO-ST): figures and maps for publication, PDF extraction, remote compute, problem selection, statistical analysis."
+    },
+    {
+      "name": "redaction",
+      "source": "./redaction",
+      "description": "Manuscript writing and quality control: LaTeX typesetting, reference and figure verification, stylistic cleanup, table design, Overleaf synchronisation. Guyeux group (FEMTO-ST), phases 2-3 of the research cycle."
+    },
+    {
+      "name": "diffusion",
+      "source": "./diffusion",
+      "description": "Submission and dissemination of a finished manuscript: journal targeting, reviewer response, conference posters and talks, Zenodo deposit. Guyeux group (FEMTO-ST), phase 4 of the research cycle."
+    },
+    {
+      "name": "carriere",
+      "source": "./carriere",
+      "description": "Funding applications, CV maintenance and grant proposals for the Guyeux group (FEMTO-ST). Activated manually, outside the research-project cycle."
     }
   ]
 }
