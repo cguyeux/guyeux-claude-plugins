@@ -733,8 +733,15 @@ Examples:
               file=sys.stderr)
         sys.exit(1)
 
+    # Empty/NaN cells must stay "unknown" (falsy), never become the literal
+    # string "nan": pandas reads a blank CSV field as float NaN, and
+    # .astype(str) on that turns it into "nan", which is truthy and was
+    # being fed to fitch_parsimony/ml_reconstruction as a real geographic
+    # state instead of triggering their "unknown: all states equally
+    # likely" branch (both check `if s` / `if s and s in state_idx`).
+    meta["location"] = meta["location"].fillna("")
     leaf_states = dict(zip(meta["strain_id"].astype(str), meta["location"].astype(str)))
-    states = sorted(set(leaf_states.values()))
+    states = sorted(s for s in set(leaf_states.values()) if s)
 
     # Match leaves
     tree_leaves = {name for name, _ in get_leaves(tree, is_dendropy)}
