@@ -18,17 +18,16 @@ def frontmatter(text: str) -> str:
 
 
 class CodexRuntimePackagesTests(unittest.TestCase):
-    def test_runtime_audit_records_the_58_materialized_rows(self):
+    def test_runtime_audit_records_the_60_materialized_rows(self):
         audit = json.loads(AUDIT.read_text(encoding="utf-8"))
         rows = audit["rows"]
-        self.assertEqual(58, len(rows))
+        self.assertEqual(60, len(rows))
         self.assertEqual(
             {
                 "await-canonical-knowledge-path",
                 "claude-branding-only",
                 "codex-mcp-documentation-only",
                 "codex-mcp-tool-prerequisite",
-                "external-mcp-fallback-documented",
                 "mcp-narrative-only",
                 "rewrite-cache-path",
                 "rewrite-claude-skill-paths",
@@ -63,20 +62,10 @@ class CodexRuntimePackagesTests(unittest.TestCase):
         audit = json.loads(AUDIT.read_text(encoding="utf-8"))
         rows = [row for row in audit["rows"] if row["runtime_bucket"] == "await-canonical-knowledge-path"]
         self.assertEqual(["boltz"], [row["name"] for row in rows])
-        text = (PACKAGES / "bio-population-genetics" / "skills" / "boltz" / "SKILL.md").read_text(encoding="utf-8")
+        text = (PACKAGES / "structure" / "skills" / "boltz" / "SKILL.md").read_text(encoding="utf-8")
         self.assertIn("## Codex knowledge path note", text)
         self.assertIn("~/.Codex/knowledge/", text)
         self.assertNotIn("~/.claude/knowledge", text)
-
-    def test_external_mcp_fallback_is_documented(self):
-        audit = json.loads(AUDIT.read_text(encoding="utf-8"))
-        rows = [row for row in audit["rows"] if row["runtime_bucket"] == "external-mcp-fallback-documented"]
-        self.assertEqual(["clinical-trial-protocol-skill"], [row["name"] for row in rows])
-        text = (PACKAGES / "bio-population-genetics" / "skills" / "clinical-trial-protocol-skill" / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("## Codex external clinical-trials fallback", text)
-        self.assertIn("source-limited mode", text)
-        self.assertIn("Do not invent comparable trials", text)
-        self.assertIn("codex mcp list", text)
 
     def test_runtime_mcp_tool_prerequisites_get_codex_note(self):
         audit = json.loads(AUDIT.read_text(encoding="utf-8"))
@@ -94,14 +83,14 @@ class CodexRuntimePackagesTests(unittest.TestCase):
             row for row in audit["rows"]
             if row["runtime_bucket"] in {"rewrite-cache-path", "rewrite-claude-skill-paths"}
         ]
-        self.assertEqual(10, len(rows))
+        self.assertEqual(11, len(rows))
         for row in rows:
             with self.subTest(name=row["name"]):
                 text = (PACKAGES / row["package_candidate"] / "skills" / row["name"] / "SKILL.md").read_text(encoding="utf-8")
                 self.assertNotIn("CLAUDE_PLUGIN_ROOT", text)
                 self.assertNotIn("~/.claude/skills", text)
                 self.assertNotIn("~/.claude/cache", text)
-        sra = (PACKAGES / "bio-pathogens" / "skills" / "sra-geolocate" / "SKILL.md").read_text(encoding="utf-8")
+        sra = (PACKAGES / "mtbc" / "skills" / "sra-geolocate" / "SKILL.md").read_text(encoding="utf-8")
         self.assertIn("~/.cache/codex/sra-geolocate", sra)
 
 

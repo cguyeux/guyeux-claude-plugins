@@ -13,6 +13,10 @@ description: >-
   a_ranger avec une probabilite a posteriori, ou detecter une sous-lignee non
   encore decrite.
 
+  Portee : developpe sur le MTBC, applicable a toute bacterie clonale (Yersinia,
+  Leptospira...) — le Latent Block Model ne connait que des 0 et des 1. Hors MTBC :
+  fournir le chemin de la base de souches ou la matrice souche x marqueur.
+
 argument-hint: "<pool bdd/actuelle> [-g blocs-souches] [-m blocs-marqueurs]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep

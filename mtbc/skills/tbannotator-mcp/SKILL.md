@@ -12,7 +12,7 @@ description: >-
   gone with the old server. See ~/.agents/knowledge/tblearn-migration.md.
 argument-hint: "<SQL query or question about MTBC strains>"
 user-invocable: true
-allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres, mcp__tbannotator__tool_get_schema
+allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres, mcp__tbannotator__tool_get_schema, mcp__tbannotator__tool_submit_accession, mcp__tbannotator__tool_submission_state, mcp__tbannotator__tool_make_a_request, mcp__tbannotator__tool_read_requests
 ---
 
 > [!WARNING]
@@ -43,7 +43,7 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query
 > `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
 >
 > ```bash
-> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> B=~/docs/environnement/plugins/mtbc/skills/bdd-bridge/scripts
 > export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
 > python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
 > python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable
@@ -69,9 +69,15 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query
 > 404**. The MCP server keyed `tbannotator` now points to **`tblearn` 4.0.3**, which changes three
 > things that silently break old habits:
 >
-> 1. **Three tools instead of five.** `tool_query_postgres` and `tool_get_schema` survive;
->    **`tool_build_nj_tree`, `tool_submit_raxml_job` and `tool_get_version` are gone**, so the
->    tree-building paths of this skill and of `raxml` no longer have a server behind them.
+> 1. **Three tools instead of five, as of 2026-09-08.** `tool_query_postgres` and
+>    `tool_get_schema` survive; **`tool_build_nj_tree`, `tool_submit_raxml_job` and
+>    `tool_get_version` are gone**, so the tree-building paths of this skill and of `raxml` no
+>    longer have a server behind them. **Update 2026-09-22 : four more tools appeared**
+>    (`tool_submit_accession`, `tool_submission_state`, `tool_make_a_request`,
+>    `tool_read_requests` — § « 6-9 » plus bas), portant le total à **sept**. La doc officielle
+>    (`https://tblearn.tbannotator.ideev.universite-paris-saclay.fr/docs/`) publie plusieurs
+>    versions par semaine côté IDEEV (Clément Lecarpentier) : revérifier `/docs/mcp/` en cas de
+>    doute avant de conclure qu'un outil manque.
 > 2. **The in-house lineage systems are gone.** The database carries eight systems, all external:
 >    Coll, Coscolla, Freschi, Lipworth, Napier, Palittapongarnpim, Shitikov, Stucki. Neither
 >    `tblearn` nor `guyeux`/ex-Senelle is among them, and asking for one returns **zero rows with no
@@ -105,12 +111,12 @@ matérialisées présentes mais NON peuplées). Deux scripts rendent la dérive 
 
 ```bash
 # 1) dumper le schéma courant (nécessite le paquet `mcp` : venv du site annotation_mtbc)
-~/docs/codes/mtbc/annotation_mtbc/site/.venv/bin/python scripts/dump_schema.py -o /tmp/schema.csv
+~/docs/codes/mtbc/en_cours/annotation_mtbc/site/.venv/bin/python scripts/dump_schema.py -o /tmp/schema.csv
 # → signale aussi les vues matérialisées NON PEUPLÉES
 
 # 2) auditer tous les SKILL.md contre ce schéma
 python3 scripts/check_schema_drift.py --schema-csv /tmp/schema.csv \
-    --skills-dir ~/docs/codes/claude_plugins
+    --skills-dir ~/docs/environnement/plugins
 ```
 
 Détecte : objets inexistants, colonnes qualifiées (`alias.col`) inexistantes, vues matérialisées
@@ -122,8 +128,10 @@ d'injection confirme que le détecteur voit toujours un vrai bug (témoin positi
 
 ## Available Tools
 
-### 1. `tool_get_version`
-Returns the server version. Use to verify connectivity.
+### 1. `tool_get_version` — SUPPRIMÉ, ne pas utiliser
+
+Gone since the 2026-09-08 migration (cf. banner above). No direct replacement is needed:
+`tool_get_schema` and a trivial `tool_query_postgres` call both prove connectivity.
 
 ### 2. `tool_get_schema`
 Returns the full database schema (tables, views, columns, constraints). **Use this first** when exploring the database structure.
@@ -203,91 +211,38 @@ ORDER BY n_strains DESC
 LIMIT 50;
 ```
 
-### 4. `tool_build_nj_tree`
+### 4-5. `tool_build_nj_tree` / `tool_submit_raxml_job` — SUPPRIMÉS, ne pas utiliser
 
-Build a Neighbor-Joining tree in memory. Fast (minutes) but less accurate than RAxML. Good for exploratory validation before launching a long RAxML job.
+Ces deux outils n'existent plus depuis la migration du 2026-09-08 (cf. bandeau en tête de ce
+fichier) : le serveur `tblearn` n'expose que la lecture SQL et, depuis le 2026-09-22, la
+soumission d'accessions et de demandes (§ ci-dessous). La construction d'arbre passe désormais
+par `bdd-bridge/scripts/phylo_job.py` (`align`, `run`, `submit`), local ou en paquet SLURM
+portable pour `mh` — voir le skill `/raxml`, entièrement réécrit pour cette voie.
 
-**Parameters:**
+### 6. `tool_submit_accession` (nouveau, 2026-09-22)
 
-| Paramètre | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `strain_sql` | string | (requis) | SQL query returning a `strain_id` column |
-| `max_strains` | int | 5000 | Maximum strains (NJ is O(n³)) |
-| `remove_invariant` | bool | true | Remove invariant SNP positions before distance computation |
+Met en file une accession INSDC publique (run, sample, study ou project) pour ingestion par le
+pipeline tblearn — équivalent conversationnel de `POST /api/v1/submissions/accession`. Aucun
+quota documenté pour les accessions publiques (le plafond `MAX_STRAINS=10` du changelog 0.17 vise
+la file de fond des dépôts personnalisés, pas ce chemin). Une accession publique ne demande aucun
+secret et devient consultable par tous une fois traitée. Usage : demander l'ajout à la base
+partagée d'un génome public absent de `tb_report_strain`, plutôt que de laisser une analyse
+reposer sur un sous-ensemble incomplet sans le signaler.
 
-**Retour** : Newick string.
+### 7. `tool_submission_state` (nouveau, 2026-09-22)
 
-**Exemple :**
-```
-tool_build_nj_tree(
-  strain_sql = "SELECT strain_id FROM mv_strain_classification WHERE system_name='guyeux' AND lineage_code LIKE '4.15%'",
-  max_strains = 5000,
-  remove_invariant = true
-)
-```
+Suit l'état d'une soumission (accession ou dépôt de rapport) à travers les sessions. À appeler
+après `tool_submit_accession` pour savoir si l'ingestion est terminée avant d'interroger la
+souche par `tool_query_postgres`.
 
-### 5. `tool_submit_raxml_job`
+### 8-9. `tool_make_a_request` / `tool_read_requests` (nouveaux, 2026-09-22)
 
-Submit an asynchronous RAxML-NG phylogenetic inference job. Returns a `job_id` immediately; poll status via `tool_query_postgres`.
+Déposent et relisent une demande de fonctionnalité ou de correction auprès de l'équipe tblearn
+(table `tb_request`). À réserver à un vrai besoin de fonctionnalité côté serveur, pas à un
+usage exploratoire — la demande est visible de l'équipe qui maintient le serveur.
 
-**Modes d'opération :**
-
-| Mode | Paramètres clés | Cas d'usage |
-|------|----------------|-------------|
-| 1 (Matrix) | `strain_sql` + `model` | Phylogénie standard d'une lignée |
-| 2 (Clustering) | `clustering_job_id` | Gros jeux (>5000 souches) |
-| 3 (Contextual) | `strain_sql` + `reference_raxml_job_id` | Placement sur arbre existant |
-
-**Parameters:**
-
-| Paramètre | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `strain_sql` | string |, | SQL returning `strain_id` (modes 1 & 3) |
-| `snp_matrix_job_id` | int | auto | Completed matrix job ID (auto-resolved) |
-| `clustering_job_id` | int |, | Completed clustering job (mode 2) |
-| `reference_raxml_job_id` | int |, | Reference tree for contextual placement (mode 3) |
-| `model` | string | `GTR+G` | Evolution model |
-| `starting_trees` | string | `pars{2},rand{2}` | Starting tree strategy |
-| `raxml_timeout` | int | 604800 | Timeout in seconds (7 days) |
-| `seed` | int | 42 | Random seed |
-| `filter_variants` | list | `['all']` | `all`, `no_core0`, `no_core0_excl0`, `no_char0` |
-| `use_clustering` | bool | true | Pre-cluster query strains (mode 3) |
-| `hdbscan_min_cluster_size` | int | 50 | HDBSCAN param (mode 2/3) |
-| `hdbscan_min_samples` | int | 10 | HDBSCAN param (mode 2/3) |
-| `cluster_selection_epsilon` | float | 0.5 | HDBSCAN param (mode 2/3) |
-| `max_query_strains` | int | 1000 | Max query strains (mode 3) |
-
-**Exemple Mode 1 (standard) :**
-```
-tool_submit_raxml_job(
-  strain_sql = "SELECT strain_id FROM mv_strain_classification WHERE system_name='guyeux' AND lineage_code LIKE '4.15%'",
-  model = "GTR+G",
-  starting_trees = "pars{2},rand{2}",
-  seed = 42
-)
-```
-
-**Polling du statut :**
-```sql
-SELECT id, status, strain_count, snp_count, model,
-       created_at, started_at, completed_at, error_message
-FROM job_raxml WHERE id = {job_id};
-```
-
-| Status | Signification |
-|--------|--------------|
-| `pending` | En attente |
-| `building_matrix` | Construction matrice SNP |
-| `running` | RAxML-NG en cours |
-| `completed` | Terminé → télécharger le Newick |
-| `failed` | Erreur (voir `error_message`) |
-
-**Téléchargement du Newick :**
-```bash
-curl -o tree.nwk "https://tblearn.tbannotator.ideev.universite-paris-saclay.fr/mcp/download/tree_newick/{job_id}"
-```
-
-Voir aussi le skill `/raxml` pour un workflow guidé complet.
+Détail complet et pointeur vers la doc officielle (`/docs/`, mise à jour régulièrement côté
+IDEEV) : `~/.agents/knowledge/tblearn-migration.md`, section « Quatre nouveaux outils MCP ».
 
 ## Classification Systems
 

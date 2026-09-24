@@ -2,12 +2,12 @@
   "claude_root": "/home/christophe/.claude/knowledge",
   "codex_root": "/home/christophe/.Codex/knowledge",
   "canonical_root": "/home/christophe/.agents/knowledge",
-  "total_union": 87,
+  "total_union": 141,
   "summary": {
-    "common-identical": 87
+    "common-identical": 141
   },
   "canonical": {
-    "files": 87,
+    "files": 141,
     "missing_from_canonical": [],
     "extra_in_canonical": [],
     "needs_human_dedup": []
@@ -17,14 +17,14 @@
       "path": "KNOWLEDGE.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "118c7c5d5fcb519e451dcd8aa5d84983bb53154acdd7213e689220128512d1d1",
-        "size": 98547,
-        "lines": 100
+        "sha256": "0d8c94f82bda2f5fdc6464150f330e3701d28cb19bff159a56497f316f64b292",
+        "size": 196054,
+        "lines": 159
       },
       "codex": {
-        "sha256": "118c7c5d5fcb519e451dcd8aa5d84983bb53154acdd7213e689220128512d1d1",
-        "size": 98547,
-        "lines": 100
+        "sha256": "0d8c94f82bda2f5fdc6464150f330e3701d28cb19bff159a56497f316f64b292",
+        "size": 196054,
+        "lines": 159
       }
     },
     {
@@ -56,31 +56,73 @@
       }
     },
     {
+      "path": "accueil-doctorants-internationaux.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "a4700db16811ad62291fabe6b0b645d671116fbf5dbc5b5168ae5cce5404dbb2",
+        "size": 9977,
+        "lines": 145
+      },
+      "codex": {
+        "sha256": "a4700db16811ad62291fabe6b0b645d671116fbf5dbc5b5168ae5cce5404dbb2",
+        "size": 9977,
+        "lines": 145
+      }
+    },
+    {
       "path": "agent-background-orchestration.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "0146118987b820fd611f5577d9df9ccc4002b28f26bda72dda2e40b494f4f809",
-        "size": 23446,
-        "lines": 293
+        "sha256": "6cc859c037630503afe82dc4b9fa22d44510a8d724cc93775a2bf12825786428",
+        "size": 36300,
+        "lines": 455
       },
       "codex": {
-        "sha256": "0146118987b820fd611f5577d9df9ccc4002b28f26bda72dda2e40b494f4f809",
-        "size": 23446,
-        "lines": 293
+        "sha256": "6cc859c037630503afe82dc4b9fa22d44510a8d724cc93775a2bf12825786428",
+        "size": 36300,
+        "lines": 455
       }
     },
     {
       "path": "agent-tooling.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "da17f23760218aba4b152df486e95a7f36f81f8ea404dc5348fe78f8f23bd046",
-        "size": 49713,
-        "lines": 357
+        "sha256": "86a13ef4f8c45fea9f886adf4f519f052102a797a4bcb7c678e0bf3f8b571da5",
+        "size": 77058,
+        "lines": 744
       },
       "codex": {
-        "sha256": "da17f23760218aba4b152df486e95a7f36f81f8ea404dc5348fe78f8f23bd046",
-        "size": 49713,
-        "lines": 357
+        "sha256": "86a13ef4f8c45fea9f886adf4f519f052102a797a4bcb7c678e0bf3f8b571da5",
+        "size": 77058,
+        "lines": 744
+      }
+    },
+    {
+      "path": "alphagenome-api.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "5c527893c46ac47db4e0cdbd2a1ecbb2feef53e056cbe1709d60116379d2159d",
+        "size": 4263,
+        "lines": 64
+      },
+      "codex": {
+        "sha256": "5c527893c46ac47db4e0cdbd2a1ecbb2feef53e056cbe1709d60116379d2159d",
+        "size": 4263,
+        "lines": 64
+      }
+    },
+    {
+      "path": "appels-a-projets.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "5f5843ffcf5dccef5c4e12706f34bd5275b2ce0cc0062ff2e989bd0715f64000",
+        "size": 13517,
+        "lines": 207
+      },
+      "codex": {
+        "sha256": "5f5843ffcf5dccef5c4e12706f34bd5275b2ce0cc0062ff2e989bd0715f64000",
+        "size": 13517,
+        "lines": 207
       }
     },
     {
@@ -115,28 +157,42 @@
       "path": "bash-patterns.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "d2fdff34fe9b87a223f850e514f147142272a81668c02047f4aaa71959446ab9",
-        "size": 71804,
-        "lines": 924
+        "sha256": "78a337991c3fafe438664a2b3384e239a87951566081e1e7a46e6c3fdee162bf",
+        "size": 81602,
+        "lines": 1067
       },
       "codex": {
-        "sha256": "d2fdff34fe9b87a223f850e514f147142272a81668c02047f4aaa71959446ab9",
-        "size": 71804,
-        "lines": 924
+        "sha256": "78a337991c3fafe438664a2b3384e239a87951566081e1e7a46e6c3fdee162bf",
+        "size": 81602,
+        "lines": 1067
+      }
+    },
+    {
+      "path": "beamer-presentations.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "72d820eb41eb033098cbb0108f933bde2d344176734226e69d7df899d3017be8",
+        "size": 26897,
+        "lines": 481
+      },
+      "codex": {
+        "sha256": "72d820eb41eb033098cbb0108f933bde2d344176734226e69d7df899d3017be8",
+        "size": 26897,
+        "lines": 481
       }
     },
     {
       "path": "bioinformatics.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "99172cc61a699a3e08bb2cbd4a49c003084f8b99b724252eb29f88eb77f88e52",
-        "size": 208446,
-        "lines": 2006
+        "sha256": "4a8295d61ae778f02608b7c8df2aa73d952dc685a6e0281ba6dcf93b7adb87d6",
+        "size": 293870,
+        "lines": 3058
       },
       "codex": {
-        "sha256": "99172cc61a699a3e08bb2cbd4a49c003084f8b99b724252eb29f88eb77f88e52",
-        "size": 208446,
-        "lines": 2006
+        "sha256": "4a8295d61ae778f02608b7c8df2aa73d952dc685a6e0281ba6dcf93b7adb87d6",
+        "size": 293870,
+        "lines": 3058
       }
     },
     {
@@ -168,31 +224,73 @@
       }
     },
     {
+      "path": "camille-aynes-notions.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "e189284d40c1914550512a0be263d24eeb977328f475cd5bdf0689fe3e6c8a1d",
+        "size": 177119,
+        "lines": 2150
+      },
+      "codex": {
+        "sha256": "e189284d40c1914550512a0be263d24eeb977328f475cd5bdf0689fe3e6c8a1d",
+        "size": 177119,
+        "lines": 2150
+      }
+    },
+    {
+      "path": "camille-aynes-oeuvre.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "061985ae6c32c18f178db02bc43541ef6e37a156e9aa97ee03418a72df3f30af",
+        "size": 9614,
+        "lines": 134
+      },
+      "codex": {
+        "sha256": "061985ae6c32c18f178db02bc43541ef6e37a156e9aa97ee03418a72df3f30af",
+        "size": 9614,
+        "lines": 134
+      }
+    },
+    {
+      "path": "claude-code-etat-projet.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "3b77517d7d9bd0fa045d3814b96047c2392d3704a8dcb0ff34715cdcd28dd226",
+        "size": 11429,
+        "lines": 144
+      },
+      "codex": {
+        "sha256": "3b77517d7d9bd0fa045d3814b96047c2392d3704a8dcb0ff34715cdcd28dd226",
+        "size": 11429,
+        "lines": 144
+      }
+    },
+    {
       "path": "claude-in-chrome-automation.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "83e01a01d1aaea5f1ae10346a4d10531ed83492aafaf24e5294b67bcd16e1d96",
-        "size": 25322,
-        "lines": 342
+        "sha256": "259fbd6b59e2462e72ec99d68f45957f8e9e98545981859a601be0d5bc1389cb",
+        "size": 53940,
+        "lines": 702
       },
       "codex": {
-        "sha256": "83e01a01d1aaea5f1ae10346a4d10531ed83492aafaf24e5294b67bcd16e1d96",
-        "size": 25322,
-        "lines": 342
+        "sha256": "259fbd6b59e2462e72ec99d68f45957f8e9e98545981859a601be0d5bc1389cb",
+        "size": 53940,
+        "lines": 702
       }
     },
     {
       "path": "claude-plugins-aup.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "38436c2a6d67434390f3f1527f6db963141ff21923e2051d034f0d4cb2b0311e",
-        "size": 84173,
-        "lines": 773
+        "sha256": "6b38530ab84db597dcb50441fd22a30046c93a4fa0344950b83c7ad07a57ab38",
+        "size": 105595,
+        "lines": 1050
       },
       "codex": {
-        "sha256": "38436c2a6d67434390f3f1527f6db963141ff21923e2051d034f0d4cb2b0311e",
-        "size": 84173,
-        "lines": 773
+        "sha256": "6b38530ab84db597dcb50441fd22a30046c93a4fa0344950b83c7ad07a57ab38",
+        "size": 105595,
+        "lines": 1050
       }
     },
     {
@@ -213,112 +311,518 @@
       "path": "collaborators.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "760a15740f26f5fb5ed9ac650807ce1318cc58ba6f202f9e59b4dfaa9dd2988d",
-        "size": 151740,
-        "lines": 2272
+        "sha256": "831c95a6900cc7b6bb5c689eb4f7d7e1f5bb9530e925d450e30bf5dd75dc454d",
+        "size": 240921,
+        "lines": 3098
       },
       "codex": {
-        "sha256": "760a15740f26f5fb5ed9ac650807ce1318cc58ba6f202f9e59b4dfaa9dd2988d",
-        "size": 151740,
-        "lines": 2272
+        "sha256": "831c95a6900cc7b6bb5c689eb4f7d7e1f5bb9530e925d450e30bf5dd75dc454d",
+        "size": 240921,
+        "lines": 3098
+      }
+    },
+    {
+      "path": "collaborators.md.avant-p326-20260912T1733",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "2ab23672ad5571f3d7a910d59ca35ef551c2864de32f502a1672f9ff51ae5c59",
+        "size": 224979,
+        "lines": null
+      },
+      "codex": {
+        "sha256": "2ab23672ad5571f3d7a910d59ca35ef551c2864de32f502a1672f9ff51ae5c59",
+        "size": 224979,
+        "lines": null
       }
     },
     {
       "path": "corpus-archives-numerisees.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "667c987087adb3ed9d19ed1b25479ed81c608cd5cab20c5f98e33ab3dd6450ed",
-        "size": 70739,
-        "lines": 982
+        "sha256": "70356e41873ccc34c97259714c436a86300e8095ef253ec51149dfa81b92da9d",
+        "size": 75971,
+        "lines": 1007
       },
       "codex": {
-        "sha256": "667c987087adb3ed9d19ed1b25479ed81c608cd5cab20c5f98e33ab3dd6450ed",
-        "size": 70739,
-        "lines": 982
+        "sha256": "70356e41873ccc34c97259714c436a86300e8095ef253ec51149dfa81b92da9d",
+        "size": 75971,
+        "lines": 1007
+      }
+    },
+    {
+      "path": "corpus-ingestion.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "09968a1ffa7bc12ed510654f2c9592c87512ac993df7c56837a9095b9dabdfdd",
+        "size": 5810,
+        "lines": 80
+      },
+      "codex": {
+        "sha256": "09968a1ffa7bc12ed510654f2c9592c87512ac993df7c56837a9095b9dabdfdd",
+        "size": 5810,
+        "lines": 80
       }
     },
     {
       "path": "cv-workflow.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "aa607a840ffe88dc66b87e8903aa1d8736df782543df98ac504d9bae462eae19",
-        "size": 12092,
-        "lines": 76
+        "sha256": "49db6c0bb7191e7aa38aefbccdb86f86466e945885369efb2d0eccff1808f800",
+        "size": 23539,
+        "lines": 153
       },
       "codex": {
-        "sha256": "aa607a840ffe88dc66b87e8903aa1d8736df782543df98ac504d9bae462eae19",
-        "size": 12092,
-        "lines": 76
+        "sha256": "49db6c0bb7191e7aa38aefbccdb86f86466e945885369efb2d0eccff1808f800",
+        "size": 23539,
+        "lines": 153
+      }
+    },
+    {
+      "path": "cwd-fantome-corbeille.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "c19c489ae196abdb88e8cc0ac39afaee15e2b4de9aee1bed810f848c518ed147",
+        "size": 7408,
+        "lines": 128
+      },
+      "codex": {
+        "sha256": "c19c489ae196abdb88e8cc0ac39afaee15e2b4de9aee1bed810f848c518ed147",
+        "size": 7408,
+        "lines": 128
       }
     },
     {
       "path": "data-provenance.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "380e8af680634f55311cf7c0f008d9880a64552824c49711f7ddfb37b39d78f5",
-        "size": 25387,
-        "lines": 331
+        "sha256": "5acca565aebe29eca9b81c9f720736d1babf4cad813ec3bd673fc5af496a18e3",
+        "size": 35503,
+        "lines": 459
       },
       "codex": {
-        "sha256": "380e8af680634f55311cf7c0f008d9880a64552824c49711f7ddfb37b39d78f5",
-        "size": 25387,
-        "lines": 331
+        "sha256": "5acca565aebe29eca9b81c9f720736d1babf4cad813ec3bd673fc5af496a18e3",
+        "size": 35503,
+        "lines": 459
       }
     },
     {
       "path": "deployment.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "505d63de29c921ceba9dea809f22afa872de2bbf874f4e3ea32597687fc7e76c",
-        "size": 143757,
-        "lines": 1129
+        "sha256": "75f0b47438189364d040059b7150255529b2d0f9350eb5a2cf2c1b0949d2b634",
+        "size": 221534,
+        "lines": 1801
       },
       "codex": {
-        "sha256": "505d63de29c921ceba9dea809f22afa872de2bbf874f4e3ea32597687fc7e76c",
-        "size": 143757,
-        "lines": 1129
+        "sha256": "75f0b47438189364d040059b7150255529b2d0f9350eb5a2cf2c1b0949d2b634",
+        "size": 221534,
+        "lines": 1801
+      }
+    },
+    {
+      "path": "doctrinops.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "c2714527ea0437a689c2923780f7c142ecdd3ea25cca8d4dcc09b3cf8ac933a7",
+        "size": 12725,
+        "lines": 195
+      },
+      "codex": {
+        "sha256": "c2714527ea0437a689c2923780f7c142ecdd3ea25cca8d4dcc09b3cf8ac933a7",
+        "size": 12725,
+        "lines": 195
+      }
+    },
+    {
+      "path": "droit-public-camille.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "033d559ee10791eceef20a5c64b7f75f3aa9a306a84b12b9cc565f75adf0c2be",
+        "size": 10805,
+        "lines": 129
+      },
+      "codex": {
+        "sha256": "033d559ee10791eceef20a5c64b7f75f3aa9a306a84b12b9cc565f75adf0c2be",
+        "size": 10805,
+        "lines": 129
+      }
+    },
+    {
+      "path": "enseignement-cours.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "1df9993061d3f71b49a68912c7e2e60c46ec5b5aa8cb2eb28cc7b458adc99021",
+        "size": 18567,
+        "lines": 247
+      },
+      "codex": {
+        "sha256": "1df9993061d3f71b49a68912c7e2e60c46ec5b5aa8cb2eb28cc7b458adc99021",
+        "size": 18567,
+        "lines": 247
+      }
+    },
+    {
+      "path": "enseignement-site-cours.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "7134e88e670b3f0e02b32b3880b124ccce5d4405cf334f8dd0577bdd073a6585",
+        "size": 22244,
+        "lines": 302
+      },
+      "codex": {
+        "sha256": "7134e88e670b3f0e02b32b3880b124ccce5d4405cf334f8dd0577bdd073a6585",
+        "size": 22244,
+        "lines": 302
       }
     },
     {
       "path": "figures-publication-inspection.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "ce465e6dab2c69470e8c8678154875588c75c06ecfd8dfdd2a0ee67821934e70",
-        "size": 26115,
-        "lines": 377
+        "sha256": "3adb6c25968426e963fb6f1d6d93c6206c1476e25941f24665e5d986f2295aa0",
+        "size": 36434,
+        "lines": 511
       },
       "codex": {
-        "sha256": "ce465e6dab2c69470e8c8678154875588c75c06ecfd8dfdd2a0ee67821934e70",
-        "size": 26115,
-        "lines": 377
+        "sha256": "3adb6c25968426e963fb6f1d6d93c6206c1476e25941f24665e5d986f2295aa0",
+        "size": 36434,
+        "lines": 511
       }
     },
     {
       "path": "french-writing-proofreading.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "0178b5f1ce74ae2ee11b69ad392d3537a91e51063cf76c2c12e2347686094667",
-        "size": 10006,
-        "lines": 131
+        "sha256": "00633c2c13d0a0c074ecd68836c57749330a0929edb787d352793dcf565cee18",
+        "size": 12797,
+        "lines": 167
       },
       "codex": {
-        "sha256": "0178b5f1ce74ae2ee11b69ad392d3537a91e51063cf76c2c12e2347686094667",
-        "size": 10006,
-        "lines": 131
+        "sha256": "00633c2c13d0a0c074ecd68836c57749330a0929edb787d352793dcf565cee18",
+        "size": 12797,
+        "lines": 167
+      }
+    },
+    {
+      "path": "freshness-monitoring.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "1b0c72dd7339e9df586a7620f97a135d79891997aa9d8766b32684f300ba7412",
+        "size": 6515,
+        "lines": 90
+      },
+      "codex": {
+        "sha256": "1b0c72dd7339e9df586a7620f97a135d79891997aa9d8766b32684f300ba7412",
+        "size": 6515,
+        "lines": 90
       }
     },
     {
       "path": "frontend-patterns.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "b013e8ccc9e020f9001394b06169d3e30fe237c820d0f5057939a1224a7856c0",
-        "size": 43592,
-        "lines": 486
+        "sha256": "97d4b059843187d81a086b657f2b1bf4358f69dbcfd33e6179b9628aed3af4a5",
+        "size": 50124,
+        "lines": 569
       },
       "codex": {
-        "sha256": "b013e8ccc9e020f9001394b06169d3e30fe237c820d0f5057939a1224a7856c0",
-        "size": 43592,
-        "lines": 486
+        "sha256": "97d4b059843187d81a086b657f2b1bf4358f69dbcfd33e6179b9628aed3af4a5",
+        "size": 50124,
+        "lines": 569
+      }
+    },
+    {
+      "path": "funding/README.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "d347f5e119a733f9488b0a4e4ae3dc1c0048abd2a1a946546699658b80629921",
+        "size": 3825,
+        "lines": 66
+      },
+      "codex": {
+        "sha256": "d347f5e119a733f9488b0a4e4ae3dc1c0048abd2a1a946546699658b80629921",
+        "size": 3825,
+        "lines": 66
+      }
+    },
+    {
+      "path": "funding/SCHEMA.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "6ae0511c272019f99076dad12ec27c79afc3182276c4f7147dceef77dd63d99a",
+        "size": 3905,
+        "lines": 61
+      },
+      "codex": {
+        "sha256": "6ae0511c272019f99076dad12ec27c79afc3182276c4f7147dceef77dd63d99a",
+        "size": 3905,
+        "lines": 61
+      }
+    },
+    {
+      "path": "funding/admin_profile.json",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "d2f0c185e4c0335bd4ef93e9e0b27e1836305211ff24242eafdd4ca83e8ddcb0",
+        "size": 8416,
+        "lines": 105
+      },
+      "codex": {
+        "sha256": "d2f0c185e4c0335bd4ef93e9e0b27e1836305211ff24242eafdd4ca83e8ddcb0",
+        "size": 8416,
+        "lines": 105
+      }
+    },
+    {
+      "path": "funding/applications.tsv",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "0e42b762b788259a27267096a06b9001657633aba1f6f25ba4f928be4887cb5e",
+        "size": 14661,
+        "lines": 27
+      },
+      "codex": {
+        "sha256": "0e42b762b788259a27267096a06b9001657633aba1f6f25ba4f928be4887cb5e",
+        "size": 14661,
+        "lines": 27
+      }
+    },
+    {
+      "path": "funding/calls.tsv",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "20f582c749430162a75eebecaff0b43c38beef4c2d32922c6cbcc9280408afbd",
+        "size": 22044,
+        "lines": 32
+      },
+      "codex": {
+        "sha256": "20f582c749430162a75eebecaff0b43c38beef4c2d32922c6cbcc9280408afbd",
+        "size": 22044,
+        "lines": 32
+      }
+    },
+    {
+      "path": "funding/calls/anr-aapg.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "f6b6af5ed775c7297f5a503fb22770d9f1bfb739942b504681c46c950139f2fc",
+        "size": 4418,
+        "lines": 76
+      },
+      "codex": {
+        "sha256": "f6b6af5ed775c7297f5a503fb22770d9f1bfb739942b504681c46c950139f2fc",
+        "size": 4418,
+        "lines": 76
+      }
+    },
+    {
+      "path": "funding/calls/anrs-mie-generique.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "bdc95bb55171b495acace818dd627fb88ae23e595bbbfb343a5600e638345b1d",
+        "size": 3779,
+        "lines": 61
+      },
+      "codex": {
+        "sha256": "bdc95bb55171b495acace818dd627fb88ae23e595bbbfb343a5600e638345b1d",
+        "size": 3779,
+        "lines": 61
+      }
+    },
+    {
+      "path": "funding/calls/interreg-fr-ch.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "37c4320073b0990fa32fd4fc2642b33b0c7d9c907b5543e4b9c788594e0b7f42",
+        "size": 1189,
+        "lines": 18
+      },
+      "codex": {
+        "sha256": "37c4320073b0990fa32fd4fc2642b33b0c7d9c907b5543e4b9c788594e0b7f42",
+        "size": 1189,
+        "lines": 18
+      }
+    },
+    {
+      "path": "funding/calls/iuf.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "9fd2f14556c6f20fba733c9ebc2ae4e32afa2488401aef4fd4e727e7714440cf",
+        "size": 5169,
+        "lines": 84
+      },
+      "codex": {
+        "sha256": "9fd2f14556c6f20fba733c9ebc2ae4e32afa2488401aef4fd4e727e7714440cf",
+        "size": 5169,
+        "lines": 84
+      }
+    },
+    {
+      "path": "funding/calls/phc-cedre.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "590d15a4babaf81e4053147272dea51929fb7d3e052dcdfd55f640aa63a82c49",
+        "size": 4104,
+        "lines": 67
+      },
+      "codex": {
+        "sha256": "590d15a4babaf81e4053147272dea51929fb7d3e052dcdfd55f640aa63a82c49",
+        "size": 4104,
+        "lines": 67
+      }
+    },
+    {
+      "path": "funding/calls/smart-mi.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "c443aa62c70a2e0e939ee559c874640615722bdbad0369d3ccac7da0be06e365",
+        "size": 2125,
+        "lines": 39
+      },
+      "codex": {
+        "sha256": "c443aa62c70a2e0e939ee559c874640615722bdbad0369d3ccac7da0be06e365",
+        "size": 2125,
+        "lines": 39
+      }
+    },
+    {
+      "path": "funding/calls/umlp-sunergia.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "6c498c2b32ee803528b6678acdbb49deade75703e8dc436f52873655ed09b622",
+        "size": 1352,
+        "lines": 23
+      },
+      "codex": {
+        "sha256": "6c498c2b32ee803528b6678acdbb49deade75703e8dc436f52873655ed09b622",
+        "size": 1352,
+        "lines": 23
+      }
+    },
+    {
+      "path": "funding/rapports/2020-02-05_ANR-ChairesIA-2019_URGENCES_rapport-comite.pdf",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "213082fe13ea709e0bb744e9a619e81a4411b009d3f220f7ee7cc8dbdcb16bab",
+        "size": 432793,
+        "lines": null
+      },
+      "codex": {
+        "sha256": "213082fe13ea709e0bb744e9a619e81a4411b009d3f220f7ee7cc8dbdcb16bab",
+        "size": 432793,
+        "lines": null
+      }
+    },
+    {
+      "path": "funding/rapports/2020-02-05_ANR-ChairesIA-2019_URGENCES_rapport-comite.txt",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "4518fbfc8ef69ca516e05ea9ccaa35925e23b0802b3281fbde7e065e20e89646",
+        "size": 2560,
+        "lines": 56
+      },
+      "codex": {
+        "sha256": "4518fbfc8ef69ca516e05ea9ccaa35925e23b0802b3281fbde7e065e20e89646",
+        "size": 2560,
+        "lines": 56
+      }
+    },
+    {
+      "path": "funding/rapports/2024-01-19_ANR-SAPS-RP2-2023_OPTIMOPS_rapport-comite.pdf",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "e6d26d02558b8b89d6ee2014153d9333fbcd0ded2f3371cb8777eed2661a3b17",
+        "size": 175540,
+        "lines": null
+      },
+      "codex": {
+        "sha256": "e6d26d02558b8b89d6ee2014153d9333fbcd0ded2f3371cb8777eed2661a3b17",
+        "size": 175540,
+        "lines": null
+      }
+    },
+    {
+      "path": "funding/rapports/2024-01-19_ANR-SAPS-RP2-2023_OPTIMOPS_rapport-comite.txt",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "6ca2105e6ee3bb74b797a818c49296b8fbf50d0e7c37222b768c1fdd705cb0d7",
+        "size": 4886,
+        "lines": 113
+      },
+      "codex": {
+        "sha256": "6ca2105e6ee3bb74b797a818c49296b8fbf50d0e7c37222b768c1fdd705cb0d7",
+        "size": 4886,
+        "lines": 113
+      }
+    },
+    {
+      "path": "funding/rapports/2025-07-09_PEPR-PREZODE-WP2-2025_LSTZ-A_notification-et-rapport.pdf",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "d22fdddfa538591276751df18acef63111ebe92a5def15ddb126a007b92b84fd",
+        "size": 1346307,
+        "lines": null
+      },
+      "codex": {
+        "sha256": "d22fdddfa538591276751df18acef63111ebe92a5def15ddb126a007b92b84fd",
+        "size": 1346307,
+        "lines": null
+      }
+    },
+    {
+      "path": "funding/rapports/2026-03-16_ANR-TSIA-2025_MycoFrugAIlity_rapport-comite.pdf",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "362420afaf964a2a41fed99b1c5cf1f19c27207e94f642aa7e15da681d3cbbef",
+        "size": 180137,
+        "lines": null
+      },
+      "codex": {
+        "sha256": "362420afaf964a2a41fed99b1c5cf1f19c27207e94f642aa7e15da681d3cbbef",
+        "size": 180137,
+        "lines": null
+      }
+    },
+    {
+      "path": "funding/rapports/2026-03-16_ANR-TSIA-2025_MycoFrugAIlity_rapport-comite.txt",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "8fd5dd533df94add3f7694b1ace9e29ef722f1271414f259951e034c2a9251a5",
+        "size": 4103,
+        "lines": 83
+      },
+      "codex": {
+        "sha256": "8fd5dd533df94add3f7694b1ace9e29ef722f1271414f259951e034c2a9251a5",
+        "size": 4103,
+        "lines": 83
+      }
+    },
+    {
+      "path": "funding/rapports/README.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "7d2e55f230079e850f21d4ced5b5833deb3ef507d79817c87db641ff5c2ea23b",
+        "size": 861,
+        "lines": 18
+      },
+      "codex": {
+        "sha256": "7d2e55f230079e850f21d4ced5b5833deb3ef507d79817c87db641ff5c2ea23b",
+        "size": 861,
+        "lines": 18
+      }
+    },
+    {
+      "path": "funding/rejections.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "1185b4b284b7c8a3ccf434e0f98ff7e6ead5556a1c5d0a501546191025c06530",
+        "size": 22062,
+        "lines": 357
+      },
+      "codex": {
+        "sha256": "1185b4b284b7c8a3ccf434e0f98ff7e6ead5556a1c5d0a501546191025c06530",
+        "size": 22062,
+        "lines": 357
       }
     },
     {
@@ -339,56 +843,70 @@
       "path": "git-github.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "33c9c68c2cc43e3432effce85d3156cc43ead1c4831a39b63fda19bc00168272",
-        "size": 6528,
-        "lines": 41
+        "sha256": "33affe2008c75b6331474a7c1326a7118f430fa20f2fecc9eb9f0dfa72daa322",
+        "size": 9683,
+        "lines": 73
       },
       "codex": {
-        "sha256": "33c9c68c2cc43e3432effce85d3156cc43ead1c4831a39b63fda19bc00168272",
-        "size": 6528,
-        "lines": 41
+        "sha256": "33affe2008c75b6331474a7c1326a7118f430fa20f2fecc9eb9f0dfa72daa322",
+        "size": 9683,
+        "lines": 73
+      }
+    },
+    {
+      "path": "gmail-mcp-tools.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "d7477f5adedf3a93707399473433662e9014db29f30853582392570fb225a10f",
+        "size": 6197,
+        "lines": 104
+      },
+      "codex": {
+        "sha256": "d7477f5adedf3a93707399473433662e9014db29f30853582392570fb225a10f",
+        "size": 6197,
+        "lines": 104
       }
     },
     {
       "path": "hook-prompt-doubt-clause.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "0b9faafed54a7527cdd328285a5bbacb44edca741b1bc8fc5077169fce122146",
-        "size": 8405,
-        "lines": 119
+        "sha256": "ec19d1cdb1f7d668227e998b503a84f2c79b40644f923d616266079610e15eda",
+        "size": 31110,
+        "lines": 428
       },
       "codex": {
-        "sha256": "0b9faafed54a7527cdd328285a5bbacb44edca741b1bc8fc5077169fce122146",
-        "size": 8405,
-        "lines": 119
+        "sha256": "ec19d1cdb1f7d668227e998b503a84f2c79b40644f923d616266079610e15eda",
+        "size": 31110,
+        "lines": 428
       }
     },
     {
       "path": "htr-ecritures-anciennes.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "1597fd8bbf4d43f5ce97000ef7d72842e9f8a9a4cb6ed07b28f3eccbc395b460",
-        "size": 36976,
-        "lines": 582
+        "sha256": "2048f7ad60e131b5dd781bd33cc2a58df44447b5fbeaf68c2fa27524f8214d5b",
+        "size": 38196,
+        "lines": 603
       },
       "codex": {
-        "sha256": "1597fd8bbf4d43f5ce97000ef7d72842e9f8a9a4cb6ed07b28f3eccbc395b460",
-        "size": 36976,
-        "lines": 582
+        "sha256": "2048f7ad60e131b5dd781bd33cc2a58df44447b5fbeaf68c2fa27524f8214d5b",
+        "size": 38196,
+        "lines": 603
       }
     },
     {
       "path": "iappels.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "4dc4ac80539fe5da9139150a775328e44046bee9da205f15844d506acf8ffd81",
-        "size": 24336,
-        "lines": 335
+        "sha256": "9a2eabc1c67758711d2fa4128dd2da27f743c4770a458026f059cbfdcaad40f4",
+        "size": 24673,
+        "lines": 340
       },
       "codex": {
-        "sha256": "4dc4ac80539fe5da9139150a775328e44046bee9da205f15844d506acf8ffd81",
-        "size": 24336,
-        "lines": 335
+        "sha256": "9a2eabc1c67758711d2fa4128dd2da27f743c4770a458026f059cbfdcaad40f4",
+        "size": 24673,
+        "lines": 340
       }
     },
     {
@@ -409,14 +927,14 @@
       "path": "journals/README.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "fff327d9c7b4a91bf2267dc50f9073cf0ce6c7a008629473289473ebff77d63b",
-        "size": 3181,
-        "lines": 51
+        "sha256": "6d2d98ce63550a9723826e0d54aa2454e2a49075e5a6613e45dded73938b8991",
+        "size": 3451,
+        "lines": 53
       },
       "codex": {
-        "sha256": "fff327d9c7b4a91bf2267dc50f9073cf0ce6c7a008629473289473ebff77d63b",
-        "size": 3181,
-        "lines": 51
+        "sha256": "6d2d98ce63550a9723826e0d54aa2454e2a49075e5a6613e45dded73938b8991",
+        "size": 3451,
+        "lines": 53
       }
     },
     {
@@ -434,31 +952,73 @@
       }
     },
     {
+      "path": "journals/accords_institutionnels_umlp.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "e9af33cbadea7d23f573743af261876668d8db09297e0a4733b71ee8b45bc387",
+        "size": 8226,
+        "lines": 124
+      },
+      "codex": {
+        "sha256": "e9af33cbadea7d23f573743af261876668d8db09297e0a4733b71ee8b45bc387",
+        "size": 8226,
+        "lines": 124
+      }
+    },
+    {
       "path": "journals/author_profile.json",
       "status": "common-identical",
       "claude": {
-        "sha256": "5d324e3d0eac378bd5e4d3511e153be4154838b19f0620ef07b32a2bdcc2f18d",
-        "size": 6664,
-        "lines": 103
+        "sha256": "5268d137eb379288efe7944c17943c754c8f6a9ad5dcaf974526ce8fa8784c60",
+        "size": 7799,
+        "lines": 104
       },
       "codex": {
-        "sha256": "5d324e3d0eac378bd5e4d3511e153be4154838b19f0620ef07b32a2bdcc2f18d",
-        "size": 6664,
-        "lines": 103
+        "sha256": "5268d137eb379288efe7944c17943c754c8f6a9ad5dcaf974526ce8fa8784c60",
+        "size": 7799,
+        "lines": 104
+      }
+    },
+    {
+      "path": "journals/corpus/fems-microbiology-letters.json",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "8a133f2353291f2457b5d89b0acc61e70dfde365fc549793d0c6a891bb95f119",
+        "size": 175955,
+        "lines": 1133
+      },
+      "codex": {
+        "sha256": "8a133f2353291f2457b5d89b0acc61e70dfde365fc549793d0c6a891bb95f119",
+        "size": 175955,
+        "lines": 1133
+      }
+    },
+    {
+      "path": "journals/corpus/microbial-genomics.json",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "37f8768786cafa60c5b5c6a5d0e7e12094b92b05151c2a03b300b698a6e05792",
+        "size": 616880,
+        "lines": 3350
+      },
+      "codex": {
+        "sha256": "37f8768786cafa60c5b5c6a5d0e7e12094b92b05151c2a03b300b698a6e05792",
+        "size": 616880,
+        "lines": 3350
       }
     },
     {
       "path": "journals/journals.tsv",
       "status": "common-identical",
       "claude": {
-        "sha256": "714e7fa72714c0485219048e157165811b685c0c4151d02233896d8fe2f39d27",
-        "size": 174384,
-        "lines": 129
+        "sha256": "0d0a98272a860ee96ee273f6ab32bd01545cc1298632e0df9c5b9e92c93cc5a1",
+        "size": 181522,
+        "lines": 131
       },
       "codex": {
-        "sha256": "714e7fa72714c0485219048e157165811b685c0c4151d02233896d8fe2f39d27",
-        "size": 174384,
-        "lines": 129
+        "sha256": "0d0a98272a860ee96ee273f6ab32bd01545cc1298632e0df9c5b9e92c93cc5a1",
+        "size": 181522,
+        "lines": 131
       }
     },
     {
@@ -549,70 +1109,70 @@
       "path": "journals/portal_lessons.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "f6526f671f7152f599d8f15b3213a690722c340cf8f7238b0d693452b8efebe3",
-        "size": 24449,
-        "lines": 426
+        "sha256": "b658b3a5ca9704f6e9113d5cd5d19e7122d9255185cff8f38ac77c5c5ed6e990",
+        "size": 98406,
+        "lines": 1440
       },
       "codex": {
-        "sha256": "f6526f671f7152f599d8f15b3213a690722c340cf8f7238b0d693452b8efebe3",
-        "size": 24449,
-        "lines": 426
+        "sha256": "b658b3a5ca9704f6e9113d5cd5d19e7122d9255185cff8f38ac77c5c5ed6e990",
+        "size": 98406,
+        "lines": 1440
       }
     },
     {
       "path": "journals/portals.tsv",
       "status": "common-identical",
       "claude": {
-        "sha256": "c7721fb8f1e8b6478630f4077fed06a0d72842604e17a9745030dc9187c7b553",
-        "size": 5004,
-        "lines": 11
+        "sha256": "325580bbbf9a3646cdc099e3fd477f6e263a13cc46c3df7e220b2450583ed089",
+        "size": 13347,
+        "lines": 12
       },
       "codex": {
-        "sha256": "c7721fb8f1e8b6478630f4077fed06a0d72842604e17a9745030dc9187c7b553",
-        "size": 5004,
-        "lines": 11
+        "sha256": "325580bbbf9a3646cdc099e3fd477f6e263a13cc46c3df7e220b2450583ed089",
+        "size": 13347,
+        "lines": 12
       }
     },
     {
       "path": "journals/preprints_et_delais.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "538c9a641d26e24c7883022a4be22c3e49cae5510fd0a1fcbd529a567fae5d0d",
-        "size": 59184,
-        "lines": 820
+        "sha256": "423240beb191c51af470d0f73e3ab46e72e1850d9dda0aa3c74c0fa51ed6910b",
+        "size": 68267,
+        "lines": 949
       },
       "codex": {
-        "sha256": "538c9a641d26e24c7883022a4be22c3e49cae5510fd0a1fcbd529a567fae5d0d",
-        "size": 59184,
-        "lines": 820
+        "sha256": "423240beb191c51af470d0f73e3ab46e72e1850d9dda0aa3c74c0fa51ed6910b",
+        "size": 68267,
+        "lines": 949
       }
     },
     {
       "path": "journals/rejections.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "d5676707a0dd6ff349747b5851b83556646bacad8c85fb8abb0881eabc3bc0f8",
-        "size": 2092,
-        "lines": 29
+        "sha256": "e34f719efc616166e07a6f30c09f066f54319cd8cca57471cc65c726144ff72c",
+        "size": 6928,
+        "lines": 62
       },
       "codex": {
-        "sha256": "d5676707a0dd6ff349747b5851b83556646bacad8c85fb8abb0881eabc3bc0f8",
-        "size": 2092,
-        "lines": 29
+        "sha256": "e34f719efc616166e07a6f30c09f066f54319cd8cca57471cc65c726144ff72c",
+        "size": 6928,
+        "lines": 62
       }
     },
     {
       "path": "journals/submissions.tsv",
       "status": "common-identical",
       "claude": {
-        "sha256": "9f9704b168cfdaa572ce395808a4215c3dae62d0319be981b615445ea358b02f",
-        "size": 9106,
-        "lines": 13
+        "sha256": "dd9f74152418a1a2204f0a4d0f5762852ef0091662b65d3f21df8abf5d339797",
+        "size": 32196,
+        "lines": 24
       },
       "codex": {
-        "sha256": "9f9704b168cfdaa572ce395808a4215c3dae62d0319be981b615445ea358b02f",
-        "size": 9106,
-        "lines": 13
+        "sha256": "dd9f74152418a1a2204f0a4d0f5762852ef0091662b65d3f21df8abf5d339797",
+        "size": 32196,
+        "lines": 24
       }
     },
     {
@@ -630,17 +1190,31 @@
       }
     },
     {
+      "path": "lasuite-proconnect.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "8556b4998b43c67ca83a5f3cc99521f7dc8dce0cfb9c424c39921d81d27625e4",
+        "size": 4069,
+        "lines": 66
+      },
+      "codex": {
+        "sha256": "8556b4998b43c67ca83a5f3cc99521f7dc8dce0cfb9c424c39921d81d27625e4",
+        "size": 4069,
+        "lines": 66
+      }
+    },
+    {
       "path": "latex-babel-french-bibtex-colon.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "1fb2f038a909f525bffd9bca0ba435e44cd66e67040e11c95c3eb522677b0266",
-        "size": 2382,
-        "lines": 38
+        "sha256": "6da042723f3b68bc158463b3a39dfec2910a0852c1d37347610b3dbd383f4f43",
+        "size": 6422,
+        "lines": 95
       },
       "codex": {
-        "sha256": "1fb2f038a909f525bffd9bca0ba435e44cd66e67040e11c95c3eb522677b0266",
-        "size": 2382,
-        "lines": 38
+        "sha256": "6da042723f3b68bc158463b3a39dfec2910a0852c1d37347610b3dbd383f4f43",
+        "size": 6422,
+        "lines": 95
       }
     },
     {
@@ -658,59 +1232,115 @@
       }
     },
     {
+      "path": "latex-french-accent-escapes-word-count.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "c31842f0d58beee56155fe70867446858d804d940fed66b11b964a2645c66a33",
+        "size": 3373,
+        "lines": 42
+      },
+      "codex": {
+        "sha256": "c31842f0d58beee56155fe70867446858d804d940fed66b11b964a2645c66a33",
+        "size": 3373,
+        "lines": 42
+      }
+    },
+    {
+      "path": "latex-tableaux-scientifiques.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "1dc90f40aea5537a4c9c1d175618cfb48b67819ed25f45f5eec654fcaeac713c",
+        "size": 3659,
+        "lines": 56
+      },
+      "codex": {
+        "sha256": "1dc90f40aea5537a4c9c1d175618cfb48b67819ed25f45f5eec654fcaeac713c",
+        "size": 3659,
+        "lines": 56
+      }
+    },
+    {
+      "path": "latex-unbreakable-token-margin-overflow.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "589495e08eeeb48e5551ef711cf6da19abb2094c7fc664ee4f4a22d8635e058a",
+        "size": 11090,
+        "lines": 160
+      },
+      "codex": {
+        "sha256": "589495e08eeeb48e5551ef711cf6da19abb2094c7fc664ee4f4a22d8635e058a",
+        "size": 11090,
+        "lines": 160
+      }
+    },
+    {
       "path": "legifrance-api.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "b88686f07cc482ffbb7ce714fcf49376b4a25aeb1b59ff8b75602f4dd8f5398c",
-        "size": 11956,
-        "lines": 185
+        "sha256": "8c15091ff9b882fe4416ec53c8b072012b530d7a9c13ca40767ab85c9fdf2fe6",
+        "size": 13510,
+        "lines": 193
       },
       "codex": {
-        "sha256": "b88686f07cc482ffbb7ce714fcf49376b4a25aeb1b59ff8b75602f4dd8f5398c",
-        "size": 11956,
-        "lines": 185
+        "sha256": "8c15091ff9b882fe4416ec53c8b072012b530d7a9c13ca40767ab85c9fdf2fe6",
+        "size": 13510,
+        "lines": 193
       }
     },
     {
       "path": "linux-desktop.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "6a1a0ec0166fc0d47a22ae1ccf50a47cc2a644f5ab6964aeba0da6cf03292396",
-        "size": 61273,
-        "lines": 841
+        "sha256": "48adec4da839ef91364e263dc1b72f5984942ed25170f3a8547d7bf106aaaf4c",
+        "size": 65924,
+        "lines": 910
       },
       "codex": {
-        "sha256": "6a1a0ec0166fc0d47a22ae1ccf50a47cc2a644f5ab6964aeba0da6cf03292396",
-        "size": 61273,
-        "lines": 841
+        "sha256": "48adec4da839ef91364e263dc1b72f5984942ed25170f3a8547d7bf106aaaf4c",
+        "size": 65924,
+        "lines": 910
       }
     },
     {
       "path": "lit-review-fanout-verification.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "2a35d0cb7b321ab9d2518eecd637db419de631bc4db68bcd9a2eb613eac72b56",
-        "size": 48246,
-        "lines": 639
+        "sha256": "dd4114baa6f6678492d08481e9e249dd0b373535557e1a4655ad9f461c11b9d4",
+        "size": 49560,
+        "lines": 653
       },
       "codex": {
-        "sha256": "2a35d0cb7b321ab9d2518eecd637db419de631bc4db68bcd9a2eb613eac72b56",
-        "size": 48246,
-        "lines": 639
+        "sha256": "dd4114baa6f6678492d08481e9e249dd0b373535557e1a4655ad9f461c11b9d4",
+        "size": 49560,
+        "lines": 653
       }
     },
     {
       "path": "literature-search.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "7b92f765dbf48e2ad9538a87a08161ad807db8654ded9387571a40e666fff99d",
-        "size": 63238,
-        "lines": 462
+        "sha256": "798d2a69a4310c25514b2e2a0970c923ad9553295573c2e4868b6a4587e72046",
+        "size": 95496,
+        "lines": 727
       },
       "codex": {
-        "sha256": "7b92f765dbf48e2ad9538a87a08161ad807db8654ded9387571a40e666fff99d",
-        "size": 63238,
-        "lines": 462
+        "sha256": "798d2a69a4310c25514b2e2a0970c923ad9553295573c2e4868b6a4587e72046",
+        "size": 95496,
+        "lines": 727
+      }
+    },
+    {
+      "path": "llm-app-observabilite.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "7cb4490eecc55f69bd981151cfda23defbe5f607cab41e73a53243289c88020f",
+        "size": 7676,
+        "lines": 119
+      },
+      "codex": {
+        "sha256": "7cb4490eecc55f69bd981151cfda23defbe5f607cab41e73a53243289c88020f",
+        "size": 7676,
+        "lines": 119
       }
     },
     {
@@ -745,14 +1375,28 @@
       "path": "manuscript-review-llm-eval.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "107a57d3d87c935e8ccec94c646c751287c9e514bdf4d90aaf603da3a0af358c",
-        "size": 51478,
-        "lines": 667
+        "sha256": "03fc51344c00a9c527a75c59f917a2f853c0751bca412114017cfab23fba67cb",
+        "size": 54052,
+        "lines": 701
       },
       "codex": {
-        "sha256": "107a57d3d87c935e8ccec94c646c751287c9e514bdf4d90aaf603da3a0af358c",
-        "size": 51478,
-        "lines": 667
+        "sha256": "03fc51344c00a9c527a75c59f917a2f853c0751bca412114017cfab23fba67cb",
+        "size": 54052,
+        "lines": 701
+      }
+    },
+    {
+      "path": "manuscrit-audit-de-preuve.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "7a04849a0e5880de28426f5bdced2e6126fabbb2d3b57d0c9403aff7c19da054",
+        "size": 20119,
+        "lines": 285
+      },
+      "codex": {
+        "sha256": "7a04849a0e5880de28426f5bdced2e6126fabbb2d3b57d0c9403aff7c19da054",
+        "size": 20119,
+        "lines": 285
       }
     },
     {
@@ -773,14 +1417,14 @@
       "path": "micwatch-pipeline.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "defdb53ae4390a404c0db2c4e76a1aaa4d9934e3e93cbfbd59bf160638086de4",
-        "size": 32167,
-        "lines": 420
+        "sha256": "b1472a8fcfc45911bbb1a634679936f052f5a9053ba754a927e71a8212be610f",
+        "size": 65001,
+        "lines": 847
       },
       "codex": {
-        "sha256": "defdb53ae4390a404c0db2c4e76a1aaa4d9934e3e93cbfbd59bf160638086de4",
-        "size": 32167,
-        "lines": 420
+        "sha256": "b1472a8fcfc45911bbb1a634679936f052f5a9053ba754a927e71a8212be610f",
+        "size": 65001,
+        "lines": 847
       }
     },
     {
@@ -795,6 +1439,48 @@
         "sha256": "9d314d88da27f70fa5e9ffb4dc0da0fb1f0246345beb204b34303440db1c1d1c",
         "size": 18752,
         "lines": null
+      }
+    },
+    {
+      "path": "model-routing.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "f517b12679603255edded076e3099c3f6496148a2a013550698a7ddc89e28fa0",
+        "size": 46227,
+        "lines": 590
+      },
+      "codex": {
+        "sha256": "f517b12679603255edded076e3099c3f6496148a2a013550698a7ddc89e28fa0",
+        "size": 46227,
+        "lines": 590
+      }
+    },
+    {
+      "path": "mtbc-inter-projet-audit-reboot.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "3b31c3b92f7a39d7c703068945c1c1fd63c81a317b27276d11eb0ff1578540f0",
+        "size": 3039,
+        "lines": 40
+      },
+      "codex": {
+        "sha256": "3b31c3b92f7a39d7c703068945c1c1fd63c81a317b27276d11eb0ff1578540f0",
+        "size": 3039,
+        "lines": 40
+      }
+    },
+    {
+      "path": "multi-session-coordination.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "a2193be95bc010a5518769091952b6badcdac2549d145491d8926077e6ce9626",
+        "size": 31995,
+        "lines": 531
+      },
+      "codex": {
+        "sha256": "a2193be95bc010a5518769091952b6badcdac2549d145491d8926077e6ce9626",
+        "size": 31995,
+        "lines": 531
       }
     },
     {
@@ -899,42 +1585,56 @@
       "path": "pdf-supplementary-tables.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "98d93f0e589782141bcea8ef3a423a4d1f55b872564f8f15c815162815eec809",
-        "size": 9634,
-        "lines": 116
+        "sha256": "e89aa8b4cc21fa5b6872fdd5a7e6f7942f24e4cca7f2c023b8eca7ed93c72da0",
+        "size": 10901,
+        "lines": 136
       },
       "codex": {
-        "sha256": "98d93f0e589782141bcea8ef3a423a4d1f55b872564f8f15c815162815eec809",
-        "size": 9634,
-        "lines": 116
+        "sha256": "e89aa8b4cc21fa5b6872fdd5a7e6f7942f24e4cca7f2c023b8eca7ed93c72da0",
+        "size": 10901,
+        "lines": 136
       }
     },
     {
       "path": "population-genetics-inference.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "d9e48c4bb5a32cb5528a9efec9e0917615ad902bda82463061c66d5d50baecce",
-        "size": 2722,
-        "lines": 38
+        "sha256": "b0630a711faf2c8771763c56a2501fa293f3e322c99a6bb2e679c960a6a43213",
+        "size": 7224,
+        "lines": 94
       },
       "codex": {
-        "sha256": "d9e48c4bb5a32cb5528a9efec9e0917615ad902bda82463061c66d5d50baecce",
-        "size": 2722,
-        "lines": 38
+        "sha256": "b0630a711faf2c8771763c56a2501fa293f3e322c99a6bb2e679c960a6a43213",
+        "size": 7224,
+        "lines": 94
       }
     },
     {
       "path": "predictops.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "7bd90f57acf16675af804895f98d60a012befea4f95c062b52abf2374f03f56d",
-        "size": 779169,
-        "lines": 4955
+        "sha256": "1a9661d2a53a220c40c8b370d972ca375ca569af12ac7f3b94e45d831243928d",
+        "size": 834406,
+        "lines": 5615
       },
       "codex": {
-        "sha256": "7bd90f57acf16675af804895f98d60a012befea4f95c062b52abf2374f03f56d",
-        "size": 779169,
-        "lines": 4955
+        "sha256": "1a9661d2a53a220c40c8b370d972ca375ca569af12ac7f3b94e45d831243928d",
+        "size": 834406,
+        "lines": 5615
+      }
+    },
+    {
+      "path": "profil-chercheur.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "a4e792506d49329728a1e1927d3dfcdecc9aac41a969df6c275c420258d9fb41",
+        "size": 2557,
+        "lines": 37
+      },
+      "codex": {
+        "sha256": "a4e792506d49329728a1e1927d3dfcdecc9aac41a969df6c275c420258d9fb41",
+        "size": 2557,
+        "lines": 37
       }
     },
     {
@@ -955,14 +1655,14 @@
       "path": "python-patterns.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "8c68ca836d09010bd9d9628e37c85812f8c72557599ce773bf3c07b9645deeba",
-        "size": 802271,
-        "lines": 6170
+        "sha256": "f9c4eed5188ab10d978c39250cdefcb9387605a734342d697ddb37ffd6683dcd",
+        "size": 953252,
+        "lines": 8056
       },
       "codex": {
-        "sha256": "8c68ca836d09010bd9d9628e37c85812f8c72557599ce773bf3c07b9645deeba",
-        "size": 802271,
-        "lines": 6170
+        "sha256": "f9c4eed5188ab10d978c39250cdefcb9387605a734342d697ddb37ffd6683dcd",
+        "size": 953252,
+        "lines": 8056
       }
     },
     {
@@ -983,14 +1683,14 @@
       "path": "quodlibet.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "341846257afe892d4120e430793cbce0e8cbb23e06febf21803b06f38a603bb4",
-        "size": 9783,
-        "lines": 127
+        "sha256": "7bea1256f71f44e1c2e38d85ca2172ee59bda7a910875021c57d99b1890f9cff",
+        "size": 12613,
+        "lines": 165
       },
       "codex": {
-        "sha256": "341846257afe892d4120e430793cbce0e8cbb23e06febf21803b06f38a603bb4",
-        "size": 9783,
-        "lines": 127
+        "sha256": "7bea1256f71f44e1c2e38d85ca2172ee59bda7a910875021c57d99b1890f9cff",
+        "size": 12613,
+        "lines": 165
       }
     },
     {
@@ -1011,56 +1711,56 @@
       "path": "reference-bias-pipelines.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "1d1037bda557c371a722f3a7c967510f2aa9538b12efa750476f72d4108a19c8",
-        "size": 15120,
-        "lines": 234
+        "sha256": "851f1457969644e8d3723984e7214b8a85ef8534fd1b37cb22591e203e597037",
+        "size": 19081,
+        "lines": 291
       },
       "codex": {
-        "sha256": "1d1037bda557c371a722f3a7c967510f2aa9538b12efa750476f72d4108a19c8",
-        "size": 15120,
-        "lines": 234
+        "sha256": "851f1457969644e8d3723984e7214b8a85ef8534fd1b37cb22591e203e597037",
+        "size": 19081,
+        "lines": 291
       }
     },
     {
       "path": "refuter-sa-propre-piste.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "00664fe0a88e204c3a157d01975a823d13fe908567b026cbe74ef7a0d621192b",
-        "size": 43149,
-        "lines": 563
+        "sha256": "713884910cab39c684e26303e835f4c512ef6b2b0cdd461a09f57de2769f2431",
+        "size": 63127,
+        "lines": 819
       },
       "codex": {
-        "sha256": "00664fe0a88e204c3a157d01975a823d13fe908567b026cbe74ef7a0d621192b",
-        "size": 43149,
-        "lines": 563
+        "sha256": "713884910cab39c684e26303e835f4c512ef6b2b0cdd461a09f57de2769f2431",
+        "size": 63127,
+        "lines": 819
       }
     },
     {
       "path": "remote-compute.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "db1209f0093a8712114987893e3d3f6dd646ad37d2ec151bf3d100bb3ea49990",
-        "size": 33804,
-        "lines": 414
+        "sha256": "d08f1362915b03dfc5db1d6f1dbd99e688d91215c9b3358ebd3204ced3cc08bb",
+        "size": 109678,
+        "lines": 1466
       },
       "codex": {
-        "sha256": "db1209f0093a8712114987893e3d3f6dd646ad37d2ec151bf3d100bb3ea49990",
-        "size": 33804,
-        "lines": 414
+        "sha256": "d08f1362915b03dfc5db1d6f1dbd99e688d91215c9b3358ebd3204ced3cc08bb",
+        "size": 109678,
+        "lines": 1466
       }
     },
     {
       "path": "research-guardrails.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "8aa5646b6d745a638dd96036a0f01a3c4e8e98ced2ea59c337cf0f4b6aefe1db",
-        "size": 323467,
-        "lines": 3988
+        "sha256": "a7bb764ebccb5807d731d1d10d74055311fffd5313953ac521f8bebb88051269",
+        "size": 382830,
+        "lines": 4710
       },
       "codex": {
-        "sha256": "8aa5646b6d745a638dd96036a0f01a3c4e8e98ced2ea59c337cf0f4b6aefe1db",
-        "size": 323467,
-        "lines": 3988
+        "sha256": "a7bb764ebccb5807d731d1d10d74055311fffd5313953ac521f8bebb88051269",
+        "size": 382830,
+        "lines": 4710
       }
     },
     {
@@ -1081,42 +1781,56 @@
       "path": "scientific-journals.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "fbffd95db1405c76af3fa5238cd0fbc5d024902226f3d63ed143f164e3d7df5d",
-        "size": 59753,
-        "lines": 828
+        "sha256": "0bb947e3297972e48624f323bdbc15fc0824bf6ae743a19fad6e3a1f4101183a",
+        "size": 68268,
+        "lines": 928
       },
       "codex": {
-        "sha256": "fbffd95db1405c76af3fa5238cd0fbc5d024902226f3d63ed143f164e3d7df5d",
-        "size": 59753,
-        "lines": 828
+        "sha256": "0bb947e3297972e48624f323bdbc15fc0824bf6ae743a19fad6e3a1f4101183a",
+        "size": 68268,
+        "lines": 928
       }
     },
     {
       "path": "scientific-writing-en.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "4c0f37a3bb86301618ef502795a4733ce2bcd2ba6ab51504a4c8fb215aae2873",
-        "size": 72034,
-        "lines": 831
+        "sha256": "2eb04b161b1547584f227c6c3881915155e3bd8cceafa04296c3779551b55c5d",
+        "size": 76392,
+        "lines": 886
       },
       "codex": {
-        "sha256": "4c0f37a3bb86301618ef502795a4733ce2bcd2ba6ab51504a4c8fb215aae2873",
-        "size": 72034,
-        "lines": 831
+        "sha256": "2eb04b161b1547584f227c6c3881915155e3bd8cceafa04296c3779551b55c5d",
+        "size": 76392,
+        "lines": 886
       }
     },
     {
       "path": "server-access.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "b2b3aa9ccfb8ee6bd88b3e1c6b7d962c7e42421f5423381561d13ea932cb92c4",
-        "size": 14104,
-        "lines": 152
+        "sha256": "7624d6609b7bbebc141b389c6a0b2f8d5f7f5cffcbe98f439a356742300dbd69",
+        "size": 18698,
+        "lines": 194
       },
       "codex": {
-        "sha256": "b2b3aa9ccfb8ee6bd88b3e1c6b7d962c7e42421f5423381561d13ea932cb92c4",
-        "size": 14104,
-        "lines": 152
+        "sha256": "7624d6609b7bbebc141b389c6a0b2f8d5f7f5cffcbe98f439a356742300dbd69",
+        "size": 18698,
+        "lines": 194
+      }
+    },
+    {
+      "path": "signature-et-remerciements.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "a37306dd0fec9cf6f51863b59dedb40c91761d32acd03461bacb17d7701cb91c",
+        "size": 5163,
+        "lines": 82
+      },
+      "codex": {
+        "sha256": "a37306dd0fec9cf6f51863b59dedb40c91761d32acd03461bacb17d7701cb91c",
+        "size": 5163,
+        "lines": 82
       }
     },
     {
@@ -1137,56 +1851,70 @@
       "path": "superhuman-mcp.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "26f6fce3b4968dd2d9e2b7002291a0e7805e6570762d58a3afda5ce4479ce913",
-        "size": 7018,
-        "lines": 96
+        "sha256": "0c3ea2ccb9f82549183fe95bff9b61f8f7929d517b32153872071d3b96a1b93b",
+        "size": 12528,
+        "lines": 176
       },
       "codex": {
-        "sha256": "26f6fce3b4968dd2d9e2b7002291a0e7805e6570762d58a3afda5ce4479ce913",
-        "size": 7018,
-        "lines": 96
+        "sha256": "0c3ea2ccb9f82549183fe95bff9b61f8f7929d517b32153872071d3b96a1b93b",
+        "size": 12528,
+        "lines": 176
       }
     },
     {
       "path": "sympa-mailing-lists.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "820e3c4275f18e5fe72033cd5af6f33333aac7f123baf9b8e9c96641bcb57af1",
-        "size": 13298,
-        "lines": 202
+        "sha256": "13f47428287d824235917ef4ae4a401addeb8117025a425ba1a2fedd207328d5",
+        "size": 14412,
+        "lines": 216
       },
       "codex": {
-        "sha256": "820e3c4275f18e5fe72033cd5af6f33333aac7f123baf9b8e9c96641bcb57af1",
-        "size": 13298,
-        "lines": 202
+        "sha256": "13f47428287d824235917ef4ae4a401addeb8117025a425ba1a2fedd207328d5",
+        "size": 14412,
+        "lines": 216
       }
     },
     {
       "path": "taxonomy-node-validation.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "72ca25eef18ab9c20f1460c93726de5a1ae36721707de197b1c15ed53d921b96",
-        "size": 81941,
-        "lines": 1173
+        "sha256": "25bfcc391f23bc45c2f968437215614739d47f7ca34f768d377c7defb828af38",
+        "size": 193118,
+        "lines": 2638
       },
       "codex": {
-        "sha256": "72ca25eef18ab9c20f1460c93726de5a1ae36721707de197b1c15ed53d921b96",
-        "size": 81941,
-        "lines": 1173
+        "sha256": "25bfcc391f23bc45c2f968437215614739d47f7ca34f768d377c7defb828af38",
+        "size": 193118,
+        "lines": 2638
+      }
+    },
+    {
+      "path": "tblearn-migration.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "b1877e8c63c8b46db90c0e4f859430bf104317ed265c5cacd50fa16cb8fa3f92",
+        "size": 27631,
+        "lines": 410
+      },
+      "codex": {
+        "sha256": "b1877e8c63c8b46db90c0e4f859430bf104317ed265c5cacd50fa16cb8fa3f92",
+        "size": 27631,
+        "lines": 410
       }
     },
     {
       "path": "tikz-beamer-patterns.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "9e254478dcaf232c74851d66d719a9992b658aed6e9cdf843edf7ecd93ea4a42",
-        "size": 17291,
-        "lines": 368
+        "sha256": "8e7586e267e46ff017d92a8d540485370eaa4f1a377ed076d5e5a8f9def6ac45",
+        "size": 26241,
+        "lines": 510
       },
       "codex": {
-        "sha256": "9e254478dcaf232c74851d66d719a9992b658aed6e9cdf843edf7ecd93ea4a42",
-        "size": 17291,
-        "lines": 368
+        "sha256": "8e7586e267e46ff017d92a8d540485370eaa4f1a377ed076d5e5a8f9def6ac45",
+        "size": 26241,
+        "lines": 510
       }
     },
     {
@@ -1204,31 +1932,59 @@
       }
     },
     {
+      "path": "topology-orientation-calibration.md",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "0d7733a4dce5f11ff869143dd58959acf29fa40ab8f9ca92621f43f197daac21",
+        "size": 19870,
+        "lines": 262
+      },
+      "codex": {
+        "sha256": "0d7733a4dce5f11ff869143dd58959acf29fa40ab8f9ca92621f43f197daac21",
+        "size": 19870,
+        "lines": 262
+      }
+    },
+    {
       "path": "tuberculosis.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "2c52f525692a7375fec3354c9a1120eba72c13a87b3bf9d5ec84e2b5ccf89b89",
-        "size": 2094590,
-        "lines": 14434
+        "sha256": "d2d1d62e0ed0615b4d8dacbcc6877ead9669173e69257785295f69c4b8a0ea81",
+        "size": 2692874,
+        "lines": 20776
       },
       "codex": {
-        "sha256": "2c52f525692a7375fec3354c9a1120eba72c13a87b3bf9d5ec84e2b5ccf89b89",
-        "size": 2094590,
-        "lines": 14434
+        "sha256": "d2d1d62e0ed0615b4d8dacbcc6877ead9669173e69257785295f69c4b8a0ea81",
+        "size": 2692874,
+        "lines": 20776
+      }
+    },
+    {
+      "path": "tuberculosis.md.bak_p164_20260912",
+      "status": "common-identical",
+      "claude": {
+        "sha256": "f47377b525721b2aa7b26f2f22e1229c7a9c704d5c5e2977ccbb046f69820244",
+        "size": 2574060,
+        "lines": null
+      },
+      "codex": {
+        "sha256": "f47377b525721b2aa7b26f2f22e1229c7a9c704d5c5e2977ccbb046f69820244",
+        "size": 2574060,
+        "lines": null
       }
     },
     {
       "path": "verif-stats-sources.md",
       "status": "common-identical",
       "claude": {
-        "sha256": "8495d0b62654b72ea8322bdb6f252f21dc409838d17fcf7a148715d5dac52494",
-        "size": 31074,
-        "lines": 385
+        "sha256": "2da050aded9cd0214499bd0cf16ce7e8713b16f3bd53d99160a3cf036814e0ae",
+        "size": 33496,
+        "lines": 414
       },
       "codex": {
-        "sha256": "8495d0b62654b72ea8322bdb6f252f21dc409838d17fcf7a148715d5dac52494",
-        "size": 31074,
-        "lines": 385
+        "sha256": "2da050aded9cd0214499bd0cf16ce7e8713b16f3bd53d99160a3cf036814e0ae",
+        "size": 33496,
+        "lines": 414
       }
     }
   ]

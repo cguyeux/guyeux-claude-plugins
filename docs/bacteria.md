@@ -1,14 +1,20 @@
 # Plugin `bacteria`
 
-> Academic research toolkit for comparative genomics of bacteria beyond the Mycobacterium tuberculosis complex stricto sensu: non-tuberculous mycobacteria, Yersinia, Helicobacter, Salmonella and other genera. Genome assembly and characterisation, core-genome MLST clonality, ab initio mobile-element detection, from published research isolates. Guyeux group (FEMTO-ST).
+> Academic research toolkit for comparative genomics of bacterial pathogens across genera: Yersinia, Leptospira, Helicobacter, Salmonella, non-tuberculous mycobacteria, and the Mycobacterium tuberculosis complex for everything that is method rather than TB-specific data. Genome assembly and characterisation, species and clade identification, core-genome MLST clonality, ab initio mobile-element detection, CRISPR content, strain and isolation metadata, from published research isolates. Genus-specific resources live here alongside the genus-agnostic methods; the pipeline soldered to the group's TB data stack (TBannotator, bdd/actuelle, WHO catalogue, SITVIT) lives in the mtbc plugin instead. Guyeux group (FEMTO-ST).
 
-Skills propres (canoniques) : **18** ; skills partagés utilisés (symlinks) : **0**.
+Skills propres (canoniques) : **22** ; skills partagés utilisés (symlinks) : **0**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [bacdive](#bacdive) ; [bactrline](#bactrline) ; [crispr-spacer-null](#crispr-spacer-null) ; [crisprbuilder](#crisprbuilder) ; [crisprcasdb](#crisprcasdb) ; [enterobase](#enterobase) ; [helicobacter-pylori-phylogeography](#helicobacter-pylori-phylogeography) ; [hgt-direction-check](#hgt-direction-check) ; [isfinder-offline](#isfinder-offline) ; [mycobacterium-leprae](#mycobacterium-leprae) ; [ncbi-pathogen-detection](#ncbi-pathogen-detection) ; [ntm-resources](#ntm-resources) ; [panisa](#panisa) ; [pathogens-portal](#pathogens-portal) ; [pymlst](#pymlst) ; [species-id](#species-id) ; [thd](#thd) ; [yersinia-resources](#yersinia-resources)
+Sommaire : [ani-panel-classify](#ani-panel-classify) ; [bacdive](#bacdive) ; [bactrline](#bactrline) ; [crispr-spacer-null](#crispr-spacer-null) ; [crisprbuilder](#crisprbuilder) ; [crisprcasdb](#crisprcasdb) ; [enterobase](#enterobase) ; [helicobacter-pylori-phylogeography](#helicobacter-pylori-phylogeography) ; [hgt-direction-check](#hgt-direction-check) ; [hgt-interdomain-check](#hgt-interdomain-check) ; [isfinder-offline](#isfinder-offline) ; [jgi-imgvr](#jgi-imgvr) ; [leptospira-bigsdb](#leptospira-bigsdb) ; [mycobacterium-leprae](#mycobacterium-leprae) ; [ncbi-pathogen-detection](#ncbi-pathogen-detection) ; [ntm-resources](#ntm-resources) ; [panisa](#panisa) ; [pathogens-portal](#pathogens-portal) ; [pymlst](#pymlst) ; [species-id](#species-id) ; [thd](#thd) ; [yersinia-resources](#yersinia-resources)
+
+### ani-panel-classify
+
+Academic research toolkit for peer-reviewed pathogen-genomics research (Guyeux group, FEMTO-ST). Classifies a genome into a clade, phylogenomic group or species by whole-genome ANI (skani) against a curated, paramétrable panel of type-strain reference genomes, the runner the MTBC taxonomic anti-false-positive guard-fou (species-id) prescribes but does not itself execute. Genus-agnostic: the panel (group labels, species, strains, GenBank/ RefSeq accessions) is supplied as a TSV, nothing genus-specific is hardcoded
+
+Compétences : a genome needs to be assigned to a named phylogenomic group defined by ANI in the published literature (e.g ; Leptospira P1/P2/S1/S2 pathogenicity clades), when validating that a reconstructed clade in `bdd/hors_mtbc/` or a sibling genus project is ANI-coherent with its type strains, or when `species-id`'s BLAST/Mash methods are too coarse (need a group finer than genus/species, or a panel wider than the fixed NTM set `species-id` ships with)
 
 ### bacdive
 
@@ -54,15 +60,33 @@ Compétences : cadrer un récit de séminaire « les pathogènes courant avec le
 
 ### hgt-direction-check
 
-Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed comparative genomics: decide the DIRECTION of a horizontal transfer before it becomes a claim, and kill the commonest way of getting it backwards. A high sequence identity between a bacterial gene and a viral (or plasmid, or any other donor candidate) gene says NOTHING about who captured whom: it measures a position inside the structure of the gene family. The test that does settle direction is topological, and it comes with its own null. (1) NESTING: build the family tree from a reference panel of CELLULAR homologues plus the sequences carried by the candidate donor, and ask whether each donor-borne sequence sits INSIDE the cellular diversity (capture cell -> donor) or BASAL to it (the family would then originate in the donor). (2) HOST CONCORDANCE: nesting alone is not enough, each donor-borne sequence must land next to the homologues of its OWN host taxon, which is what separates a real capture from an arbitrary placement, and what turns one case into a repeated, independent result. (3) LONG-BRANCH CONTROL: the host clade must still exist in a tree inferred independently WITHOUT the donor sequences, otherwise the nesting was manufactured by the analysis. Also carries the correlation pre-test that disqualifies an identity-based argument in seconds, before any tree is built
+Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed comparative genomics: decides the DIRECTION of a horizontal transfer before it becomes a claim. High sequence identity between a bacterial gene and a viral/plasmid donor gene says NOTHING about who captured whom, it only reflects position inside the gene family's structure. The topological test that settles direction: NESTING (donor sequences INSIDE cellular diversity mean capture, BASAL means donor origin), HOST CONCORDANCE (each donor sequence must land next to its OWN host taxon), and LONG-BRANCH CONTROL (the host clade must survive a tree built WITHOUT the donor sequences), plus a correlation pre-test that disqualifies an identity-only argument in seconds
 
-Compétences : a manuscript is about to say "this bacterial gene derives from a phage" (or from a plasmid, or an integron) on the strength of a BLAST identity ; an insertion sequence, transposase or any mobile-element gene is found in a viral genome ; a reviewer asks which way a transfer went ; a striking identity to a viral gene needs to be checked against the plain alternative that it is simply the family's internal structure ; or a negative result (no transfer detectable) must be made publishable rather than silent
+Compétences : a manuscript is about to claim a bacterial gene derives from a phage, plasmid or integron on BLAST identity alone ; a mobile-element gene appears in a viral genome ; a reviewer asks which way a transfer went ; or a negative transfer result needs to be made publishable
+
+### hgt-interdomain-check
+
+Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed comparative genomics: tests whether a gene bearing a "eukaryotic" domain in a bacterial published research genome really crossed the domains of life, or whether the signal is an artefact. Four gates, in order: ASSEMBLY CONTAMINATION first (a foreign contig produces exactly the signature one is about to publish), AMINO-ACID COMPOSITION and SATURATION between domains (which the long-branch control of a mobile-element analysis does not cover), an explicit TOPOLOGY TEST (AU) against the no-transfer hypothesis instead of merely reading a nesting, and TAXONOMIC concordance of the neighbourhood in place of host concordance, which is meaningless for a free-living eukaryotic donor
+
+Compétences : a bacterial protein carries a domain described as eukaryotic (SET, ankyrin, F-box, histone-modifying) ; a manuscript is about to claim an acquisition from a host or from an environmental eukaryote ; a reviewer asks whether a bacteria-to-eukaryote transfer is established ; or a spectacular cross-domain transfer needs to be ruled out before it is written up ; For a cellular-family-versus-mobile-element case (phage, plasmid, integron), use the sibling skill hgt-direction-check instead
 
 ### isfinder-offline
 
 Academic research toolkit (Guyeux group, FEMTO-ST). Repli LOCAL/hors-ligne pour identifier ou classer une séquence d'insertion (IS) quand isfinder.biotoul.fr est injoignable, ce qui arrive souvent (échec SSL/connexion direct, pas seulement un blocage d'outil de fetch, vérifié à deux reprises en 2026-08). Mirroir GitHub statique (thanhleviet/Isfinder-sequences, ~6000 IS, snapshot figé ~2020-10) : recherche par nom (IS.csv) ou par séquence (blastn/blastp contre IS.fna/IS.faa)
 
 Compétences : classer un élément mobile candidat trouvé dans un génome bactérien, vérifier la famille/groupe d'une IS déjà nommée dans la littérature, ou chercher des répétitions inversées terminales (IR) de référence ; TOUJOURS essayer ISfinder EN DIRECT d'abord si le site répond ; ce skill est un repli, pas une source plus autorisée que le site lui-même
+
+### jgi-imgvr
+
+Academic research toolkit (Guyeux group, FEMTO-ST, peer-reviewed comparative genomics) for programmatic access to the JGI Genome Portal / IMG-VR (viral and metagenomic sequence database, Integrated Microbial Genomes, DOE Joint Genome Institute): bulk download of an export by API, streaming BLAST or single-record extraction of the internal multi-hundred-gigabyte .fna.gz without ever materialising it decompressed on disk, and the IMG/VR "Viral/Spacer BLAST" web form driven by token (currently broken server-side, documented below)
+
+Compétences : BLASTing a query set (spacers, candidate protospacers, any short sequence) against IMG/VR's viral/metagenomic content, retrieving one specific record from a JGI bulk export by header substring, or downloading a JGI Data Portal file programmatically without a browser session
+
+### leptospira-bigsdb
+
+Academic research database client (Guyeux group, FEMTO-ST). Queries BIGSdb Pasteur (Institut Pasteur, Unité Biologie des Spirochètes) for published-research Leptospira genomes and curated provenance metadata only. REST bridge to the pubmlst_leptospira_isolates and pubmlst_leptospira_seqdef databases (cgMLST scheme, 529 loci): filter isolates by clade, species, serogroup, serovar, host, country or sample type, export a faithful metadata table with an explicit completeness report, and download assembled genomes (FASTA) for a filtered batch
+
+Compétences : preparing a Leptospira genomics collaboration with Institut Pasteur, testing a reservoir-serovar or host-association hypothesis, building a training set to predict serogroup/serovar from genome sequence, or needing curated epidemiological provenance (host, country, clade, sample type) that plain NCBI assemblies do not carry
 
 ### mycobacterium-leprae
 

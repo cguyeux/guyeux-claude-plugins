@@ -96,10 +96,13 @@ prévenir (load 25 au dernier relevé).
 - **Calcul long sans découpage possible** (au-delà de 8 jours) : `mp`, sans limite de temps. Sur
   `mh`, chaîner par `--dependency` avec reprise.
 - **Disponibilité immédiate** : `mp` (aucune file), sous réserve que le pipeline n'y tourne pas.
-- **Parallélisme au-delà de 64 threads** : `mh` multi-nœuds (`mpi`) avec `--qos=cpu-96`, mais
-  seulement si le code fait vraiment du MPI : cette QOS est attachée à `mpi` et ne relève le
-  plafond ni sur `smp` ni sur `bigmem`, où l'on reste à 48 cœurs. Sinon `mp` et ses 64 threads
-  valent mieux.
+- **Parallélisme au-delà de 64 threads** : `mh` multi-nœuds (`mpi`) avec `--qos=cpu-96`. Cette
+  QOS **relève aussi le plafond sur `smp`** : mesuré le 2026-09-23, `scontrol show partition
+  smp` annonce `AllowQos=ALL`, et 48 cœurs ont effectivement tourné sous `cpu-96` sur `smp` en
+  plus des 48 sous `normal`, soit 96 cœurs simultanés pour le même utilisateur (jobs 270325-
+  270328). Ce qu'il faut lire dans la réserve ci-dessous n'est donc pas une interdiction
+  technique mais un usage attendu : elle a été accordée pour du MPI. Sinon `mp` et ses 64
+  threads valent mieux.
 - **Données TBannotator** (`results/`, `report.json`, `samples.tsv`) : `mp` obligatoirement.
 - **Une troisième machine existe et n'est pas utilisée** : le cluster Lumière est vivant (1162
   cœurs, 68 hôtes actifs au 2026-09-04), avec `mesoshared` à **96 cœurs et 256 Go sans ordonnanceur**
@@ -115,10 +118,18 @@ prévenir (load 25 au dernier relevé).
 > GPU** dès qu'on veut plus d'une carte à la fois, et `#SBATCH --qos=cpu-96` pour un job MPI large.
 >
 > Trois réserves qui limitent la portée de cette élévation :
-> - **`cpu-96` ne sert qu'au MPI** (Kamel Mazouzi, 2026-09-04, confirmé par meso-admins le
->   2026-09-07) : elle est attachée à la partition `mpi` et reste sans effet sur `smp` ou `bigmem`.
->   Un code multithread qui ne fait pas de MPI ne gagne rien à la demander, et `mp` avec ses
->   64 threads reste souvent le meilleur choix.
+> - **`cpu-96` a été accordée POUR le MPI** (Kamel Mazouzi, 2026-09-04, confirmé par meso-admins
+>   le 2026-09-07), mais la phrase « sans effet sur `smp` » qui figurait ici était **fausse et a
+>   été réfutée par la mesure le 2026-09-23** : `smp` a `AllowQos=ALL`, et quatre jobs `smp` y
+>   ont tourné sous `cpu-96`, portant le total à 96 cœurs simultanés. C'est donc une question
+>   d'usage convenu, pas de barrière : s'en servir pour du multithread sur `smp` fonctionne,
+>   se discute avec le mésocentre, et `mp` avec ses 64 threads reste souvent le meilleur choix.
+> - **Le plafond se compte PAR QOS, et c'est lui qui mord avant les nœuds libres.** Un job qui
+>   attend avec `Reason=QOSMaxCpuPerUserLimit` n'attend pas la machine : il attend ses propres
+>   autres jobs. Vérifier d'abord `squeue -u <user> -o '%i %j %T %C %q %R'` et le cumul par QOS
+>   avant de conclure que le cluster est plein, et **basculer un job déjà en file sans le
+>   resoumettre** par `scontrol update jobid=<id> qos=cpu-96` (mesuré le 2026-09-23 : les trois
+>   jobs en attente sont passés RUNNING en quelques secondes).
 > - **`3gpu` n'impose aucun plafond CPU** (`MaxTRESPerUser=gres/gpu=3` seulement, relevé
 >   2026-09-08) : sous cette QOS la limite de 48 cœurs de `normal` disparaît, ce qui compte dès que
 >   trois jobs GPU demandent 16 cœurs chacun. En revanche `3gpu` est **refusée sur `gpu_l40`**
@@ -230,12 +241,30 @@ ssh mh 'squeue --me'
 ssh mh 'jobinfo <jobid>'     # outil maison : attente, walltime, MaxMem, disque lu/écrit
 ssh mh 'seff <jobid>'        # efficacité CPU et mémoire, une fois le job fini
 
+# ATTENDRE la fin d'un job sans se faire piéger par une coupure réseau (cf. encadré ci-dessous)
+bash ${CLAUDE_PLUGIN_ROOT}/skills/remote-compute/scripts/attendre_job.sh \
+  --job 270281 --temoin /Work/Users/cguyeux/ag2_set/ML_libre.iqtree
+
 # mh : test interactif court avant de soumettre un long job
 ssh mh 'srun -p gpu --gres=gpu:A100:1 -t 00:05:00 --mem=8G nvidia-smi'
 
 # mp : pas d'ordonnanceur, donc détacher explicitement et journaliser
 ssh mp 'cd /data/cguyeux/monprojet && setsid nohup python3 travail.py > run_$(date +%Y%m%d_%H%M).log 2>&1 < /dev/null & disown'
 ```
+
+> [!CAUTION]
+> **Surveiller un job distant : ne jamais confondre « rien vu » et « plus pu regarder ».** Deux
+> incidents le 2026-09-23 sur le même job. (1) Une boucle `until ! ssh ... squeue ... | grep -q .`
+> a déclaré terminé un job qui tournait encore : une sortie vide par ÉCHEC SSH est indiscernable
+> d'une file vide. (2) Sa remplaçante testait bien le code de retour, mais journalisait ses échecs
+> sans alerter — le VPN était tombé six minutes après son lancement et elle n'a rendu la main
+> qu'au bout de trois heures, sans une seule observation réussie.
+> `scripts/attendre_job.sh` tranche les deux cas par des sorties distinctes : `0` condition
+> atteinte, `1` job mort sans son témoin, `3` perte de contact après N échecs consécutifs (alerte
+> tôt), `2` expiration. Le témoin doit être un fichier écrit UNIQUEMENT en fin d'analyse : pour
+> IQ-TREE c'est `<prefixe>.iqtree`, jamais `<prefixe>.treefile`, réécrit en cours de route.
+> Et une perte de contact ne dit RIEN du job : Slurm ne dépend pas de la connexion.
+
 
 > [!IMPORTANT]
 > **`module load` ne marche pas en SSH non interactif.** La fonction shell de Lmod n'est pas

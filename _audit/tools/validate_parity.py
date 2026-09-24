@@ -202,7 +202,8 @@ def check_memory_boundary() -> dict[str, dict[str, str]]:
 
 def check_skill_farms() -> dict[str, dict[str, str]]:
     sync = load_module("ccx15_sync_agent", ROOT / "_audit" / "tools" / "sync_agent_skills.py")
-    summary, problems = sync.classify(HOME / ".claude" / "skills", HOME / ".agents" / "skills", ROOT)
+    claude_map = sync.personal_skill_map([HOME / ".claude" / "skills"])
+    summary, problems = sync.classify(claude_map, HOME / ".agents" / "skills", ROOT)
     claude_ok = not problems and not summary["missing"] and (HOME / ".claude" / "skills" / "challenge" / "SKILL.md").is_file()
     farm = load_module("ccx15_codex_farm", ROOT / "_audit" / "tools" / "audit_codex_skill_farm.py")
     profile, profile_problems = farm.audit_profile(HOME / ".codex")
@@ -222,19 +223,23 @@ def check_plugins() -> dict[str, dict[str, str]]:
         codex_rows = json.loads(codex_run.stdout).get("installed", [])
     except json.JSONDecodeError:
         return {platform: result("fail", "sortie plugin JSON invalide") for platform in PLATFORMS}
-    claude_enabled = {row["id"] for row in claude_rows if row.get("enabled")}
-    claude_disabled = {row["id"] for row in claude_rows if not row.get("enabled")}
+    claude_enabled = {row["id"] for row in claude_rows if row.get("enabled") and row.get("scope") == "user"}
+    claude_disabled = {row["id"] for row in claude_rows if not row.get("enabled") and row.get("scope") == "user"}
+    # Depuis P5.4/P5.5 (architecture profils.json), aucun plugin du marketplace
+    # personnel n'est activé globalement : seule l'activation par projet compte.
+    # Seul pyright-lsp (plugin officiel) reste actif au niveau user.
     wanted_claude = {
-        "bio_bacteria@guyeux-claude-plugins",
-        "bio_pathogens@guyeux-claude-plugins",
-        "redac@guyeux-claude-plugins",
         "pyright-lsp@claude-plugins-official",
     }
     expected_codex = {
-        "guyeux-phylo-pilot", "bio-bacteria", "bio-pathogens", "bio-population-genetics", "bio-redac",
-        "ia", "maboss", "multimedia", "ops", "web",
+        "bacteria", "bioinfo", "carriere", "diffusion", "guyeux-phylo-pilot", "ia", "litterature",
+        "maboss", "mtbc", "multimedia", "ops", "phylo", "popgen", "redaction", "science-commun",
+        "structure", "web",
     }
-    codex_enabled = {row["name"] for row in codex_rows if row.get("installed") and row.get("enabled")}
+    codex_enabled = {
+        row["name"] for row in codex_rows
+        if row.get("installed") and row.get("enabled") and row.get("marketplaceName") == "personal"
+    }
     return {
         "claude": result(
             "pass" if wanted_claude <= claude_enabled and "frontend-design@claude-plugins-official" in claude_disabled else "fail",
@@ -354,23 +359,44 @@ def auxiliary_report() -> dict[str, Any]:
     return audit.build_report(HOME)
 
 
+CLAUDE_ONLY_MCP = {"booking"}
+EXPECTED_SHARED_MCP = {"context7", "superhuman", "tbannotator", "tbmonitor"}
+
+
 def check_mcp() -> dict[str, dict[str, str]]:
     report = auxiliary_report()
     codex_ok = report["mcp"]["names_match_expected"] and report["mcp"]["secret_values_serialized"] is False
     claude_config = load_json(HOME / ".claude.json", {})
     names = set((claude_config.get("mcpServers") or {}).keys())
-    return {
-        "claude": result(
-            "pass" if names == {"context7", "superhuman", "tbannotator", "tbmonitor"} else "fail",
+    claude_only = names - EXPECTED_SHARED_MCP
+    if names == EXPECTED_SHARED_MCP:
+        claude_result = result(
+            "pass",
             f"noms MCP configurés={len(names)}",
             difference="configuration comparée; transport et authentification non prouvés",
             owner="external-services",
-        ),
+        )
+    elif claude_only and claude_only <= CLAUDE_ONLY_MCP:
+        claude_result = result(
+            "partial",
+            f"noms MCP configurés={len(names)} ; hors du socle partagé : {sorted(claude_only)}",
+            difference="connecteur personnel claude.ai (Booking.com), sans équivalent Codex requis",
+            owner="external-services",
+        )
+    else:
+        claude_result = result(
+            "fail",
+            f"noms MCP configurés={len(names)}",
+            difference="configuration comparée; transport et authentification non prouvés",
+            owner="external-services",
+        )
+    return {
+        "claude": claude_result,
         "codex": result(
             "pass" if codex_ok else "fail",
             "quatre noms; aucune valeur sérialisée",
-            difference="OAuth Superhuman absent et URL tbannotator intentionnellement distincte",
-            owner="human-auth/CCX-16",
+            difference="Superhuman en connecteur distant (URL, sans OAuth local) des deux côtés ; URL tbannotator intentionnellement distincte",
+            owner="",
         ),
     }
 

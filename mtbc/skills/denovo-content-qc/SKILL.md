@@ -7,6 +7,10 @@ description: >-
   contamination_filter, pangenome_map, island_distribution (BLAST vs H37Rv,
   M. bovis, M. leprae). Use when: trier des contigs de novo, mesurer l'accessoire
   d'une souche, valider un "îlot spécifique".
+  Portée : développé sur le MTBC, applicable à toute bactérie clonale (Yersinia,
+  Leptospira...) — la question « ancestral, accessoire ou contaminant ? » est générique et
+  se pose avec plus d'acuité hors MTBC (plasmides, pangénome plus ouvert). Hors MTBC :
+  fournir le panel de génomes de référence du genre pour le BLAST.
 ---
 
 # denovo-content-qc : QC du contenu de novo "H37Rv-absent" d'une lignée MTBC

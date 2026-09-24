@@ -72,6 +72,14 @@ def project_files(scan_root: Path) -> tuple[list[Path], list[dict[str, str]]]:
             relative = claude_md.parent.relative_to(scan_root)
             if relative.parts and relative.parts[0].startswith(IGNORED_TRANSIENT_PREFIXES):
                 continue
+            if is_protection_snapshot(claude_md.parent):
+                excluded.append(
+                    {
+                        "path": relative.as_posix(),
+                        "reason": "protection-backup-snapshot",
+                    }
+                )
+                continue
             excluded_part = next((part for part in relative.parts if excluded_project_part(part)), None)
             if excluded_part is None:
                 found.append(claude_md)
@@ -83,6 +91,15 @@ def project_files(scan_root: Path) -> tuple[list[Path], list[dict[str, str]]]:
                     }
                 )
     return sorted(found), sorted(excluded, key=lambda row: row["path"])
+
+
+def is_protection_snapshot(project_dir: Path) -> bool:
+    """Un `CLAUDE.md` posé sous un dossier `avant*/` dont le parent porte
+    `protection_avant.json` est une sauvegarde de protection prise avant une tache
+    (`résultats/<tache>/avant_registres/`, cf. lineaire_a), pas un projet actif : aucune
+    session Codex n'y travaille, la reduire romprait l'integrite du snapshot."""
+    parent = project_dir.parent
+    return project_dir.name.startswith("avant") and (parent / "protection_avant.json").is_file()
 
 
 def excluded_project_part(part: str) -> bool:

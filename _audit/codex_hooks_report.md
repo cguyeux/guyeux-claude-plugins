@@ -2,7 +2,7 @@
 
 Ce fichier est genere par `_audit/tools/audit_codex_hooks.py`.
 
-- Source : `/home/christophe/docs/codes/claude_plugins/codex_hooks/hooks.json`
+- Source : `/home/christophe/docs/environnement/plugins/codex_hooks/hooks.json`
 - Installation : `/home/christophe/.codex/hooks.json`
 - Installe : oui
 - Identique a la source : oui

@@ -42,6 +42,31 @@ HOME = Path.home()
 UPSTREAM_LIGNEES = HOME / "docs" / "codes" / "mtbc" / \
                    "investigate_phylo" / "lignees.py"
 
+
+def data_citations():
+    """Citations `<store>@<version>` (skill `bdd`) des bases versionnées qui sous-tendent
+    la classification de lignées rendue par ce skill : `mtbc-actuelle` (les souches
+    étudiées) et `mtbc-barcoding` (barcoding_v2, dont dérive l'enrichissement). Import
+    différé -- rend `<store>@non-versionnee` si le skill `bdd` est absent (mp, mh) ou le
+    store non initialisé, jamais une exception."""
+    import importlib.util
+    chemin = HOME / ".claude" / "skills" / "bdd" / "bdd_journal.py"
+    if not chemin.is_file():
+        return {"mtbc-actuelle": "mtbc-actuelle@non-versionnee",
+                "mtbc-barcoding": "mtbc-barcoding@non-versionnee"}
+    spec = importlib.util.spec_from_file_location("bdd_journal", chemin)
+    if spec is None or spec.loader is None:
+        return {"mtbc-actuelle": "mtbc-actuelle@non-versionnee",
+                "mtbc-barcoding": "mtbc-barcoding@non-versionnee"}
+    module = importlib.util.module_from_spec(spec)
+    try:
+        spec.loader.exec_module(module)
+        return {"mtbc-actuelle": module.stamp("mtbc-actuelle"),
+                "mtbc-barcoding": module.stamp("mtbc-barcoding")}
+    except Exception:
+        return {"mtbc-actuelle": "mtbc-actuelle@non-versionnee",
+                "mtbc-barcoding": "mtbc-barcoding@non-versionnee"}
+
 # Enrichment (never source of truth)
 ENRICHMENT_CSV = HOME / "docs" / "codes" / "mtbc" / \
                  "global_supplementary" / "snp_barcoding.csv"
@@ -257,6 +282,11 @@ def cmd_overview():
     print("PRECEDENCE: lignees.py[\"moi\"] > lignees.py[other] > TBannotator > notes")
     print("Default system when unspecified: \"moi\" (Guyeux)")
     print("=" * 70)
+
+    citations = data_citations()
+    print("\nDonnées (skill `bdd`) :")
+    for citation in citations.values():
+        print(f"  {citation}")
 
 
 def cmd_lookup(args):

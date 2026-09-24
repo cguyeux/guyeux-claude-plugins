@@ -107,9 +107,14 @@ Quand `access` ne trouve aucune voie OA (rang 0), l'accès légal existe encore,
    officiel et fragile — ne pas la scraper). C'est donc un geste humain : l'utilisateur suit le
    lien, récupère le PDF sous licence, et le dépose dans le dossier d'ingestion (ci-dessous).
    **Limite constatée** : un DOI seul peut ne pas suffire à Primo pour peupler un lien direct (notice
-   pauvre, type générique, seule option « Contacter votre bibliothèque ») même sur un titre bien
-   couvert par l'abonnement ; ajouter `rft.jtitle=`/`rft.issn=`/`rft.volume=`/`rft.spage=` améliore
-   probablement la résolution, non vérifié à ce jour. Catalogue de découverte : `https://ariane.umlp.fr`.
+   pauvre, type générique « LIVRE », seule option « Contacter votre bibliothèque ») même sur un titre
+   bien couvert par l'abonnement. **Vérifié le 2026-09-16** (DOI `10.1021/acs.jproteome.7b00483`,
+   *J Proteome Res*) : ajouter `rft.jtitle=`/`rft.volume=`/`rft.issue=`/`rft.spage=`/`rft.date=`/
+   `rft.genre=article` à l'OpenURL fait bien passer la notice de « LIVRE » générique à « ARTICLE »
+   correctement typé — mais la notice pleine reste ensuite **derrière une identification
+   Shibboleth** (sélecteur IdP UMLP/SUPMICROTECH-ENSMM) : sans session SSO déjà active dans le
+   profil Chrome utilisé, l'agent ne peut pas aller plus loin, l'entrée d'identifiants restant
+   interdite. Catalogue de découverte : `https://ariane.umlp.fr`.
    Archive ouverte institutionnelle : HAL-uFC (déjà couverte par la voie `hal` du moteur 2, automatisée).
 1bis. **Session EZproxy/Shibboleth scriptée (outil personnel, dernier recours explicite)** —
    variante automatisée du point 1, construite et validée le 2026-08-26. La BU UMLP route l'accès
@@ -194,3 +199,34 @@ automatiquement par ce skill.
 - La session EZproxy/Shibboleth scriptée (point 1bis) est un accès légitime (l'abonnement de
   l'utilisateur), mais un usage RÉPÉTÉ ou EN BOUCLE ressemble à un robot aux yeux de l'éditeur et
   risque un blocage IP côté établissement : rester strictement à l'article demandé, un par un.
+- **`ezproxy_fetch.py` échoue sur American Chemical Society (mesuré 2026-09-16, DOI
+  `10.1021/acs.jproteome.7b00483`).** Le login Shibboleth aboutit, mais la cible (essayée en
+  `https://doi.org/<DOI>` puis en URL directe `https://pubs.acs.org/doi/<DOI>`) retombe sur la page
+  de menu générique du SCD (`.../menu`), pas sur l'article, alors qu'ACS figure bien dans la liste
+  des ressources proxifiées de ce menu. Cause non tranchée : format d'URL EZproxy attendu différent
+  (sous-domaine proxifié type `pubs-acs-org.scd1.univ-fcomte.fr`, non testé) ou abonnement listé
+  mais inactif pour ce titre. Ne pas boucler d'autres formats sans avoir d'abord vérifié à la main,
+  dans un navigateur authentifié, quelle URL EZproxy ACS produit réellement en cliquant depuis le
+  menu — c'est ce diagnostic qui manque avant de retoucher le script.
+- **Confirmé générique, pas propre à ACS (mesuré 2026-09-24, DOI `10.1038/s41579-025-01159-w`,
+  Nature Reviews Microbiology).** Même symptôme sur un second éditeur : login Shibboleth abouti,
+  cible essayée en `https://doi.org/<DOI>` puis en URL Nature directe
+  (`https://www.nature.com/articles/<id>`, pourtant listée telle quelle au menu EZproxy sous
+  « Nature Publishing Group »), retombe les deux fois sur la même page menu générique du SCD
+  (`.../menu`), avec exactement le même corps de réponse (14 354 octets, HTML). Deux échecs
+  indépendants sur deux domaines différents, tous deux listés au menu, penchent pour un bug dans
+  `ezproxy_fetch.py` lui-même (gestion du cookie/redirect post-login) plutôt que pour un souci
+  d'abonnement par titre — mais ce n'est toujours pas tranché, et la règle reste la même : pas de
+  nouveau format essayé sans diagnostic humain en navigateur authentifié d'abord.
+- **Une `location` OpenAlex non marquée `is_oa` n'est pas forcément une impasse — mais elle peut
+  être derrière un CAPTCHA, pas seulement derrière un login.** Le moteur 2 (`access_cascade.py`)
+  ne teste que les sources explicitement OA et ne regarde pas le champ `locations` complet
+  d'OpenAlex. Pour ce même DOI (`10.1021/acs.jproteome.7b00483`), OpenAlex liste une troisième
+  `location` absente de la sortie du script : un dépôt institutionnel (KAUST, un des labos
+  co-auteurs, `hdl.handle.net/10754/625389`), `is_oa: false` dans les métadonnées mais réellement
+  hébergé. **Vérifié le 2026-09-16 : la page est protégée par Imperva/hCaptcha** (« Additional
+  security check is required », case « Je suis un humain »), pas par une identification —
+  franchir un CAPTCHA est une action interdite à l'agent dans tous les cas, dépôt vert ou non.
+  Un dépôt institutionnel non listé OA par OpenAlex/Unpaywall reste donc à signaler comme piste
+  possible pour l'humain (l'accès direct au repository, hors moteur de recherche, peut passer sans
+  le challenge selon la provenance), mais jamais comme une voie automatisable.

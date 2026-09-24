@@ -3,21 +3,24 @@ name: variant-reality-check
 description: >-
   Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed MTBC
   phylogenomics: decide whether a called variant is REAL and which allele is
-  ANCESTRAL, before it becomes a claim in a manuscript. Two complementary
-  gestes. (1) Sequence context of a called indel: placement ambiguity after
-  normalisation (the measure that actually settles polymerase slippage, not
-  homopolymer length), tandem repeats, local GC read against the genome
-  background, k-mer uniqueness against cross-mapping, each with a null model
-  built by sampling positions and measuring them exactly like the site.
-  (2) Polarisation on CLOSED COMPLETE ASSEMBLIES instead of variant calls,
-  locating the site by its unique flanks and measuring the gap between them,
-  which answers coverage, mapping and calling artefacts at once. Also
-  translates a CDS to the REAL stop rather than to the annotated boundary.
+  ANCESTRAL, before it becomes a claim. Two gestures: (1) sequence context of
+  a called indel — placement ambiguity after normalisation (settles polymerase
+  slippage, not homopolymer length), tandem repeats, local GC, k-mer
+  uniqueness against cross-mapping, each with a null model from sampled
+  positions measured the same way; (2) polarisation on CLOSED COMPLETE
+  ASSEMBLIES instead of variant calls, locating the site by unique flanks and
+  measuring the gap between them, answering coverage, mapping and calling
+  artefacts at once. Also translates a CDS to the REAL stop, not the annotated
+  boundary.
 
-  Use when: an indel or frameshift is suspected to be a calling artefact, a
-  variant is about to be called a synapomorphy, a `disrupt_frac` or a snpEff
-  HIGH label is about to be written as pseudogenisation, an outgroup appears
-  to LACK a variant, or a reference annotation looks unrepresentative.
+  Use when: an indel/frameshift is suspected a calling artefact, a variant is
+  about to be called a synapomorphy, a `disrupt_frac` or snpEff HIGH label is
+  about to be written as pseudogenisation, an outgroup appears to LACK a
+  variant, or a reference annotation looks unrepresentative.
+
+  Scope: developed on the MTBC, applies to any clonal bacterial pathogen
+  (Yersinia, Leptospira...) — the reference genome is already an explicit
+  argument (`--genome`), so only the closed assemblies of the genus are needed.
 argument-hint: "--spdi <pos:ref:alt> --genome <ref.fasta> [--cds debut-fin:brin]"
 user-invocable: true
 disable-model-invocation: false
@@ -122,6 +125,6 @@ référence et s'arrêtent si elle ne colle pas, plutôt que de la supposer.
 Forgé dans `mtbc/Rv3896c-Rv3898c` (piste P2, 2026-09-10), où il a fermé trois
 pistes d'un coup et retourné la polarité du variant fondateur du projet.
 Généralise `homopolymer_context` de
-`mtbc/fini/Rv0810c/analyses/phase6_p4_3_disruption.py`. Quatre projets du dépôt
+`mtbc/clos_soumis/Rv0810c/analyses/phase6_p4_3_disruption.py`. Quatre projets du dépôt
 (`gene_decay_census`, `lineage_navigator`, `Rv0810c`, `Rv2699c`) avaient eu
 besoin de ces mesures sans les outiller.

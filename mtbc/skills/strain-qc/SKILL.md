@@ -8,6 +8,10 @@ description: >-
   genome unique ou lot. A utiliser lors d'un import depuis SRA ou ENA, pour filtrer avant
   une reconstruction phylogenetique, face a un genome au placement aberrant ou a longue
   branche, pour auditer la base, ou pour decider des exclusions de get_phylo.py.
+  Portee : developpe sur le MTBC, applicable a toute bacterie clonale (Yersinia,
+  Leptospira...) — les sept criteres sont generiques. Hors MTBC : fournir le genome de
+  reference du genre, les marqueurs de lignee correspondants, et des report.json au format
+  du pipeline (la chimere intra-MTBC devient chimere intra-genre).
 argument-hint: "<SRA|dir|spdi.txt> [--batch <list.txt>] [--strict]"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 user-invocable: true
@@ -532,7 +536,7 @@ sur les references de `global_supplementary/`.
 
 **A declencher** quand nSPDI eleve (> ~2700) ou %MNP > 18% (souche divergente).
 
-#### References (toutes dans `~/docs/codes/mtbc/global_supplementary/`)
+#### References (toutes dans `~/docs/codes/mtbc/en_cours/global_supplementary/`)
 
 - `M_kansasii_robust_markers_201_*.txt` : 201 marqueurs SPDI **specifiques**
   M. kansasii. **Le discriminant kansasii** : >=50/201 => M. kansasii.

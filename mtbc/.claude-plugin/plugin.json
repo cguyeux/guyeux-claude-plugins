@@ -1,7 +1,7 @@
 {
   "name": "mtbc",
   "description": "Academic research toolkit for computational genomic studies of the Mycobacterium tuberculosis complex (MTBC): phylogenomics, comparative genomics, lineage assignment, antimicrobial-resistance allele frequencies from published research isolates, and TB surveillance literature. Guyeux group (FEMTO-ST, Universite Marie et Louis Pasteur), peer-reviewed research only.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Christophe Guyeux"
   }

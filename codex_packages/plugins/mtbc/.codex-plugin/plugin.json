@@ -1,0 +1,18 @@
+{
+  "name": "mtbc",
+  "version": "0.1.0",
+  "description": "Local Codex package for 32 migrated Claude skills.",
+  "author": {
+    "name": "Christophe Guyeux"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "MTBC Direct",
+    "shortDescription": "Direct Mycobacterium tuberculosis complex phylogenomics skills.",
+    "longDescription": "Codex package for Mycobacterium tuberculosis complex phylogenomics skills already audited for direct, payload, runtime, or guarded workflow packaging.",
+    "developerName": "Christophe Guyeux",
+    "category": "Developer tools",
+    "capabilities": [],
+    "defaultPrompt": "Use the installed skills with their documented prerequisites, guardrails, and evidence boundaries."
+  }
+}

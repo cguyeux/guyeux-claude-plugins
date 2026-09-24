@@ -1,49 +1,51 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-26T05:58:03.898340+00:00",
+  "generated_at": "2026-09-15T16:02:46.881342+00:00",
   "source": "/home/christophe/.claude/projects",
   "codex_memories": "/home/christophe/.codex/memories",
   "summary": {
-    "markdown_files": 124,
+    "markdown_files": 174,
     "technical_locks": 3,
-    "bytes": 362100,
-    "projects": 15,
+    "bytes": 494779,
+    "projects": 17,
     "source_types": {
-      "feedback": 49,
-      "index": 15,
-      "project": 39,
-      "reference": 17,
-      "user": 4
+      "feedback": 75,
+      "index": 17,
+      "project": 46,
+      "reference": 31,
+      "user": 5
     },
     "decisions": {
-      "exclude-sensitive": 15,
-      "index-only": 12,
-      "route-durable-knowledge": 62,
-      "verify-current-state": 35
+      "deduplicate-user-context": 1,
+      "exclude-sensitive": 21,
+      "index-only": 13,
+      "route-durable-knowledge": 97,
+      "verify-current-state": 42
     },
     "destinations": {
-      "native-extension-index": 12,
-      "private-review": 15,
-      "project-registers": 35,
-      "shared-kb": 62
+      "global-instructions-or-private-kb": 1,
+      "native-extension-index": 13,
+      "private-review": 21,
+      "project-registers": 42,
+      "shared-kb": 97
     },
     "freshness": {
-      "durable-candidate": 64,
-      "potentially-stale-verify-live": 45,
-      "routing-index": 15
+      "durable-candidate": 104,
+      "potentially-stale-verify-live": 53,
+      "routing-index": 17
     },
-    "personal_identifier_files": 15,
+    "personal_identifier_files": 21,
     "secret_material_files": 0,
-    "infrastructure_locator_files": 13,
+    "infrastructure_locator_files": 14,
     "broken_local_link_files": 2,
     "exact_duplicate_groups": 0
   },
   "projects": {
     "-home-christophe": {
-      "files": 8,
-      "bytes": 12664,
+      "files": 9,
+      "bytes": 15704,
       "source_types": {
-        "feedback": 1,
+        "feedback": 2,
         "index": 1,
         "project": 2,
         "reference": 3,
@@ -93,14 +95,15 @@
       "official_import_candidate": true
     },
     "-home-christophe-docs": {
-      "files": 4,
-      "bytes": 6879,
+      "files": 28,
+      "bytes": 82934,
       "source_types": {
-        "feedback": 2,
+        "feedback": 10,
         "index": 1,
-        "reference": 1
+        "project": 6,
+        "reference": 11
       },
-      "sensitive_files": 1,
+      "sensitive_files": 6,
       "broken_link_files": 0,
       "official_import_candidate": false
     },
@@ -116,14 +119,16 @@
       "official_import_candidate": false
     },
     "-home-christophe-docs-codes": {
-      "files": 8,
-      "bytes": 14382,
+      "files": 24,
+      "bytes": 51030,
       "source_types": {
-        "feedback": 6,
+        "feedback": 17,
         "index": 1,
-        "project": 1
+        "project": 1,
+        "reference": 4,
+        "user": 1
       },
-      "sensitive_files": 3,
+      "sensitive_files": 4,
       "broken_link_files": 0,
       "official_import_candidate": false
     },
@@ -138,11 +143,33 @@
       "broken_link_files": 0,
       "official_import_candidate": true
     },
-    "-home-christophe-docs-codes-mtbc": {
-      "files": 48,
-      "bytes": 244130,
+    "-home-christophe-docs-codes-droit-shs-lepoutre": {
+      "files": 5,
+      "bytes": 6425,
       "source_types": {
-        "feedback": 21,
+        "feedback": 4,
+        "index": 1
+      },
+      "sensitive_files": 0,
+      "broken_link_files": 0,
+      "official_import_candidate": true
+    },
+    "-home-christophe-docs-codes-droit-shs-voynich": {
+      "files": 2,
+      "bytes": 1371,
+      "source_types": {
+        "feedback": 1,
+        "index": 1
+      },
+      "sensitive_files": 0,
+      "broken_link_files": 0,
+      "official_import_candidate": true
+    },
+    "-home-christophe-docs-codes-mtbc": {
+      "files": 49,
+      "bytes": 252273,
+      "source_types": {
+        "feedback": 22,
         "index": 1,
         "project": 17,
         "reference": 8,
@@ -163,34 +190,23 @@
       "broken_link_files": 0,
       "official_import_candidate": true
     },
-    "-home-christophe-docs-codes-predictops": {
-      "files": 3,
-      "bytes": 6122,
+    "-home-christophe-docs-codes-pompiers-predictops": {
+      "files": 4,
+      "bytes": 8228,
       "source_types": {
-        "feedback": 2,
+        "feedback": 3,
         "index": 1
       },
       "sensitive_files": 0,
       "broken_link_files": 0,
       "official_import_candidate": true
     },
-    "-home-christophe-docs-codes-predictops-mcp": {
+    "-home-christophe-docs-codes-pompiers-predictops-mcp": {
       "files": 2,
       "bytes": 1665,
       "source_types": {
         "index": 1,
         "project": 1
-      },
-      "sensitive_files": 0,
-      "broken_link_files": 0,
-      "official_import_candidate": true
-    },
-    "-home-christophe-docs-codes-voynich": {
-      "files": 2,
-      "bytes": 1371,
-      "source_types": {
-        "feedback": 1,
-        "index": 1
       },
       "sensitive_files": 0,
       "broken_link_files": 0,
@@ -216,14 +232,26 @@
       "sensitive_files": 0,
       "broken_link_files": 1,
       "official_import_candidate": false
+    },
+    "-tmp-claude-1000--home-christophe-docs-27caf381-ee5d-494b-9f57-79202d53e7c4-scratchpad-p31-moved-test-b": {
+      "files": 2,
+      "bytes": 262,
+      "source_types": {
+        "index": 1,
+        "project": 1
+      },
+      "sensitive_files": 0,
+      "broken_link_files": 0,
+      "official_import_candidate": true
     }
   },
   "imported_projects": {
-    "-home-christophe-docs-codes-predictops": {
-      "cwd": "/home/christophe/docs/codes/predictops",
+    "-home-christophe-docs-codes-pompiers-predictops": {
+      "cwd": "/home/christophe/docs/codes/pompiers/predictops",
       "files": [
         "MEMORY.md",
         "feedback_perimetre_agent_predictops.md",
+        "feedback_productivite_pendant_attente_arriere_plan.md",
         "feedback_seuils_alerte_page_parametres.md"
       ]
     }
@@ -234,9 +262,9 @@
       "path": "-home-christophe/memory/MEMORY.md",
       "project_key": "-home-christophe",
       "filename": "MEMORY.md",
-      "bytes": 1087,
-      "modified_at": "2026-05-13T08:49:11.553995+00:00",
-      "sha256": "7b3f36bb633f4824e08487d7f0ae2c09b185ed048e8557d1f05d5fda9147d6b4",
+      "bytes": 1270,
+      "modified_at": "2026-09-08T18:05:33.278870+00:00",
+      "sha256": "9d023d144da84b329ccfad51630a2d71d798c38577f125fc0718f475dc6b37c1",
       "source_type": "index",
       "freshness": "routing-index",
       "decision": "index-only",
@@ -247,7 +275,7 @@
         "infrastructure_locator": true,
         "broken_local_links": false
       },
-      "local_links": 7,
+      "local_links": 8,
       "wiki_links": 0,
       "broken_local_link_count": 0
     },
@@ -270,6 +298,27 @@
       },
       "local_links": 0,
       "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe/memory/feedback_ressources_partagees.md",
+      "project_key": "-home-christophe",
+      "filename": "feedback_ressources_partagees.md",
+      "bytes": 2857,
+      "modified_at": "2026-09-08T18:41:22.264395+00:00",
+      "sha256": "085da97cac1245353ec4f970557d8677ebfeef191e80e9e9fa6bc38aaaa604c8",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
       "broken_local_link_count": 0
     },
     {
@@ -1200,20 +1249,125 @@
       "path": "-home-christophe-docs/memory/MEMORY.md",
       "project_key": "-home-christophe-docs",
       "filename": "MEMORY.md",
-      "bytes": 625,
-      "modified_at": "2026-08-25T11:53:16.900320+00:00",
-      "sha256": "cea5824191b3c3b0e20a52a63728c49dd03692ef4c4db2a0699a94c45ceea927",
+      "bytes": 5893,
+      "modified_at": "2026-09-15T15:53:57.871575+00:00",
+      "sha256": "8164970cfe8bff409d5f5153998a712cf6d9ca6bd3728fa4dcd5308cfe5c75a5",
       "source_type": "index",
       "freshness": "routing-index",
-      "decision": "index-only",
-      "destination": "native-extension-index",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 27,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/feedback_citer_table_supplementaire.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "feedback_citer_table_supplementaire.md",
+      "bytes": 1585,
+      "modified_at": "2026-09-15T13:37:23.603622+00:00",
+      "sha256": "c7cc490190e088804f09c86ac54b139352f8697323ba43e728fcdac6ede23d2c",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
       "flags": {
         "personal_identifier": false,
         "secret_material": false,
         "infrastructure_locator": false,
         "broken_local_links": false
       },
-      "local_links": 3,
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/feedback_mail_pieces_jointes_chrome.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "feedback_mail_pieces_jointes_chrome.md",
+      "bytes": 1836,
+      "modified_at": "2026-09-14T09:05:39.796801+00:00",
+      "sha256": "f88fff6e9677649ca9553167e07707be03063b2b74d8b51ca3b863645c298e86",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/feedback_mail_repondre_langue_verifier_annuaire.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "feedback_mail_repondre_langue_verifier_annuaire.md",
+      "bytes": 2311,
+      "modified_at": "2026-09-15T11:20:34.304373+00:00",
+      "sha256": "b1ee275cf2aee3ffd491b44f1b630dabb1d49a2cc1245c611d2ab065ed011b74",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/feedback_remboursement_montants_en_euros.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "feedback_remboursement_montants_en_euros.md",
+      "bytes": 1443,
+      "modified_at": "2026-09-15T15:33:16.879184+00:00",
+      "sha256": "a898f725eb98003c445c2402c49be06db5e79ade52216b28b1f2407fc7ae5640",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/feedback_remboursement_repas_et_hebergement.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "feedback_remboursement_repas_et_hebergement.md",
+      "bytes": 1393,
+      "modified_at": "2026-09-09T10:46:32.387029+00:00",
+      "sha256": "83540a54165e2b71cd86f21cf0dac1b7de104251a317d56ae4e9a5d6a71b2310",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
       "wiki_links": 0,
       "broken_local_link_count": 0
     },
@@ -1224,6 +1378,48 @@
       "bytes": 1531,
       "modified_at": "2026-08-17T16:10:42.537168+00:00",
       "sha256": "babe647a938ceea4f1b5f1c25aaf294cccfb04b021908155fba7233e1f90f1e2",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/feedback_sous_agent_action_non_autorisee.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "feedback_sous_agent_action_non_autorisee.md",
+      "bytes": 5133,
+      "modified_at": "2026-09-15T06:43:44.067060+00:00",
+      "sha256": "511edb27a2421cc84531981202b7341b2820eb5cd8e7e2b490307ced0e129ffb",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/feedback_style_mail_destinataire.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "feedback_style_mail_destinataire.md",
+      "bytes": 4750,
+      "modified_at": "2026-09-14T16:15:18.808877+00:00",
+      "sha256": "259e7bbd2bd047da41988b7f2f597eb41f4975552e6b43b3816f11efcd045d67",
       "source_type": "feedback",
       "freshness": "durable-candidate",
       "decision": "route-durable-knowledge",
@@ -1260,12 +1456,180 @@
       "broken_local_link_count": 0
     },
     {
+      "path": "-home-christophe-docs/memory/feedback_verifier_ses_droits_avant_de_deleguer.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "feedback_verifier_ses_droits_avant_de_deleguer.md",
+      "bytes": 1306,
+      "modified_at": "2026-09-06T05:41:04.349865+00:00",
+      "sha256": "cab4945d8b7941688a7edb5efd9d947976f23c2f269f6dba71c44db99416372e",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/project_belfort_booking_habitudes.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "project_belfort_booking_habitudes.md",
+      "bytes": 4325,
+      "modified_at": "2026-09-14T09:51:45.775240+00:00",
+      "sha256": "02fd0ca07fc1e4397871cf74e56159767986bd60576240db4b2ddec42806502a",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/project_belfort_train_habitudes.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "project_belfort_train_habitudes.md",
+      "bytes": 4091,
+      "modified_at": "2026-09-14T10:21:32.204038+00:00",
+      "sha256": "ca82ecd9f628aeef38fa797ab22937e32d62446af94e2ace3a7eb7a0512f10ce",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/project_chatkit_formation_gclab.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "project_chatkit_formation_gclab.md",
+      "bytes": 1746,
+      "modified_at": "2026-09-15T15:53:52.257128+00:00",
+      "sha256": "70befe5ea82ef3191bd3485fafb5e82d444e6d090906373fbeaa39f8add37c1d",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/project_gis_iasur_pilotage.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "project_gis_iasur_pilotage.md",
+      "bytes": 1279,
+      "modified_at": "2026-09-11T09:57:16.439759+00:00",
+      "sha256": "e8cc63d0cfeaf636f87eb7762599ca578cdfa0121aa724d853a439a94af04003",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/project_refonte_environnement.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "project_refonte_environnement.md",
+      "bytes": 1682,
+      "modified_at": "2026-09-13T15:34:56.032834+00:00",
+      "sha256": "187730fcc743eb3be78da3a862e3a6d53626f0454ed773a51f74cb8967f0c15b",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/project_site_cours_gclab.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "project_site_cours_gclab.md",
+      "bytes": 3932,
+      "modified_at": "2026-09-15T12:23:02.282351+00:00",
+      "sha256": "f9b98321415cf3c00f9d8eb722245557028825657b1e300be57d907ec0ff28c7",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/reference_filesender.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "reference_filesender.md",
+      "bytes": 1193,
+      "modified_at": "2026-09-14T07:53:18.322379+00:00",
+      "sha256": "7bd4f461af63d27e79f99b95f3a743e0753b93629ecf88e6f5ac0b92496e9894",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
       "path": "-home-christophe-docs/memory/reference_filtrage_mail_institutionnel.md",
       "project_key": "-home-christophe-docs",
       "filename": "reference_filtrage_mail_institutionnel.md",
-      "bytes": 3037,
-      "modified_at": "2026-08-25T15:18:38.327906+00:00",
-      "sha256": "663143cab7de747fadebf38efa0daf743156c5b1a6c149a180e429165e405698",
+      "bytes": 4837,
+      "modified_at": "2026-09-08T09:43:37.295871+00:00",
+      "sha256": "aafd815e45ff96c07a0ace341933ecb4b4b25806d2957405274a7d515754209b",
       "source_type": "reference",
       "freshness": "durable-candidate",
       "decision": "exclude-sensitive",
@@ -1278,6 +1642,195 @@
       },
       "local_links": 0,
       "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/reference_gmail_spam_whitelist.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "reference_gmail_spam_whitelist.md",
+      "bytes": 7463,
+      "modified_at": "2026-09-15T12:53:54.573351+00:00",
+      "sha256": "8faed0bf892f2d56158adfc72c70a0e0e74cd18b99401c29b7455651da03e276",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/reference_guide_doctorants_internationaux_umlp.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "reference_guide_doctorants_internationaux_umlp.md",
+      "bytes": 1120,
+      "modified_at": "2026-09-09T09:23:00.209145+00:00",
+      "sha256": "d1cd142bb3effde9b53126b0ad11bb77dce9aa8414ef6fd31be22a4a5a0b2bb6",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/reference_listes_gis_iasur.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "reference_listes_gis_iasur.md",
+      "bytes": 1929,
+      "modified_at": "2026-08-26T11:50:57.588688+00:00",
+      "sha256": "60e77c1657abecd462a6fc47d4faa51c5be2c99f61112896d84f6e4435288951",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/reference_mcp_booking_com.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "reference_mcp_booking_com.md",
+      "bytes": 1336,
+      "modified_at": "2026-09-14T09:36:33.786277+00:00",
+      "sha256": "c946d28452534687e16ef7c6888f1f2a575533c5285368032815249af7fae784",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/reference_publiweb_preuve_ingestion.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "reference_publiweb_preuve_ingestion.md",
+      "bytes": 1570,
+      "modified_at": "2026-09-06T15:42:17.498810+00:00",
+      "sha256": "5631c8258f9fd6b04951eaa142f0ccc1b9cd73ce0a24afaae098f6613d7f577a",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/reference_slack_plan_gratuit.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "reference_slack_plan_gratuit.md",
+      "bytes": 1183,
+      "modified_at": "2026-09-09T16:27:54.324427+00:00",
+      "sha256": "eb69b3e7cfc0bf0621e59d131ecd0a61a4c7668eda24b985ed64893a38806dab",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/reference_superhuman_ponctuation_body_rewrite.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "reference_superhuman_ponctuation_body_rewrite.md",
+      "bytes": 2537,
+      "modified_at": "2026-09-15T12:32:21.179965+00:00",
+      "sha256": "d1567f526b7e4bb815d91fd5f719eaf7d723d95fa79098e9422dd7b2381e5f78",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/reference_weathernext_acces.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "reference_weathernext_acces.md",
+      "bytes": 12617,
+      "modified_at": "2026-09-15T12:16:43.779306+00:00",
+      "sha256": "e4c6ec81c20b6209ecf57a94d16d08ac796eda1ade0ac9acf4cb14457a0bafac",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs/memory/reference_weve_etats_service.md",
+      "project_key": "-home-christophe-docs",
+      "filename": "reference_weve_etats_service.md",
+      "bytes": 1227,
+      "modified_at": "2026-09-14T07:17:37.977727+00:00",
+      "sha256": "55389219fe8251a16ecf5ad221a7206432cf14eb4d8c008ab9aefb4bf1df6524",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
       "broken_local_link_count": 0
     },
     {
@@ -1326,9 +1879,9 @@
       "path": "-home-christophe-docs-codes/memory/MEMORY.md",
       "project_key": "-home-christophe-docs-codes",
       "filename": "MEMORY.md",
-      "bytes": 1151,
-      "modified_at": "2026-08-26T05:51:31.368283+00:00",
-      "sha256": "4d7158d0a51ce53757c39160c7e0fb415b75f1ccd5159f9ad7996650c6e135ee",
+      "bytes": 4129,
+      "modified_at": "2026-09-13T12:04:20.668644+00:00",
+      "sha256": "704013fcb7aafdf835a1b174023ee06c26eadf39999d109f5364c39a8299bb78",
       "source_type": "index",
       "freshness": "routing-index",
       "decision": "exclude-sensitive",
@@ -1339,8 +1892,155 @@
         "infrastructure_locator": false,
         "broken_local_links": false
       },
-      "local_links": 7,
+      "local_links": 22,
       "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/check-central-journals-kb-before-status.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "check-central-journals-kb-before-status.md",
+      "bytes": 2290,
+      "modified_at": "2026-09-03T12:40:48.714451+00:00",
+      "sha256": "fb5290aff732928affe757babd676eb1d5d9fd9472dbc2a44039bf4ac9165bc1",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/collaborators-idiolecte-and-critiques.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "collaborators-idiolecte-and-critiques.md",
+      "bytes": 1737,
+      "modified_at": "2026-09-13T10:26:55.219137+00:00",
+      "sha256": "2d8ab170ce5f3b59679090313e885f3577f5c9baa27c902f61a1e669d0c41f50",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/email-je-not-nous-solo-work.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "email-je-not-nous-solo-work.md",
+      "bytes": 2122,
+      "modified_at": "2026-08-26T17:00:13.875708+00:00",
+      "sha256": "20a68866924ed859da54699d1ab369bfa4423006ef4cce1c776e959c3039237f",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/email-register-check-collaborators.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "email-register-check-collaborators.md",
+      "bytes": 1906,
+      "modified_at": "2026-08-26T17:00:02.222702+00:00",
+      "sha256": "bea9a4860948e85900911351d2813840b0334d30b8204ff2845f2795e50508a8",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/email-short-airy-paragraphs.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "email-short-airy-paragraphs.md",
+      "bytes": 2214,
+      "modified_at": "2026-08-26T17:19:45.806172+00:00",
+      "sha256": "722bc0e5d4d342c60899cf301de4c03a9ec5a6a336aad7d3b76c1c8b967d908b",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/git-push-standing-permission-kept.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "git-push-standing-permission-kept.md",
+      "bytes": 1353,
+      "modified_at": "2026-09-13T12:04:05.875586+00:00",
+      "sha256": "18678360452db9f7784d423a09a341e80adbcab6cf703bf09a58fa19a0f7cdd1",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/keyboard-shift-key-typos.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "keyboard-shift-key-typos.md",
+      "bytes": 2304,
+      "modified_at": "2026-09-13T10:26:46.787113+00:00",
+      "sha256": "68b3d109abc5cb5f45f12cbb7125aaf84a27450d71403cb74c3f9c4f339d3687",
+      "source_type": "user",
+      "freshness": "durable-candidate",
+      "decision": "deduplicate-user-context",
+      "destination": "global-instructions-or-private-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
       "broken_local_link_count": 0
     },
     {
@@ -1365,6 +2065,48 @@
       "broken_local_link_count": 0
     },
     {
+      "path": "-home-christophe-docs-codes/memory/mtbc-memories-live-under-another-slug.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "mtbc-memories-live-under-another-slug.md",
+      "bytes": 2059,
+      "modified_at": "2026-09-12T08:08:25.350100+00:00",
+      "sha256": "e09bd79e901941cd0125e02145fb481f9894de00d101268264f537875fdb78bf",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/no-em-dash-in-human-facing-text.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "no-em-dash-in-human-facing-text.md",
+      "bytes": 1916,
+      "modified_at": "2026-08-26T14:00:08.001520+00:00",
+      "sha256": "82ef133c93dd962e64c45428d3c039874d46bd097a8f16a5a509a7b002b1089b",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
       "path": "-home-christophe-docs-codes/memory/no-wetlab-access.md",
       "project_key": "-home-christophe-docs-codes",
       "filename": "no-wetlab-access.md",
@@ -1386,12 +2128,75 @@
       "broken_local_link_count": 0
     },
     {
+      "path": "-home-christophe-docs-codes/memory/phase-1-is-the-work-not-a-toll.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "phase-1-is-the-work-not-a-toll.md",
+      "bytes": 3087,
+      "modified_at": "2026-09-13T11:29:22.823834+00:00",
+      "sha256": "ed12987c3f041b19402bd0a6efede70b2fd0124880d3ac097b1c55d70ef2ec9f",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
       "path": "-home-christophe-docs-codes/memory/prefers-defaults-over-multiple-choice.md",
       "project_key": "-home-christophe-docs-codes",
       "filename": "prefers-defaults-over-multiple-choice.md",
-      "bytes": 1234,
-      "modified_at": "2026-06-25T12:09:12.981800+00:00",
-      "sha256": "d6f2f1631fda34f98c6d876e4c136563aa4ced1b36590a75508613686581cccc",
+      "bytes": 3594,
+      "modified_at": "2026-09-13T11:52:40.680989+00:00",
+      "sha256": "a421f317bbd56da102619b37e12af55c4ab653e3356363c555b58a5d3a346a6c",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/proactive-work-during-long-computations.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "proactive-work-during-long-computations.md",
+      "bytes": 1532,
+      "modified_at": "2026-08-26T15:34:47.025815+00:00",
+      "sha256": "150fd914dbf54f602bbafe14b04c4281e15793714adc46ea5c5b12e904b79423",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/qcm-cannot-execute-clear-or-model-switch.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "qcm-cannot-execute-clear-or-model-switch.md",
+      "bytes": 2066,
+      "modified_at": "2026-09-13T09:52:21.659076+00:00",
+      "sha256": "634cc2979010ceaa197c9fde0f881dea6ca029587986fc8931dc0d447d396674",
       "source_type": "feedback",
       "freshness": "durable-candidate",
       "decision": "route-durable-knowledge",
@@ -1428,6 +2233,48 @@
       "broken_local_link_count": 0
     },
     {
+      "path": "-home-christophe-docs-codes/memory/self-contained-handoff-requests.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "self-contained-handoff-requests.md",
+      "bytes": 1815,
+      "modified_at": "2026-09-08T16:48:53.434528+00:00",
+      "sha256": "b8339694d0a96bef34c191a3acfed8d1d7e2caef26f08ef1f78beede16e554c1",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/session-switches-stay-local.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "session-switches-stay-local.md",
+      "bytes": 902,
+      "modified_at": "2026-09-13T11:52:05.946350+00:00",
+      "sha256": "317d4a98282397749a8dcef9bf63844bfd52fde4ab9a0bb6b4258956a9dc26cf",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
       "path": "-home-christophe-docs-codes/memory/soumission-perimetre-autorise.md",
       "project_key": "-home-christophe-docs-codes",
       "filename": "soumission-perimetre-autorise.md",
@@ -1446,6 +2293,27 @@
       },
       "local_links": 0,
       "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/todo-via-email.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "todo-via-email.md",
+      "bytes": 1463,
+      "modified_at": "2026-08-26T17:14:57.418250+00:00",
+      "sha256": "89e91e5ccd818c768dd6d56921d2a17ec169b112795047f24531aa2737c7b923",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "exclude-sensitive",
+      "destination": "private-review",
+      "flags": {
+        "personal_identifier": true,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
       "broken_local_link_count": 0
     },
     {
@@ -1473,9 +2341,9 @@
       "path": "-home-christophe-docs-codes/memory/verify-piste-status-on-disk.md",
       "project_key": "-home-christophe-docs-codes",
       "filename": "verify-piste-status-on-disk.md",
-      "bytes": 2603,
-      "modified_at": "2026-08-20T14:49:50.162294+00:00",
-      "sha256": "ffc02f4756cc8b0f4e3700557fa29b71e4216873163877b3616f4c2a2a12d2f4",
+      "bytes": 4460,
+      "modified_at": "2026-09-15T10:43:23.437988+00:00",
+      "sha256": "da168df826275eb973556369f69648fe59573b3eced77172bd74e2957533653e",
       "source_type": "feedback",
       "freshness": "potentially-stale-verify-live",
       "decision": "route-durable-knowledge",
@@ -1484,6 +2352,27 @@
         "personal_identifier": false,
         "secret_material": false,
         "infrastructure_locator": true,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes/memory/vpn-self-service-check-kb-first.md",
+      "project_key": "-home-christophe-docs-codes",
+      "filename": "vpn-self-service-check-kb-first.md",
+      "bytes": 687,
+      "modified_at": "2026-09-13T11:51:59.983319+00:00",
+      "sha256": "81cbc0dc65e0c5dfe8d095e8f587166c0d771243cb6dd270aa273c11830a9b72",
+      "source_type": "reference",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
         "broken_local_links": false
       },
       "local_links": 0,
@@ -1533,12 +2422,159 @@
       "broken_local_link_count": 0
     },
     {
+      "path": "-home-christophe-docs-codes-droit-shs-lepoutre/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-codes-droit-shs-lepoutre",
+      "filename": "MEMORY.md",
+      "bytes": 629,
+      "modified_at": "2026-09-12T12:45:18.502632+00:00",
+      "sha256": "7332c84252071582fc646e5dcb26bd696d720782541ac402dd4a7e856dba5d9f",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 4,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-droit-shs-lepoutre/memory/camille-format-documents-complets.md",
+      "project_key": "-home-christophe-docs-codes-droit-shs-lepoutre",
+      "filename": "camille-format-documents-complets.md",
+      "bytes": 1773,
+      "modified_at": "2026-09-12T07:31:53.662136+00:00",
+      "sha256": "0de6fa88ffbf698c2d3d1ebb439d2530ac6107ed20c03b11061772baaa6ad75d",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-droit-shs-lepoutre/memory/camille-style-skill.md",
+      "project_key": "-home-christophe-docs-codes-droit-shs-lepoutre",
+      "filename": "camille-style-skill.md",
+      "bytes": 1483,
+      "modified_at": "2026-09-08T10:40:12.535622+00:00",
+      "sha256": "942752fdaa0139fb5d99a2865f4f6cd5897a11f610061e34abea656b1490b63c",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-droit-shs-lepoutre/memory/livraison-progressive-a-christophe.md",
+      "project_key": "-home-christophe-docs-codes-droit-shs-lepoutre",
+      "filename": "livraison-progressive-a-christophe.md",
+      "bytes": 1284,
+      "modified_at": "2026-09-07T06:24:19.997098+00:00",
+      "sha256": "7d9c21808b026d45d2390772db25c5855a8cfa0897fc899bd33eb835b1b0309f",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-droit-shs-lepoutre/memory/ton-neutre-camille.md",
+      "project_key": "-home-christophe-docs-codes-droit-shs-lepoutre",
+      "filename": "ton-neutre-camille.md",
+      "bytes": 1256,
+      "modified_at": "2026-09-12T12:45:18.497632+00:00",
+      "sha256": "a23742c2884f262d29f99924a08516d71e4d5b2aaf00b082cbfc43d0ae65dbd4",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 2,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-droit-shs-voynich/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-codes-droit-shs-voynich",
+      "filename": "MEMORY.md",
+      "bytes": 190,
+      "modified_at": "2026-06-06T17:49:38.802492+00:00",
+      "sha256": "963d2ecc1dfd48b69d3bdfc698366ffd229c8b3ca81864ce071ce2e2f637020f",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 1,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-droit-shs-voynich/memory/voynich-goal-not-article.md",
+      "project_key": "-home-christophe-docs-codes-droit-shs-voynich",
+      "filename": "voynich-goal-not-article.md",
+      "bytes": 1181,
+      "modified_at": "2026-06-06T17:49:20.057464+00:00",
+      "sha256": "20933db5ff63e93520d13d7b01670a426e884dc80c0366f0a78fb90d9bfc5b71",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
       "path": "-home-christophe-docs-codes-mtbc/memory/MEMORY.md",
       "project_key": "-home-christophe-docs-codes-mtbc",
       "filename": "MEMORY.md",
-      "bytes": 14199,
-      "modified_at": "2026-07-22T06:38:16.216525+00:00",
-      "sha256": "961ab22508503fefeed099a5dcedf75dad0f7d8c7678ad3a91a48f53a57749b7",
+      "bytes": 14498,
+      "modified_at": "2026-09-01T17:09:51.631270+00:00",
+      "sha256": "6eb7a5794bb3e079eecf4f9d89fc02958ce3a5970ae3a7308779145c9023da2e",
       "source_type": "index",
       "freshness": "routing-index",
       "decision": "exclude-sensitive",
@@ -1549,7 +2585,7 @@
         "infrastructure_locator": true,
         "broken_local_links": true
       },
-      "local_links": 47,
+      "local_links": 48,
       "wiki_links": 0,
       "broken_local_link_count": 1
     },
@@ -1995,6 +3031,27 @@
       "broken_local_link_count": 0
     },
     {
+      "path": "-home-christophe-docs-codes-mtbc/memory/feedback_verify_margin_overflow_dont_dismiss.md",
+      "project_key": "-home-christophe-docs-codes-mtbc",
+      "filename": "feedback_verify_margin_overflow_dont_dismiss.md",
+      "bytes": 2361,
+      "modified_at": "2026-09-01T17:09:08.561137+00:00",
+      "sha256": "844df37ef25c52e48156add134efba5de015232cb305e2ec983dc79827a24cd1",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
       "path": "-home-christophe-docs-codes-mtbc/memory/project_L1_2_1_2_1_2_taxonomy.md",
       "project_key": "-home-christophe-docs-codes-mtbc",
       "filename": "project_L1_2_1_2_1_2_taxonomy.md",
@@ -2376,9 +3433,9 @@
       "path": "-home-christophe-docs-codes-mtbc/memory/reference_bcg_node_calibrations.md",
       "project_key": "-home-christophe-docs-codes-mtbc",
       "filename": "reference_bcg_node_calibrations.md",
-      "bytes": 4530,
-      "modified_at": "2026-06-22T05:53:03.929010+00:00",
-      "sha256": "f56b81a3b42557008f67f31a256c4dddeaeaa6bc16231ff34f9c39d6f871bd2b",
+      "bytes": 8591,
+      "modified_at": "2026-09-06T13:31:29.740395+00:00",
+      "sha256": "af057ce2eee9c9ba5a1feaa1a44890d039132f31d6b7db44a6b1334a577627d9",
       "source_type": "reference",
       "freshness": "potentially-stale-verify-live",
       "decision": "route-durable-knowledge",
@@ -2390,7 +3447,7 @@
         "broken_local_links": false
       },
       "local_links": 0,
-      "wiki_links": 1,
+      "wiki_links": 2,
       "broken_local_link_count": 0
     },
     {
@@ -2481,17 +3538,17 @@
       "path": "-home-christophe-docs-codes-mtbc/memory/reference_rd_typing_report_json.md",
       "project_key": "-home-christophe-docs-codes-mtbc",
       "filename": "reference_rd_typing_report_json.md",
-      "bytes": 3734,
-      "modified_at": "2026-05-31T15:57:39.275212+00:00",
-      "sha256": "afe80666a571951b0f8f97718e6092d802c0a2c8d69859ec9c1d039d9e7bb421",
+      "bytes": 5156,
+      "modified_at": "2026-09-01T16:17:35.797976+00:00",
+      "sha256": "e064d5533020af77ad490f134c6dd9df0744feab1dc62b60b61287151ac0ff31",
       "source_type": "reference",
-      "freshness": "durable-candidate",
+      "freshness": "potentially-stale-verify-live",
       "decision": "route-durable-knowledge",
       "destination": "shared-kb",
       "flags": {
         "personal_identifier": false,
         "secret_material": false,
-        "infrastructure_locator": false,
+        "infrastructure_locator": true,
         "broken_local_links": false
       },
       "local_links": 0,
@@ -2583,12 +3640,12 @@
       "broken_local_link_count": 0
     },
     {
-      "path": "-home-christophe-docs-codes-predictops/memory/MEMORY.md",
-      "project_key": "-home-christophe-docs-codes-predictops",
+      "path": "-home-christophe-docs-codes-pompiers-predictops/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-codes-pompiers-predictops",
       "filename": "MEMORY.md",
-      "bytes": 445,
-      "modified_at": "2026-07-25T18:07:32.689343+00:00",
-      "sha256": "2159105460f92309e9ea41b1d68a6c2ebe936f1a959f24c7bb7e584a6fb33f1b",
+      "bytes": 649,
+      "modified_at": "2026-09-03T15:39:25.519463+00:00",
+      "sha256": "ed7ddadacd5153e8ee4a925b8098479fb5682ff5bfc0c3a03e0cfb37ea61ea36",
       "source_type": "index",
       "freshness": "routing-index",
       "decision": "index-only",
@@ -2599,13 +3656,13 @@
         "infrastructure_locator": false,
         "broken_local_links": false
       },
-      "local_links": 2,
+      "local_links": 3,
       "wiki_links": 0,
       "broken_local_link_count": 0
     },
     {
-      "path": "-home-christophe-docs-codes-predictops/memory/feedback_perimetre_agent_predictops.md",
-      "project_key": "-home-christophe-docs-codes-predictops",
+      "path": "-home-christophe-docs-codes-pompiers-predictops/memory/feedback_perimetre_agent_predictops.md",
+      "project_key": "-home-christophe-docs-codes-pompiers-predictops",
       "filename": "feedback_perimetre_agent_predictops.md",
       "bytes": 3209,
       "modified_at": "2026-08-04T06:05:04.319129+00:00",
@@ -2625,8 +3682,29 @@
       "broken_local_link_count": 0
     },
     {
-      "path": "-home-christophe-docs-codes-predictops/memory/feedback_seuils_alerte_page_parametres.md",
-      "project_key": "-home-christophe-docs-codes-predictops",
+      "path": "-home-christophe-docs-codes-pompiers-predictops/memory/feedback_productivite_pendant_attente_arriere_plan.md",
+      "project_key": "-home-christophe-docs-codes-pompiers-predictops",
+      "filename": "feedback_productivite_pendant_attente_arriere_plan.md",
+      "bytes": 1902,
+      "modified_at": "2026-09-03T15:39:15.312465+00:00",
+      "sha256": "bd79a7fccece29f2366463c0b4edafb31644b5650e44e62c6234cea815eb615f",
+      "source_type": "feedback",
+      "freshness": "durable-candidate",
+      "decision": "route-durable-knowledge",
+      "destination": "shared-kb",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 1,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-home-christophe-docs-codes-pompiers-predictops/memory/feedback_seuils_alerte_page_parametres.md",
+      "project_key": "-home-christophe-docs-codes-pompiers-predictops",
       "filename": "feedback_seuils_alerte_page_parametres.md",
       "bytes": 2468,
       "modified_at": "2026-07-21T09:56:52.300024+00:00",
@@ -2646,8 +3724,8 @@
       "broken_local_link_count": 0
     },
     {
-      "path": "-home-christophe-docs-codes-predictops-mcp/memory/MEMORY.md",
-      "project_key": "-home-christophe-docs-codes-predictops-mcp",
+      "path": "-home-christophe-docs-codes-pompiers-predictops-mcp/memory/MEMORY.md",
+      "project_key": "-home-christophe-docs-codes-pompiers-predictops-mcp",
       "filename": "MEMORY.md",
       "bytes": 180,
       "modified_at": "2026-06-21T07:04:44.070095+00:00",
@@ -2667,8 +3745,8 @@
       "broken_local_link_count": 0
     },
     {
-      "path": "-home-christophe-docs-codes-predictops-mcp/memory/chatbot-skills-paradigm.md",
-      "project_key": "-home-christophe-docs-codes-predictops-mcp",
+      "path": "-home-christophe-docs-codes-pompiers-predictops-mcp/memory/chatbot-skills-paradigm.md",
+      "project_key": "-home-christophe-docs-codes-pompiers-predictops-mcp",
       "filename": "chatbot-skills-paradigm.md",
       "bytes": 1485,
       "modified_at": "2026-06-21T07:04:38.679072+00:00",
@@ -2685,48 +3763,6 @@
       },
       "local_links": 0,
       "wiki_links": 0,
-      "broken_local_link_count": 0
-    },
-    {
-      "path": "-home-christophe-docs-codes-voynich/memory/MEMORY.md",
-      "project_key": "-home-christophe-docs-codes-voynich",
-      "filename": "MEMORY.md",
-      "bytes": 190,
-      "modified_at": "2026-06-06T17:49:38.802492+00:00",
-      "sha256": "963d2ecc1dfd48b69d3bdfc698366ffd229c8b3ca81864ce071ce2e2f637020f",
-      "source_type": "index",
-      "freshness": "routing-index",
-      "decision": "index-only",
-      "destination": "native-extension-index",
-      "flags": {
-        "personal_identifier": false,
-        "secret_material": false,
-        "infrastructure_locator": false,
-        "broken_local_links": false
-      },
-      "local_links": 1,
-      "wiki_links": 0,
-      "broken_local_link_count": 0
-    },
-    {
-      "path": "-home-christophe-docs-codes-voynich/memory/voynich-goal-not-article.md",
-      "project_key": "-home-christophe-docs-codes-voynich",
-      "filename": "voynich-goal-not-article.md",
-      "bytes": 1181,
-      "modified_at": "2026-06-06T17:49:20.057464+00:00",
-      "sha256": "20933db5ff63e93520d13d7b01670a426e884dc80c0366f0a78fb90d9bfc5b71",
-      "source_type": "feedback",
-      "freshness": "durable-candidate",
-      "decision": "route-durable-knowledge",
-      "destination": "shared-kb",
-      "flags": {
-        "personal_identifier": false,
-        "secret_material": false,
-        "infrastructure_locator": false,
-        "broken_local_links": false
-      },
-      "local_links": 0,
-      "wiki_links": 1,
       "broken_local_link_count": 0
     },
     {
@@ -2833,6 +3869,48 @@
       "local_links": 1,
       "wiki_links": 0,
       "broken_local_link_count": 1
+    },
+    {
+      "path": "-tmp-claude-1000--home-christophe-docs-27caf381-ee5d-494b-9f57-79202d53e7c4-scratchpad-p31-moved-test-b/memory/MEMORY.md",
+      "project_key": "-tmp-claude-1000--home-christophe-docs-27caf381-ee5d-494b-9f57-79202d53e7c4-scratchpad-p31-moved-test-b",
+      "filename": "MEMORY.md",
+      "bytes": 97,
+      "modified_at": "2026-09-14T06:11:23.778650+00:00",
+      "sha256": "59b2fcb01ffd508fe02d2781ba5cbebcbf136fa97dac7c213e96302d73979496",
+      "source_type": "index",
+      "freshness": "routing-index",
+      "decision": "index-only",
+      "destination": "native-extension-index",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 1,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
+    },
+    {
+      "path": "-tmp-claude-1000--home-christophe-docs-27caf381-ee5d-494b-9f57-79202d53e7c4-scratchpad-p31-moved-test-b/memory/couleur.md",
+      "project_key": "-tmp-claude-1000--home-christophe-docs-27caf381-ee5d-494b-9f57-79202d53e7c4-scratchpad-p31-moved-test-b",
+      "filename": "couleur.md",
+      "bytes": 165,
+      "modified_at": "2026-09-14T06:11:23.778650+00:00",
+      "sha256": "f4cf19cb17ee018b7219ad01397713e1a9542d670b10a75bdc8f4bb63a2b7afe",
+      "source_type": "project",
+      "freshness": "potentially-stale-verify-live",
+      "decision": "verify-current-state",
+      "destination": "project-registers",
+      "flags": {
+        "personal_identifier": false,
+        "secret_material": false,
+        "infrastructure_locator": false,
+        "broken_local_links": false
+      },
+      "local_links": 0,
+      "wiki_links": 0,
+      "broken_local_link_count": 0
     }
   ],
   "problems": []

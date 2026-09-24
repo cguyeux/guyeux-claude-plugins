@@ -13,6 +13,11 @@ description: >-
   compatibles, decider si un clade tient ou repose sur de l'homoplasie,
   diagnostiquer un arbre instable, ou avant de publier une taxonomie.
 
+  Portee : developpe sur le MTBC, applicable a toute bacterie clonale (Yersinia,
+  Leptospira...) — le test de laminarite est un resultat combinatoire, pas une
+  biologie. Hors MTBC : fournir le pool de souches et sa table de marqueurs
+  binaires ; le codage 3-etats exige des report.json portant la couverture reelle.
+
 argument-hint: "--pool bdd/actuelle/L6 [--markers barcode_complete.tsv --prefix L6] [--gff3 ...]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep

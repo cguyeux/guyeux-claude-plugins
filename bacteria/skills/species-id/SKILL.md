@@ -68,12 +68,12 @@ screening en lot, `--method both` pour la double confirmation.
 
 Si la souche est (ou pourrait être) un *Mycobacterium*, un référentiel de
 reconnaissance LOCAL existe et est plus rapide/contrôlé que le BLAST nt en ligne.
-Point d'entrée : **`~/docs/codes/mtbc/global_supplementary/RECOGNITION_STRATEGY.md`**
+Point d'entrée : **`~/docs/codes/mtbc/en_cours/global_supplementary/RECOGNITION_STRATEGY.md`**
 (arbre de décision à 3 niveaux). En pratique :
 
 ```bash
 # 1) extraire le rpoB de la souche (mapping/assembly), puis :
-blastn -query rpoB_inconnu.fa -db ~/docs/codes/mtbc/global_supplementary/conserved_gene_markers/rpoB \
+blastn -query rpoB_inconnu.fa -db ~/docs/codes/mtbc/en_cours/global_supplementary/conserved_gene_markers/rpoB \
        -outfmt "6 sseqid pident length" -max_target_seqs 5
 # -> meilleure espèce (44 réfs ; robuste, y compris espèces divergentes leprae/gordonae/xenopi)
 ```
@@ -433,3 +433,11 @@ et recommander l'exclusion de la BDD MTBC.
 8. **Pas de distinction intra-MTBC** : ce skill repond "est-ce du
    MTBC ?" pas "M. tuberculosis ou M. bovis ?". Pour ca, utiliser
    les outils de typage SNP.
+9. **Pas de classement en clade/groupe fin defini par panel** : ce skill
+   repond "quel genre/quelle espece ?" avec un panel NTM fixe en dur,
+   pas "dans quel groupe parmi N souches types definies par la
+   litterature ?" (ex. clades de pathogenicite P1/P2/S1/S2 chez
+   *Leptospira*). Pour ca, utiliser `bacteria:ani-panel-classify`
+   (panel TSV parametrable + `skani dist`), qui execute enfin le skani
+   que le garde-fou taxonomique du depot (`mtbc/CLAUDE.md`) prescrit
+   depuis l'echec `Mycobacterium_sp_novel` sans jamais le lancer lui-meme.

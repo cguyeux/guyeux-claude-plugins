@@ -2,13 +2,13 @@
 
 > Manuscript writing and quality control: LaTeX typesetting, reference and figure verification, stylistic cleanup, table design, Overleaf synchronisation. Guyeux group (FEMTO-ST), phases 2-3 of the research cycle.
 
-Skills propres (canoniques) : **19** ; skills partagés utilisés (symlinks) : **0**.
+Skills propres (canoniques) : **20** ; skills partagés utilisés (symlinks) : **0**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [bib-check](#bib-check) ; [biblatex](#biblatex) ; [claim-check](#claim-check) ; [deai-latex](#deai-latex) ; [docs-latex](#docs-latex) ; [fig-check](#fig-check) ; [fig-ideation](#fig-ideation) ; [humanizer](#humanizer) ; [latex-build](#latex-build) ; [latex-document](#latex-document) ; [latex-formatting](#latex-formatting) ; [latex-paper-en](#latex-paper-en) ; [latex-tables](#latex-tables) ; [latex-writing](#latex-writing) ; [manuscript-review](#manuscript-review) ; [overleaf-bridge](#overleaf-bridge) ; [pdf-to-latex](#pdf-to-latex) ; [sci-table](#sci-table) ; [supp-check](#supp-check)
+Sommaire : [bib-check](#bib-check) ; [biblatex](#biblatex) ; [claim-check](#claim-check) ; [deai-latex](#deai-latex) ; [docs-latex](#docs-latex) ; [fig-check](#fig-check) ; [fig-ideation](#fig-ideation) ; [humanizer](#humanizer) ; [latex-build](#latex-build) ; [latex-document](#latex-document) ; [latex-formatting](#latex-formatting) ; [latex-paper-en](#latex-paper-en) ; [latex-tables](#latex-tables) ; [latex-writing](#latex-writing) ; [manuscript-review](#manuscript-review) ; [overleaf-bridge](#overleaf-bridge) ; [parity-check](#parity-check) ; [pdf-to-latex](#pdf-to-latex) ; [sci-table](#sci-table) ; [supp-check](#supp-check)
 
 ### bib-check
 
@@ -105,6 +105,12 @@ Compétences : obtenir une lecture critique d'un manuscrit ; savoir ce qu'un rel
 Synchronise un depot local article/ avec un projet Overleaf via l'integration Git officielle d'Overleaf (git-bridge, git.overleaf.com). Git standard sur le depot officiel : pas de serveur MCP, pas d'API non officielle, pas de scraping.
 
 Compétences : pousser un manuscrit vers Overleaf ; recuperer les modifications des co-auteurs dans le depot local ; voir ce qui a change depuis la derniere synchronisation ; resoudre une divergence entre les deux ; collecter les commentaires laisses par les co-auteurs dans le .tex
+
+### parity-check
+
+Verification de parite entre la version anglaise et la version francaise d'un meme manuscrit : apparie les sections, signale tout nombre, toute citation, tout renvoi interne et toute mention de supplementary present dans une version et absent de l'autre
+
+Compétences : le manuscrit existe en deux langues, apres toute correction appliquee a une seule des deux versions, avant soumission ou resoumission
 
 ### pdf-to-latex
 

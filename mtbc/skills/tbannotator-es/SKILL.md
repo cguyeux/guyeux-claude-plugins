@@ -74,7 +74,7 @@ publics du groupe : ceux qui y traînent sont à considérer comme compromis.
 `es_aggregate`, `es_exclusivity`) :
 
 ```bash
-claude mcp add --scope user tbannotator-es -- ~/docs/codes/mtbc/annotation_mtbc/site/.venv/bin/python ${CLAUDE_PLUGIN_ROOT}/skills/tbannotator-es/scripts/tbannotator_es_mcp.py
+claude mcp add --scope user tbannotator-es -- ~/docs/codes/mtbc/en_cours/annotation_mtbc/site/.venv/bin/python ${CLAUDE_PLUGIN_ROOT}/skills/tbannotator-es/scripts/tbannotator_es_mcp.py
 ```
 
 Le venv du site est nécessaire uniquement pour le mode serveur (paquet `mcp`).

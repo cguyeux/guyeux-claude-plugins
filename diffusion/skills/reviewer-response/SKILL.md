@@ -660,7 +660,51 @@ les pistes pour de futurs travaux.}
 
 {Conseiller l'humain : resoumission immediate ? Attendre un preprint
 compagnon ? Analyses supplementaires a prevoir ?}
+
+## 7. Enseignements transferables
+
+{Pour chaque remarque ACCEPTE, PARTIELLEMENT ACCEPTE ou REFUTE du registre : releve-t-elle
+un fait de DOMAINE qui depasse ce manuscrit (methode, biais, resultat de litterature), ou
+un defaut REUTILISABLE d'un skill/outil canonique (claim-check, bib-check, ce skill
+lui-meme) plutot qu'une simple erreur locale au manuscrit ? Lister, pour chaque
+enseignement retenu : la remarque source, le fichier KB ou l'outil concerne, et l'action
+faite ou reportee.}
+
+| ID  | Enseignement                              | Destination                | Action                    |
+|-----|--------------------------------------------|-----------------------------|---------------------------|
+| R03 | {resume du fait transferable}               | `~/.agents/knowledge/X.md`  | verse le {date}           |
+| R07 | {defaut d'outil revele}                     | skill `Y`                   | corrige le {date}         |
+| ... | ...                                          | ...                          | reporte, piste `Pz` ouverte |
+
+{Si aucun enseignement transferable n'a ete identifie, l'ecrire explicitement et dire
+pourquoi (remarques toutes locales au manuscrit) — ne jamais laisser cette section vide
+sans un mot : le silence sur cette question est precisement ce qu'elle corrige.}
 ```
+
+### 4.2bis Enseignements transferables (avant l'affichage)
+
+Avant d'afficher le bilan, relire le registre `response.md` en entier et vérifier, pour
+CHAQUE remarque ACCEPTE, PARTIELLEMENT ACCEPTE ou REFUTE (jamais HORS PERIMETRE, qui ne
+dit rien du manuscrit) :
+
+1. **Fait de domaine transferable ?** Le point souleve par le reviewer, ou l'analyse menee
+   pour y repondre, etablit-il quelque chose qui depasse CE manuscrit — un biais methodo,
+   un resultat de litterature, une regle de robustesse — et qui merite d'etre versé dans la
+   base de connaissances transversale du domaine (`~/.agents/knowledge/<domaine>.md`, ex.
+   `tuberculosis.md` pour un projet MTBC) ?
+2. **Defaut d'outil reutilisable ?** La remarque a-t-elle revele qu'un skill/outil canonique
+   (`claim-check`, `bib-check`, `manuscript-review`, ce skill lui-meme) ratait un cas, ou
+   qu'un contournement manuel a ete necessaire pendant le traitement de cette remarque ?
+
+Si l'une des deux reponses est OUI : **agir tout de suite**, pas seulement le signaler —
+editer le fichier KB concerne, ou le skill/outil defaillant. Si l'action est trop lourde
+pour cette session (necessite une recherche, une decision de l'utilisateur, un chantier
+separe), ouvrir une piste explicite dans le `pistes.md` du projet qui trace le report et sa
+raison, plutot que de laisser l'enseignement se perdre dans le bilan une fois cloture.
+Renseigner le tableau du §7 en consequence.
+
+Ce pas ne re-ouvre AUCUNE remarque deja tranchee : c'est une relecture a posteriori du
+registre, jamais une nouvelle iteration de traitement.
 
 ### 4.3 Affichage du bilan a l'utilisateur
 

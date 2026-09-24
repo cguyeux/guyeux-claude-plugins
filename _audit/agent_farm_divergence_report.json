@@ -1,10 +1,10 @@
 {
   "claude_root": "/home/christophe/.claude/skills",
   "agents_root": "/home/christophe/.agents/skills",
-  "total": 29,
+  "total": 30,
   "summary": {
     "instruction-review-required": 25,
-    "payload-review-required": 4
+    "payload-review-required": 5
   },
   "rows": [
     {
@@ -43,7 +43,12 @@
       "classification": "payload-review-required",
       "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [
-        "archive_old_entries.py"
+        "SKILL.md.bak_20260913",
+        "archive_old_entries.py",
+        "evals/results/2026-09-15T11-19-54-414Z/aggregate-result.json",
+        "evals/results/2026-09-15T11-19-54-414Z/report.html",
+        "evals/skill-fires/graders/skill-invoked.md",
+        "evals/skill-fires/prompt.md"
       ],
       "agents_only_files": [],
       "modified_files": [
@@ -51,8 +56,8 @@
       ],
       "line_delta_claude_to_agents": {
         "SKILL.md": {
-          "added": 26,
-          "removed": 56
+          "added": 27,
+          "removed": 96
         }
       },
       "claude_skill_md_frontmatter_keys": [
@@ -66,7 +71,8 @@
       "decision_notes": [
         "Codex conserve le cahier_de_labo.md comme registre append-only strict.",
         "Import effectue : champ piste: obligatoire, recherche ciblee dans cahier_de_labo_archive.md si une archive legacy existe, clarification qu'aucun hook Stop Codex global n'est garanti actif.",
-        "Non importe volontairement : archive_old_entries.py et archivage automatique apres update."
+        "Non importe volontairement : archive_old_entries.py et archivage automatique apres update.",
+        "2026-09-15 : nouveaux fichiers claude_only observes (SKILL.md.bak_20260913, evals/results/..., evals/skill-fires/...) : artefacts de sauvegarde et d'evaluation skill-creator, non pertinents pour un miroir Codex, exclus au meme titre que archive_old_entries.py."
       ],
       "remaining": [
         "arbitrage humain separe si un jour l'utilisateur veut une commande explicite d'archivage recoverable"
@@ -83,8 +89,8 @@
       ],
       "line_delta_claude_to_agents": {
         "SKILL.md": {
-          "added": 3,
-          "removed": 3
+          "added": 17,
+          "removed": 113
         }
       },
       "claude_skill_md_frontmatter_keys": [
@@ -179,20 +185,20 @@
       ],
       "line_delta_claude_to_agents": {
         "SKILL.md": {
-          "added": 8,
-          "removed": 6
+          "added": 47,
+          "removed": 399
         },
         "cycle_status.py": {
-          "added": 3,
-          "removed": 1
+          "added": 12,
+          "removed": 263
         },
         "references/plugins.md": {
-          "added": 1,
-          "removed": 1
+          "added": 43,
+          "removed": 62
         },
         "references/soumission.md": {
-          "added": 10,
-          "removed": 10
+          "added": 13,
+          "removed": 108
         }
       },
       "claude_skill_md_frontmatter_keys": [
@@ -283,8 +289,8 @@
       ],
       "line_delta_claude_to_agents": {
         "SKILL.md": {
-          "added": 3,
-          "removed": 3
+          "added": 4,
+          "removed": 19
         }
       },
       "claude_skill_md_frontmatter_keys": [
@@ -375,12 +381,12 @@
       ],
       "line_delta_claude_to_agents": {
         "SKILL.md": {
-          "added": 20,
-          "removed": 41
+          "added": 26,
+          "removed": 79
         },
         "init_project.py": {
-          "added": 394,
-          "removed": 778
+          "added": 515,
+          "removed": 1208
         }
       },
       "claude_skill_md_frontmatter_keys": [
@@ -466,20 +472,38 @@
       "name": "pistes",
       "classification": "payload-review-required",
       "decision": "codex-adapted-divergence-justified",
-      "claude_only_files": [],
+      "claude_only_files": [
+        "SKILL.md.bak_20260913",
+        "SKILL.md.bak_assume_20260909",
+        "SKILL.md.bak_p706_20260908_112830",
+        "carrefour.py.bak_20260913",
+        "status.py.bak_20260913",
+        "status.py.bak_assume_20260909",
+        "status.py.bak_p706_20260908_112830"
+      ],
       "agents_only_files": [],
       "modified_files": [
         "SKILL.md",
-        "split_pistes_files.py"
+        "audit_signals.py",
+        "split_pistes_files.py",
+        "status.py"
       ],
       "line_delta_claude_to_agents": {
         "SKILL.md": {
-          "added": 10,
-          "removed": 11
+          "added": 21,
+          "removed": 472
         },
-        "split_pistes_files.py": {
+        "audit_signals.py": {
           "added": 1,
           "removed": 1
+        },
+        "split_pistes_files.py": {
+          "added": 9,
+          "removed": 62
+        },
+        "status.py": {
+          "added": 2,
+          "removed": 2
         }
       },
       "claude_skill_md_frontmatter_keys": [
@@ -494,9 +518,12 @@
       ],
       "decision_notes": [
         "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/pistes avec les scripts de scission et d'archivage.",
-        "Adaptation appliquee : chemins ~/.agents/skills, vigilance manuelle Codex en remplacement du hook Stop global Claude, et renvois recadrage vers la ferme Agents."
+        "Adaptation appliquee : chemins ~/.agents/skills, vigilance manuelle Codex en remplacement du hook Stop global Claude, et renvois recadrage vers la ferme Agents.",
+        "2026-09-15 : import complementaire de trois outils apparus depuis (carrefour.py, status.py, audit_signals.py, 62/40/13 Ko), quasi sans reference Claude (3 chemins '~/.claude/skills/...' corriges en '~/.agents/skills/...'), teste avec `status.py . --open` depuis le miroir Agents."
       ],
-      "remaining": []
+      "remaining": [
+        "SKILL.md et split_pistes_files.py restent sur la version du 25/08 (delta +21/-472 sur le SKILL.md canonique, skill tres actif) : reecriture Codex complete non faite faute de budget le 2026-09-15, a reprendre en tache dediee plutot qu'en a-cote de P6.1."
+      ]
     },
     {
       "name": "plugin-settings",
@@ -591,17 +618,22 @@
     },
     {
       "name": "recadrage",
-      "classification": "instruction-review-required",
+      "classification": "payload-review-required",
       "decision": "codex-adapted-divergence-justified",
       "claude_only_files": [],
       "agents_only_files": [],
       "modified_files": [
-        "SKILL.md"
+        "SKILL.md",
+        "recadrage_signals.py"
       ],
       "line_delta_claude_to_agents": {
         "SKILL.md": {
-          "added": 12,
-          "removed": 10
+          "added": 35,
+          "removed": 261
+        },
+        "recadrage_signals.py": {
+          "added": 5,
+          "removed": 28
         }
       },
       "claude_skill_md_frontmatter_keys": [
@@ -708,6 +740,39 @@
       "decision_notes": [
         "Adaptation CCX-04 appliquee : researcher pointe vers le corpus reel ~/docs et consulte ~/.agents/knowledge.",
         "Import Claude refuse tel quel car il ne doit pas reintroduire les chemins Claude ou une KB non canonique."
+      ],
+      "remaining": []
+    },
+    {
+      "name": "screenshot",
+      "classification": "instruction-review-required",
+      "decision": "codex-adapted-divergence-justified",
+      "claude_only_files": [],
+      "agents_only_files": [],
+      "modified_files": [
+        "SKILL.md"
+      ],
+      "line_delta_claude_to_agents": {
+        "SKILL.md": {
+          "added": 3,
+          "removed": 3
+        }
+      },
+      "claude_skill_md_frontmatter_keys": [
+        "arguments",
+        "description",
+        "name",
+        "user-invocable"
+      ],
+      "agents_skill_md_frontmatter_keys": [
+        "arguments",
+        "description",
+        "name",
+        "user_invocable"
+      ],
+      "decision_notes": [
+        "Recupere le 2026-09-15 : un skill.md (casse minuscule) deja adapte Codex existait sous ~/.agents/skills/screenshot depuis le 07/06 (mentions Codex/Codex CLI au lieu de Claude Code) mais restait invisible au chargeur de skills et a l'outillage d'audit (glob */SKILL.md sensible a la casse) : renomme en SKILL.md.",
+        "Divergence avec le canon Claude limitee a l'adaptation deja en place (produit Codex/Codex CLI, pas de clipboard image paste) ; aucun import de contenu supplementaire necessaire."
       ],
       "remaining": []
     },

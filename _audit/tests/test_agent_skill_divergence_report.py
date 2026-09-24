@@ -52,9 +52,9 @@ class AgentSkillDivergenceReportTests(unittest.TestCase):
             Path.home() / ".agents" / "skills",
             ROOT,
         )
-        self.assertEqual(29, report["total"])
+        self.assertEqual(30, report["total"])
         self.assertEqual(25, report["summary"]["instruction-review-required"])
-        self.assertEqual(4, report["summary"]["payload-review-required"])
+        self.assertEqual(5, report["summary"]["payload-review-required"])
 
     def test_skill_md_only_diff_is_instruction_review(self):
         with tempfile.TemporaryDirectory() as tmp:

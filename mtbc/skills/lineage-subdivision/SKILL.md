@@ -7,6 +7,10 @@ description: >-
   synapomorphiques, balayage lambda, Pareto, matérialisation réversible.
   Use when: chercher des clusters, décider s'il faut scinder une lignée, produire
   une taxonomie reproductible sur un clade dense ou sur-séquencé.
+  Portée : développé sur le MTBC, applicable à toute bactérie clonale (Yersinia,
+  Leptospira...) — structure de population et optimisation MDL sont génériques. Hors MTBC :
+  fournir le chemin de la base de souches et les marqueurs du genre (IS6110 et RD sont des
+  canaux d'entrée propres au MTBC, les SPDI sont le canal générique).
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 argument-hint: "explore <bdd/actuelle/L4.x/> | optimize <ROOT-clade> (ex: optimize Bovis.2.2.2.2.2.1)"
 user-invocable: true

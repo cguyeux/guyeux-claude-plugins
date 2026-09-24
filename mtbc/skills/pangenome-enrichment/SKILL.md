@@ -8,6 +8,12 @@ description: >-
   Use when: comparing gene content between lineages, identifying lineage-specific
   genes, performing KEGG enrichment on differential genes, analyzing pangenome
   structure for an article.
+
+  Scope: developed on the MTBC, applies to any clonal bacterial pathogen
+  (Yersinia, Leptospira...) — core/shell/cloud classification and KEGG enrichment
+  are genus-agnostic, and matter MORE outside the MTBC (plasmids, larger
+  accessory genome). Outside the MTBC: supply the gene presence/absence matrix
+  (Roary, Panaroo) and the genus KEGG organism code.
 argument-hint: "<gene_matrix.csv or lineage> [--enrichment kegg] [--compare L4.15,L4.14]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
@@ -25,7 +31,7 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query
 > `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
 >
 > ```bash
-> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> B=~/docs/environnement/plugins/mtbc/skills/bdd-bridge/scripts
 > export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
 > python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
 > python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable
@@ -168,13 +174,40 @@ orthologues :
 
 ```bash
 # Panaroo, plus strict sur les erreurs d'annotation, recommandé pour MTBC
-panaroo -i annotations/*.gff -o panaroo_out --clean-mode strict -t 8
+panaroo -i annotations/*.gff -o panaroo_out --clean-mode strict --remove-invalid-genes -t 8
 # -> panaroo_out/gene_presence_absence.Rtab : matrice gène × souche, 0/1
 
 # Alternative : PPanGGOLiN, plus rapide sur des milliers de génomes,
 # et qui produit directement sa propre partition persistent/shell/cloud
 ppanggolin workflow --anno annotations.list -o ppanggolin_out
 ```
+
+> **[2026-09-20] Deux pièges mesurés en lançant Panaroo sur `mp` (conda, projet Yersinia hors
+> MTBC, mais générique à toute installation conda de Panaroo) :**
+>
+> 1. **`cd-hit: not found` malgré `cd-hit` installé dans l'environnement conda.** Invoquer
+>    `panaroo` par son chemin absolu (`/chemin/vers/envs/panaroo/bin/panaroo`) sans activer
+>    l'environnement le lance correctement, mais ses appels internes à `cd-hit`/`mafft`/`prank`
+>    passent par une recherche `PATH` classique et échouent silencieusement si le `bin/` de
+>    l'environnement n'y figure pas. Ne jamais se contenter d'un chemin absolu vers l'exécutable
+>    `panaroo` : soit `conda activate <env>` avant l'appel, soit `export PATH="<env>/bin:$PATH"`
+>    en tête de script.
+> 2. **`RuntimeError: Error reading prokka input!` / `ValueError: Invalid gene sequence!` sur du
+>    GFF3+FASTA téléchargé depuis NCBI (RefSeq/GenBank), PAS annoté par Prokka lui-même.**
+>    Panaroo attend par défaut un GFF3 strictement conforme au format Prokka (aucun CDS à
+>    `frame != 0`, aucune séquence de longueur non multiple de 3, aucun codon stop interne) et
+>    lève une erreur FATALE dès le premier gène qui y déroge — ce qui arrive systématiquement sur
+>    de l'annotation NCBI réelle (pseudogènes, frameshifts biologiques, gènes tronqués en bord de
+>    contig). Ce n'est pas un défaut des données : c'est attendu dès qu'on s'écarte d'un Prokka
+>    natif. Correctif documenté dans le `--help` de Panaroo lui-même :
+>    `--remove-invalid-genes` (« removes annotations that do not conform to the expected Prokka
+>    format ») — déjà inclus dans la commande ci-dessus. Effet à noter dans l'interprétation
+>    finale : ce flag exclut la copie individuellement invalide d'UNE souche donnée de son propre
+>    alignement, pas la famille de gènes entière (les autres souches portant une copie intacte
+>    restent comptées) — distinct d'une perte de signal sur la pseudogénisation en tant que
+>    telle. Avant tout lancement Panaroo sur du GFF3 non-Prokka, ajouter systématiquement ce
+>    flag plutôt que de découvrir le plantage après plusieurs minutes de calcul silencieux sur
+>    du gros volume.
 
 La matrice de Panaroo est **transposée** par rapport à ce qu'attend le script
 (gènes en lignes) et n'a pas de colonne de lignée :

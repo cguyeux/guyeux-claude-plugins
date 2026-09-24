@@ -1,17 +1,20 @@
 ---
 name: supp-tables
 description: >-
-  Cherche un gène, un locus tag, une accession ou tout motif dans les TABLES SUPPLÉMENTAIRES
-  d'articles scientifiques — les .xlsx, .csv et .docx qu'aucun moteur plein texte n'indexe.
-  Comble le troisième angle mort du rappel bibliographique, après l'écart résumé/plein texte et le
-  gène rebaptisé : un gène peut être ABSENT du corps de tous les articles pertinents et PRÉSENT
-  dans les tables de plusieurs d'entre eux. Récupère par Europe PMC, avec repli obligatoire par le
-  préprint bioRxiv quand l'article n'est pas en accès ouvert, et rend chaque occurrence avec ses
-  EN-TÊTES de colonnes. Porte son propre garde-fou : `rank` situe une valeur trouvée dans la
-  distribution de sa propre table, parce qu'une ligne trouvée n'est pas un résultat.
-  Use when: un gène ressort « sans littérature » alors que des jeux protéomiques, des cribles
-  CRISPRi, des tables d'essentialité ou des sorties de GWAS le contiennent ; vérifier qu'un terme
-  est réellement absent ; instruire un gène dark ; préparer un claim-check sur une donnée publiée.
+  Cherche un gène, un locus tag, une accession ou tout motif dans les TABLES
+  SUPPLÉMENTAIRES d'articles scientifiques — .xlsx, .csv, .docx qu'aucun
+  moteur plein texte n'indexe. Comble le troisième angle mort du rappel
+  bibliographique, après l'écart résumé/plein texte et le gène rebaptisé : un
+  gène peut être ABSENT du corps de tous les articles pertinents et PRÉSENT
+  dans les tables de plusieurs d'entre eux. Récupère par Europe PMC, avec repli
+  obligatoire par le préprint bioRxiv si l'article n'est pas en accès ouvert,
+  et rend chaque occurrence avec ses EN-TÊTES de colonnes. Porte son propre
+  garde-fou : `rank` situe une valeur trouvée dans la distribution de sa
+  propre table, parce qu'une ligne trouvée n'est pas un résultat.
+  Use when: un gène ressort « sans littérature » alors que des jeux
+  protéomiques, des cribles CRISPRi, des tables d'essentialité ou des sorties
+  de GWAS le contiennent ; vérifier qu'un terme est réellement absent ;
+  instruire un gène dark ; préparer un claim-check sur une donnée publiée.
 ---
 
 # supp-tables — fouiller ce que la recherche plein texte ne voit pas
@@ -37,7 +40,7 @@ recherche plein texte rendait zéro, proprement et faussement.
 ## Usage
 
 ```bash
-S=~/docs/codes/claude_plugins/redac/skills/supp-tables/scripts/supp_tables.py
+S=~/docs/environnement/plugins/litterature/skills/supp-tables/scripts/supp_tables.py
 
 # le geste principal : un motif, des articles, les lignes qui le contiennent
 python3 $S hunt "Rv2520c,I6XEI0" --dois 10.1128/spectrum.02277-24,10.1016/j.mcpro.2026.101555

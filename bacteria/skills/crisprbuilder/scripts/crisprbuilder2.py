@@ -45,11 +45,27 @@ import gzip
 import json
 import math
 import signal
+import socket
 import statistics
 import sys
 from array import array
 from collections import Counter, defaultdict
 from pathlib import Path
+
+# `urllib.request.urlopen` (mode `--reads` sur une URL http/https/ftp) n'a pas le repli rapide
+# IPv4/IPv6 de `curl` : sur un hote a double pile dont la route IPv6 est instable ou tres lente
+# (mesure : mp, 2026-09-22, extraction A5.1a phase 2), `socket.create_connection` attend le
+# TIMEOUT ENTIER sur l'adresse IPv6 avant de retomber sur IPv4 -- facteur ~150-300x mesure sur un
+# cas comparable (cf. python-patterns.md, entree du 2026-08-26). Force IPv4 pour tout le process,
+# avant le premier appel reseau.
+_getaddrinfo_v4 = socket.getaddrinfo
+
+
+def _getaddrinfo_ipv4_only(host, port, family=0, type=0, proto=0, flags=0):
+    return _getaddrinfo_v4(host, port, socket.AF_INET, type, proto, flags)
+
+
+socket.getaddrinfo = _getaddrinfo_ipv4_only
 
 COMP = str.maketrans("ACGTNacgtn", "TGCANtgcan")
 
@@ -708,23 +724,39 @@ def iter_seqs(path, limit=None):
     n = 0
     with _open_text(path) as f:
         # Detection du format SANS seek : un flux HTTP n'est pas rembobinable.
-        first = f.readline()
+        # Un flux HTTP coupe en cours (connexion perdue avant --limit lectures : mesure sur
+        # mp le 2026-09-22, route EBI a debit plafonne ~60 Ko/s et parfois interrompue avant
+        # le marqueur de fin gzip) leve `EOFError`/`OSError` au milieu de la lecture -- traiter
+        # comme une fin de flux (donnees partielles exploitables), jamais comme un crash : le
+        # nombre de lectures deja obtenues reste un echantillon valide, juste plus petit que
+        # prevu.
+        try:
+            first = f.readline()
+        except (EOFError, OSError):
+            return
         if not first:
             return
         if first.startswith("@"):                       # FASTQ
             i = 0                                       # la 1re ligne (header) est lue
-            for line in f:
-                i += 1
-                # apres le header, les sequences sont aux lignes 1, 5, 9...
-                if i % 4 == 1:
-                    yield line.strip().upper()
-                    n += 1
-                    if limit and n >= limit:
-                        return
+            try:
+                for line in f:
+                    i += 1
+                    # apres le header, les sequences sont aux lignes 1, 5, 9...
+                    if i % 4 == 1:
+                        yield line.strip().upper()
+                        n += 1
+                        if limit and n >= limit:
+                            return
+            except (EOFError, OSError):
+                return
             return
         else:                                           # FASTA
             buf = []
-            for line in [first] + list(f):
+            try:
+                rest = [first] + list(f)
+            except (EOFError, OSError):
+                rest = [first]
+            for line in rest:
                 if line.startswith(">"):
                     if buf:
                         yield "".join(buf).upper()
@@ -883,16 +915,20 @@ def analyse(path, dr=None, source="genome", kmer=21, sample=None, max_mm=3,
         res = spacers_from_reads(path, dr, min_support=min_support, limit=limit)
         if cands:
             res["dr_candidates"] = cands
-        res |= {"input": str(path), "source": "reads", "dr": dr,
-                "dr_length": len(dr),
-                "status": "ok" if res["n_spacers"] else "dr_found_but_no_spacer"}
+        # .update(), pas |= (PEP 584, Python 3.9+ seulement) : mp tourne encore en 3.8.10,
+        # mesure le 2026-09-22 -- deploiement A5.1a phase 2, TypeError a l'etape finale apres
+        # une extraction reseau autrement reussie.
+        res.update({"input": str(path), "source": "reads", "dr": dr,
+                    "dr_length": len(dr),
+                    "status": "ok" if res["n_spacers"] else "dr_found_but_no_spacer"})
         return res
     seqs = read_fasta(path)
     res = {"input": str(path), "source": source, "n_sequences": len(seqs),
            "total_bp": sum(len(s) for s in seqs.values())}
     if dr is None:
         cands = detect_dr(seqs, kmer=kmer, sample=sample)
-        res["dr_candidates"] = [{k: v for k, v in c.items() if k != "dr"} | {"dr": c["dr"]}
+        # **-unpacking, pas | (PEP 584, Python 3.9+ seulement) : compatible 3.8 (mp).
+        res["dr_candidates"] = [{**{k: v for k, v in c.items() if k != "dr"}, "dr": c["dr"]}
                                 for c in cands]
         if not cands:
             res["status"] = "no_dr_found"

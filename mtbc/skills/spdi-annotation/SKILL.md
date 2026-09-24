@@ -8,6 +8,11 @@ description: >-
 
   Use when: annotating SPDI variants for an MTBC article, supplementary tables
   of functional impact, classifying variants by effect.
+
+  Scope: developed on the MTBC, applies to any clonal bacterial pathogen
+  (Yersinia, Leptospira...) via the local GenBank/GFF3 path. To use it outside
+  the MTBC: supply the genus reference GenBank/GFF3 and its accession
+  (`--reference`); TBannotator lookup and Mycobrowser categories are MTBC-only.
 argument-hint: "<spdi_list.csv or spdi_list.txt> [-o annotated.csv] [--reference NC_000962.3]"
 user-invocable: true
 disable-model-invocation: false

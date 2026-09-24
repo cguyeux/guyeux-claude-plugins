@@ -122,6 +122,56 @@ python3 scripts/crosscheck_rdscan.py putative coverage_report_dynamic_rd.bed.tsv
 > sur M, désaccords sur telles bornes »), pas un changement de source de vérité. Un accord élevé rend
 > l'argument RD du manuscrit défendable ; un désaccord localisé est en soi un résultat.
 
+## Raccourci pour les RD CONNUES sur des souches DÉJÀ mappées : ne pas relancer tout RDscan
+
+**Mesuré le 2026-09-20 (projet `orygis-phylogenie`, RD12oryx/RDoryx_4/RDoryx_1) : faire tourner le
+pipeline Snakemake complet de RDscan est disproportionné, et parfois bloqué, pour une simple
+comparaison sur des RD *connues*.** Ce pipeline remappe les lectures avec sa propre règle BWA
+(inutile si nos souches sont déjà mappées sur H37Rv par `mp:/data/current/run/results/<SRA>/mapped.cram`)
+et sa branche RD *candidates* (SURVIVOR + GATK4 + wrappers `bcftools`/`bgzip`, jamais nécessaire pour
+des RD connues) peut échouer à la création d'environnement conda (observé le 2026-08-17, erreur
+`CreateCondaEnvironmentException` sur les wrappers snakemake) sans que la branche RD *connues* en soit
+affectée.
+
+**La formule de RDscan pour les RD connues est publique et triviale** (lue au source,
+`RDscan/workflow/scripts/makeTables.R`) : délétion ssi `profondeur_médiane(région) /
+profondeur_médiane(génome_entier) ≤ 0.05` (seuil par défaut, `config["filters"]["threshold"]`). Les
+coordonnées H37Rv des RD (RD9, RD105, RD750, RD301, RD315, RDoryx_1/4, RD12oryx…) sont déjà dans
+`RDscan/resources/RD.bed`, aucune coordonnée à ressaisir.
+
+`scripts/mosdepth_rd_batch.sh` applique cette formule directement via `mosdepth
+--use-median --fast-mode --by RD.bed` sur les CRAM déjà mappés (aucun BWA, aucun Snakemake, aucun
+wrapper) :
+
+```bash
+# environnement recommande sur mp (evite les conflits avec l'env "RDscan" qui porte deja snakemake-minimal)
+conda create -n rdcheck -c bioconda -c conda-forge -y samtools mosdepth
+
+conda activate rdcheck
+bash scripts/mosdepth_rd_batch.sh accessions.txt RDscan/resources/RD.bed ref/NC_000962.3.fa /path/writable/outdir
+
+python3 scripts/mosdepth_rd_aggregate.py /path/writable/outdir/depths H37Rv RD9 RD301 RD315 RDoryx_1 RD12oryx RDoryx_4 \
+    --out rd_calls_mosdepth.tsv
+```
+
+> [!IMPORTANT]
+> **Certains répertoires `<results_root>/<acc>/` sont en `0755`** (non group/other-writable), ce qui
+> empêche d'écrire le `.crai` à côté du CRAM original (`Permission denied`) — observé sur 48/354
+> souches dans un même run, alors que d'autres répertoires du même arbre sont en `0777`. Le script
+> contourne SYSTÉMATIQUEMENT via un lien symbolique dans un répertoire personnel inscriptible, jamais
+> en copiant le CRAM (économie d'E/S : 80-170 Mo par souche MTBC) ni en tentant d'écrire dans l'arbre
+> du pipeline (propriété d'un autre utilisateur, `gsenelle`).
+
+> [!TIP]
+> Toujours inclure au moins une RD **témoin** au comportement connu (RD9 = universellement délétée
+> chez toute souche animale MTBC) dans l'appel : si le témoin ne rend pas ~100 %, c'est le pipeline de
+> recoupement qui est cassé, pas le marqueur testé.
+
+> [!CAUTION]
+> Ce raccourci répond à « la souche a-t-elle cette RD connue, oui ou non » — il ne fait PAS la
+> découverte de nouvelles RD candidates (branche `novel_discovery`, qui reste le seul cas où le
+> pipeline Snakemake complet de RDscan, avec SURVIVOR/GATK4, est nécessaire).
+
 ## Nouvelles RD candidates (CUS)
 
 `mp:/data/current/run/scripts/dynamic_rd.py` (lu en source) : un CUS est une paire signal-droit → signal-gauche, tous deux

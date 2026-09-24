@@ -112,8 +112,15 @@ défaut. Distinguer trois choses que les éditeurs entretiennent floues :
   Open Research sont réservées aux bénéficiaires d'un financement Horizon ou Wellcome ;
   les titres Microbiology Society (Access Microbiology, Microbial Genomics, Microbiology,
   IJSEM) dépendent d'un accord Publish and Read de l'établissement ; Subscribe to Open
-  chez ASM dépend d'une cible atteinte chaque année, page charges en sus. Ces trois cas
-  se **vérifient pour cet auteur précis**, ils ne se supposent pas.
+  chez ASM dépend d'une cible atteinte chaque année, page charges en sus ; un titre gold OA
+  Elsevier ou EDP Sciences dépend de l'accord national UMLP, catalogue entier mais titre par
+  titre à vérifier dans la liste éligible (Springer Nature : réserve d'articles épuisée
+  depuis le 2026-07-06, ne compte plus tant qu'elle n'est pas réabondée ; Wiley : aucun
+  accord actif, l'UMLP n'adhère pas à Couperin-Wiley 2026-2028). Ces quatre cas
+  se **vérifient pour cet auteur précis**, ils ne se supposent pas — pour les trois
+  éditeurs sous accord national, partir de `~/.agents/knowledge/journals/accords_institutionnels_umlp.md`,
+  qui donne la procédure et les titres déjà vérifiés, avant de rouvrir les fichiers
+  d'éligibilité complets.
 
   Conséquence sur la base : une gratuité conditionnelle s'écrit `free_route=no` tant
   que la condition n'est pas établie. La mettre en note ne suffit pas, puisque c'est la

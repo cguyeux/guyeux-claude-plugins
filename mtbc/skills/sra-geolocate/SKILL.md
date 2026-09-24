@@ -37,7 +37,7 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebFetch, WebSearch
 > `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
 >
 > ```bash
-> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> B=~/docs/environnement/plugins/mtbc/skills/bdd-bridge/scripts
 > export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
 > python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
 > python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable
@@ -99,6 +99,46 @@ Les modes partagent le meme moteur d'extraction et le meme cache.
 4. Si `rangement.pkl` est accessible via `tb-cli`, noter les lignages
    connus des SRAs a traiter (utile pour cross-check geographique :
    Bovis en France, L4.9 en Corne de l'Afrique...).
+
+---
+
+## Niveau 1 EN MASSE : `scripts/ena_geoloc_bulk.py`
+
+Avant de lancer la cascade agentique sur une grande liste, passer d'abord le niveau 1
+(champ `country` du BioSample, expose par le resultat `read_run` de l'ENA) en BLOC.
+L'API `filereport` n'accepte qu'une accession par appel ; le POST sur `/search` avec une
+disjonction `run_accession="A" OR run_accession="B"` en accepte plusieurs centaines, ce
+qui fait la difference entre 15 000 requetes et 50.
+
+```bash
+S=~/docs/environnement/plugins/mtbc/skills/sra-geolocate/scripts
+python3 $S/ena_geoloc_bulk.py accessions.tsv geo.tsv          # colonne accession/sra/run_accession
+```
+
+Mesure du 2026-09-18 (projet `mixed_infections_multimarker`, piste P7.3.o) : 15 000
+accessions en 45 s, 133 474 en une vingtaine de minutes ; l'ENA rend une ligne pour
+99,6 % d'entre elles, mais le champ pays n'est exploitable que pour **64 %**. C'est ce
+taux, et non le nombre d'accessions, qui decide de la suite.
+
+Trois regles d'emploi, payees sur piece.
+
+1. **Mesurer le taux de resolution AVANT d'interpreter quoi que ce soit**, et verifier
+   qu'il n'est pas DIFFERENTIEL sur le trait etudie (un Fisher entre « resolu » et le
+   trait suffit). Un trou de 36 % non differentiel limite la generalisation mais laisse
+   la validite interne intacte ; un trou correle au trait la detruit.
+2. **Caracteriser le trou plutot que le resumer par un pourcentage** : regarder la
+   concentration en BioProjects (57 % des non resolus tenaient dans 20 depots) et la
+   composition (une lignee y etait sur-representee du simple au double). Cela nomme les
+   pays sous-representes, ce qu'un taux global cache.
+3. **Ne pas combler le trou par inference institutionnelle** dans un calcul destine a
+   publication. Les titres d'etude nomment parfois le pays litteralement (« CRyPTIC.
+   Foundation for Medical Research India. Mumbai ») mais le plus souvent une institution
+   (« Public Health England », « CTB/NICD », « CCDC »), et melanger les deux fabrique une
+   geolocalisation non tracable. Reserver cela a une analyse de sensibilite explicite.
+
+`country_raw` est conserve a cote de `country` : l'ENA ecrit « China:lanzhou », « USA:
+NY », « missing », « not applicable », et ecraser ces valeurs a l'import interdit de
+distinguer plus tard un pays non renseigne d'un pays renseigne mais non normalise.
 
 ---
 

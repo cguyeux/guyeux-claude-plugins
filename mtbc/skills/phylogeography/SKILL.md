@@ -7,6 +7,11 @@ description: >-
   diversity indices. Pair with `tbmonitor-papers` to cite prior studies. Use
   when: mapping a lineage's distribution, comparing sub-lineages, producing
   figures and supplementary tables, identifying hotspots.
+
+  Scope: developed on the MTBC, applies to any clonal bacterial pathogen
+  (Yersinia, Leptospira...) — cross-tabulation, maps and diversity indices are
+  generic. Outside the MTBC: supply the geographic metadata source (TBannotator
+  and tbmonitor-papers are TB-only; use sra-geolocate or a metadata table).
 argument-hint: "<lineage or strain_sql> [-o distribution.csv] [-p map.png]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
@@ -24,7 +29,7 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query
 > `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
 >
 > ```bash
-> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> B=~/docs/environnement/plugins/mtbc/skills/bdd-bridge/scripts
 > export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
 > python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
 > python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable

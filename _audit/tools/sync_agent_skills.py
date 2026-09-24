@@ -27,7 +27,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_CLAUDE_ROOT = Path.home() / ".claude" / "skills"
+DEFAULT_CLAUDE_ROOTS = [Path.home() / ".claude" / "skills"]
 DEFAULT_AGENTS_ROOT = Path.home() / ".agents" / "skills"
 EXCLUDED_NAMES = {".venv", "venv", "__pycache__"}
 EXCLUDED_SUFFIXES = {".pyc", ".pyo"}
@@ -50,6 +50,15 @@ def personal_skill_names(root: Path) -> set[str]:
     if not root.is_dir():
         return set()
     return {path.parent.name for path in root.glob("*/SKILL.md")}
+
+
+def personal_skill_map(roots: list[Path]) -> dict[str, Path]:
+    """Nom de skill -> répertoire réel, la première racine citée l'emportant."""
+    trouve: dict[str, Path] = {}
+    for root in roots:
+        for name in personal_skill_names(root):
+            trouve.setdefault(name, root / name)
+    return trouve
 
 
 def tree_digest(root: Path) -> str:
@@ -78,19 +87,19 @@ def readlink_target(path: Path) -> str:
 
 
 def classify(
-    claude_root: Path,
+    claude_map: dict[str, Path],
     agents_root: Path,
     root: Path = ROOT,
 ) -> tuple[dict[str, list[str]], list[str]]:
     expected = expected_delta(root)
-    claude = personal_skill_names(claude_root)
+    claude = set(claude_map)
     agents = personal_skill_names(agents_root)
     common = claude & agents
 
     missing = sorted(claude - agents - expected["claude_only"])
     expected_claude_only_present = sorted(claude & expected["claude_only"])
     unexpected_agents_only = sorted((agents - claude) - expected["agents_only"])
-    divergent = sorted(name for name in common if tree_digest(claude_root / name) != tree_digest(agents_root / name))
+    divergent = sorted(name for name in common if tree_digest(claude_map[name]) != tree_digest(agents_root / name))
     unexpected_divergent = sorted(set(divergent) - expected["divergent"])
     stale_expected_divergent = sorted(expected["divergent"] - set(divergent))
     stale_expected_claude_only = sorted(expected["claude_only"] - (claude - agents))
@@ -118,35 +127,37 @@ def classify(
     }, problems
 
 
-def apply_missing(claude_root: Path, agents_root: Path, missing: list[str]) -> None:
+def apply_missing(claude_map: dict[str, Path], agents_root: Path, missing: list[str]) -> None:
     agents_root.mkdir(parents=True, exist_ok=True)
     for name in missing:
         target = agents_root / name
         if target.exists() or target.is_symlink():
             raise RuntimeError(f"refus de remplacer {target} -> {readlink_target(target)}")
-        target.symlink_to((claude_root / name).resolve(), target_is_directory=True)
+        target.symlink_to(claude_map[name].resolve(), target_is_directory=True)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--claude-root", type=Path, default=DEFAULT_CLAUDE_ROOT)
+    parser.add_argument("--claude-root", type=Path, action="append", dest="claude_roots",
+                        help="racine de skills personnels, répétable (défaut : ~/.claude/skills)")
     parser.add_argument("--agents-root", type=Path, default=DEFAULT_AGENTS_ROOT)
     parser.add_argument("--apply", action="store_true", help="creer seulement les liens Agents manquants non whitelistes")
     parser.add_argument("--json", action="store_true", help="emettre un rapport JSON")
     args = parser.parse_args()
 
-    claude_root = args.claude_root.expanduser()
+    claude_roots = [p.expanduser() for p in (args.claude_roots or DEFAULT_CLAUDE_ROOTS)]
     agents_root = args.agents_root.expanduser()
-    summary, problems = classify(claude_root, agents_root, ROOT)
+    claude_map = personal_skill_map(claude_roots)
+    summary, problems = classify(claude_map, agents_root, ROOT)
 
     if args.apply and problems:
         problems.append("apply refuse tant que le dry-run contient des problemes")
     elif args.apply and summary["missing"]:
-        apply_missing(claude_root, agents_root, summary["missing"])
-        summary, problems = classify(claude_root, agents_root, ROOT)
+        apply_missing(claude_map, agents_root, summary["missing"])
+        summary, problems = classify(claude_map, agents_root, ROOT)
 
     report = {
-        "claude_root": str(claude_root),
+        "claude_roots": [str(p) for p in claude_roots],
         "agents_root": str(agents_root),
         "summary": {key: len(value) for key, value in summary.items()},
         "detail": summary,
@@ -165,7 +176,7 @@ def main() -> int:
         print(f"  Agents-only inattendus  : {len(summary['unexpected_agents_only'])}")
         print(f"  divergents inattendus   : {len(summary['unexpected_divergent'])}")
         for name in summary["missing"]:
-            print(f"  + {name} -> {(claude_root / name).resolve()}")
+            print(f"  + {name} -> {claude_map[name].resolve()}")
         if problems:
             print("\nProblemes:")
             for problem in problems:

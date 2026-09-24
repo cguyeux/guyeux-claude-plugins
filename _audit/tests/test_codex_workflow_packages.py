@@ -18,12 +18,14 @@ def frontmatter(text: str) -> str:
 
 
 class CodexWorkflowPackagesTests(unittest.TestCase):
-    def test_workflow_audit_records_eleven_rows(self):
+    def test_workflow_audit_records_thirteen_rows(self):
         audit = json.loads(AUDIT.read_text(encoding="utf-8"))
         rows = audit["rows"]
-        self.assertEqual(11, len(rows))
+        self.assertEqual(13, len(rows))
         self.assertEqual(
             {
+                "aap",
+                "cadrage-editorial",
                 "atlas-add-lineage",
                 "bdd-bridge",
                 "denovo-content-qc",
@@ -55,7 +57,7 @@ class CodexWorkflowPackagesTests(unittest.TestCase):
                 self.assertNotIn("~/.claude/cache", text)
 
     def test_submission_copy_uses_codex_runtime_and_current_turn_authority(self):
-        skill = PACKAGES / "bio-redac" / "skills" / "soumission"
+        skill = PACKAGES / "diffusion" / "skills" / "soumission"
         text = (skill / "SKILL.md").read_text(encoding="utf-8")
         payload = "\n".join(
             path.read_text(encoding="utf-8")

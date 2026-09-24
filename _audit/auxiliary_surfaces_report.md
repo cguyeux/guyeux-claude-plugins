@@ -4,7 +4,7 @@ Ce fichier est généré par `_audit/tools/audit_auxiliary_surfaces.py`.
 Aucune valeur secrète MCP n'est sérialisée.
 
 - Statut : OK
-- Codex : `codex-cli 0.149.1`
+- Codex : `codex-cli 0.154.0`
 - Pyright : `pyright 1.1.410`
 - Graphify : `0.9.50`
 - MCP Codex : context7, superhuman, tbannotator, tbmonitor

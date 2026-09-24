@@ -51,6 +51,7 @@ import hashlib
 import json
 import re
 import sys
+import time
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -68,12 +69,33 @@ def fetch(url):
     key = hashlib.sha256(url.encode()).hexdigest()[:32]
     path = CACHE / key
     if path.exists():
-        return path.read_text(encoding="utf-8")
-    req = urllib.request.Request(url, headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-        body = r.read().decode("utf-8", errors="replace")
-    path.write_text(body, encoding="utf-8")
+        body = path.read_text(encoding="utf-8")
+        if not _is_stub(url, body):
+            return body
+        # stub fige par une version anterieure : on l'ignore, il sera ecrase au prochain succes
+    body = ""
+    for attempt in range(3):
+        req = urllib.request.Request(url, headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+            body = r.read().decode("utf-8", errors="replace")
+        if not _is_stub(url, body):
+            path.write_text(body, encoding="utf-8")
+            return body
+        time.sleep(1 + attempt)
+    # Stub persistant : on le rend sans le cacher, pour qu'un appel ulterieur retente.
     return body
+
+
+def _is_stub(url, body):
+    """Europe PMC renvoie parfois, sur une recherche JSON, un stub `{"version":"6.9"}` sans
+    `resultList` (mesure 2026-09-23, meme URL tantot correcte tantot stub). Le cacher le figeait
+    en faux zero permanent ; une reponse de recherche sans resultList n'est jamais une reponse."""
+    if "/search" not in url or "format=json" not in url:
+        return False
+    try:
+        return "resultList" not in json.loads(body)
+    except ValueError:
+        return True
 
 
 def query_for(ident):

@@ -36,10 +36,17 @@ EXCLUDED_NAMES = {".venv", "venv", "__pycache__"}
 EXCLUDED_SUFFIXES = {".pyc", ".pyo"}
 EXPECTED_PLUGINS = {
     "guyeux-phylo-pilot",
-    "bio-bacteria",
-    "bio-pathogens",
-    "bio-population-genetics",
-    "bio-redac",
+    "bacteria",
+    "bioinfo",
+    "carriere",
+    "diffusion",
+    "litterature",
+    "mtbc",
+    "phylo",
+    "popgen",
+    "redaction",
+    "science-commun",
+    "structure",
     "ia",
     "maboss",
     "multimedia",
@@ -203,12 +210,12 @@ def audit_repository(root: Path = ROOT) -> tuple[dict[str, Any], list[str]]:
     classifications = {row["classification"] for row in rows}
     row_names = {row["name"] for row in rows}
 
-    if len(registry) != 190:
+    if len(registry) != 199:
         problems.append(f"registre canonique inattendu: {len(registry)}")
     if len(exports) != 53:
         problems.append(f"exports directs inattendus: {len(exports)}")
-    if len(omitted) != 137:
-        problems.append(f"canoniques empaquetes attendus 137, obtenu {len(omitted)}")
+    if len(omitted) != 146:
+        problems.append(f"canoniques empaquetes attendus 146, obtenu {len(omitted)}")
     if row_names != omitted:
         problems.append("la matrice paquet ne couvre pas exactement canon - exports")
     if packaged != omitted:

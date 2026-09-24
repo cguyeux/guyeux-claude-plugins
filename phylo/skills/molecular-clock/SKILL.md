@@ -26,7 +26,7 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query
 > `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
 >
 > ```bash
-> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> B=~/docs/environnement/plugins/mtbc/skills/bdd-bridge/scripts
 > export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
 > python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
 > python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable
@@ -595,7 +595,7 @@ python3 scripts/molecular_clock_pipeline.py \
   --threads 4
 ```
 
-**Résolution automatique du binaire iqtree2** : si `--iqtree` n'est pas fourni, le script cherche dans l'ordre (1) `<script>/../../investigate_phylo/iqtree2` (contexte projet MTBC), (2) `~/docs/codes/mtbc/investigate_phylo/iqtree2`, (3) `iqtree2` ou `iqtree` dans `$PATH`.
+**Résolution automatique du binaire iqtree2** : si `--iqtree` n'est pas fourni, le script cherche dans l'ordre (1) `<script>/../../investigate_phylo/iqtree2` (contexte projet MTBC), (2) `~/docs/codes/mtbc/en_cours/investigate_phylo/iqtree2`, (3) `iqtree2` ou `iqtree` dans `$PATH`.
 
 **Défauts mis à jour (2026-05-31)** : `--lineages L4.1,L4.3.3,L4.8,L4.2.1,L4.7.1,L4.7.2` (L4.7 a été divisée en L4.7.1 et L4.7.2 dans `bdd/actuelle/`), `--outgroup-lineage Bovis` (racine *M. bovis* réelle, ~1417 souches ; les anciens noms `Bovis_La1`/`Bovis2_La1` n'existent plus dans `bdd/actuelle/`, toujours vérifier le nom de dossier contre `bdd/actuelle/`, cf. `SOURCES_OF_TRUTH.md`).
 

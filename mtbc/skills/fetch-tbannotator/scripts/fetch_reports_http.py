@@ -35,15 +35,29 @@ Usage :
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import sys
 import time
 import urllib.error
 import urllib.request
+from contextlib import nullcontext
 from pathlib import Path
 
 BASE = "https://tblearn.tbannotator.ideev.universite-paris-saclay.fr/mcp/download/report"
 REF = "NC_000962.3"
+
+# Journalisation `bdd` (piste AA3) : import par chemin fixe, degradation silencieuse si le
+# skill est absent de la machine (mp/mh) — cf. ~/.claude/skills/bdd/SKILL.md. `--dest` est un
+# parametre libre (bdd/a_ranger, bdd/actuelle, /tmp/essai...) : on ne journalise QUE s'il tombe
+# sous la racine d'un store declare au registre (bdd_journal.store_for_path), transparent sinon.
+_chemin_bj = Path.home() / ".claude" / "skills" / "bdd" / "bdd_journal.py"
+bdd_journal = None
+if _chemin_bj.is_file():
+    _spec_bj = importlib.util.spec_from_file_location("bdd_journal", _chemin_bj)
+    if _spec_bj is not None and _spec_bj.loader is not None:
+        bdd_journal = importlib.util.module_from_spec(_spec_bj)
+        _spec_bj.loader.exec_module(bdd_journal)
 
 
 def fetch(acc: str, timeout: int) -> tuple[dict | None, str]:
@@ -132,25 +146,32 @@ def main() -> int:
         print("\n(simulation — retirer --dry-run pour ecrire)")
         return 0
 
+    store_id = bdd_journal.store_for_path(str(A.dest)) if bdd_journal is not None else None
+    _ctx = (bdd_journal.ecriture(store_id, outil=__file__,
+                                  motif=f"fetch_reports_http {len(todo)} accession(s) -> {A.dest}",
+                                  piste="AA3")
+            if bdd_journal is not None and store_id is not None else nullcontext())
+
     ok, echecs = [], []
     t0 = time.time()
-    for i, acc in enumerate(todo, 1):
-        rep, msg = fetch(acc, A.timeout)
-        if rep is None:
-            echecs.append((acc, msg))
-            print(f"  [{i}/{len(todo)}] ECHEC {acc} : {msg}", flush=True)
-            continue
-        spdis = spdis_of(rep)
-        d = A.dest / acc / A.ref
-        d.mkdir(parents=True, exist_ok=True)
-        (d / "report.json").write_text(json.dumps(rep))
-        (d / "spdi.txt").write_text("\n".join(spdis) + ("\n" if spdis else ""))
-        ok.append((acc, len(spdis)))
-        if i % 10 == 0 or i == len(todo):
-            print(f"  [{i}/{len(todo)}] {acc} : {len(spdis)} SPDI  "
-                  f"({time.time()-t0:.0f}s)", flush=True)
-        if A.pause:
-            time.sleep(A.pause)
+    with _ctx:
+        for i, acc in enumerate(todo, 1):
+            rep, msg = fetch(acc, A.timeout)
+            if rep is None:
+                echecs.append((acc, msg))
+                print(f"  [{i}/{len(todo)}] ECHEC {acc} : {msg}", flush=True)
+                continue
+            spdis = spdis_of(rep)
+            d = A.dest / acc / A.ref
+            d.mkdir(parents=True, exist_ok=True)
+            (d / "report.json").write_text(json.dumps(rep))
+            (d / "spdi.txt").write_text("\n".join(spdis) + ("\n" if spdis else ""))
+            ok.append((acc, len(spdis)))
+            if i % 10 == 0 or i == len(todo):
+                print(f"  [{i}/{len(todo)}] {acc} : {len(spdis)} SPDI  "
+                      f"({time.time()-t0:.0f}s)", flush=True)
+            if A.pause:
+                time.sleep(A.pause)
 
     print(f"\n[bilan] {len(ok)} recuperees, {len(echecs)} en echec, "
           f"{len(deja) if not A.force else 0} sautees  ({time.time()-t0:.0f}s)")

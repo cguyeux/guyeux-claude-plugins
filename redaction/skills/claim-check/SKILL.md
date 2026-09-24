@@ -7,8 +7,12 @@ description: >-
   sinon WebSearch / WebFetch). Maintient un registre claim_check.md date ; ne re-verifie que
   les claims non verifies ou perimes. A utiliser quand l'utilisateur demande de verifier les
   affirmations d'un manuscrit, de controler que les chiffres du texte correspondent aux
-  donnees, de recroiser un resultat avec la litterature, ou avant une soumission.
-argument-hint: "<main.tex> [--force] [--stale-days 90]"
+  donnees, de recroiser un resultat avec la litterature, ou avant une soumission. Mode
+  `--mail` : verifie les affirmations factuelles d'un brouillon de courriel avant envoi
+  (chiffres, effectifs, resultats relayes d'une autre session ou d'un sous-agent), sans
+  registre ni datation, verdict court. A utiliser des qu'un mail sortant porte un chiffre,
+  un comptage, un resultat ou une comparaison.
+argument-hint: "<main.tex> [--force] [--stale-days 90] | --mail"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebSearch, WebFetch, mcp__tbannotator__tool_query_postgres, mcp__tbannotator__tool_get_schema, mcp__tbmonitor__execute_sql, mcp__tbmonitor__show_schema
 ---
 
@@ -60,11 +64,52 @@ Etat projet : [titre article]
 /claim-check path/to/main.tex
 /claim-check path/to/main.tex --force
 /claim-check path/to/main.tex --stale-days 180
+/claim-check --mail
 ```
 
 - Sans argument : chercher `main.tex` dans le repertoire courant
 - `--force` : re-verifier TOUS les claims, meme ceux deja verifies
 - `--stale-days N` (defaut : 90) : re-verifier les claims verifies il y a plus de N jours
+- `--mail` : verifier le brouillon de courriel en cours, voir le mode dedie ci-dessous
+
+---
+
+## Mode mail -- verifier un brouillon avant envoi
+
+Un mail scientifique engage autant qu'un paragraphe de manuscrit, et il part beaucoup plus
+vite : personne ne le relit, aucune revue ne l'arrête, et une affirmation fausse est lue par
+tous les destinataires avant d'avoir pu être reprise. Ce mode existe pour cela, et il est
+conçu pour rendre son verdict en quelques minutes, pas pour instruire un dossier.
+
+Il se déclenche sur le contenu du brouillon, jamais sur l'identité du destinataire : dès que
+le corps porte un chiffre, un pourcentage, un effectif, une accession, un nom de lignée, un
+écart ou une comparaison, le mode s'applique, qu'on écrive à un collaborateur de longue date
+ou à un service administratif. Un mail purement relationnel ou logistique n'a rien à y faire.
+
+Ce qui change par rapport au mode manuscrit : l'unité vérifiée est le corps du brouillon et
+non un fichier `.tex` ; il n'y a ni registre `claim_check.md` à tenir ni date à poser, la
+vérification vit dans la conversation et meurt avec elle ; le classement P1-P4, l'audit de
+cohérence numérique interne et le rapport final ne s'appliquent pas. Ne subsistent que
+l'extraction des affirmations et leur vérification sur pièce, avec la même règle de priorité
+des sources qu'en Phase 3, `tbmonitor` avant tout pour la TB et le MTBC.
+
+Extraire du brouillon chaque affirmation factuelle, puis nommer pour chacune la source réelle
+qui la porte, c'est-à-dire la requête, le fichier ou le passage qui a produit le chiffre, et
+rendre un verdict binaire : vérifiée sur pièce, ou à retirer ou atténuer avant envoi. Il n'y
+a pas de statut intermédiaire ici, parce qu'il n'y a pas de registre pour porter une nuance :
+une affirmation dont la source ne peut pas être nommée dans le tour courant appartient à la
+seconde catégorie, et la phrase se reformule au conditionnel ou disparaît.
+
+Le mode d'échec propre au mail est ailleurs que dans le manuscrit, et c'est lui qu'il faut
+traquer en premier : **l'affirmation relayée d'une analyse faite par une autre session, un
+sous-agent ou un collaborateur, dont on n'a jamais vu la sortie brute**. Elle arrive déjà
+rédigée, déjà plausible, et la tentation est de la recopier telle quelle puisqu'elle vient de
+chez nous. Un chiffre qu'on n'a pas vu sortir d'une commande ne se vérifie pas en le
+relisant : il se vérifie en retrouvant la sortie, ou en refaisant la mesure. Tant que ce n'est
+pas fait, l'attribuer explicitement à son auteur plutôt que de l'endosser.
+
+Le verdict tient en quelques lignes, une par affirmation, et se termine par ce qui reste à
+corriger avant envoi. S'il n'y a rien à corriger, le dire en une phrase et rendre la main.
 
 ---
 
@@ -200,6 +245,13 @@ simulation) parce qu'ils sont numeriquement voisins. Ses sorties PROCHE/ABSENT/M
 des PISTES a inspecter, jamais des verdicts. **Ne pas le traiter comme une alerte** : un test
 qui crie a tort est un test qu'on apprend a ignorer, donc pire qu'absent. Le mode qui FAIT FOI
 est le mode declaratif, ou c'est l'agent qui porte l'attribution et le script qui la verifie.
+
+**Claim de COMPTAGE (« N temoins », « n=N genomes », « le jeu comporte N entrees »)** :
+declarer contre `<fichier>:__n_rows__` (nombre de lignes d'un CSV/TSV, ou d'elements d'une
+liste JSON), pas contre une cellule -- aucune cellule ne porte le COMPTE. C'est le trou qui a
+laisse passer le defaut fondateur de la regle de la source primaire ci-dessous (table de
+temoins citee a 5 entrees, `.tsv` regenere a 9 : chaque cellule etait juste, seul le compte
+avait derive) ; ferme le 2026-09-22 (piste Y1).
 
 ### 1. Extraction de tous les nombres
 
@@ -546,6 +598,84 @@ parallele, puis P2, puis P3+P4 ensemble. Les requetes TBannotator,
 WebSearch, et WebFetch des differents claims n'ont pas de dependance
 mutuelle et gagnent 3-5x en vitesse avec l'execution concurrente.
 
+### Regle de la source primaire -- un chiffre se verifie sur la DONNEE, jamais sur la prose
+
+**Ajoutee le 2026-09-19, apres un echec mesure** (porte 3bis de
+`mtbc/clos_soumis/lineage_subdivision_methods`). Deux affirmations numeriques centrales d'un
+manuscrit avaient ete marquees `confirme` par ce skill, puis se sont revelees non reproductibles
+sur leurs fichiers sources lors d'une passe adversariale : une precision de validation croisee
+citee depuis un log perime de quelques heures, et une table de temoins citee a 5 entrees alors que
+le `.tsv` regenere depuis en portait 9. **Cause commune : la verification avait ete faite contre la
+PROSE qui rapportait le chiffre** (base de connaissances, cahier de labo, log partiel), ecrite par
+la meme main que le manuscrit, et jamais contre le fichier de resultats brut complet.
+
+Consequence, non negociable : **quand un claim porte un chiffre ET qu'un fichier de resultats est
+identifiable, la verification EXIGE la redescente a ce fichier.** Concretement :
+
+1. Nommer le fichier (chemin complet) et relever sa **date de modification** -- un fichier
+   posterieur a la redaction du manuscrit est un signal de derive, pas une confirmation.
+2. Recalculer le chiffre depuis ce fichier, et non le relire dans un log ou un resume.
+3. Verifier le DENOMINATEUR autant que le numerateur, et l'UNITE de chacun : une confusion de
+   colonne ou d'unite (un taux par clade lu comme un taux par genome, un nombre de niveaux
+   descendus lu comme un nombre de genomes) produit un chiffre juste sur une mauvaise grandeur,
+   que la prose ne revele jamais.
+4. Consigner dans le registre le chemin, la date du fichier et la commande de recalcul.
+
+Pour le second cas fondateur ci-dessus (table de temoins a 5 entrees vs `.tsv` a 9), le
+recalcul du point 2 n'est plus manuel : declarer le claim contre `<fichier>:__n_rows__` dans
+`numeric_crosscheck.py --assert-file` (Phase 1bis §0) fait recompter le fichier et rend
+`ECART` automatiquement -- voir le garde-fou COMPTAGE de la Phase 1bis.
+
+Une confirmation par la prose SEULE ne vaut pas `confirme` : elle vaut
+`source_primaire_non_atteinte` (voir la table). Ce statut n'est pas un echec du skill, c'est
+l'information dont l'auteur a besoin pour savoir ou son manuscrit est fragile.
+
+**Ne vaut PAS source primaire** : un log, meme date ; une entree de cahier de labo ; une fiche de
+base de connaissances ; un resume de sous-agent ; une table deja mise en forme dans un autre
+document. Tous peuvent etre justes, et tous peuvent etre perimes sans que rien ne le signale.
+
+### Garde-fou -- IDENTIFIANT DE SOURCE NOMME : verifier le FICHIER precis, pas seulement la valeur
+
+**Ajoutee le 2026-09-20, apres un echec mesure** (`mtbc/Rv3909`, `/manuscript-review` du
+2026-09-18, preoccupation BLOQUANTE n°1). `claim_check.md` avait verifie le claim structurant
+« dyade catalytique GH57 Glu256/Asp352 » et l'avait passe `confirme` : la valeur existait bien
+dans un fichier de resultats, la regle de la source primaire ci-dessus etait donc satisfaite au
+sens strict. Le recroisement de `/manuscript-review` a montre que le manuscrit attribuait le
+residu **Pro505** et le **p=0,83** au template **7E1Y**, alors que les deux provenaient d'un
+**second template de la meme famille GH57**, AaApu (9IHT/9IHU) -- sur 7E1Y la dyade tombe sur
+Ala356/Ala452 dans les huit chaines. Aucun chiffre n'etait faux ; seule l'ATTRIBUTION l'etait --
+et ce cas echappe par construction a la regle de la source primaire, puisque le claim existe
+reellement, mais dans un AUTRE fichier de sortie que celui cite par le manuscrit
+(`active_site_gh57.json` vs `active_site_aaapu.json`).
+
+**Cause structurelle** : quand une analyse est repetee sur plusieurs gabarits/references/jeux de
+donnees de la meme famille (plusieurs templates PDB pour un meme fold, plusieurs assemblages pour
+une meme espece, plusieurs runs pour un meme pipeline), elle produit typiquement un fichier de
+sortie PAR variante (`<analyse>_<variante>.json`). Retrouver la VALEUR dans l'un quelconque de ces
+fichiers ne prouve pas qu'elle provient de la variante citee dans le texte -- deux fichiers voisins
+peuvent porter des valeurs numeriquement proches (deux p-values dans la meme plage, deux positions
+de residu a quelques dizaines pres) sans que la coincidence saute aux yeux.
+
+Consequence, non negociable : **des qu'un claim nomme explicitement un identifiant de source**
+(reference PDB, accession, nom de jeu de donnees, numero de depot, version de gabarit/modele) et
+que ce claim porte aussi une valeur numerique :
+
+1. **Lister tous les fichiers de la meme famille** dans le repertoire de resultats
+   (`résultats/.../active_site_<template>.json`, `<pipeline>_<run>.json`, etc.) avant de chercher
+   la valeur -- pas apres.
+2. **Ouvrir precisement le fichier correspondant a L'IDENTIFIANT CITE dans le manuscrit**, pas le
+   premier fichier de la famille qui contient la bonne valeur.
+3. Si la valeur n'y figure pas mais figure dans un fichier voisin de la meme famille :
+   l'attribution est fausse, meme si le chiffre publie est correct. Statut `a_corriger`, avec en
+   note le fichier qui porte reellement la valeur.
+4. Si plusieurs fichiers de la famille portent des valeurs proches (meme ordre de grandeur, meme
+   position a quelques residus pres) : le signaler explicitement dans le registre, meme quand
+   l'attribution citee s'avere correcte -- c'est l'information qui previent la prochaine confusion.
+
+Ce garde-fou s'ajoute a la regle de la source primaire, il ne la remplace pas : une valeur
+correcte dans le bon fichier reste `confirme` ; une valeur correcte dans le mauvais fichier de la
+meme famille est `a_corriger` sur l'attribution, pas sur le chiffre.
+
 ### Pour chaque claim :
 
 1. **Executer la strategie** definie en Phase 3
@@ -553,7 +683,8 @@ mutuelle et gagnent 3-5x en vitesse avec l'execution concurrente.
 
    | Statut | Signification |
    |--------|---------------|
-   | confirme | L'affirmation est verifiee et correcte |
+   | confirme | L'affirmation est verifiee et correcte -- et, si elle porte un chiffre, recalculee depuis le fichier de resultats brut (regle de la source primaire ci-dessus) |
+   | source_primaire_non_atteinte | L'affirmation est coherente avec la prose consultee (cahier, KB, log), mais le fichier de resultats qui la porte n'a pas ete atteint ou n'existe plus. **Jamais a confondre avec `confirme`** : c'est exactement l'etat qui a laisse passer deux chiffres faux le 2026-09-18 |
    | a_corriger | L'affirmation est fausse ou significativement inexacte |
    | partiellement_confirme | L'affirmation est globalement correcte mais imprecise ou exageree |
    | non_verifiable | Impossible a verifier avec les outils disponibles |

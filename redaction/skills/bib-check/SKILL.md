@@ -1,18 +1,21 @@
 ---
 name: bib-check
 description: >-
-  Verification exhaustive des references BibTeX d'un article LaTeX. Verifie l'existence
-  reelle de chaque reference en ligne (tbmonitor-papers pour la TB / MTBC, puis CrossRef /
-  WebFetch / WebSearch), la coherence des metadonnees (auteurs, titre, annee, journal), la
-  pertinence des citations dans leur contexte, et detecte les doublons semantiques. Audite
-  aussi les AUTO-CITATIONS dans les deux sens : les travaux anterieurs de l'equipe qui
-  auraient du etre cites et ne le sont pas (provenance des donnees, du pipeline, de la
-  nomenclature, article precedent de la serie), et l'exces ou l'auto-citation gratuite.
-  Outil anti-hallucinations : marque chaque reference verifiee. A utiliser quand
-  l'utilisateur demande de verifier la bibliographie, de controler que les references
-  existent vraiment, de detecter des references inventees ou des doublons, de verifier
-  qu'on cite bien ses propres travaux pertinents, ou avant une soumission.
-argument-hint: "<chemin vers main.tex>"
+  Verification exhaustive des references BibTeX d'un article LaTeX. Verifie
+  l'existence reelle de chaque reference en ligne (tbmonitor-papers pour la
+  TB/MTBC, puis CrossRef/WebFetch/WebSearch), la coherence des metadonnees
+  (auteurs, titre, annee, journal), la pertinence des citations dans leur
+  contexte, et detecte les doublons semantiques. Audite aussi les
+  AUTO-CITATIONS dans les deux sens : travaux anterieurs de l'equipe non cites
+  (provenance des donnees, du pipeline, de la nomenclature, article precedent
+  de la serie), et l'exces ou l'auto-citation gratuite. Outil
+  anti-hallucinations : marque chaque reference verifiee. A utiliser pour
+  verifier la bibliographie, controler que les references existent vraiment,
+  detecter des references inventees ou des doublons, verifier qu'on cite bien
+  ses propres travaux, ou avant une soumission. Mode `--mail` : verifie les
+  citations en prose d'un brouillon de courriel avant envoi, des qu'il cite un
+  article, un DOI, une table, une figure ou un supplementaire.
+argument-hint: "<chemin vers main.tex> | --mail"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebSearch, WebFetch, mcp__tbmonitor__execute_sql, mcp__tbmonitor__show_schema
 ---
 
@@ -45,9 +48,48 @@ Etat projet : [titre article]
 
 ```
 /bib-check path/to/main.tex
+/bib-check --mail
 ```
 
-Si aucun argument, chercher `main.tex` dans le repertoire courant.
+Si aucun argument, chercher `main.tex` dans le repertoire courant. Avec `--mail`, verifier
+le brouillon de courriel en cours, voir le mode dedie ci-dessous.
+
+---
+
+## Mode mail -- verifier les references d'un brouillon avant envoi
+
+L'unité n'est plus un fichier `.bib` mais les citations en prose du brouillon : un nom
+d'auteur et une année, un titre, un DOI, un numéro de table ou de figure, un fichier
+supplémentaire. Il n'y a ni champ `verified` à poser, ni `verify_bib.py` à lancer, ni
+rapport à générer ; la vérification vit dans la conversation et doit tenir en quelques
+minutes. Le déclenchement se fait sur le contenu du brouillon, pas sur le destinataire.
+
+Le premier contrôle est celui du skill entier, réduit à l'essentiel : la référence existe,
+et elle dit ce qu'on lui fait dire. Même ordre de priorité qu'en Phase 3, `tbmonitor-papers`
+d'abord pour la TB et le MTBC, CrossRef pour toute entrée à DOI, le reste ensuite.
+
+Le second est propre au mail, et c'est celui qui se paie. **Une table, une figure ou un
+fichier supplémentaire se cite avec son libellé littéral et son fichier**, jamais par un
+numéro nu. Les éditeurs répartissent couramment les tables supplémentaires entre un PDF et
+un classeur, et un nom d'onglet de classeur n'a aucune existence dans le texte de l'article :
+écrire « table 10 » envoie le destinataire chercher dans un document où il ne trouvera rien,
+et met en doute une analyse par ailleurs juste. La forme correcte nomme le contenant :
+« l'onglet Supplementary Table 10 du classeur spectrum.03339-22-s0002.xlsx ».
+
+Vécu (fil Sola, 2026-09-15) : un mail affirmait « sur les 43 positions de leur barcode
+(table 10) » à propos de Zhu et al. 2023. Le destinataire a cherché dans l'article puis dans
+le supplémentaire PDF, n'a rien trouvé, et a contesté la référence devant deux autres
+collègues. La table existait, mais comme dernier onglet du classeur qu'il avait lui-même
+joint : le supplémentaire PDF s'arrêtait à la Supplementary Table 5, les tables 6 à 10 ne
+vivaient que dans le classeur. L'analyse était juste, la citation était fausse, et il a fallu
+un mail de mise au point.
+
+De là le contrôle qui aurait tout évité, et qu'il faut faire chaque fois qu'un numéro de
+table ou de figure est cité : **vérifier que ce numéro est réellement appelé dans le texte de
+l'article**. Un supplémentaire déposé mais jamais cité est un piège classique, et c'était le
+cas ici, l'article appelant les tables S1 à S9 et jamais la dixième. Un numéro qui n'apparaît
+nulle part dans le corps doit être décrit par son contenant et son intitulé, ou ne pas être
+cité du tout.
 
 ---
 
@@ -296,11 +338,35 @@ Pour chaque entree **sans champ `verified`**, proceder par lots de 10 :
 ### Regles imperatives
 
 - **Ne JAMAIS verifier deux fois la meme entree** : si `verified` est present, passer.
-  **EXCEPTION : un signalement humain credible PRIME sur un `verified` existant.**
+  **EXCEPTION 1 : un signalement humain credible PRIME sur un `verified` existant.**
   `verified = {D}` signifie « verifie a la date D par la methode de l'epoque » : une
   passe ancienne a pu valider l'existence sans diff du titre. Si quelqu'un dit « cette
   reference semble fausse / introuvable », re-verifier l'entree integralement (titre
   inclus) meme marquee `verified`, puis remettre `verified` a la date du jour.
+  **EXCEPTION 2, MECANIQUE, qui ne depend d'aucun soupcon prealable (2026-09-19) :**
+  passer `crossref_verify.py` sur TOUTE entree CITEE qui porte un DOI, `verified` ou non.
+  L'exception 1 ci-dessus ne se declenche que si un humain suspecte deja l'entree — or
+  la classe d'erreur la plus dangereuse est precisement celle que personne ne suspecte,
+  et un `verified` pose par une AUTRE passe (`/lit-review`, `/claim-check`, un serveur
+  TB) n'atteste pas la meme chose qu'un diff de titre CrossRef. Le cout est d'un appel
+  HTTP sans cle par entree ; le benefice est la seule parade a l'erreur ci-dessous.
+
+  > **Vecu (mixed_infections_multimarker, 2026-09-19, apres QUATRE passes propres).**
+  > Une entree portait `10.1093/infdis/jiy391`. Ce DOI **resout** — HTTP 200, notice
+  > CrossRef parfaitement formee — mais celle d'un AUTRE article : meme revue, meme
+  > annee, sujet sans rapport (le bon etait `jiy480`). Les quatre passes precedentes
+  > testaient la RESOLUTION (« le DOI existe-t-il ? »), jamais la CIBLE (« rend-il le
+  > titre attendu ? »), et la 5e a d'abord failli le manquer aussi parce que le rapport
+  > de la passe precedente concluait « 59/59 deja `verified`, 0 verification en ligne
+  > requise ». `crossref_verify.py` compare DEJA les titres (`title_ok`) : l'outil
+  > n'etait pas en cause, c'est cette regle qui l'empechait de tourner. Aggravant : une
+  > coquille d'un chiffre tombe naturellement sur un vrai article du meme fascicule,
+  > les DOI d'une meme revue et d'une meme annee etant adjacents — donc cette erreur
+  > produit presque toujours un DOI valide, jamais un 404.
+  >
+  > Corollaire gratuit : quand une entree porte DEUX identifiants (DOI et PMID), les
+  > faire resoudre tous les deux et comparer leurs titres est un controle croise qui
+  > n'exige aucune source externe de verite. Ici le PMID etait juste et le DOI faux.
 - **Ne JAMAIS inventer de corrections** : si incertain, signaler plutot que corriger
 - **Utiliser WebSearch pour CHAQUE entree** : ne pas se fier a sa memoire pour
   confirmer l'existence d'un papier

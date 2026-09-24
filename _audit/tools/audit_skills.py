@@ -87,12 +87,12 @@ DECLENCHEUR = re.compile(
 # retirer, ce sont eux qui structurent les regles dans le format Anthropic.
 EMOJI = re.compile(r"[\U0001F300-\U0001F9FF]")
 
-REF_FICHIER = re.compile(r"(?:scripts?|references?|assets?|src|templates?)/[\w./-]+")
+REF_FICHIER = re.compile(r"\b(?:scripts?|references?|assets?|src|templates?)/[\w./-]+")
 REF_EXTERNE = re.compile(
     r"(https?://|~/|mp:/|<projet>|<skills>|cahier/|resultats/|résultats/|"
     r"\bfigure?s?/|supplementary/|paper/|bdd/|investigate_phylo/|"
     r"\$\{CLAUDE_PLUGIN_ROOT\}/skills/|PredictOps|Predictops|clone|"
-    r"pipeline TBannotator|RDscan|File S)"
+    r"pipeline TBannotator|RDscan|File S|quanttb/|QuantTB|ete4\[|etetoolkit)"
 )
 
 DESC_MAX = 1024   # au-dela, la description risque d'etre tronquee dans le catalogue

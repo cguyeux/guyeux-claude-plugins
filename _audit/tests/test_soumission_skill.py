@@ -11,8 +11,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = ROOT / "redac" / "skills" / "soumission"
-PACKAGE = ROOT / "codex_packages" / "plugins" / "bio-redac" / "skills" / "soumission"
+SOURCE = ROOT / "diffusion" / "skills" / "soumission"
+PACKAGE = ROOT / "codex_packages" / "plugins" / "diffusion" / "skills" / "soumission"
 
 
 @contextmanager
@@ -109,7 +109,7 @@ class SoumissionSkillTests(unittest.TestCase):
 
         evals = json.loads((PACKAGE / "evals" / "evals.json").read_text(encoding="utf-8"))
         self.assertEqual("soumission", evals["skill_name"])
-        self.assertEqual(3, len(evals["evals"]))
+        self.assertEqual(4, len(evals["evals"]))
         self.assertTrue(all(item.get("expectations") for item in evals["evals"]))
 
 

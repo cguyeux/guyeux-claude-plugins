@@ -1,0 +1,280 @@
+---
+
+name: pectinated-subclade-mining
+description: >-
+  Extraction iterative des sous-lignees pectinees d'une lignee MTBC (ou autre
+  bacterie clonale) via les SPDI core exclusifs du sous-clade. Lit les spdi.txt
+  sur disque, filtre PER-POOL (jamais global), produit un repertoire par
+  sous-clade avec ses markers.
+
+  Utiliser quand : topologie pectinee dans un arbre RAxML focalise, clade trop
+  heterogene, classifier SPDI pour reclasser des souches en attente (a_ranger).
+
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep
+---
+
+> [!WARNING]
+> **[2026-09-08] TABLES ABSENTES du serveur tblearn.** Ce skill interroge 2 objet(s) qui
+> n'existent plus depuis le remplacement du MCP TBannotator. Contrairement au filtre `system_name`,
+> ces requêtes ne rendent pas un ensemble vide : elles **lèvent une erreur** `relation does not exist`.
+>
+> | table citée ici | remplacer par | fondement |
+> |---|---|---|
+> | `tb_ncbi_biosample` | **mv_strain_metadata** | porte `sample_accession`, `host`, `isolation_source`, `country`, `latitude`, `longitude`, `collection_date_*` |
+> | `tb_ncbi_strain` | **mv_strain_metadata** | porte `run_accession`, `tax_id`, `scientific_name`, `study_accession`, `center_name`, `first_public` |
+>
+> Correspondances établies en comparant les colonnes, pas devinées. Détail et schéma complet :
+> `~/.agents/knowledge/tblearn-migration.md`.
+
+
+# pectinated-subclade-mining : Extraction iterative de sous-lignees MTBC
+
+## Quand l'utiliser
+
+Apres avoir construit un arbre RAxML focalise sur une lignee, on observe
+visuellement des sous-clades emergents. Cas typiques : raffiner la taxonomie
+d'une lignee pectinee, trancher si un clade trop heterogene contient plusieurs
+sous-lignees distinctes, produire un classifier SPDI-based pour reclasser les
+souches en attente (`a_ranger`).
+
+Le test de synapomorphismes lit les `spdi.txt` **directement sur disque**
+(filesystem-based, pas de SQL) ; TBannotator n'intervient que pour les metadata.
+
+Pour chaque candidat, ce skill :
+1. Verifie les **synapomorphismes SPDI** (presence >=95% dans le candidat,
+   absence <=5% partout ailleurs avec **filtre per-pool strict**)
+2. Recupere les **metadata** geo-hote depuis TBannotator
+3. Extrait physiquement les souches vers un nouveau repertoire dans `bdd/actuelle/`
+4. Sauvegarde les markers dans `<projet>/data/markers_v2/`
+
+## Principe : filtre PER-POOL (essentiel)
+
+**Bug a eviter** : un seuil global "<5% des autres souches" peut conserver
+un marker present dans 100% d'un petit sous-clade voisin si ce sous-clade
+est noye dans un pool externe plus grand. **Toujours** filtrer pool par pool :
+
+```python
+def find_synapo_per_pool(target_sets, exclude_pools_dict, t_in=0.95, t_out=0.05):
+    cnt=Counter()
+    for sp in target_sets.values(): cnt.update(sp)
+    core={sp for sp,n in cnt.items() if n>=t_in*len(target_sets)}
+    final=set()
+    for sp in core:
+        valid=True
+        for pname, pool in exclude_pools_dict.items():
+            if not pool: continue
+            present=sum(1 for ref in pool if sp in ref)
+            if present > t_out*len(pool):
+                valid=False; break  # echec sur ce pool
+        if valid: final.add(sp)
+    return final
+```
+
+Chaque sous-clade voisin doit etre dans son propre pool (pas merge). Sinon
+un sister-pair de 15+15 voit ses markers s'echanger.
+
+## Pipeline standard
+
+### Etape 1 : preparer les listes candidates
+
+L'utilisateur identifie visuellement dans l'arbre RAxML :
+- Une **topologie pectinee** : (A, (B, (C, (D, E))))
+- Pour chaque sous-clade candidat, donner une liste de SRA
+
+Stocker chaque liste dans `/tmp/cand_<name>.txt` (un SRA par ligne).
+
+### Etape 2 : test synapomorphismes
+
+Script reference : `scripts/find_synapomorphisms.py`
+
+```bash
+python3 scripts/find_synapomorphisms.py \
+  --candidates /tmp/cand_X.txt \
+  --candidate-current-dir <Bovis1.2.2> \
+  --bdd /home/christophe/docs/codes/mtbc/bdd/actuelle \
+  --exclude-clades Bovis1.1,Bovis1.2.1.BCG,Bovis2.s2.1,Caprae1_La2 \
+  --out /tmp/synapo_X.txt
+```
+
+### Etape 3 : metadata
+
+Via TBannotator MCP :
+```sql
+SELECT t.strain_name, t.ncbi_bioproject, b.geo_country, b.host, b.collection_date_parsed
+FROM tb_ncbi_strain t LEFT JOIN tb_ncbi_biosample b ON b.ncbi_biosample=t.ncbi_biosample
+WHERE t.strain_name IN (<liste>)
+ORDER BY b.geo_country, b.host;
+```
+
+### Etape 4 : nommage hierarchique pectine
+
+Convention :
+- Clade racine : `<Lignee>.1`, `<Lignee>.2`
+- Subdivision : `<Lignee>.2.1`, `<Lignee>.2.2`
+- Et ainsi de suite : `<Lignee>.2.2.1`, `<Lignee>.2.2.2.1`, ...
+
+A chaque profondeur, le `.1` est le clade basal qui emerge en premier,
+le `.2` est le sister-clade (qui continue a se subdiviser).
+
+### Etape 5 : extraction physique
+
+```bash
+cd <bdd/actuelle>
+mkdir -p <NewCladeDir>
+while read s; do
+  [ -d "<CurrentDir>/$s" ] && mv "<CurrentDir>/$s" "<NewCladeDir>/$s"
+done < /tmp/cand_X.txt
+# Sauvegarder les markers
+cp /tmp/synapo_X.txt <projet>/data/markers_v2/<NewCladeName>.txt
+```
+
+### Etape 6 : sanity check
+
+Apres extraction, verifier qu'aucune souche n'est mieux classee ailleurs :
+
+```python
+# Pour chaque SRA, scoring per clade
+# Si best != current AND score(best) > score(current) clairement, mismatch
+```
+
+## Seuils typiques
+
+- **Strict (defaut)** : t_in=0.95, t_out=0.05, pour sous-lignees etablies
+- **Relax** : t_in=0.85, t_out=0.10, pour sous-lignees recentes/clonales
+- **Tres relax** : t_in=0.70, t_out=0.20, derniere chance, prudent
+
+Si meme a t_in=0.70 t_out=0.20 on a 0 synapomorphismes, **ne pas extraire**
+le sous-clade : il n'est pas synapomorphiquement distinct. Les sous-divisions
+visuelles dans l'arbre ML sont probablement des artefacts (long-branch attraction,
+homoplasie, ou expansion clonale ultra-recente non capturee par SPDI seuls).
+
+## Tailles minimales
+
+- `>=5` souches pour creer un sous-clade (en dessous : microvariation clonale,
+  pas diversification phylogenetique). Cf. memoire utilisateur
+  `feedback_minimum_sublineage_size`.
+- Acceptable de creer un clade avec 4 souches si elles forment une lignee
+  ancestrale (ex. proto-BCG francais ancestraux a Pasteur 1908).
+
+## Cas particuliers
+
+### Sister-pair sans markers exclusifs internes
+
+Si B et C sont sister et B n'a aucun marker propre (tous chevauchent avec C),
+cela signifie que **(B, C) forment ensemble un clade reel** mais que B n'est
+pas un sous-clade synapomorphique. **Garder C** comme sous-clade extrait,
+fusionner B dans (B,C) parent. Le repertoire B peut etre vide ou contenir
+les outliers.
+
+### Clade trop homogene (ex. France multi-hote clonal)
+
+Apres avoir extrait un gros clade (>100 souches), les sous-divisions internes
+peuvent ne pas avoir de support synapomorphique meme a t_in=0.70/t_out=0.30.
+**Ne pas forcer** la subdivision : le clade reflete une expansion clonale
+ultra-recente sans diversite SPDI suffisante. Marquer dans la memoire que
+ce clade est "homogene non-subdivisable SPDI" et recommander des markers
+complementaires (RD, indels, structural variants).
+
+### Bloc visuel impur : chercher le sous-coeur par bimodalite (valide L1.2.1.2.1.2, 2026-06)
+
+Un bloc pointe "a l'oeil" dans l'arbre est **presque toujours paraphyletique pris
+entier** : 0 synapomorphisme exclusif, meme relache, meme sans filtre global. Ne PAS
+conclure "pas de clade" pour autant. Calculer les **marqueurs candidats** (presents
+>=40% du bloc ET ~0% partout ailleurs, globalement exclusifs) puis le **score de
+portage par souche** : si bimodal (un groupe a ~tous les marqueurs, l'autre a ~0), le
+vrai clade est le **sous-coeur porteur**, les non-porteurs sont des outliers a renvoyer
+au "reste". Ex. : bloc 34 -> sous-coeur 25 (19 mk) + 9 outliers ; bloc 75 -> sous-coeur
+30 (16 mk) + 45 outliers ; bloc 122 -> 0 sous-coeur (assemblage de plusieurs clades).
+Toujours signaler les outliers nommement a l'utilisateur (ne pas rubber-stamper son bloc).
+
+### Monophylie ML-single SANS synapomorphie = clade de topologie non soutenu
+
+Un bloc peut etre monophyletique dans une recherche ML unique (non bootstrappee) ET
+avoir 0 synapomorphisme exclusif (a tous seuils, avec/sans filtre global). C'est un
+**clade de topologie**, pas un clade a marqueurs : ne pas le materialiser comme
+sous-lignee. Le branchement fin d'un arbre non bootstrappe est peu fiable ; pour le
+detail, refaire un arbre bootstrappe (IQ-TREE/UFBoot). Le **signal des marqueurs prime
+sur la topologie** : >=3 synapomorphismes co-occurrents exclusifs = vrai clade meme si
+l'arbre le dit "polyphyletique" (artefact de 1-2 souches intercalees).
+
+### Exclusivite GLOBALE en plus du per-pool
+
+Le per-pool teste vs les sister/parent fournis. Ajouter le test **global** via
+`global_supplementary/traces_mask/clade_spdi_count.pkl` (compte de CLADES contenant le
+SPDI dans leur union) : garder seulement les marqueurs a compte <=15 (= restreints a la
+chaine lignee + ancetres). Ecarte les homoplasies que le per-pool local laisse passer.
+
+### Clades-CONTENEURS legitimes (0 marqueur propre)
+
+Un noeud parent peut avoir 0 synapomorphisme exclusif (toutes ses synapos chez les
+enfants). Son dir ne tient que les basales directes, ou est **vide** si entierement
+partitionne en enfants (entite `n=0`, noeud interne pur valide ; la classification passe
+par les enfants porteurs). Ne pas forcer un marqueur sur un conteneur.
+
+### Remanier une hierarchie deja materialisee : FLATTEN puis REBUILD
+
+Si l'utilisateur rejette un decoupage et veut une autre hierarchie, NE PAS renommer
+incrementalement (collisions, dirs fantomes). (1) FLATTEN : consolider tous les SRA des
+sous-dirs dans le parent, `gio trash` les vides (jamais `rm`), purger leurs cles
+`_marker_overrides.json`, `assert` la conservation. (2) REBUILD : recreer les dirs, `mv`
+chaque souche au noeud le plus profond, ecrire les marqueurs. (3) `build_inventory.py` +
+`build_barcodes.py` + `build_clade_unions.py`. **Ne pas utiliser `lineage_cycle --apply`**
+pour une hierarchie SPECIFIEE (il relance sa propre detection qui diverge).
+
+## Pieges classiques
+
+1. **Filtre global au lieu de per-pool** : un marker present dans 100% d'un
+   small sister-pair de 15 souches passe sous le seuil 5% si autres pools
+   totalisent >300 souches. **Toujours per-pool**.
+2. **Oublier d'inclure le reste du clade parent** dans les exclude_pools :
+   un marker peut etre present dans les 6-10 basales restantes du parent
+   et passer le filtre malgre tout.
+3. **Mesurer la specificite uniquement vs lignees lointaines** : il faut
+   exclure aussi les sister-clades proches phylogenetiquement.
+4. **Conclure trop vite avec 0 synapomorphismes** : tester avec seuils
+   relaches avant d'abandonner ; si toujours 0, c'est une vraie homogeneite.
+5. **Ne jamais verifier que les markers extraits sont mutuellement compatibles**
+   (cf. section suivante) : chaque sous-clade est valide SEUL, jamais le jeu.
+
+## Validation de laminarite en sortie (obligatoire depuis 2026-08-10)
+
+Ce skill valide chaque sous-clade **isolement** : ses markers sont-ils presents
+dedans et absents ailleurs ? Il ne demande jamais si le JEU de markers produit,
+pris ensemble, est compatible avec **un** arbre. Or deux sous-clades peuvent
+chacun passer le test per-pool tout en portant des markers qui se **croisent** :
+c'est le conflit des quatre gametes, et il signifie qu'au moins un des deux
+clades n'existe pas tel qu'on l'a decoupe.
+
+Apres une campagne d'extraction, passer le jeu complet a `marker-laminarity` :
+
+    python3 <skills>/marker-laminarity/scripts/check_laminarity.py --pool bdd/actuelle/<L> [--pool ...] --markers <projet>/data/markers_v2 --gff3 investigate_phylo/resources/NC_000962.3.gff3 --out résultats/<L>_laminarity
+
+Ce qu'il faut lire, dans l'ordre : la **borne combinatoire** (plus de present-sets
+distincts que `n-1` = incompatibilite prouvee sans calcul) ; le nombre de
+**croisements** ; et surtout leur **fragilite**, `min(depassement)` = le nombre de
+souches dont le retrait tuerait le conflit. Un croisement de fragilite 1 ou 2 est
+un trou de couverture ou une souche douteuse, a traiter par `strain-qc` ; un
+croisement a trois chiffres est un vrai desaccord de decoupe, a arbitrer par
+l'arbre ML.
+
+Le mode 3-etats (`--gff3`) n'est pas optionnel en pratique : sans lui, nos
+`spdi.txt` confondent « absent » et « non couvert », et la mesure sur L6 montre
+que **78 % des croisements ainsi declares tiennent sur au plus 2 souches**, donc
+sont des artefacts de couverture.
+
+## Fichiers produits
+
+Pour chaque sous-clade extrait :
+- `bdd/actuelle/<NewClade>/<SRA>/NC_000962.3/spdi.txt` (donnees)
+- `<projet>/data/markers_v2/<NewClade>.txt` (synapomorphismes, 1 SPDI par ligne)
+- `<projet>/data/markers_v2/<Parent>_parent.txt` (joint markers du parent commun)
+
+Tous documentes dans `<projet>/cahier_de_labo.md` et `memory/project_*.md`.
+
+## Codex workflow guardrail
+
+This packaged copy imports a Claude-origin project workflow into Codex. Before writing project registers, moving BDD files, changing Atlas content, appending remote queues, archiving a project, or launching remote compute, require an explicit user request in the current turn. Use recoverable operations only, keep project provenance boundaries, and follow the global rule that files are moved to the trash rather than permanently deleted.
+
+## Codex MCP note
+
+MCP tool names in `allowed-tools` are prerequisites. Verify them with `codex mcp list` before relying on live queries.

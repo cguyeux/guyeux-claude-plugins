@@ -45,20 +45,45 @@ TEXT_SUFFIXES = {
 }
 
 PACKAGE_METADATA = {
-    "bio-bacteria": {
-        "display": "Bio Bacteria Direct",
-        "short": "Direct bacterial research skills.",
-        "long": "Codex package for bacterial research skills already audited for direct, payload, or runtime-adapted packaging.",
+    "bacteria": {
+        "display": "Bacteria Direct",
+        "short": "Direct non-MTBC bacterial pathogen research skills.",
+        "long": "Codex package for non-MTBC bacterial pathogen research skills already audited for direct, payload, or runtime-adapted packaging.",
     },
-    "bio-pathogens": {
-        "display": "Bio Pathogens Direct",
-        "short": "Direct pathogen research skills.",
-        "long": "Codex package for pathogen research skills already audited for direct, payload, runtime-adapted, or guarded workflow packaging.",
+    "bioinfo": {
+        "display": "Bioinfo Direct",
+        "short": "Direct cross-domain bioinformatics skills.",
+        "long": "Codex package for cross-domain bioinformatics skills already audited for direct, payload, or runtime-adapted packaging.",
     },
-    "bio-population-genetics": {
-        "display": "Bio Population Genetics Direct",
+    "litterature": {
+        "display": "Literature Direct",
+        "short": "Direct literature search and bibliography skills.",
+        "long": "Codex package for literature search and bibliography skills already audited for direct, payload, or runtime-adapted packaging.",
+    },
+    "mtbc": {
+        "display": "MTBC Direct",
+        "short": "Direct Mycobacterium tuberculosis complex phylogenomics skills.",
+        "long": "Codex package for Mycobacterium tuberculosis complex phylogenomics skills already audited for direct, payload, runtime-adapted, or guarded workflow packaging.",
+    },
+    "phylo": {
+        "display": "Phylo Direct",
+        "short": "Direct cross-domain phylogenetics skills.",
+        "long": "Codex package for cross-domain phylogenetics skills already audited for direct, payload, or runtime-adapted packaging.",
+    },
+    "popgen": {
+        "display": "Population Genetics Direct",
         "short": "Direct population genetics skills.",
         "long": "Codex package for population genetics skills already audited for direct, payload, or runtime-adapted packaging.",
+    },
+    "redaction": {
+        "display": "Redaction Direct",
+        "short": "Direct manuscript redaction skills.",
+        "long": "Codex package for manuscript redaction skills already audited for direct, runtime-adapted, or guarded workflow packaging.",
+    },
+    "structure": {
+        "display": "Structure Direct",
+        "short": "Direct protein structure and structural biology skills.",
+        "long": "Codex package for protein structure and structural biology skills already audited for direct, payload, or runtime-adapted packaging.",
     },
     "maboss": {
         "display": "MaBoSS Direct",

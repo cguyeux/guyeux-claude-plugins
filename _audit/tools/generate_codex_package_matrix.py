@@ -36,17 +36,11 @@ WEB_RUNTIME = re.compile(r"\b(WebSearch|WebFetch|curl|requests\.|https?://)", re
 EXCLUDED_COUNT_NAMES = {".venv", "venv", "__pycache__"}
 EXCLUDED_COUNT_SUFFIXES = {".pyc", ".pyo"}
 
-PACKAGE_BY_PLUGIN = {
-    "bio_bacteria": "bio-bacteria",
-    "bio_pathogens": "bio-pathogens",
-    "bio_population_genetics": "bio-population-genetics",
-    "bio_redac": "bio-redac",
-    "ia": "ia",
-    "maboss": "maboss",
-    "multimedia": "multimedia",
-    "ops": "ops",
-    "web": "web",
-}
+# Depuis la refonte P5 (2026-09-15), l'architecture est a 17 plugins, chacun proprietaire
+# exclusif de ses skills : le paquet Codex candidat d'un skill non encore empaquete est son
+# plugin source lui-meme (aucun n'a de underscore a convertir). Ce mapping ne sert plus qu'a
+# absorber d'eventuelles exceptions futures ; laisse vide tant qu'aucune n'existe.
+PACKAGE_BY_PLUGIN: dict[str, str] = {}
 
 
 def load_json(path: Path) -> Any:

@@ -31,7 +31,7 @@ frère n'ait pas à le redécouvrir pièce par pièce.
 ## Les quatre outils
 
 ```bash
-CSN=~/docs/codes/claude_plugins/bio_pathogens/skills/crispr-spacer-null/scripts/crispr_spacer_null.py
+CSN=~/docs/environnement/plugins/bacteria/skills/crispr-spacer-null/scripts/crispr_spacer_null.py
 ```
 
 ### 1. `null` — permutation d'ordre k, AVEC diagnostic de dégénérescence

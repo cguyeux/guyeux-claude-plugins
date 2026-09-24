@@ -27,7 +27,7 @@ réconciliation SNP / MNV / acide aminé** commun aux quatre modes.
 
 Toutes les données vivent dans le projet `Resistance_antibio` ; ce skill les interroge
 et ne les duplique pas. Racine surchargeable par `RESISTANCE_PROJECT`
-(défaut `~/docs/codes/mtbc/Resistance_antibio`).
+(défaut `~/docs/codes/mtbc/en_cours/Resistance_antibio`).
 
 ## Routeur d'intention
 
@@ -148,7 +148,7 @@ gène-niveau (LoF) de tb-profiler non résolues.
 Reconstruction dans le projet, idempotente et journalisée :
 
 ```bash
-cd "${RESISTANCE_PROJECT:-$HOME/docs/codes/mtbc/Resistance_antibio}"
+cd "${RESISTANCE_PROJECT:-$HOME/docs/codes/mtbc/en_cours/Resistance_antibio}"
 .venv-ingest/bin/python update_database.py                   # sources + catalogue + phénotypes
 .venv-ingest/bin/python analyses/phase1_build_catalogue.py   # catalogue seul (aa_propagation en fin)
 ```
@@ -194,7 +194,7 @@ aux fluoroquinolones, là où un matching SPDI brut le manque.
 ### Entraînement et évaluation
 
 ```bash
-cd "${RESISTANCE_PROJECT:-$HOME/docs/codes/mtbc/Resistance_antibio}"
+cd "${RESISTANCE_PROJECT:-$HOME/docs/codes/mtbc/en_cours/Resistance_antibio}"
 .venv-ingest/bin/python analyses/phase10_predict.py --drugs pyrazinamide,isoniazid --folds 5
 # prérequis : phase4 (matrice), phase6 (masque), catalogue enrichi (phase1 + aa_propagation)
 ```
@@ -288,7 +288,7 @@ que `OR > 1`.
 (`mtbc-gene` mode mutation, ESM et LLR Meier 2021), littérature (`tbmonitor-papers`).
 
 ```bash
-cd "${RESISTANCE_PROJECT:-$HOME/docs/codes/mtbc/Resistance_antibio}"
+cd "${RESISTANCE_PROJECT:-$HOME/docs/codes/mtbc/en_cours/Resistance_antibio}"
 .venv-ingest/bin/python analyses/phase4_build_matrix.py                             # matrice
 .venv-ingest/bin/python analyses/phase6_feature_mask.py                             # masque lignée
 .venv-ingest/bin/python analyses/phase7_gwas_logistic.py --drug ethambutol           # découverte
@@ -328,7 +328,7 @@ Orchestration en cinq étapes :
 
 1. **Dossier local** (catalogue, association empirique, annotation) :
    ```bash
-   cd "${RESISTANCE_PROJECT:-$HOME/docs/codes/mtbc/Resistance_antibio}"
+   cd "${RESISTANCE_PROJECT:-$HOME/docs/codes/mtbc/en_cours/Resistance_antibio}"
    .venv-ingest/bin/python analyses/explain_mutation.py --variant rpoB_p.Ser450Leu
    ```
    **Sortie** : localisation (gène, codon), verdict catalogue par médicament (grade,

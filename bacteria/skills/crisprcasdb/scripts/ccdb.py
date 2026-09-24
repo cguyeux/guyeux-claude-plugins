@@ -62,7 +62,7 @@ def _ensure_up() -> None:
             return
     raise CcdbError(
         f"le conteneur '{CONTAINER}' ne répond pas ; voir "
-        "~/docs/codes/mtbc/crisprcasdb_local/bin/ccdb_service.sh start"
+        "~/docs/codes/mtbc/en_cours/crisprcasdb_local/bin/ccdb_service.sh start"
     )
 
 

@@ -42,7 +42,7 @@ user-invocable: true
 > `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
 >
 > ```bash
-> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> B=~/docs/environnement/plugins/mtbc/skills/bdd-bridge/scripts
 > export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
 > python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
 > python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable
@@ -101,7 +101,7 @@ The taxonomic authority hierarchy is **fixed canonically** in
 This skill's working file for **marker lookups** is the live module:
 
 ```
-~/docs/codes/mtbc/investigate_phylo/lignees.py
+~/docs/codes/mtbc/en_cours/investigate_phylo/lignees.py
 ```
 
 It defines a `lignees` dictionary keyed by classification system. Key `"moi"`
@@ -322,7 +322,7 @@ reproducible.
 ### Tool
 
 ```
-python3 /home/christophe/docs/codes/mtbc/global_supplementary/barcoding_v2/barcoder/barcode.py <spdi.txt>
+python3 /home/christophe/docs/codes/mtbc/en_cours/global_supplementary/barcoding_v2/barcoder/barcode.py <spdi.txt>
 python3 .../barcoder/barcode.py <spdi.txt> --json          # machine-readable
 python3 .../barcoder/barcode.py --sra ERR4798406           # live TBannotator fetch (needs psycopg2 + TBANNOTATOR_DSN)
 ```
@@ -881,7 +881,7 @@ sub-second time against the pre-indexed PubMed TB corpus (~190k abstracts).
 ## Loading policy
 
 - `lignees.py` is **read live** at every invocation. Path resolution :
-  1. `~/docs/codes/mtbc/investigate_phylo/lignees.py` (canonical)
+  1. `~/docs/codes/mtbc/en_cours/investigate_phylo/lignees.py` (canonical)
   2. Any project-relative `lignees.py` discoverable from `pwd` (fallback
      for when the user works from an unusual context)
 - Loading is done by `exec()` in an isolated namespace, capturing only

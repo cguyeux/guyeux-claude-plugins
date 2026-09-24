@@ -1,0 +1,118 @@
+group	species	strain	accession	source	note
+P1	adleri	201601302	RQHG00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+P1	adleri	FH2-B-C1	NPDV00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+P1	ainazelensis	201903071T	GCF_016918785.1	korba2021	source non-OA, accession via NCBI Assembly ; a confirmer par /literature-access
+P1	ainlahdjerensis	201903070T	GCF_016919175.1	korba2021	source non-OA ; a confirmer par /literature-access
+P1	alexanderi	L60	NZ_AHMT00000000	vincent2019taxonomy
+P1	alstonii	79601	ANIK00000000	vincent2019taxonomy
+P1	barantonii	201702444	RQGN00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+P1	barantonii	FH4-C-A1	NPDS00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+P1	borgpetersenii	L550	GCA_000013945.1	vincent2019taxonomy	testee : telechargement + skani OK (smoke test 2026-09-18)
+P1	ellisii	ATI7-C-A5	NPEF00000000	vincent2019taxonomy
+P1	gorisiae	WS92.C1T	CP162130	hamond2025	assemblage multi-contigs CP162130-CP162132 ; CP162130 resout l'assemblage complet via l'API Datasets
+P1	interrogans	56601	GCA_000092565.1	vincent2019taxonomy	espece type du genre, tres etudiee
+P1	kirschneri	200702274	NZ_AHOC00000000	vincent2019taxonomy
+P1	kmetyi	Bejo-Iso9	NZ_AHMP00000000	vincent2019taxonomy	1 candidat nomme parmi 4 rapportes ; autres candidats non individualises dans la revue
+P1	mayottensis	200901116	AKWB00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+P1	mayottensis	201601116	RQHQ00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+P1	noguchii	CZ214	NZ_AKWY00000000	vincent2019taxonomy
+P1	sanjuanensis	LGVF02T	GCF_022267375.1	fernandes2022	correspondance exacte souche type/accession non confirmee (2 assemblies candidats), source non-OA
+P1	sanjuanensis	LGVF02T	GCF_022267325.1	fernandes2022	second assembly candidat pour la meme souche type ; a trancher
+P1	santarosai	LT 821	GCA_000313175.2	vincent2019taxonomy
+P1	stimsonii	201702407	RQGT00000000	vincent2019taxonomy	synonyme de putramalaysiae (Vincent 2019) ; candidat parmi 2
+P1	stimsonii	SSW20	RQEQ00000000	vincent2019taxonomy	synonyme de putramalaysiae (Vincent 2019) ; candidat parmi 2
+P1	tipperaryensis	GWTS	GCA_001729245.1	vincent2019taxonomy
+P1	weilii	LT2116	NZ_AHOR00000000	vincent2019taxonomy
+P2	andrefontaineae	201800301	RQEY00000000	vincent2019taxonomy
+P2	broomii	5399	NZ_AHMO00000000	vincent2019taxonomy
+P2	cinconiae	WS58.C1T	CP162137	hamond2025	assemblage multi-contigs CP162137-CP162138
+P2	dzoumogneensis	201601113	RQHS00000000	vincent2019taxonomy
+P2	fainei	BUT 6	NZ_AKWZ00000000	vincent2019taxonomy
+P2	fletcheri	SSW15	RQET00000000	vincent2019taxonomy
+P2	fluminis	SCS5	RQEV00000000	vincent2019taxonomy
+P2	haakeii	ATI7-C-A2	NPEI00000000	vincent2019taxonomy
+P2	hartskeerlii	MCA1_C_A1	NPDN00000000	vincent2019taxonomy
+P2	inadai	10	NZ_AHMM02000000	vincent2019taxonomy
+P2	johnsonii	E8	BFAY00000000	vincent2019taxonomy
+P2	koniamboensis	201800265	RQFY00000000	vincent2019taxonomy
+P2	langatensis	201702690	RQGC00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+P2	langatensis	SSW18	RQER00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+P2	licerasiae	201601117	RQHP00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+P2	licerasiae	VAR 010	NZ_AHOO00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+P2	neocaledonica	ES4-C-A1	NPEA00000000	vincent2019taxonomy
+P2	perolatii	FH1-B-B1	NPDZ00000000	vincent2019taxonomy
+P2	saintgironsiae	FH4-C-A2	NPDR00000000	vincent2019taxonomy
+P2	sarikeiensis	201702455	RQGF00000000	vincent2019taxonomy
+P2	semungkisensis	SSS9	RQEP00000000	vincent2019taxonomy	orthographe Vincent 2019 : semungkikensis, corrigee en semungkisensis par la revue 2026
+P2	venezuelensis	CLM-R50	NETS00000000	vincent2019taxonomy
+P2	wolffii	Khorat-H2	NZ_AKWX00000000	vincent2019taxonomy	1 candidat nomme parmi 6 rapportes ; autres candidats non individualises dans la revue
+S1	abararensis	201903074T	GCF_016918735.1	korba2021	source non-OA ; a confirmer par /literature-access
+S1	bandrabouensis	201601109	RQHU00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+S1	bandrabouensis	201601111	RQHT00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+S1	biflexa	1 (Paris)	GCA_000017685.1	vincent2019taxonomy	souche de reference classique ; 1 candidat nomme parmi 6 rapportes
+S1	brenneri	201800277	RQFP00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+S1	brenneri	JW2_C_A2	NPDQ00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+S1	chreensis	201903075T	GCF_016919165.1	korba2021	source non-OA ; a confirmer par /literature-access
+S1	ellinghausenii	E18	BFAZ00000000	vincent2019taxonomy	orthographe Vincent 2019 : ellinghauseni
+S1	harrisiae	FH2-B-A1	NPDX00000000	vincent2019taxonomy
+S1	iowaensis	WS39.C2T	CP162142	hamond2025	assemblage multi-contigs CP162142-CP162144
+S1	jelokensis	201702451	RQGH00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+S1	jelokensis	201702419	RQGR00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+S1	kemamanensis	201702454	RQGG00000000	vincent2019taxonomy
+S1	meyeri	Went 5	NZ_AKXE00000000	vincent2019taxonomy	1 candidat nomme parmi 6 rapportes ; autres candidats non individualises dans la revue
+S1	mgodei	WS4.C2T	CP162139	hamond2025	assemblage multi-contigs CP162139-CP162141
+S1	milleri	WS60.C2T	CP162133	hamond2025	assemblage multi-contigs CP162133-CP162136
+S1	montravelensis	201800278	RQFO00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+S1	montravelensis	201800279	RQFN00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+S1	mtsangambouensis	201601298	RQHK00000000	vincent2019taxonomy
+S1	noumeaensis	201800287	RQFK00000000	vincent2019taxonomy
+S1	perdikensis	201702692	RQGA00000000	vincent2019taxonomy
+S1	terpstrae	ATCC 700639	NZ_AOGW00000000	vincent2019taxonomy
+S1	vanthielii	201601955	RQHF00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+S1	vanthielii	ATCC 700522	NZ_AOGY00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+S1	wolbachii	CDC	NZ_AOGZ00000000	vincent2019taxonomy
+S1	yanagawae	201800272	RQFU00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+S1	yanagawae	ATCC 700523	NZ_AOGX00000000	vincent2019taxonomy	candidat parmi 2 ; type non confirme
+S2	idonii	201300427	RQHW00000000	vincent2019taxonomy
+S2	ilyithenensis	201400974	RQHV00000000	vincent2019taxonomy
+S2	kobayashii	E30	BFBA00000000	vincent2019taxonomy
+S2	ognonensis	201702476	RQGD00000000	vincent2019taxonomy
+S2	ryugenii	YH101	BFBB00000000	vincent2019taxonomy
+P1	gomenensis	201800297	RQFC00000000	vincent2019taxonomy	candidat parmi 4 ; type non confirme (complement 2026-09-18)
+P1	gomenensis	201800298	RQFB00000000	vincent2019taxonomy	candidat parmi 4 ; type non confirme (complement 2026-09-18)
+P1	gomenensis	201800300	RQEZ00000000	vincent2019taxonomy	candidat parmi 4 ; type non confirme (complement 2026-09-18)
+P1	gomenensis	201800299	RQFA00000000	vincent2019taxonomy	candidat parmi 4 ; type non confirme (complement 2026-09-18)
+P1	yasudae	201702418	RQGS00000000	vincent2019taxonomy	synonyme dzianensis ; candidat parmi 6 ; type non confirme (complement 2026-09-18)
+P1	yasudae	201702445	RQGM00000000	vincent2019taxonomy	synonyme dzianensis ; candidat parmi 6 ; type non confirme (complement 2026-09-18)
+P1	yasudae	201702446	RQGL00000000	vincent2019taxonomy	synonyme dzianensis ; candidat parmi 6 ; type non confirme (complement 2026-09-18)
+P1	yasudae	201702447	RQGK00000000	vincent2019taxonomy	synonyme dzianensis ; candidat parmi 6 ; type non confirme (complement 2026-09-18)
+P1	yasudae	L1S1	RQEX00000000	vincent2019taxonomy	synonyme dzianensis ; candidat parmi 6 ; type non confirme (complement 2026-09-18)
+P1	yasudae	201601115	RQHR00000000	vincent2019taxonomy	synonyme dzianensis ; candidat parmi 6 ; type non confirme (complement 2026-09-18)
+P2	selangorensis	201702405	RQGV00000000	vincent2019taxonomy	candidat parmi 3 ; type non confirme (complement 2026-09-18)
+P2	selangorensis	201702406	RQGU00000000	vincent2019taxonomy	candidat parmi 3 ; type non confirme (complement 2026-09-18)
+P2	selangorensis	SSW17	RQES00000000	vincent2019taxonomy	candidat parmi 3 ; type non confirme (complement 2026-09-18)
+S1	bouyouniensis	201800273	RQFT00000000	vincent2019taxonomy	candidat parmi 3 ; type non confirme (complement 2026-09-18)
+S1	bouyouniensis	201800295	RQFD00000000	vincent2019taxonomy	candidat parmi 3 ; type non confirme (complement 2026-09-18)
+S1	bouyouniensis	201601297	RQHL00000000	vincent2019taxonomy	candidat parmi 3 ; type non confirme (complement 2026-09-18)
+S1	bourretii	201800266	RQFX00000000	vincent2019taxonomy	candidat parmi 4 ; type non confirme (complement 2026-09-18)
+S1	bourretii	201800267	RQFW00000000	vincent2019taxonomy	candidat parmi 4 ; type non confirme (complement 2026-09-18)
+S1	bourretii	201800281	RQFL00000000	vincent2019taxonomy	candidat parmi 4 ; type non confirme (complement 2026-09-18)
+S1	bourretii	201800280	RQFM00000000	vincent2019taxonomy	candidat parmi 4 ; type non confirme (complement 2026-09-18)
+S1	congkakensis	201702422	RQGP00000000	vincent2019taxonomy	candidat parmi 3 ; type non confirme (complement 2026-09-18)
+S1	congkakensis	201702425	RQGO00000000	vincent2019taxonomy	candidat parmi 3 ; type non confirme (complement 2026-09-18)
+S1	congkakensis	201702421	RQGQ00000000	vincent2019taxonomy	candidat parmi 3 ; type non confirme (complement 2026-09-18)
+S1	kanakyensis	201800293	RQFF00000000	vincent2019taxonomy	candidat parmi 3 ; type non confirme (complement 2026-09-18)
+S1	kanakyensis	201800294	RQFE00000000	vincent2019taxonomy	candidat parmi 3 ; type non confirme (complement 2026-09-18)
+S1	kanakyensis	201800292	RQFG00000000	vincent2019taxonomy	candidat parmi 3 ; type non confirme (complement 2026-09-18)
+S1	levettii	201601119	RQHO00000000	vincent2019taxonomy	candidat parmi 12 ; type non confirme (complement 2026-09-18)
+S1	levettii	201601121	RQHN00000000	vincent2019taxonomy	candidat parmi 12 ; type non confirme (complement 2026-09-18)
+S1	levettii	201601122	RQHM00000000	vincent2019taxonomy	candidat parmi 12 ; type non confirme (complement 2026-09-18)
+S1	levettii	201601299	RQHJ00000000	vincent2019taxonomy	candidat parmi 12 ; type non confirme (complement 2026-09-18)
+S1	levettii	201701673	RQGZ00000000	vincent2019taxonomy	candidat parmi 12 ; type non confirme (complement 2026-09-18)
+S1	levettii	201701674	RQGY00000000	vincent2019taxonomy	candidat parmi 12 ; type non confirme (complement 2026-09-18)
+S1	levettii	201701675	RQGX00000000	vincent2019taxonomy	candidat parmi 12 ; type non confirme (complement 2026-09-18)
+S1	levettii	201702449	RQGI00000000	vincent2019taxonomy	candidat parmi 12 ; type non confirme (complement 2026-09-18)
+S1	levettii	201800274	RQFS00000000	vincent2019taxonomy	candidat parmi 12 ; type non confirme (complement 2026-09-18)
+S1	levettii	201800275	RQFR00000000	vincent2019taxonomy	candidat parmi 12 ; type non confirme (complement 2026-09-18)
+S1	levettii	201800276	RQFQ00000000	vincent2019taxonomy	candidat parmi 12 ; type non confirme (complement 2026-09-18)
+S1	levettii	MCA2_B_A1	NPDM00000000	vincent2019taxonomy	candidat parmi 12 ; seule souche a reference bibliographique distincte (PMID 29310748, 29765361) plutot que This study

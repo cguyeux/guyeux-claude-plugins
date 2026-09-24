@@ -145,6 +145,20 @@ def _atom_site(path: str):
 
 
 def chain_lengths_from_cif(path: str) -> list[int]:
+    # LIMITE CONNUE, NON CORRIGEE (2026-09-19, mtbc/Rv3896c-Rv3898c, P4.8) : pour un ligand
+    # petite molecule, `label_seq_id` vaut "." pour TOUS ses atomes -> le set() par chaine
+    # les collapse a une seule valeur, rendant une longueur de 1 quel que soit le nombre
+    # reel d'atomes lourds du ligand. Or le skill tokenise 1 token par atome de ligand (cf.
+    # section "Lire les sorties" du skill) : la+lb ne correspond donc jamais a pae.shape[0]
+    # pour un ligand multi-atomes, et `pae_stats()` (garde-fou "jamais un chiffre faux")
+    # rend systematiquement None -> colonnes pae_inter_* vides en sortie pour ce cas. Verifie
+    # sur rv3896c_glcnacmurnac (302 aa + ligand 34 atomes lourds, tokens reels 336) : lb rendu
+    # ici vaut 1 au lieu de 34. Calcul manuel (script ponctuel, cf. cahier du projet cite
+    # ci-dessus) reste necessaire pour le PAE inter-chaines tant que ceci n'est pas corrige.
+    # Piste de correctif, non appliquee : distinguer chaine polymere (compter les label_seq_id
+    # numeriques distincts, comportement actuel) de chaine ligand (compter les ATOMES, via
+    # `id`/`label_atom_id` plutot que `label_seq_id`), a partir du mol_type/entity_id lu dans
+    # `processed/records/<job>.json` plutot que du seul mmCIF.
     cols, rows = _atom_site(path)
     ch_i = cols.get("label_asym_id", 6)
     sq_i = cols.get("label_seq_id", 8)
@@ -163,11 +177,25 @@ def interface_residues(path: str, cutoff: float = 8.0) -> dict[str, set[int]]:
     x_i = cols.get("Cartn_x", 10)
     coords: dict[str, list[tuple[int, float, float, float]]] = {}
     for f in rows:
+        # label_seq_id vaut "." pour un ligand petite molecule (non-polymere, pas de numero de
+        # residu) : int(f[sq_i]) leve alors une ValueError. BUG CORRIGE 2026-09-19 (mtbc/
+        # Rv3896c-Rv3898c, P4.8) : l'ancienne version faisait `coords.setdefault(chain, [])
+        # .append((int(f[sq_i]), ...))` -- `setdefault` cree la cle AVANT que `int()` echoue,
+        # laissant la chaine ligand a une liste VIDE pour de bon (l'exception saute l'ajout mais
+        # pas la creation de la cle). `chains = sorted(coords)` incluait alors la chaine ligand
+        # avec zero coordonnee, et `np.array([])` sur une liste vide est 1-D (pas (0,3)),
+        # plantant plus loin sur `b[None, :, :]`. Repli : residu 1 pour tout atome non numerote
+        # (correct pour un ligand a une seule unite ; les coordonnees, elles, sont toujours
+        # necessaires au calcul de distance meme quand le numero de residu n'a pas de sens).
         try:
-            coords.setdefault(f[ch_i], []).append(
-                (int(f[sq_i]), float(f[x_i]), float(f[x_i + 1]), float(f[x_i + 2])))
+            x, y, z = float(f[x_i]), float(f[x_i + 1]), float(f[x_i + 2])
         except (ValueError, IndexError):
             continue
+        try:
+            seqid = int(f[sq_i])
+        except (ValueError, IndexError):
+            seqid = 1
+        coords.setdefault(f[ch_i], []).append((seqid, x, y, z))
     chains = sorted(coords)
     if len(chains) < 2:
         return {}
@@ -184,25 +212,68 @@ def interface_residues(path: str, cutoff: float = 8.0) -> dict[str, set[int]]:
 # --------------------------------------------------------------------------- #
 # PAE
 # --------------------------------------------------------------------------- #
-def pae_stats(npz_path: str, la: int, lb: int) -> dict | None:
+def pae_stats(npz_path: str, lens: list[int]) -> dict | None:
+    """Generalise a N >= 2 chaines (corrige le 2026-09-20, mtbc/Rv2892c P3.7/P3.9 :
+    avant cette date, la version 2-chaines de cette fonction rendait None des qu'un
+    complexe portait une 3e chaine (la+lb != pae.shape[0]) -- jamais un chiffre FAUX,
+    mais un manque qui forcait un script ponctuel a chaque docking ternaire/quaternaire.
+
+    GARDE-FOU (verifie contre un complexe ternaire resolu, PE25-PPE41-EspG5 pris comme
+    positif calibre, Table S8 de mtbc/Rv2892c/article/supplementary.tex) : la moyenne
+    PAE inter-chaines n'est PAS le flatten brut de tous les blocs hors-diagonale. Un
+    flatten sur-pondere la paire impliquant la plus grande chaine (7,54-8,43 A mesure au
+    lieu des 7,28-8,15 A publies). La definition correcte est la moyenne NON ponderee des
+    moyennes de CHAQUE PAIRE de chaines (chaque paire compte pour 1/N_pairs, quelle que
+    soit sa taille) -- c'est ce que cette fonction calcule, et elle est identique a
+    l'ancienne implementation dans le cas particulier a 2 chaines (une seule paire)."""
     d = np.load(npz_path)
     pae = d[list(d.keys())[0]]
     if pae.ndim == 3:
         pae = pae[0]
-    if la + lb != pae.shape[0]:
+    if sum(lens) != pae.shape[0] or len(lens) < 2:
         return None  # jamais rendre un chiffre faux : cf. skill, section tokenisation
-    ab, ba = pae[:la, la:], pae[la:, :la]
-    inter_min = float(min(ab.min(), ba.min()))
-    i, j = np.unravel_index(int(np.argmin(ab)), ab.shape)
-    return {
-        "pae_inter_min": inter_min,
-        "pae_inter_mean": float((ab.mean() + ba.mean()) / 2),
-        "pae_intra_a": float(pae[:la, :la].mean()),
-        "pae_intra_b": float(pae[la:, la:].mean()),
-        "argmin_res_a": int(i) + 1,
-        "argmin_res_b": int(j) + 1,
-        "n_cells": int(ab.size + ba.size),
+    bounds = [0]
+    for n in lens:
+        bounds.append(bounds[-1] + n)
+    pair_means, pair_mins, pair_argmins = [], [], []
+    for i in range(len(lens)):
+        for j in range(i + 1, len(lens)):
+            b1 = pae[bounds[i]:bounds[i + 1], bounds[j]:bounds[j + 1]]
+            b2 = pae[bounds[j]:bounds[j + 1], bounds[i]:bounds[i + 1]]
+            pair_means.append((float(b1.mean()) + float(b2.mean())) / 2)
+            m1, m2 = float(b1.min()), float(b2.min())
+            pair_mins.append(min(m1, m2))
+            if m1 <= m2:
+                ii, jj = np.unravel_index(int(np.argmin(b1)), b1.shape)
+            else:
+                jj, ii = np.unravel_index(int(np.argmin(b2)), b2.shape)
+            pair_argmins.append((i, int(ii) + 1, j, int(jj) + 1))
+    best_pair = int(np.argmin(pair_mins))
+    ci, ri, cj, rj = pair_argmins[best_pair]
+    out = {
+        "pae_inter_min": float(min(pair_mins)),
+        "pae_inter_mean": float(np.mean(pair_means)),
+        "argmin_res_a": ri,
+        "argmin_res_b": rj,
+        "argmin_pair": f"{ci}-{cj}",  # indices de chaine du couple le plus proche (N>2 chaines)
+        "n_cells": int(sum((bounds[i + 1] - bounds[i]) * (bounds[j + 1] - bounds[j]) * 2
+                           for i in range(len(lens)) for j in range(i + 1, len(lens)))),
+        "n_chains": len(lens),
     }
+    for k in range(len(lens)):
+        out[f"pae_intra_chain{k}"] = float(pae[bounds[k]:bounds[k + 1],
+                                                 bounds[k]:bounds[k + 1]].mean())
+    # Colonnes historiques (2 chaines), conservees pour compatibilite descendante des
+    # TSV/scripts existants : identiques a la sortie d'avant le 2026-09-20 quand N=2.
+    if len(lens) == 2:
+        out["pae_intra_a"] = out["pae_intra_chain0"]
+        out["pae_intra_b"] = out["pae_intra_chain1"]
+    else:
+        out["pae_pairs"] = ";".join(
+            f"{i}-{j}:{m:.2f}" for (i, j), m in
+            zip(((i, j) for i in range(len(lens)) for j in range(i + 1, len(lens))),
+                pair_means))
+    return out
 
 
 def mean_sd(xs: list[float]) -> tuple[float, float]:
@@ -219,7 +290,7 @@ def read_job(job: str, pred_dir: str) -> dict:
     models = sorted(f for f in os.listdir(pred_dir) if f.startswith("confidence_"))
     cifs = sorted(f for f in os.listdir(pred_dir) if f.endswith(".cif"))
     lens = chain_lengths_from_cif(os.path.join(pred_dir, cifs[0])) if cifs else []
-    la, lb = (lens + [0, 0])[:2]
+    la, lb = (lens + [0, 0])[:2]  # colonnes historiques len_a/len_b (2 premieres chaines)
 
     per_model = []
     for m in models:
@@ -233,8 +304,8 @@ def read_job(job: str, pred_dir: str) -> dict:
             "chain_ptm_a": (conf.get("chains_ptm") or {}).get("0"),
             "chain_ptm_b": (conf.get("chains_ptm") or {}).get("1"),
         }
-        if os.path.exists(npz):
-            st = pae_stats(npz, la, lb)
+        if os.path.exists(npz) and lens:
+            st = pae_stats(npz, lens)  # toutes les chaines, plus seulement les 2 premieres
             if st:
                 row.update(st)
         per_model.append(row)
@@ -242,6 +313,7 @@ def read_job(job: str, pred_dir: str) -> dict:
     msa_dir = msa_dir_of(pred_dir)
     depth, blocks = paired_depth(msa_dir)
     out = {"job": job, "n_models": len(per_model), "len_a": la, "len_b": lb,
+           "n_chains": len(lens), "len_chains": ",".join(str(n) for n in lens),
            "msa_paired": depth, "msa_blocks": blocks,
            "msa_unpaired": unpaired_depths(msa_dir)}
     for key in ("iptm", "complex_plddt", "pae_inter_min", "pae_inter_mean",
@@ -290,11 +362,21 @@ def main() -> None:
         sys.exit("aucune prediction Boltz trouvee sous " + " ".join(args.dirs))
     rows = [read_job(j, d) for j, d in jobs.items()]
 
-    cols = ["job", "n_models", "len_a", "len_b", "msa_paired", "iptm", "iptm_sd",
+    cols = ["job", "n_models", "len_a", "len_b", "n_chains", "len_chains",
+            "msa_paired", "iptm", "iptm_sd",
             "pae_inter_min", "pae_inter_min_sd", "pae_inter_min_min",
             "pae_inter_min_max", "pae_inter_mean", "pae_inter_mean_sd",
             "complex_plddt", "chain_ptm_a", "chain_ptm_b", "pae_intra_a",
             "pae_intra_b", "interface_argmin", "iface_a_span", "iface_b_span"]
+    # n_chains/len_chains sont nouveaux (2026-09-20) : un TSV deja parse par un script
+    # existant qui indexe par POSITION plutot que par en-tete verrait ses colonnes
+    # decalees. Prevenir plutot que casser silencieusement :
+    if any(r.get("n_chains", 2) > 2 for r in rows):
+        print("NOTE : au moins un job a plus de 2 chaines -- colonnes n_chains/len_chains "
+              "ajoutees (2026-09-20), pae_inter_mean/min desormais calcules correctement "
+              "sur toutes les paires (voir pae_stats()) plutot que None. Le detail par "
+              "paire n'est pas dans ce TSV : relire pae_stats() sur les fichiers bruts si "
+              "le breakdown par paire est necessaire.", file=sys.stderr)
 
     def fmt(v):
         if isinstance(v, float):

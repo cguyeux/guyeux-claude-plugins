@@ -3,8 +3,8 @@
 Ce rapport compare des invariants observables. Il ne conserve aucun transcript ni valeur secrète.
 
 - Scénarios : 18
-- Réussis : 17
-- Partiels : 1
+- Réussis : 16
+- Partiels : 2
 - Bloqués : 0
 - Échecs : 0
 - Non exécutés : 0
@@ -27,13 +27,12 @@ Ce rapport compare des invariants observables. Il ne conserve aucun transcript n
 | hooks-demarrage-arret | hooks | partial | pass | partial | CCX-07/08 |
 | suppression-bloquee | hooks | pass | pass | pass | CCX-07 |
 | permissions-minimales | rules | pass | pass | pass | CCX-12 |
-| mcp-configures | mcp | pass | pass | pass | CCX-14 |
+| mcp-configures | mcp | partial | pass | partial | CCX-14 |
 | interface-native | interface | pass | pass | pass | CCX-14 |
 | secrets-non-importes | negative | pass | pass | pass | CCX-01/15 |
 
 ## Écarts et limites
 
-- `skill-desactive-absent` / claude : pass - ancien cache physique encore présent (propriétaire : CCX-16).
 - `hooks-demarrage-arret` / claude : partial - le mode --print n'émet pas d'événement Stop exploitable (propriétaire : Claude-CLI).
-- `mcp-configures` / claude : pass - configuration comparée; transport et authentification non prouvés (propriétaire : external-services).
-- `mcp-configures` / codex : pass - OAuth Superhuman absent et URL tbannotator intentionnellement distincte (propriétaire : human-auth/CCX-16).
+- `mcp-configures` / claude : partial - connecteur personnel claude.ai (Booking.com), sans équivalent Codex requis (propriétaire : external-services).
+- `mcp-configures` / codex : pass - Superhuman en connecteur distant (URL, sans OAuth local) des deux côtés ; URL tbannotator intentionnellement distincte (propriétaire : CCX-14).

@@ -14,6 +14,12 @@ description: >-
   compenses donc fit et transmissibles ; tester le claim "resistance transmise
   clonalement" ; distinguer une vraie compensation d'un simple marqueur de
   sous-lignee ; alimenter un volet phylodynamique (quels clones R vont se propager).
+
+  Portee : developpe sur le MTBC, applicable a toute bacterie clonale (Yersinia,
+  Leptospira...) — la polarisation par lignee puis l'agregation de Mantel-Haenszel sont la
+  parade generique a l'homoplasie, et rpoB/rpoC/katG-ahpC sont des PARAMETRES, pas la
+  methode. Hors MTBC : fournir les paires de genes a tester et la base de souches
+  (`--bdd` ou `--manifest`, deja des arguments explicites).
 argument-hint: "[--bdd DIR | --manifest TSV] [--lineage-major] [--out FICHIER]"
 allowed-tools: Bash, Read, Write, Grep, Glob
 user-invocable: true

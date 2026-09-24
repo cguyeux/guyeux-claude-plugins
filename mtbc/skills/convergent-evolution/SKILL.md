@@ -8,6 +8,12 @@ description: >-
 
   Use when: comparing mutation patterns between animal and human lineages, genes
   under convergent selection, host adaptation signatures, ESX system evolution.
+
+  Scope: developed on the MTBC, applies to any clonal bacterial pathogen
+  (Yersinia, Leptospira...) — detecting a gene mutated independently in several
+  lineages is the method; PE/PPE, ESX and PKS/PDIM are an MTBC PARAMETER, not
+  part of it. Outside the MTBC: supply the gene families of interest
+  (`--focus`) and the variant source.
 argument-hint: "<lineage_list or strain_sql> [--focus pe_ppe|esx|all] [--min-lineages 3]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
@@ -38,7 +44,7 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query
 > `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
 >
 > ```bash
-> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> B=~/docs/environnement/plugins/mtbc/skills/bdd-bridge/scripts
 > export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
 > python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
 > python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable

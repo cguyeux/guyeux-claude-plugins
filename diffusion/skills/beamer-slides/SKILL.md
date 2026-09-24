@@ -2,21 +2,19 @@
 name: beamer-slides
 description: >-
   Academic research toolkit (Guyeux group, FEMTO-ST): designs and checks a full
-  scientific Beamer talk from existing peer-reviewed research material. Reads the
-  project memory and manuscript, settles the message, audience, duration and the two
-  languages (slides and speaker), turns the allotted time into a slide budget, ranks
-  what may enter, audits which figures survive projection, writes the narrative plan
-  and a per-slide spec, ideates a visual object for each slide, then emits the deck
-  plus two companion files: a timed speaker script and a pedagogical support sheet.
-  Ends with mechanical checks (overflow, density, decorative TikZ, claim
-  traceability) and a simulated-audience review. Also EDITS an existing deck on
-  request, under the constraint that any addition pays for itself in the time budget,
-  and DECLINES it into a shorter, longer or translated variant sharing a single source
-  rather than a diverging copy. Use for a talk, a seminar, a conference or defence
-  deck, slides on a paper or project, speaker notes, a check on an existing deck,
-  adding or removing a section from a deck, a short version of a talk, a fork of an
-  existing deck, or /slides. For one or two slides from a verbal idea use
-  slide-design; to rework a single slide, slide-polish; for a poster, latex-posters.
+  scientific Beamer talk from existing peer-reviewed research material. Reads
+  the project memory and manuscript, settles message, audience, duration and
+  the two languages (slides, speaker), turns the time budget into a slide
+  budget, ranks what may enter, audits which figures survive projection,
+  writes the narrative plan and per-slide spec, then emits the deck plus a
+  timed speaker script and a pedagogical support sheet. Ends with mechanical
+  checks (overflow, density, decorative TikZ, claim traceability) and a
+  simulated-audience review. Also EDITS an existing deck under the constraint
+  that any addition pays for itself in the time budget, and DECLINES it into a
+  shorter or translated variant sharing one source. Use for a talk, seminar,
+  conference or defence deck, speaker notes, a deck check, a short version, a
+  fork of a deck, or /slides. For one or two slides use slide-design; for one
+  slide, slide-polish; for a poster, latex-posters.
 user_invocable: true
 invocation: /slides
 ---

@@ -8,6 +8,11 @@ description: >-
 
   Use when: faire le point, préparer une réunion, décider la suite, juger si un
   projet peut être clos, relancer un projet qui stagne, repartir après une pause.
+
+  Portée : méta-skill de conduite de projet, pas de biologie — il lit les cinq
+  artefacts de mémoire (cahier, état, pistes, CLAUDE.md, JOURNAL). S'applique à
+  TOUT projet de recherche du dépôt, quel que soit l'organisme (MTBC, Yersinia,
+  Leptospira) ou même hors bactériologie.
 argument-hint: "[chemin-projet] [--deepen] [--full]"
 allowed-tools: Bash, Read, Write, Grep, Glob, WebSearch, WebFetch
 user-invocable: true
@@ -25,7 +30,7 @@ user-invocable: true
 > `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
 >
 > ```bash
-> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> B=~/docs/environnement/plugins/mtbc/skills/bdd-bridge/scripts
 > export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
 > python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
 > python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable

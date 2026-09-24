@@ -36,15 +36,25 @@ TEXT_SUFFIXES = {
 }
 
 PACKAGE_METADATA = {
-    "bio-redac": {
-        "display": "Bio Redac Direct",
-        "short": "Direct biological writing skills.",
-        "long": "Codex package for biological writing skills already audited for direct or guarded workflow packaging.",
+    "carriere": {
+        "display": "Carriere Direct",
+        "short": "Direct grant and career skills.",
+        "long": "Codex package for grant and career skills already audited for direct or guarded workflow packaging.",
     },
-    "bio-pathogens": {
-        "display": "Bio Pathogens Direct",
-        "short": "Direct pathogen research skills.",
-        "long": "Codex package for pathogen research skills already audited for direct, payload, runtime, or guarded workflow packaging.",
+    "diffusion": {
+        "display": "Diffusion Direct",
+        "short": "Direct manuscript submission and dissemination skills.",
+        "long": "Codex package for manuscript submission and dissemination skills already audited for direct or guarded workflow packaging.",
+    },
+    "mtbc": {
+        "display": "MTBC Direct",
+        "short": "Direct Mycobacterium tuberculosis complex phylogenomics skills.",
+        "long": "Codex package for Mycobacterium tuberculosis complex phylogenomics skills already audited for direct, payload, runtime, or guarded workflow packaging.",
+    },
+    "redaction": {
+        "display": "Redaction Direct",
+        "short": "Direct manuscript redaction skills.",
+        "long": "Codex package for manuscript redaction skills already audited for direct, runtime, or guarded workflow packaging.",
     },
     "ops": {
         "display": "Ops Direct",

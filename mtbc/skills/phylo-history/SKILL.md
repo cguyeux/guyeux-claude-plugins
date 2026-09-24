@@ -8,6 +8,10 @@ description: >-
   Use when: doubtful lineage assignment, placement unstable across
   reconstructions, long-branch attraction, diagnostic before manual
   reclassification.
+
+  Portée : développé sur le MTBC, applicable à toute bactérie clonale (Yersinia,
+  Leptospira...) — distance patristique et stabilité de voisinage ne dépendent pas
+  de l'organisme. Hors MTBC : fournir le répertoire d'arbres Newick archivés.
 argument-hint: "<SRA> [--k N] [--format human|json]"
 user-invocable: true
 allowed-tools: Bash, Read, Glob
@@ -157,7 +161,7 @@ Pour la même question sur la forêt entière, utiliser `/phylo-forest`, qui
 moissonne les Newick existants sans rien demander :
 
 ```bash
-F=~/docs/codes/claude_plugins/bio_pathogens/skills/phylo-forest/scripts/forest.py
+F=~/docs/environnement/plugins/phylo/skills/phylo-forest/scripts/forest.py
 python3 $F find --taxa <SRA>          # tous les arbres contenant cette souche
 python3 $F support --taxa <SRA>,<voisins présumés>   # ce voisinage tient-il ?
 ```

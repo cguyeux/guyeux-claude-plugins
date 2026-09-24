@@ -1,7 +1,7 @@
 {
   "name": "ia",
   "version": "0.1.0",
-  "description": "Local Codex package for 14 migrated Claude skills.",
+  "description": "Local Codex package for 16 migrated Claude skills.",
   "author": {
     "name": "Christophe Guyeux"
   },

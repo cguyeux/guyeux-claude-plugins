@@ -222,7 +222,7 @@ Offline self-check (needs `mtbc-gene-network` on the path as well, exactly as
 `run_pathway.sh` wires it, otherwise the PPI assertions fail):
 
 ```bash
-BP=/home/christophe/docs/codes/claude_plugins/bio_pathogens/skills
+BP=/home/christophe/docs/environnement/plugins/mtbc/skills
 PYTHONPATH="$BP/mtbc-gene/src:$BP/mtbc-gene-network/src" python3 -m mtbc_pathway_explain.smoke_test
 ```
 

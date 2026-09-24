@@ -48,7 +48,7 @@ fallback uses `string-db`, both lazily. The launcher wires all three:
 cd <this skill> && ./run_network.sh neighbors katG --top 10
 ```
 
-Set `MTBC_ANNOTATION_DIR` if `annotation_mtbc` is not at `~/docs/codes/mtbc/annotation_mtbc`.
+Set `MTBC_ANNOTATION_DIR` if `annotation_mtbc` is not at `~/docs/codes/mtbc/en_cours/annotation_mtbc`.
 
 ## Commands
 

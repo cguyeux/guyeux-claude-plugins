@@ -2,8 +2,8 @@
   "schema_version": 1,
   "scenario_count": 18,
   "summary": {
-    "pass": 17,
-    "partial": 1,
+    "pass": 16,
+    "partial": 2,
     "blocked": 0,
     "fail": 0,
     "unrun": 0
@@ -167,7 +167,7 @@
         },
         "codex": {
           "status": "pass",
-          "evidence": "plugins=10; exports manquants=0"
+          "evidence": "plugins=17; exports manquants=0"
         }
       },
       "status": "pass"
@@ -199,9 +199,7 @@
       "platforms": {
         "claude": {
           "status": "pass",
-          "evidence": "mbovis absent de la liste visible",
-          "difference": "ancien cache physique encore présent",
-          "owner": "CCX-16"
+          "evidence": "mbovis absent de la liste visible"
         },
         "codex": {
           "status": "pass",
@@ -219,11 +217,11 @@
       "platforms": {
         "claude": {
           "status": "pass",
-          "evidence": "plugins voulus actifs=4; frontend-design désactivé"
+          "evidence": "plugins voulus actifs=1; frontend-design désactivé"
         },
         "codex": {
           "status": "pass",
-          "evidence": "plugins personnels actifs=10"
+          "evidence": "plugins personnels actifs=17"
         }
       },
       "status": "pass"
@@ -275,7 +273,7 @@
       "platforms": {
         "claude": {
           "status": "pass",
-          "evidence": "permissions historiques conservées côté Claude seulement: 97"
+          "evidence": "permissions historiques conservées côté Claude seulement: 13"
         },
         "codex": {
           "status": "pass",
@@ -292,19 +290,18 @@
       "owner": "CCX-14",
       "platforms": {
         "claude": {
-          "status": "pass",
-          "evidence": "noms MCP configurés=4",
-          "difference": "configuration comparée; transport et authentification non prouvés",
+          "status": "partial",
+          "evidence": "noms MCP configurés=5 ; hors du socle partagé : ['booking']",
+          "difference": "connecteur personnel claude.ai (Booking.com), sans équivalent Codex requis",
           "owner": "external-services"
         },
         "codex": {
           "status": "pass",
           "evidence": "quatre noms; aucune valeur sérialisée",
-          "difference": "OAuth Superhuman absent et URL tbannotator intentionnellement distincte",
-          "owner": "human-auth/CCX-16"
+          "difference": "Superhuman en connecteur distant (URL, sans OAuth local) des deux côtés ; URL tbannotator intentionnellement distincte"
         }
       },
-      "status": "pass"
+      "status": "partial"
     },
     {
       "id": "interface-native",

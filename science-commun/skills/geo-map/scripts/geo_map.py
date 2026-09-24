@@ -984,8 +984,12 @@ def plot_choropleth(
                 elif sig_style == "edge":
                     _shandle = Patch(facecolor="none", edgecolor="black", linewidth=1.4)
                 else:
-                    _shandle = Line2D([], [], marker="*", color="black", markersize=11,
-                                      linestyle="None", markeredgecolor="white",
+                    # Le glyphe de la legende doit etre CELUI tracé sur la carte : l'annotation
+                    # ci-dessus ecrit le caractere "*" (asterisque a six branches de la police),
+                    # alors que marker="*" de matplotlib rend une etoile pleine a cinq branches.
+                    # La legende annoncait donc un symbole que la carte ne portait pas.
+                    _shandle = Line2D([], [], marker=r"$\ast$", color="black", markersize=11,
+                                      linestyle="None", markeredgecolor="black",
                                       markeredgewidth=0.6)
                 _sleg = ax.legend([_shandle], [_slabel], loc=sig_legend_loc,
                                   fontsize=style.note_size, frameon=True,

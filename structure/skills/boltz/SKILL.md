@@ -119,7 +119,15 @@ sans GPU CUDA utilisable. Avec l'index CPU : venv ≈ 1,5 Go.
 > ~700× plus lent. **L'environnement `/Work/Users/<user>/envs/boltz` n'est PAS touché** : testé, il
 > rend `2.5.1+cu121 / CUDA 12.1 / True`. Garder malgré tout une **assertion** en tête de job,
 > `python3 -c "import torch; assert torch.cuda.is_available()"`, plutôt qu'un simple affichage : la
-> panne est silencieuse et le prochain changement de driver ne préviendra pas.
+> panne est silencieuse et le prochain changement de driver ne préviendra pas. **Piège vérifié
+> deux fois (`Rv2892c` P3.7, 2026-09-19) : dans le script `sbatch`, appeler cette assertion avec le
+> `python3` nu échoue systématiquement en `ModuleNotFoundError: No module named 'torch'`** dès que
+> le job ne fait qu'un `module load anaconda3` sans activer l'environnement — `python3` résout
+> alors le python système, pas celui du venv. Le job entier `FAILED` en moins d'une seconde
+> (`squeue` le montre déjà terminé), sans rien dans la sortie standard : seul `slurm_*.log` porte
+> l'erreur. Toujours appeler l'assertion avec le chemin explicite du venv,
+> `/Work/Users/<user>/envs/boltz/bin/python -c "import torch; assert torch.cuda.is_available()"`,
+> jamais `python3` seul.
 > (2) **Cet environnement tourne tel quel sur une L40**, vérifié sur `node4-28`. Mais la partition
 > `gpu_l40` est **PRIVÉE, financée par un tiers** (Kamel Mazouzi, 2026-09-04) : elle est visible
 > dans `sinfo` et presque toujours `idle` quand `gpu` sature, ce qui la rend très tentante, mais
@@ -773,6 +781,25 @@ et moins de trois échantillons de diffusion. Il accepte la disposition locale c
 celle des jobs Slurm (`out_<job>/boltz_results_<job>/…`), n'a besoin que de numpy, et
 sort en TSV ou en Markdown (`--markdown`). Non-régression vérifiée sur les six
 prédictions de `mtbc/Rv0007` P3.1 : valeurs identiques au tableau publié.
+
+**Complexes à 3 chaînes ou plus, corrigé le 2026-09-20 (`mtbc/Rv2892c` P3.7/P3.9).**
+Avant cette date, `pae_stats()` était codée en dur pour exactement 2 chaînes et
+rendait `None` dès qu'un complexe en portait une 3ᵉ (garde-fou « jamais un chiffre
+faux » du script) — pas d'erreur silencieuse, mais un vide qui forçait un script
+ponctuel à chaque docking ternaire (vécu deux fois : positif calibré
+PE25-PPE41-EspG5 de ce projet, structure résolue d'Ekiert et al. 2014). Généralisée
+à N chaînes, avec un piège vérifié au passage contre la table publiée du projet :
+**le PAE inter-chaînes moyen n'est pas le flatten brut de tous les blocs
+hors-diagonale** (ça sur-pondère la paire impliquant la plus grande chaîne — mesuré
+7,54–8,43 Å au lieu de 7,28–8,15 Å) **mais la moyenne NON pondérée des moyennes de
+chaque paire** (chaque paire compte pour 1/N_pairs, quelle que soit sa taille).
+Colonnes nouvelles du TSV : `n_chains`, `len_chains`, `pae_pairs` (détail par paire
+quand N>2) ; les colonnes historiques `len_a`/`len_b`/`pae_intra_a`/`pae_intra_b`
+restent inchangées pour N=2, non-régression vérifiée sur les fichiers bruts de ce
+projet (`résultats/phase3_7_9_boltz_docking/` : binaire et ternaire, identiques au
+chiffre près à la Table S8 publiée). La détection d'interface
+(`interface_residues`) reste limitée aux deux premières chaînes du mmCIF : non
+touchée par ce correctif, à généraliser séparément si un projet en a besoin.
 
 ## Garde-fous d'interprétation (ne pas les sauter)
 

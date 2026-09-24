@@ -62,6 +62,26 @@ Pour un fichier LaTeX :
 3. Prendre des notes mentales sur chaque section au fur et a mesure
 4. Lire aussi les fichiers inclus (`\input{}`, `\include{}`)
 5. Identifier les figures referencees et verifier qu'elles existent
+6. **Lire aussi le supplementaire COMPILE SEPAREMENT.** Un
+   `supplementary_materials/supplementary.tex` qui porte son propre `\documentclass`
+   n'est inclus par aucun `\input{}` : les points 1-5 ne l'atteignent jamais, et la grille
+   D10/C2 ne pose sur lui que des questions de QUANTITE (combien d'items, sont-ils cites,
+   le corps est-il autonome), jamais de CONTENU. Le lire en entier comme le corps, et poser
+   la seule question qui compte : **dit-il encore la meme chose que le corps ?**
+
+   > **Reflexe des horodatages, a faire AVANT de lire.** `ls -l --time-style=+%F_%R` sur
+   > `main.tex`, le `.tex` du supplementaire et `supp_check.md`. Un supplementaire (ou un
+   > registre `supp_check.md`) **plus ancien que `main.tex` est perime par construction** des
+   > que le corps a change d'analyse depuis. Vecu (mixed_infections_multimarker, 6e tour,
+   > 2026-09-18) : `supplementary.tex` a 10h53, `supp_check.md` a 10h56, `main.tex` a 16h38.
+   > Entre les deux, le manuscrit avait REMPLACE son design geographique primaire ; le
+   > supplementaire publiait donc encore, comme tables officielles de l'article, le design que
+   > le corps venait de retracter — dont un pays a 5,06x et q=0,031 dont le corps dit
+   > desormais qu'il vaut 0,85x, un dénominateur annonce comme « used throughout the main
+   > text » qui ne l'etait plus, et une analyse de sensibilite que les Methodes declaraient
+   > inapplicable. Aucune verification du corps seul ne peut attraper cela : chaque document,
+   > pris isolement, est coherent. **Severite : BLOQUANT pour la soumission**, un relecteur
+   > qui ouvre le supplementaire y lit le contraire du texte.
 
 ### Phase 1bis : RECROISEMENT MECANIQUE des chiffres avec les donnees sources (OBLIGATOIRE)
 
@@ -196,6 +216,21 @@ relecture**. C'est le premier endroit ou chercher.
     est verifiee dans le code mais jamais exercee dans le papier — c'est une omission de
     mesure, pas une invention.
 
+13. **Un compte annonce pour une ENUMERATION EN PROSE est un chiffre a recroiser, pas une
+    tournure de style.** « the five measures... », « the four criteria... », « the three
+    corrections... » : compter litteralement les items de la liste qui suit, ET chercher si
+    une autre section du meme manuscrit enumere deja le meme ensemble sous une autre forme
+    (une sous-liste, un total partiel donne ailleurs). Vecu (Rv2569c, 2026-09-18) : Methodes
+    annoncait « the five measures... converge on one hypothesis », enumerant « two distances
+    to a pocket, cryptic-pocket propensity by two predictors, the ESM-1v log-likelihood
+    ratio, and conservation » (2+2+1+1 = 6, pas 5) ; les Resultats, deux paragraphes plus
+    loin, disaient explicitement « two of the **four** pocket measures... », confirmant que
+    le total reel est 4 (poche) + 1 (LLR) + 1 (conservation) = 6. Un `claim-check` classique
+    avait explicitement ecarte cette phrase (« ne porte aucun chiffre nouveau a recroiser »)
+    parce qu'elle ne contient aucune statistique calculee — exactement l'angle mort que ce
+    point corrige : une prose qui annonce un compte est verifiable par simple denombrement,
+    sans donnee source, et merite le meme reflexe que les points 7-10.
+
 Consigner les ecarts trouves : ils alimentent les preoccupations MAJEURES de la review.
 
 > **Garde-fou de methode (vecu 2026-07-31, dark_enzymes).** Les points 1-6 se font en lisant
@@ -227,8 +262,15 @@ n'est tracable a sa source. Les mesurer avant la grille, pas apres.
 ```bash
 python3 ${CLAUDE_PLUGIN_ROOT}/skills/deai-latex/scripts/content_economy.py main.tex --limit <limite revue>
 python3 ${CLAUDE_PLUGIN_ROOT}/skills/bib-check/scripts/self_citation.py main.tex --author <nom du 1er auteur>
-python3 ${CLAUDE_PLUGIN_ROOT}/skills/narratif/scripts/plan_vs_manuscrit.py [projet]
+python3 ~/.claude/skills/narratif/scripts/plan_vs_manuscrit.py [projet]
 ```
+
+`narratif` est un skill personnel (source primaire `~/.claude/skills`), pas un skill du
+plugin `redaction` : ne PAS utiliser `${CLAUDE_PLUGIN_ROOT}/skills/narratif/...`, ce chemin
+n'existe pas (mesure le 2026-09-18, `/manuscript-review` sur Rv2892c) et fait echouer la
+Phase 1ter en silence si l'echec n'est pas remarque. Verifier avant tout appel que le script
+est bien present a `~/.claude/skills/narratif/scripts/plan_vs_manuscrit.py` ; a defaut, signaler
+l'absence plutot que de sauter la mesure sans le dire.
 
 Le troisieme script ne mesure rien du texte : il mesure l'ecart entre le manuscrit et le
 **plan** qui l'a decide (`plan_narratif.md`, skill `/narratif`). C'est le seul instrument du
@@ -603,6 +645,30 @@ et les rapporter en quelques lignes (sans les corriger ici) :
 Signaler le compte des deux, et proposer `/recadrage` si l'un des deux est non
 vide. Ne jamais supprimer du contenu d'un manuscrit au motif qu'il est hors
 sujet sans qu'une destination ait ete decidee pour lui.
+
+### Enseignements transferables (KB de domaine, outillage)
+
+Une review, meme auto-produite, est aussi le meilleur moment pour voir ce qu'un
+manuscrit ISOLE ne revele pas : un defaut qui depasse CE manuscrit. Avant de
+conclure l'epilogue, relire les preoccupations MAJEURES et MODEREES rediges en
+Phase 3 et se demander, pour chacune :
+
+1. **Fait de domaine transferable ?** Le probleme souleve etablit-il quelque
+   chose qui depasse ce manuscrit — un biais methodo, un resultat de
+   litterature, une regle de robustesse — et qui merite d'etre verse dans la
+   base de connaissances transversale du domaine (`~/.agents/knowledge/
+   <domaine>.md`, ex. `tuberculosis.md` pour un projet MTBC) ?
+2. **Defaut d'outil reutilisable ?** Le probleme revele-t-il qu'un skill/outil
+   canonique (`claim-check`, `bib-check`, ce skill lui-meme) rate un cas, ou
+   qu'un contournement manuel a ete necessaire pour l'instruire ?
+
+Si l'une des deux reponses est OUI : **agir tout de suite** (editer le fichier
+KB ou le skill concerne), pas seulement le signaler. Si l'action est trop
+lourde pour cette session, ouvrir une piste explicite dans le `pistes.md` du
+projet qui trace le report et sa raison. Rapporter en une ligne dans le bloc
+de cloture : « Enseignements transferables : N verses, M reportes (pistes
+ouvertes), ou aucun (avec la raison) ». Ne jamais passer cette question sous
+silence — c'est precisement l'angle mort que cette etape corrige.
 
 ### Suggestion de prochaine etape
 

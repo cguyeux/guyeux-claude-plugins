@@ -37,7 +37,7 @@ def reminder(command: str) -> str | None:
     return (
         f"RAPPEL calcul distant : la commande lance `{tool}` en local. "
         "Pour un calcul lourd, preferer `mp` (64 threads, 125 Gio, /data 51 To) "
-        "ou `mh` (Slurm, A100 40 Go, noeuds 1 To) apres VPN utilisateur `sudo vpn up`. "
+        "ou `mh` (Slurm, A100 40 Go, noeuds 1 To) apres VPN monte par l'agent lui-meme (`sudo -n /usr/local/bin/vpn up`, sans mot de passe). "
         "Si c'est un jeu jouet, une mise au point ou si le VPN est indisponible, le local reste acceptable."
     )
 

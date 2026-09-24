@@ -27,11 +27,11 @@ class CodexPackageMatrixTests(unittest.TestCase):
     def setUpClass(cls):
         cls.matrix = load_module("generate_codex_package_matrix")
 
-    def test_matrix_covers_the_137_non_exported_skills(self):
+    def test_matrix_covers_the_146_non_exported_skills(self):
         rows = self.matrix.build_rows()
         names = {row["name"] for row in rows}
-        self.assertEqual(137, len(rows))
-        self.assertEqual(137, len(names))
+        self.assertEqual(146, len(rows))
+        self.assertEqual(146, len(names))
         self.assertIn("tbmonitor-papers", names)
         self.assertIn("mtbc-prospect", names)
         self.assertNotIn("remote-compute", names)
@@ -58,13 +58,15 @@ class CodexPackageMatrixTests(unittest.TestCase):
         self.assertEqual(48, len(direct))
         self.assertEqual(
             {
-                "bio-bacteria",
-                "bio-pathogens",
-                "bio-population-genetics",
-                "bio-redac",
+                "bacteria",
+                "bioinfo",
                 "ia",
                 "maboss",
+                "mtbc",
                 "ops",
+                "popgen",
+                "science-commun",
+                "structure",
                 "web",
             },
             {row["package_candidate"] for row in direct},
@@ -73,13 +75,16 @@ class CodexPackageMatrixTests(unittest.TestCase):
     def test_payload_packages_are_marked_after_materialization(self):
         rows = self.matrix.build_rows()
         payload = [row for row in rows if row["classification"] == "packaged-payload"]
-        self.assertEqual(15, len(payload))
+        self.assertEqual(19, len(payload))
         self.assertEqual(
             {
-                "bio-pathogens",
-                "bio-population-genetics",
+                "bioinfo",
                 "ia",
+                "litterature",
+                "mtbc",
                 "multimedia",
+                "phylo",
+                "popgen",
                 "web",
             },
             {row["package_candidate"] for row in payload},
@@ -88,14 +93,19 @@ class CodexPackageMatrixTests(unittest.TestCase):
     def test_runtime_packages_are_marked_after_materialization(self):
         rows = self.matrix.build_rows()
         runtime = [row for row in rows if row["classification"] == "packaged-runtime-adapted"]
-        self.assertEqual(58, len(runtime))
+        self.assertEqual(61, len(runtime))
         self.assertEqual(
             {
-                "bio-bacteria",
-                "bio-pathogens",
-                "bio-population-genetics",
+                "bacteria",
+                "bioinfo",
+                "litterature",
                 "maboss",
+                "mtbc",
                 "multimedia",
+                "phylo",
+                "popgen",
+                "redaction",
+                "structure",
             },
             {row["package_candidate"] for row in runtime},
         )
@@ -103,8 +113,11 @@ class CodexPackageMatrixTests(unittest.TestCase):
     def test_workflow_packages_are_marked_after_materialization(self):
         rows = self.matrix.build_rows()
         workflow = [row for row in rows if row["classification"] == "packaged-workflow-guarded"]
-        self.assertEqual(11, len(workflow))
-        self.assertEqual({"bio-pathogens", "bio-redac", "ops"}, {row["package_candidate"] for row in workflow})
+        self.assertEqual(13, len(workflow))
+        self.assertEqual(
+            {"carriere", "diffusion", "mtbc", "ops", "redaction"},
+            {row["package_candidate"] for row in workflow},
+        )
         self.assertIn("soumission", {row["name"] for row in workflow})
 
     def test_matrix_keeps_required_verrous_visible(self):
@@ -115,7 +128,7 @@ class CodexPackageMatrixTests(unittest.TestCase):
         self.assertEqual("packaged-workflow-guarded", rows["mtbc-bilan"]["classification"])
         self.assertEqual("packaged-runtime-adapted", rows["active-site-check"]["classification"])
         self.assertEqual("packaged-runtime-adapted", rows["boltz"]["classification"])
-        self.assertEqual("packaged-runtime-adapted", rows["clinical-trial-protocol-skill"]["classification"])
+        self.assertNotIn("clinical-trial-protocol-skill", rows)
 
 
 if __name__ == "__main__":

@@ -560,13 +560,18 @@ def review_findings(rows: list[dict], stale_days: int) -> list[dict]:
             out.append(_finding(
                 "a-verifier", "acceptation-a-solder", rid,
                 f"accepte chez {revue}{retard}",
-                "trois gestes, dans cet ordre : (1) sur les EPREUVES, verifier la "
+                "quatre gestes, dans cet ordre : (1) sur les EPREUVES, verifier la "
                 "signature scientifique et les remerciements (mesocentre, financeurs) "
                 "-- c'est la derniere fenetre ou ils se corrigent ; (2) mettre a jour "
                 "l'affiliation dans la BASE AUTEURS du portail, ce que la direction de "
                 "l'institut demande explicitement et qui commande l'indexation ; "
-                "(3) a la parution, passer le statut a published et declarer la "
-                "publication (ticket Publiweb)"))
+                "(3) DES L'ACCEPTATION, sans attendre la parution : ajouter la "
+                "publication au CV (skill /cv, avec les seuls champs deja connus), la "
+                "recompiler, et preparer le ticket Publiweb avec la VERSION FINALE "
+                "AUTEUR (jamais la version editeur) -- soumission du ticket bornee par "
+                "le perimetre d'autorisation ci-dessus ; (4) a la parution effective "
+                "(DOI, pagination), completer l'entree, recompiler, passer le statut a "
+                "published et verifier l'ingestion (cv_publiweb_sync.py)"))
 
         if st in ACTIVE and age is not None and age >= stale_days:
             out.append(_finding(
@@ -732,9 +737,13 @@ def cmd_reject(args) -> int:
 
 PROJECT_ROOTS_ENV = "SOUMISSION_PROJECTS"
 _DEFAULT_PROJECT_ROOT = Path.home() / "docs" / "codes" / "mtbc"
-# Un projet vit a la racine du depot, ou archive : les deux comptent pour l'audit,
-# une soumission continuant de vivre apres l'archivage du projet qui l'a produite.
-_PROJECT_SUBDIRS = ("", "fini", "projets_abandonnes")
+# Un projet vit sous l'un des cinq repertoires de statut du depot (regle gravee
+# le 2026-09-16), ou encore a plat a la racine tant que la migration vers
+# `en_cours/` n'est pas faite : tous comptent pour l'audit, une soumission
+# continuant de vivre apres la cloture du projet qui l'a produite. `clos_accepte`
+# compte au meme titre : un manuscrit accepte garde son dossier de soumission.
+_PROJECT_SUBDIRS = ("", "en_cours", "clos_soumis", "clos_accepte", "clos",
+                    "clos_abandonne")
 
 # Largeur de la fenetre de co-occurrence, en caracteres de part et d'autre du nom
 # de la revue. 200 tient une phrase et sa voisine ; au-dela, on retrouve le bruit

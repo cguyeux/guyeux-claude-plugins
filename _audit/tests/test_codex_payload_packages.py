@@ -44,7 +44,7 @@ class CodexPayloadPackagesTests(unittest.TestCase):
             row for row in self.matrix.build_rows()
             if row["classification"] == "packaged-payload"
         ]
-        self.assertEqual(15, len(rows))
+        self.assertEqual(19, len(rows))
         for row in rows:
             with self.subTest(name=row["name"]):
                 skill = PACKAGES / row["package_candidate"] / "skills" / row["name"]
@@ -75,7 +75,7 @@ class CodexPayloadPackagesTests(unittest.TestCase):
     def test_payload_audit_records_exclusions(self):
         audit = json.loads(AUDIT.read_text(encoding="utf-8"))
         rows = {row["name"]: row for row in audit["rows"]}
-        self.assertEqual(15, len(rows))
+        self.assertEqual(19, len(rows))
         self.assertGreater(rows["text-to-speech"]["audit"]["excluded_files"], 1000)
         self.assertIn(".venv", rows["text-to-speech"]["audit"]["excluded_roots"])
 

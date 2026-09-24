@@ -42,7 +42,7 @@ I-G, I-E, I-C) dont les DR n'ont aucun rapport entre eux.
 ## Utilisation
 
 ```bash
-CB=~/docs/codes/claude_plugins/bio_pathogens/skills/crisprbuilder/scripts/crisprbuilder2.py
+CB=~/docs/environnement/plugins/bacteria/skills/crisprbuilder/scripts/crisprbuilder2.py
 
 python3 $CB detect  --genome g.fasta                      # quel(s) DR dans ce genome ?
 python3 $CB extract --genome g.fasta --json out.json      # DR de novo + arrays + spacers

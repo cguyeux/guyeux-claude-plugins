@@ -8,6 +8,11 @@ description: >-
 
   Use when: a sub-lineage characterisation reports a high dN/dS or NS excess
   and ascertainment bias is questioned. Needs a tier-annotated CSV.
+
+  Scope: developed on the MTBC, applies to any clonal bacterial pathogen
+  (Yersinia, Leptospira...) — the MK test and the ascertainment simulation are
+  generic. To use it outside the MTBC: supply the genus reference GenBank/GFF3
+  (`--gb` / `--gff3`).
 argument-hint: "<annotated_csv> [--gb NC_000962.3.gb] [--gff3 NC_000962.3.gff3] [--outdir results/]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob

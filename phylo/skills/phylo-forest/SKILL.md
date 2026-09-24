@@ -26,7 +26,7 @@ dépôt d'artefacts en **bibliothèque** : on cherche avant de calculer, et ce
 qu'on calcule enrichit la bibliothèque.
 
 ```bash
-F=~/docs/codes/claude_plugins/bio_pathogens/skills/phylo-forest/scripts/forest.py
+F=~/docs/environnement/plugins/phylo/skills/phylo-forest/scripts/forest.py
 python3 $F find --clade L4.13 --min 20      # un arbre couvrant ce clade existe-t-il ?
 python3 $F find --taxa SRR1234567,ERR765432 # un arbre contenant ces souches ?
 python3 $F show 7f3a1c9d2b               # la fiche complète d'un arbre

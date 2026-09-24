@@ -12,6 +12,11 @@ description: >-
   et inscrit les survivantes. A utiliser quand un projet a besoin de directions neuves, pour
   un brainstorming d'angles originaux, quand la gap-analysis de mtbc-bilan --deepen ne
   suffit pas, ou pour trancher s'il reste quelque chose a explorer.
+
+  Portee : meta-skill de conduite de projet — le moteur (ideation divergente, audit des
+  skills comme lentilles, auto-challenge, inscription dans pistes.md) s'applique a TOUT
+  projet de recherche du depot, quel que soit l'organisme (MTBC, Yersinia, Leptospira).
+  Seuls les AXES thematiques par defaut sont MTBC ; ils se remplacent par `--axes`.
 argument-hint: "[chemin-projet] [--axes a,b,c] [--wild] [--dry-run]"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebSearch, WebFetch, mcp__tbmonitor__execute_sql, mcp__tbmonitor__show_schema, mcp__tbannotator__tool_query_postgres, mcp__tbannotator__tool_get_schema
 user-invocable: true

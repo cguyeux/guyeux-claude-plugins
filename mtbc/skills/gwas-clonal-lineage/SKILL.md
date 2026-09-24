@@ -1,26 +1,20 @@
 ---
 name: gwas-clonal-lineage
 description: >-
-  Academic research toolkit (Guyeux group, FEMTO-ST) for testing whether a variant, gene or
-  locus is genuinely associated with a clinical or phenotypic trait (drug resistance, tissue
-  tropism, disease form) in a bacterial GWAS on a CLONAL population such as the MTBC — where
-  population structure (lineage) is the dominant confounder and a naive association almost
-  always recovers lineage instead of the phenotype. Packages the full pipeline reforged
-  independently at least 4 times in this repo (mtbc/Rv2566, mtbc/Rv1125, mtbc/
-  tissue_tropism_mtbc, mtbc/mixed_infections_multimarker) into one reusable module:
-  lineage-stratified Cochran-Mantel-Haenszel (CMH) at BOTH the cohort level (is the lineage
-  itself associated with the phenotype?) and the locus level (does carrying this specific
-  variant stay associated once lineage is controlled?), Breslow-Day heterogeneity test to
-  flag a pooled odds ratio that hides opposite effects between strata, a paucibacillarity/
-  dropout direction filter, a mappability/paralogy BLAST check to catch cross-mapping
-  artefacts (PE/PPE, esx, pks/pps, lpp — the ~10% of MTBC that is not uniquely mappable at
-  Illumina read length), and a tree-free homoplasy probe via nested clade-code depth. Use
-  this whenever a GWAS hit, a candidate resistance/tropism gene, or a "top-N genes" table
-  from a published bacterial GWAS (Cambau/Bridier-Nahmias, CRyPTIC, or any pyseer/treeWAS/
-  DBGWAS output) needs to be checked for robustness before being written into a manuscript
-  — do NOT trust a published or in-house GWAS hit on a clonal pathogen without running at
-  least the lineage-stratified locus-level CMH first, even if a cohort-level lineage check
-  already came back non-significant (the two are different questions, see below).
+  Academic research toolkit (Guyeux group, FEMTO-ST) for testing whether a
+  variant, gene or locus is genuinely associated with a clinical trait (drug
+  resistance, tissue tropism, disease form) in a bacterial GWAS on a CLONAL
+  population such as the MTBC — where lineage is the dominant confounder and a
+  naive association almost always recovers lineage instead of phenotype.
+  Packages a pipeline reforged independently 4 times in this repo into one
+  module: lineage-stratified Cochran-Mantel-Haenszel (CMH) at cohort level (is
+  lineage itself associated?) and locus level (does the variant stay
+  associated once lineage is controlled?), a Breslow-Day heterogeneity test
+  flagging a pooled odds ratio hiding opposite effects between strata, a
+  paucibacillarity/dropout filter, a mappability/paralogy BLAST check, and a
+  tree-free homoplasy probe. Use whenever a GWAS hit or a top-N genes table
+  needs checking before a manuscript — never trust a GWAS hit on a clonal
+  pathogen without the lineage-stratified locus-level CMH first.
 argument-hint: "<carrier_counts.tsv|genotype_matrix> --phenotype <col> --lineage <col> [--depth-scan] [--mappability genome.fasta]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob

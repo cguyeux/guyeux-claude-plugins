@@ -48,9 +48,9 @@ Compétences : taper /slide-polish ; demander d'ameliorer, de retravailler ou de
 
 ### soumission
 
-Gère tout le cycle de soumission d'un article scientifique, de la préparation au suivi, avec exécution externe seulement sur demande explicite : choisir la revue cible (base de revues avec scope, contraintes de longueur, frais réels, facteur d'impact et délai de première décision), contrôler que le manuscrit est prêt (dont la version française main_fr.tex), se connecter aux portails éditeurs par ORCID, déposer le préprint sur bioRxiv/medRxiv/arXiv et le code sur le GitHub centralisateur, remplir le formulaire de soumission, tenir le registre central des soumissions (qui, où, quand, statut), faire après chaque soumission le point d'état de tous les manuscrits (déposé, rejeté, en révision, préparé mais jamais soumis) et reprendre ce qui cloche, et en tirer les enseignements des rejets
+Gère tout le cycle de soumission d'un article scientifique, de la préparation au suivi, avec exécution externe seulement sur demande explicite : choisir la revue cible (scope, contraintes de longueur, frais réels, facteur d'impact, délai de première décision), contrôler que le manuscrit est prêt (dont la version française main_fr.tex), se connecter aux portails éditeurs par ORCID, déposer le préprint sur bioRxiv/medRxiv/arXiv et le code sur le GitHub centralisateur, remplir le formulaire de soumission, tenir le registre central des soumissions (qui, où, quand, statut), faire après chaque soumission le point d'état de tous les manuscrits et reprendre ce qui cloche, et en tirer les enseignements des rejets
 
-Compétences : l'utilisateur veut « soumettre un article », « choisir une revue », « où soumettre ce papier », « préparer la soumission », « déposer le préprint », « où en sont mes soumissions », « le journal a répondu », « on m'a rejeté, où resoumettre », « fais le point sur mes soumissions », ou tape /soumission
+Compétences : l'utilisateur veut « soumettre un article », « choisir une revue », « où soumettre ce papier », « déposer le préprint », « où en sont mes soumissions », « le journal a répondu », « on m'a rejeté, où resoumettre », ou tape /soumission
 
 ### theme-factory
 

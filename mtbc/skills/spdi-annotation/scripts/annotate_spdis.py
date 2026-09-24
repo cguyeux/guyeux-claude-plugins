@@ -122,7 +122,7 @@ def load_gene_index(gff3_path):
             if len(parts) < 9:
                 continue
             seqid, source, ftype, start, end, score, strand, phase, attrs_str = parts
-            if ftype not in ('gene', 'CDS', 'tRNA', 'rRNA', 'ncRNA'):
+            if ftype not in ('gene', 'CDS', 'tRNA', 'rRNA', 'ncRNA', 'pseudogene'):
                 continue
             attrs = parse_gff3_attributes(attrs_str)
             genes.append({
@@ -131,6 +131,7 @@ def load_gene_index(gff3_path):
                 'locus_tag': attrs.get('locus_tag', ''),
                 'product': attrs.get('product', ''),
                 'type': ftype,
+                'pseudo': attrs.get('pseudo', '') == 'true',
             })
 
     # Deduplicate: prefer CDS over gene for same locus_tag
@@ -204,7 +205,7 @@ def get_codon_change(seq, gene_info, pos_1based, ref, alt):
     For negative-strand genes, substitute alt directly into the forward codon,
     then revcomp the whole codon. NEVER complement(alt) before substitution.
     """
-    if not gene_info or gene_info['type'] != 'CDS':
+    if not gene_info or gene_info['type'] not in ('CDS', 'pseudogene'):
         return 'unknown', ''
 
     # Indels

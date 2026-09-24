@@ -196,7 +196,7 @@ def canonical_collisions(sources: dict[str, Path]) -> list[dict[str, Any]]:
 
 def audit_report(args: argparse.Namespace) -> tuple[dict[str, Any], list[str]]:
     sources = canonical_sources()
-    project_sources = selected_sources(sources, args.source, args.plugin or (None if args.source else "redac"))
+    project_sources = selected_sources(sources, args.source, args.plugin)
     if not project_sources:
         raise ValueError("la selection canonique de skills est vide")
 
@@ -372,7 +372,7 @@ def build_parser() -> argparse.ArgumentParser:
     audit.add_argument("--agents-skills-root", type=Path, default=DEFAULT_AGENTS)
     audit.add_argument("--codex-skills-root", type=Path, default=DEFAULT_CODEX)
     audit.add_argument("--source", type=Path, default=None, help="repertoire plugin skills canonique")
-    audit.add_argument("--plugin", default=None, help="plugin projet a auditer, redac par defaut")
+    audit.add_argument("--plugin", default=None, help="plugin projet a auditer, tous par defaut")
     audit.add_argument("--json", action="store_true")
 
     sync_parser = subparsers.add_parser("sync", help="creer seulement des liens canoniques manquants")

@@ -112,11 +112,32 @@ def _search(base: str, params: dict) -> dict:
             "static_note": "filtered locally (static atlas deployment)"}
 
 
+def _atlas_citation() -> str:
+    """Citation locale `mtbc-atlas-genes@vNNN-g<sha>` (skill `bdd`) du dépôt
+    `annotation_mtbc` déployé derrière l'API distante interrogée ici -- l'API elle-même
+    ne porte pas cette information, donc la reproductibilité d'une lecture dépend de
+    ce que CE poste sait de l'état du dépôt au moment de la requête."""
+    import importlib.util
+    chemin = os.path.expanduser("~/.claude/skills/bdd/bdd_journal.py")
+    if not os.path.isfile(chemin):
+        return "mtbc-atlas-genes@non-versionnee"
+    spec = importlib.util.spec_from_file_location("bdd_journal", chemin)
+    if spec is None or spec.loader is None:
+        return "mtbc-atlas-genes@non-versionnee"
+    module = importlib.util.module_from_spec(spec)
+    try:
+        spec.loader.exec_module(module)
+        return module.stamp("mtbc-atlas-genes")
+    except Exception:
+        return "mtbc-atlas-genes@non-versionnee"
+
+
 def _print(data, raw: bool, view=None):
     if raw or view is None:
         print(json.dumps(data, indent=2, ensure_ascii=False))
     else:
         view(data)
+        print(f"\n# données (dépôt local annotation_mtbc, pas l'API distante) : {_atlas_citation()}")
 
 
 def v_stats(d):

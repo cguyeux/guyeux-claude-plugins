@@ -1,45 +1,76 @@
 # Claude Plugins : groupe Guyeux (FEMTO-ST)
 
-Collection de plugins [Claude Code](https://docs.claude.com/en/docs/claude-code) développés par Christophe Guyeux (Institut FEMTO-ST, CNRS UMR 6174, Université Marie et Louis Pasteur, Besançon) pour la recherche scientifique académique : phylogénomique évolutive bactérienne, génétique des populations humaines, rédaction scientifique, et outillage transverse (bioinformatique, statistiques, visualisation, revue de littérature).
+Collection de plugins [Claude Code](https://docs.claude.com/en/docs/claude-code) développés par Christophe Guyeux (Institut FEMTO-ST, CNRS UMR 6174, Université Marie et Louis Pasteur, Besançon) pour la recherche scientifique académique : phylogénomique évolutive des pathogènes bactériens clonaux, génétique des populations humaines, rédaction scientifique, et outillage transverse (bioinformatique, structure des protéines, statistiques, visualisation, revue de littérature).
 
-Documentation complète, skill par skill (raison d'être et compétences, sous l'angle M. tuberculosis) : **[dossier `docs/`](docs/README.md)**. Chaque plugin ci-dessous est aussi lié directement à sa page.
+Le périmètre est multi-genres. La collection a été bâtie sur le complexe *Mycobacterium tuberculosis*, qui en reste l'exemple le plus outillé, mais les projets de recherche du groupe couvrent aussi *Yersinia* et *Leptospira*. Ce qui change d'un genre à l'autre n'est pas la méthode, c'est le génome de référence, la nomenclature de branches et la base de souches.
+
+Documentation complète, skill par skill (raison d'être et compétences) : **[dossier `docs/`](docs/README.md)**. Chaque plugin ci-dessous est aussi lié directement à sa page.
 
 ## Plugins
 
+Dix-sept plugins organisés en trois couches depuis la refonte du 2026-09-15. Chaque skill vit dans exactement un plugin.
+
+### Domaines scientifiques
+
 | Plugin | Rôle |
 |--------|------|
-| [bio_pathogens](docs/bio_pathogens.md) | Phylogénomique évolutive du MTBC stricto sensu : chaîne TBannotator, lignages, variants et littérature spécialisée, à des fins de publications évaluées par des pairs. |
-| [bio_bacteria](docs/bio_bacteria.md) | Génomique bactérienne hors MTBC stricto sensu : assemblage, cgMLST, mobilome ab initio, mycobactéries non tuberculeuses et autres genres. |
-| [bio_population_genetics](docs/bio_population_genetics.md) | Génétique des populations humaines anciennes et modernes, archéologie, paléoclimat, corpus de migrations, plus les outils génériques de phylogénétique, statistiques et fouille de littérature. |
-| [bio_redac](docs/bio_redac.md) | Phase hybride analyse + rédaction (agrège les skills des autres plugins). |
-| [redac](docs/redac.md) | Rédaction pure : LaTeX, slides, manuscrits, vérification de références et de figures. |
-| [ia](docs/ia.md) | Intelligence artificielle, machine learning, data science. |
-| [multimedia](docs/multimedia.md) | Sous-titrage de films muets, audio/vidéo, synthèse vocale, métadonnées de films. |
+| [mtbc](docs/mtbc.md) | Pile de données du complexe *Mycobacterium tuberculosis* : chaîne TBannotator, base de souches, autorité de lignées et barcode, catalogue de résistance de l'OMS, SITVIT, Atlas de gènes. |
+| [bacteria](docs/bacteria.md) | Génomique comparative des pathogènes bactériens, tous genres : identification d'espèce et de clade, cgMLST, mobilome ab initio, contenu CRISPR, métadonnées d'isolement, ressources propres à un genre. |
+| [popgen](docs/popgen.md) | Génétique des populations humaines anciennes et modernes, archéologie, paléoclimat, corpus de migrations, co-évolution hôte-pathogène. |
+| [ia](docs/ia.md) | Apprentissage automatique, statistiques et science des données appliqués aux données de recherche. |
 | [ops](docs/ops.md) | Projets PrédictOps, OptimOps, DoctrinOps. |
+| [multimedia](docs/multimedia.md) | Sous-titrage de films muets, audio et vidéo, synthèse vocale, métadonnées de films. |
 | [web](docs/web.md) | Développement et test d'applications web. |
-| [maboss](docs/maboss.md) | MaBoSS / CoLoMoTo : modèles booléens `.bnd`/`.cfg` (grammaire refcard), API pyMaBoSS et évaluateur CCT (Oscar Dufossez), carte de l'écosystème (WebMaBoSS de Vincent Noël, dépôts de modèles, positionnement vs INDRA). Modélisation de la signalisation cancer, projet mabossDemo. |
+
+### Transverses de science
+
+| Plugin | Rôle |
+|--------|------|
+| [phylo](docs/phylo.md) | Inférence phylogénétique et phylodynamique, transverse à tous les taxons : arbres, datation moléculaire, reconstruction ancestrale, annotation iTOL. |
+| [bioinfo](docs/bioinfo.md) | Briques bioinformatiques génériques : séquences, formats d'alignement et de variants, réseaux de protéines, ontologies, pipelines. |
+| [structure](docs/structure.md) | Couche structurale des protéines : recherche par structure, prédiction de complexes, impact d'une substitution, site actif, poches de liaison. |
+| [litterature](docs/litterature.md) | Accès et fouille de la littérature scientifique, revue incrémentale, plein texte et tables supplémentaires. |
+| [science-commun](docs/science-commun.md) | Socle commun de tout projet, seul bloc chargé dans tous les profils : figures aux normes des revues, cartes, lecture de PDF, calcul distant, statistiques. |
+
+### Blocs de phase
+
+| Plugin | Rôle |
+|--------|------|
+| [redaction](docs/redaction.md) | Phases 2 et 3 du cycle : plan narratif, squelette et rédaction LaTeX, vérification des affirmations, des références et des figures, review interne. |
+| [diffusion](docs/diffusion.md) | Phase 4 : choix de la revue, dépôt du préprint et du code, portail éditorial, réponse aux relecteurs. |
+| [carriere](docs/carriere.md) | Hors cycle de projet : CV, dossiers de financement, suivi de carrière. |
+
+### Domaines séparés
+
+| Plugin | Rôle |
+|--------|------|
+| [maboss](docs/maboss.md) | MaBoSS et CoLoMoTo : modèles booléens `.bnd` et `.cfg` (grammaire refcard), API pyMaBoSS, évaluateur CCT (Oscar Dufossez), carte de l'écosystème (WebMaBoSS de Vincent Noël, dépôts de modèles, positionnement vis-à-vis d'INDRA). Modélisation de la signalisation cancer, projet mabossDemo. |
 | [droit](docs/droit.md) | Recherche juridique en droit français : conventions de notes et citations, vérification des décisions et textes normatifs aux sources officielles. |
 
 Le répertoire `mes_skills/` conserve des ressources personnelles historiques pour iTOL et Rasigade. Il ne contient actuellement aucun `SKILL.md` actif et n'est pas empaqueté en plugin.
 
 ## Cartographie des skills
 
-La collection s'organise comme la chaîne de production d'un article de phylogénomique évolutive du complexe *Mycobacterium tuberculosis* (MTBC), du choix du problème au dépôt final. Vue d'ensemble par étape :
+La collection se lit comme la chaîne de production d'un article de phylogénomique bactérienne, du choix du problème au dépôt final. Vue d'ensemble par étape :
 
-| Étape d'un projet M. tuberculosis | Plugins mobilisés |
-|-----------------------------------|-------------------|
-| 1. Cadrage et revue de littérature | `ia`, `redac`, `bio_population_genetics` |
-| 2. Acquisition des génomes et isolats publiés | `bio_pathogens`, `bio_population_genetics` |
-| 3. Variants, résistance, assignation de lignée | `bio_pathogens` |
-| 4. Phylogénie et datation moléculaire | `bio_population_genetics`, `bio_pathogens` |
-| 5. Phylogéographie et contexte hôte | `bio_population_genetics` |
-| 6. Modélisation, statistiques, machine learning | `ia`, `bio_population_genetics` |
-| 7. Visualisation (figures, arbres, cartes) | `bio_population_genetics`, `redac` |
-| 8. Rédaction du manuscrit | `redac`, `bio_redac` |
-| 9. Vérification et réponse aux relecteurs | `redac` |
-| 10. Valorisation et dépôt (DOI, Overleaf, financements) | `redac` |
+| Étape | Plugins mobilisés |
+|-------|-------------------|
+| 1. Cadrage et revue de littérature | `science-commun`, `litterature` |
+| 2. Acquisition des génomes et isolats publiés | `bacteria`, `mtbc`, `bioinfo` |
+| 3. Contrôle qualité et identification d'espèce | `bacteria`, `mtbc` |
+| 4. Variants, typage, résistance | `mtbc`, `bacteria` |
+| 5. Phylogénie et datation moléculaire | `phylo` |
+| 6. Phylogéographie et contexte hôte | `phylo`, `mtbc`, `popgen` |
+| 7. Fonction et structure des protéines | `structure`, `bioinfo` |
+| 8. Modélisation, statistiques, apprentissage | `science-commun`, `ia` |
+| 9. Visualisation (figures, arbres, cartes) | `science-commun`, `phylo` |
+| 10. Conception et rédaction du manuscrit | `redaction` |
+| 11. Vérification et réponse aux relecteurs | `redaction`, `diffusion` |
+| 12. Diffusion et dépôt | `diffusion` |
 
-Le catalogue complet est dans le [dossier `docs/`](docs/README.md) : une page par plugin, plus un index alphabétique des 189 noms de skills actifs. Les deux versions intentionnellement divergentes de `phylo-history` portent ce total à 190 répertoires canoniques. Les plugins `maboss` et `droit` relèvent de domaines séparés et y sont documentés à part.
+Le catalogue complet est dans le [dossier `docs/`](docs/README.md) : une page par plugin, plus un index alphabétique des 199 skills. Les plugins `maboss` et `droit` relèvent de domaines séparés et y sont documentés à part.
+
+Le partage entre `mtbc` et `bacteria` suit une règle simple, documentée dans `CLAUDE.md` : ce qui est soudé à la pile de données de la tuberculose (TBannotator, `bdd/actuelle`, `barcoding_v2`, catalogue de l'OMS, SITVIT) reste dans `mtbc` ; ce qui est méthode agnostique de l'espèce doit rester trouvable depuis un projet de n'importe quel genre, et sa description l'annonce explicitement.
 
 ## Installation
 
@@ -47,8 +78,10 @@ Ajouter ce dépôt comme marketplace, puis installer les plugins voulus :
 
 ```
 /plugin marketplace add cguyeux/claude_plugins
-/plugin install bio_pathogens@guyeux-claude-plugins
-/plugin install redac@guyeux-claude-plugins
+/plugin install mtbc@guyeux-claude-plugins
+/plugin install bacteria@guyeux-claude-plugins
+/plugin install phylo@guyeux-claude-plugins
+/plugin install redaction@guyeux-claude-plugins
 ```
 
 Pour Codex, le dépôt reste également la source canonique. Le fichier
@@ -63,7 +96,7 @@ python3 _audit/tools/sync_agent_skills.py
 python3 _audit/tools/report_agent_skill_divergences.py --check
 python3 _audit/tools/audit_codex_skill_farm.py --profile-root ~/.codex
 python3 _audit/tools/skills_farm.py audit --profile-root ~/.codex
-python3 _audit/tools/skills_farm.py sync --farm ~/docs/.claude/skills --plugin redac --all-missing --dry-run
+python3 _audit/tools/skills_farm.py sync --farm ~/docs/.claude/skills --plugin redaction --all-missing --dry-run
 python3 _audit/tools/audit_execpolicy.py --check
 python3 _audit/tools/sync_execpolicy.py
 python3 _audit/tools/audit_claude_memories.py --check
@@ -142,11 +175,17 @@ Le rapport CCX-06 `_audit/agent_farm_divergence_report.md` détaille les
 divergences de contenu entre skills communs Claude et Agents. Il est régénéré
 par `report_agent_skill_divergences.py` et contrôlé par `check_all.py`.
 
-## Architecture des skills partagés
+## Un skill, un plugin
 
-Beaucoup de skills sont mutualisés entre plugins via des **symlinks relatifs**. Chaque skill possède un unique répertoire canonique (le fichier réel) ; les autres plugins y accèdent par lien symbolique. Modifier le fichier canonique propage automatiquement le changement à tous les plugins. La table d'ownership canonique et les règles de synchronisation sont documentées dans `CLAUDE.md`.
+La mutualisation par liens symboliques entre plugins a été dissoute lors de la refonte du 2026-09-15. Chaque skill possède désormais un unique chemin réel, dans exactement un plugin, et s'y modifie directement. Un skill transverse à plusieurs domaines va dans le plugin transverse concerné (`phylo`, `bioinfo`, `structure`, `litterature`, `science-commun`) plutôt que dans un domaine puis lié ailleurs : un projet qui a besoin des deux active les deux plugins.
 
-`bio_redac/` ne contient que des symlinks (sauf `phylo-history`, maintenu en deux versions volontairement distinctes).
+Le contrôle est immédiat, et `docs/build_docs.py` signale désormais comme anomalie tout lien ou tout nom de skill dupliqué entre plugins :
+
+```
+find */skills -maxdepth 1 -type l   # aucun lien ne doit apparaître
+```
+
+Pour retrouver le plugin d'un skill : `canon_skills.json` (régénéré par `_audit/tools/generate_canon_skills.py`) ou `claude plugin details <nom>`. La table d'affectation et les règles de placement sont documentées dans `CLAUDE.md`.
 
 ## Cadrage
 

@@ -25,11 +25,11 @@ class CodexSkillFarmAuditTests(unittest.TestCase):
     def test_repository_audit_is_closed(self):
         summary, problems = self.audit.audit_repository(ROOT)
         self.assertEqual([], problems)
-        self.assertEqual(190, summary["canonicals"])
+        self.assertEqual(199, summary["canonicals"])
         self.assertEqual(53, summary["direct_exports"])
-        self.assertEqual(137, summary["packaged_skills"])
-        self.assertEqual(137, summary["matrix_rows"])
-        self.assertEqual(10, summary["plugins"])
+        self.assertEqual(146, summary["packaged_skills"])
+        self.assertEqual(146, summary["matrix_rows"])
+        self.assertEqual(17, summary["plugins"])
         self.assertEqual(
             [
                 "packaged-direct",
@@ -85,8 +85,8 @@ class CodexSkillFarmAuditTests(unittest.TestCase):
 
             summary, problems = self.audit.audit_profile(profile)
             self.assertEqual([], problems)
-            self.assertEqual(10, summary["enabled_plugins"])
-            self.assertEqual(137, summary["installed_skills"])
+            self.assertEqual(17, summary["enabled_plugins"])
+            self.assertEqual(146, summary["installed_skills"])
 
     def test_profile_audit_rejects_forbidden_frontmatter(self):
         with tempfile.TemporaryDirectory() as tmp:

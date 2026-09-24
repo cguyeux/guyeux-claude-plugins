@@ -29,6 +29,14 @@ Ce que fait le script :
 Le script NE conclut PAS : il RANGE les chiffres en « sûrs », « à vérifier », « suspects ».
 La décision reste humaine, mais elle porte sur 5 chiffres au lieu de 300.
 
+Claims de COMPTAGE (« 5 témoins », « n=9 génomes ») : chaque fichier CSV/TSV/JSON(liste)
+expose aussi une entrée synthétique `<fichier>:__n_rows__` portant son nombre de lignes/
+enregistrements, à déclarer comme n'importe quel autre chemin en mode `--assert-file`. Sans
+elle, un chiffre qui compte des ENTRÉES plutôt qu'il ne cite une CELLULE ne peut jamais être
+recroisé : c'est le défaut vécu porte 3bis `lineage_subdivision_methods` (2026-09-19), table
+de témoins citée à 5 entrées alors que le `.tsv` régénéré en portait 9 — chaque cellule était
+juste, seul le COMPTE avait dérivé.
+
 Usage :
     python3 numeric_crosscheck.py main.tex --data results/*.json --near 0.05
     python3 numeric_crosscheck.py main.tex --data r.json --json     # sortie machine
@@ -118,6 +126,16 @@ def flatten(obj, prefix=""):
 
 
 def load_data(paths: list[str]) -> list[tuple[str, float]]:
+    """Aplatit chaque fichier en (chemin, valeur), plus une entree synthetique
+    `<fichier>:__n_rows__` portant le NOMBRE de lignes/enregistrements.
+
+    Sans elle, un claim de comptage (« 5 temoins », « n=9 genomes ») ne peut se
+    verifier que contre une CELLULE du tableau, jamais contre sa TAILLE -- or
+    c'est precisement le defaut vecu (porte 3bis `lineage_subdivision_methods`,
+    2026-09-19) : une table de temoins citee a 5 entrees dans le manuscrit alors
+    que le `.tsv` regenere en portait 9. Aucune cellule n'etait fausse, c'etait
+    le COMPTE qui avait derive -- la comparaison cellule-a-cellule ne le voit pas.
+    """
     vals: list[tuple[str, float]] = []
     for p in paths:
         path = Path(p)
@@ -125,17 +143,22 @@ def load_data(paths: list[str]) -> list[tuple[str, float]]:
             print(f"  (donnees introuvables, ignore : {p})", file=sys.stderr)
             continue
         if path.suffix.lower() == ".json":
-            vals += [(f"{path.name}:{k}", v)
-                     for k, v in flatten(json.loads(path.read_text(encoding="utf-8")))]
+            obj = json.loads(path.read_text(encoding="utf-8"))
+            vals += [(f"{path.name}:{k}", v) for k, v in flatten(obj)]
+            if isinstance(obj, list):
+                vals.append((f"{path.name}:__n_rows__", float(len(obj))))
         elif path.suffix.lower() in (".csv", ".tsv"):
             delim = "\t" if path.suffix.lower() == ".tsv" else ","
             with path.open(encoding="utf-8") as fh:
+                n_rows = 0
                 for i, row in enumerate(csv.DictReader(fh, delimiter=delim)):
+                    n_rows = i + 1
                     for k, v in row.items():
                         try:
                             vals.append((f"{path.name}:{k}[row{i}]", float(str(v).replace(",", "."))))
                         except (TypeError, ValueError):
                             pass
+                vals.append((f"{path.name}:__n_rows__", float(n_rows)))
     return vals
 
 

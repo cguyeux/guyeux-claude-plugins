@@ -16,7 +16,7 @@ et un skill qui ne se declenche pas est indiscernable d'un skill qui a juge la
 tache hors de son perimetre.
 
 > Ce script est un PIS-ALLER. La vraie solution est d'installer le depot comme
-> marketplace (`claude plugin marketplace add ~/docs/codes/claude_plugins`), ce
+> marketplace (`claude plugin marketplace add ~/docs/environnement/plugins`), ce
 > pour quoi il est deja outille (`.claude-plugin/marketplace.json`, onze
 > `plugin.json`). Le mode plugin charge tous les skills d'un plugin active,
 > definit `${CLAUDE_PLUGIN_ROOT}` (dont 21 skills du miroir dependent), et

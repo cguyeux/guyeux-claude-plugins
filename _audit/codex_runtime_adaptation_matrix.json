@@ -5,32 +5,42 @@
       "claude-branding-only": 1,
       "codex-mcp-documentation-only": 24,
       "codex-mcp-tool-prerequisite": 12,
-      "external-mcp-fallback-documented": 1,
-      "mcp-narrative-only": 9,
+      "mcp-narrative-only": 11,
       "rewrite-cache-path": 1,
-      "rewrite-claude-skill-paths": 9
+      "rewrite-claude-skill-paths": 11,
+      "unclassified-runtime-signal": 3
     },
     "source_plugin": {
-      "bio_bacteria": 5,
-      "bio_pathogens": 25,
-      "bio_population_genetics": 20,
+      "bacteria": 11,
+      "bioinfo": 1,
+      "litterature": 5,
       "maboss": 7,
-      "multimedia": 1
+      "mtbc": 19,
+      "multimedia": 1,
+      "phylo": 6,
+      "popgen": 11,
+      "redaction": 1,
+      "structure": 2
     },
     "package_candidate": {
-      "bio-bacteria": 5,
-      "bio-pathogens": 25,
-      "bio-population-genetics": 20,
+      "bacteria": 11,
+      "bioinfo": 1,
+      "litterature": 5,
       "maboss": 7,
-      "multimedia": 1
+      "mtbc": 19,
+      "multimedia": 1,
+      "phylo": 6,
+      "popgen": 11,
+      "redaction": 1,
+      "structure": 2
     }
   },
   "rows": [
     {
       "name": "aadr",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/aadr",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "popgen",
+      "canonical_path": "popgen/skills/aadr",
+      "package_candidate": "popgen",
       "coarse_signals": [
         "mcp-runtime",
         "supporting-resources",
@@ -46,9 +56,9 @@
     },
     {
       "name": "active-site-check",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/active-site-check",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "structure",
+      "canonical_path": "structure/skills/active-site-check",
+      "package_candidate": "structure",
       "coarse_signals": [
         "claude-runtime-reference",
         "script-payload"
@@ -61,9 +71,9 @@
     },
     {
       "name": "amtdb",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/amtdb",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "popgen",
+      "canonical_path": "popgen/skills/amtdb",
+      "package_candidate": "popgen",
       "coarse_signals": [
         "mcp-runtime",
         "supporting-resources",
@@ -79,9 +89,9 @@
     },
     {
       "name": "ancestral-reconstruction",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/ancestral-reconstruction",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "phylo",
+      "canonical_path": "phylo/skills/ancestral-reconstruction",
+      "package_candidate": "phylo",
       "coarse_signals": [
         "mcp-runtime",
         "script-payload",
@@ -89,16 +99,32 @@
       ],
       "runtime_issues": [
         "tbannotator-mcp",
-        "mcp-tool-name"
+        "mcp-tool-name",
+        "generic-mcp-mention"
       ],
       "runtime_bucket": "codex-mcp-tool-prerequisite",
       "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire."
     },
     {
+      "name": "ani-panel-classify",
+      "source_plugin": "bacteria",
+      "canonical_path": "bacteria/skills/ani-panel-classify",
+      "package_candidate": "bacteria",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "runtime_issues": [],
+      "runtime_bucket": "unclassified-runtime-signal",
+      "action": "Relire manuellement avant empaquetage."
+    },
+    {
       "name": "bacdive",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/bacdive",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "bacteria",
+      "canonical_path": "bacteria/skills/bacdive",
+      "package_candidate": "bacteria",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -113,9 +139,9 @@
     },
     {
       "name": "bayesian-skyline",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/bayesian-skyline",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "phylo",
+      "canonical_path": "phylo/skills/bayesian-skyline",
+      "package_candidate": "phylo",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -130,9 +156,9 @@
     },
     {
       "name": "beast2-phylogeography",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/beast2-phylogeography",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "phylo",
+      "canonical_path": "phylo/skills/beast2-phylogeography",
+      "package_candidate": "phylo",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -147,9 +173,9 @@
     },
     {
       "name": "bioc-pmc",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/bioc-pmc",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "litterature",
+      "canonical_path": "litterature/skills/bioc-pmc",
+      "package_candidate": "litterature",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -193,11 +219,12 @@
     },
     {
       "name": "boltz",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/boltz",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "structure",
+      "canonical_path": "structure/skills/boltz",
+      "package_candidate": "structure",
       "coarse_signals": [
         "claude-runtime-reference",
+        "script-payload",
         "web-runtime"
       ],
       "runtime_issues": [
@@ -223,9 +250,9 @@
     },
     {
       "name": "card",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/card",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "popgen",
+      "canonical_path": "popgen/skills/card",
+      "package_candidate": "popgen",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -239,27 +266,10 @@
       "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee."
     },
     {
-      "name": "clinical-trial-protocol-skill",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/clinical-trial-protocol-skill",
-      "package_candidate": "bio-population-genetics",
-      "coarse_signals": [
-        "data-payload",
-        "mcp-runtime",
-        "script-payload",
-        "supporting-resources"
-      ],
-      "runtime_issues": [
-        "generic-mcp-mention"
-      ],
-      "runtime_bucket": "external-mcp-fallback-documented",
-      "action": "Emballer seulement avec prerequis MCP Codex explicite et fallback hors-ligne documente, sans inventer de resultats d'essais."
-    },
-    {
       "name": "coevolution",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/coevolution",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "popgen",
+      "canonical_path": "popgen/skills/coevolution",
+      "package_candidate": "popgen",
       "coarse_signals": [
         "mcp-runtime",
         "script-payload",
@@ -267,7 +277,8 @@
       ],
       "runtime_issues": [
         "tbannotator-mcp",
-        "mcp-tool-name"
+        "mcp-tool-name",
+        "generic-mcp-mention"
       ],
       "runtime_bucket": "codex-mcp-tool-prerequisite",
       "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire."
@@ -290,9 +301,9 @@
     },
     {
       "name": "convergent-evolution",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/convergent-evolution",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/convergent-evolution",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "mcp-runtime",
         "script-payload",
@@ -308,9 +319,9 @@
     },
     {
       "name": "d-place",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/d-place",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "popgen",
+      "canonical_path": "popgen/skills/d-place",
+      "package_candidate": "popgen",
       "coarse_signals": [
         "mcp-runtime",
         "supporting-resources",
@@ -326,9 +337,9 @@
     },
     {
       "name": "enterobase",
-      "source_plugin": "bio_bacteria",
-      "canonical_path": "bio_bacteria/skills/enterobase",
-      "package_candidate": "bio-bacteria",
+      "source_plugin": "bacteria",
+      "canonical_path": "bacteria/skills/enterobase",
+      "package_candidate": "bacteria",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -343,9 +354,9 @@
     },
     {
       "name": "europe-pmc",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/europe-pmc",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "litterature",
+      "canonical_path": "litterature/skills/europe-pmc",
+      "package_candidate": "litterature",
       "coarse_signals": [
         "claude-runtime-reference",
         "mcp-runtime",
@@ -363,9 +374,9 @@
     },
     {
       "name": "helicobacter-pylori-phylogeography",
-      "source_plugin": "bio_bacteria",
-      "canonical_path": "bio_bacteria/skills/helicobacter-pylori-phylogeography",
-      "package_candidate": "bio-bacteria",
+      "source_plugin": "bacteria",
+      "canonical_path": "bacteria/skills/helicobacter-pylori-phylogeography",
+      "package_candidate": "bacteria",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -377,6 +388,19 @@
       ],
       "runtime_bucket": "codex-mcp-documentation-only",
       "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee."
+    },
+    {
+      "name": "hgt-direction-check",
+      "source_plugin": "bacteria",
+      "canonical_path": "bacteria/skills/hgt-direction-check",
+      "package_candidate": "bacteria",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "script-payload"
+      ],
+      "runtime_issues": [],
+      "runtime_bucket": "unclassified-runtime-signal",
+      "action": "Relire manuellement avant empaquetage."
     },
     {
       "name": "imdb",
@@ -397,9 +421,9 @@
     },
     {
       "name": "lineage-comparison",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/lineage-comparison",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/lineage-comparison",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "mcp-runtime",
         "script-payload",
@@ -415,9 +439,9 @@
     },
     {
       "name": "lineage-subdivision",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/lineage-subdivision",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/lineage-subdivision",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "claude-runtime-reference",
         "script-payload",
@@ -447,9 +471,9 @@
     },
     {
       "name": "mk-ascertainment",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/mk-ascertainment",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/mk-ascertainment",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "claude-runtime-reference",
         "script-payload",
@@ -479,9 +503,9 @@
     },
     {
       "name": "mtbc-epistasis",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/mtbc-epistasis",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/mtbc-epistasis",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "claude-runtime-reference",
         "script-payload",
@@ -496,9 +520,9 @@
     },
     {
       "name": "mtbc-gene",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/mtbc-gene",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/mtbc-gene",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "claude-runtime-reference",
         "script-payload",
@@ -516,9 +540,9 @@
     },
     {
       "name": "mtbc-lineages",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/mtbc-lineages",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/mtbc-lineages",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "claude-runtime-reference",
         "data-payload",
@@ -536,10 +560,25 @@
       "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload."
     },
     {
+      "name": "mtbc-reboot",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/mtbc-reboot",
+      "package_candidate": "mtbc",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "claude-skill-path"
+      ],
+      "runtime_bucket": "rewrite-claude-skill-paths",
+      "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload."
+    },
+    {
       "name": "mycobacterium-leprae",
-      "source_plugin": "bio_bacteria",
-      "canonical_path": "bio_bacteria/skills/mycobacterium-leprae",
-      "package_candidate": "bio-bacteria",
+      "source_plugin": "bacteria",
+      "canonical_path": "bacteria/skills/mycobacterium-leprae",
+      "package_candidate": "bacteria",
       "coarse_signals": [
         "mcp-runtime"
       ],
@@ -552,9 +591,9 @@
     },
     {
       "name": "ncbi-pathogen-detection",
-      "source_plugin": "bio_bacteria",
-      "canonical_path": "bio_bacteria/skills/ncbi-pathogen-detection",
-      "package_candidate": "bio-bacteria",
+      "source_plugin": "bacteria",
+      "canonical_path": "bacteria/skills/ncbi-pathogen-detection",
+      "package_candidate": "bacteria",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -569,9 +608,9 @@
     },
     {
       "name": "nextflow-development",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/nextflow-development",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "bioinfo",
+      "canonical_path": "bioinfo/skills/nextflow-development",
+      "package_candidate": "bioinfo",
       "coarse_signals": [
         "claude-runtime-reference",
         "script-payload",
@@ -587,9 +626,9 @@
     },
     {
       "name": "nextstrain",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/nextstrain",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "phylo",
+      "canonical_path": "phylo/skills/nextstrain",
+      "package_candidate": "phylo",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -604,9 +643,9 @@
     },
     {
       "name": "openalex",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/openalex",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "litterature",
+      "canonical_path": "litterature/skills/openalex",
+      "package_candidate": "litterature",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -621,9 +660,9 @@
     },
     {
       "name": "orbis",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/orbis",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "popgen",
+      "canonical_path": "popgen/skills/orbis",
+      "package_candidate": "popgen",
       "coarse_signals": [
         "mcp-runtime",
         "supporting-resources",
@@ -639,9 +678,9 @@
     },
     {
       "name": "p3k14c",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/p3k14c",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "popgen",
+      "canonical_path": "popgen/skills/p3k14c",
+      "package_candidate": "popgen",
       "coarse_signals": [
         "mcp-runtime",
         "supporting-resources",
@@ -657,9 +696,9 @@
     },
     {
       "name": "pangenome-enrichment",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/pangenome-enrichment",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/pangenome-enrichment",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "mcp-runtime",
         "script-payload",
@@ -677,9 +716,9 @@
     },
     {
       "name": "pastml",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/pastml",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "phylo",
+      "canonical_path": "phylo/skills/pastml",
+      "package_candidate": "phylo",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -694,9 +733,9 @@
     },
     {
       "name": "pathogens-portal",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/pathogens-portal",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "bacteria",
+      "canonical_path": "bacteria/skills/pathogens-portal",
+      "package_candidate": "bacteria",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -710,10 +749,24 @@
       "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee."
     },
     {
+      "name": "phylo-placement",
+      "source_plugin": "phylo",
+      "canonical_path": "phylo/skills/phylo-placement",
+      "package_candidate": "phylo",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [],
+      "runtime_bucket": "unclassified-runtime-signal",
+      "action": "Relire manuellement avant empaquetage."
+    },
+    {
       "name": "phylogeography",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/phylogeography",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/phylogeography",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "mcp-runtime",
         "script-payload",
@@ -729,9 +782,9 @@
     },
     {
       "name": "pubmed-database",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/pubmed-database",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "litterature",
+      "canonical_path": "litterature/skills/pubmed-database",
+      "package_candidate": "litterature",
       "coarse_signals": [
         "mcp-runtime",
         "supporting-resources",
@@ -748,9 +801,9 @@
     },
     {
       "name": "pubtator",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/pubtator",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "litterature",
+      "canonical_path": "litterature/skills/pubtator",
+      "package_candidate": "litterature",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -780,9 +833,9 @@
     },
     {
       "name": "pymlst",
-      "source_plugin": "bio_bacteria",
-      "canonical_path": "bio_bacteria/skills/pymlst",
-      "package_candidate": "bio-bacteria",
+      "source_plugin": "bacteria",
+      "canonical_path": "bacteria/skills/pymlst",
+      "package_candidate": "bacteria",
       "coarse_signals": [
         "mcp-runtime",
         "provenance-recorded",
@@ -798,9 +851,9 @@
     },
     {
       "name": "resistance-catalogue",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/resistance-catalogue",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/resistance-catalogue",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "mcp-runtime",
         "script-payload",
@@ -816,9 +869,9 @@
     },
     {
       "name": "resistance-profiler",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/resistance-profiler",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/resistance-profiler",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "mcp-runtime",
         "script-payload",
@@ -833,10 +886,27 @@
       "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire."
     },
     {
+      "name": "sci-table",
+      "source_plugin": "redaction",
+      "canonical_path": "redaction/skills/sci-table",
+      "package_candidate": "redaction",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "claude-plugin-root"
+      ],
+      "runtime_bucket": "rewrite-claude-skill-paths",
+      "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload."
+    },
+    {
       "name": "seshat",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/seshat",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "popgen",
+      "canonical_path": "popgen/skills/seshat",
+      "package_candidate": "popgen",
       "coarse_signals": [
         "mcp-runtime",
         "supporting-resources",
@@ -851,10 +921,28 @@
       "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee."
     },
     {
+      "name": "sitvitweb",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/sitvitweb",
+      "package_candidate": "mtbc",
+      "coarse_signals": [
+        "mcp-runtime",
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "runtime_issues": [
+        "generic-mcp-mention",
+        "http-literal"
+      ],
+      "runtime_bucket": "mcp-narrative-only",
+      "action": "Emballage possible ; la mention MCP n'est pas un appel runtime direct."
+    },
+    {
       "name": "slavevoyages",
-      "source_plugin": "bio_population_genetics",
-      "canonical_path": "bio_population_genetics/skills/slavevoyages",
-      "package_candidate": "bio-population-genetics",
+      "source_plugin": "popgen",
+      "canonical_path": "popgen/skills/slavevoyages",
+      "package_candidate": "popgen",
       "coarse_signals": [
         "mcp-runtime",
         "supporting-resources",
@@ -870,9 +958,9 @@
     },
     {
       "name": "snp-distance",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/snp-distance",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/snp-distance",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "mcp-runtime",
         "script-payload",
@@ -880,16 +968,17 @@
       ],
       "runtime_issues": [
         "tbannotator-mcp",
-        "mcp-tool-name"
+        "mcp-tool-name",
+        "generic-mcp-mention"
       ],
       "runtime_bucket": "codex-mcp-tool-prerequisite",
       "action": "Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire."
     },
     {
       "name": "spaam-ancient-metagenome-dir",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/spaam-ancient-metagenome-dir",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "popgen",
+      "canonical_path": "popgen/skills/spaam-ancient-metagenome-dir",
+      "package_candidate": "popgen",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -904,9 +993,9 @@
     },
     {
       "name": "spaam-community",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/spaam-community",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "popgen",
+      "canonical_path": "popgen/skills/spaam-community",
+      "package_candidate": "popgen",
       "coarse_signals": [
         "mcp-runtime",
         "web-runtime"
@@ -921,9 +1010,9 @@
     },
     {
       "name": "spdi-annotation",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/spdi-annotation",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/spdi-annotation",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "mcp-runtime",
         "script-payload",
@@ -939,10 +1028,11 @@
     },
     {
       "name": "species-id",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/species-id",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "bacteria",
+      "canonical_path": "bacteria/skills/species-id",
+      "package_candidate": "bacteria",
       "coarse_signals": [
+        "claude-runtime-reference",
         "mcp-runtime",
         "unsupported-frontmatter",
         "web-runtime"
@@ -957,12 +1047,13 @@
     },
     {
       "name": "sra-geolocate",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/sra-geolocate",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/sra-geolocate",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "claude-runtime-reference",
         "mcp-runtime",
+        "script-payload",
         "unsupported-frontmatter",
         "web-runtime"
       ],
@@ -976,10 +1067,25 @@
       "action": "Remplacer le cache Claude par un cache neutre sous ~/.cache ou par une sortie projet explicite."
     },
     {
+      "name": "tb-cli",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/tb-cli",
+      "package_candidate": "mtbc",
+      "coarse_signals": [
+        "mcp-runtime",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "generic-mcp-mention"
+      ],
+      "runtime_bucket": "mcp-narrative-only",
+      "action": "Emballage possible ; la mention MCP n'est pas un appel runtime direct."
+    },
+    {
       "name": "tbannotator-mcp",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/tbannotator-mcp",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/tbannotator-mcp",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "mcp-runtime",
         "script-payload",
@@ -998,9 +1104,9 @@
     },
     {
       "name": "thd",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/thd",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "bacteria",
+      "canonical_path": "bacteria/skills/thd",
+      "package_candidate": "bacteria",
       "coarse_signals": [
         "claude-runtime-reference",
         "mcp-runtime",
@@ -1010,16 +1116,17 @@
       "runtime_issues": [
         "claude-plugin-root",
         "tbannotator-mcp",
-        "mcp-tool-name"
+        "mcp-tool-name",
+        "generic-mcp-mention"
       ],
       "runtime_bucket": "rewrite-claude-skill-paths",
       "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload."
     },
     {
       "name": "tsne-hdbscan",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/tsne-hdbscan",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/tsne-hdbscan",
+      "package_candidate": "mtbc",
       "coarse_signals": [
         "mcp-runtime",
         "script-payload",

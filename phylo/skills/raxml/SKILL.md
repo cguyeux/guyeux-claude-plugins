@@ -29,7 +29,7 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query
 > `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
 >
 > ```bash
-> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> B=~/docs/environnement/plugins/mtbc/skills/bdd-bridge/scripts
 > export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
 > python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
 > python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable
@@ -116,7 +116,7 @@ L'alignement se construit depuis la base LOCALE `bdd/actuelle/`, avec `phylo_job
 `bdd-bridge`. Il n'y a plus de matrice distante à demander ni de job à faire construire.
 
 ```bash
-B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+B=~/docs/environnement/plugins/mtbc/skills/bdd-bridge/scripts
 export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
 
 python3 $B/phylo_job.py --out /tmp/arbre_L4.8 --min-frac 0.02 align L4.8
@@ -153,7 +153,7 @@ Le modèle reste **BIN+G** pour les alignements SNP binaires 0/1, conformément 
 dépôt ; c'est la valeur par défaut et il n'y a pas de raison de la changer sans motif écrit.
 
 Pour le mode `submit`, le paquet produit est autonome et se transfère sur `mh` selon le skill
-`remote-compute` (VPN requis, lancé par l'utilisateur avec `sudo vpn up`). Le suivi est celui de
+`remote-compute` (VPN requis, monté par l'agent lui-même : `sudo -n /usr/local/bin/vpn up`). Le suivi est celui de
 SLURM (`squeue`, `sacct`), pas une table de jobs distante.
 
 ## Phase 4 : Récupération et contrôle

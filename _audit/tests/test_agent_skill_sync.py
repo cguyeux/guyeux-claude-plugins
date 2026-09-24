@@ -47,13 +47,13 @@ class AgentSkillSyncTests(unittest.TestCase):
 
     def test_real_agent_farm_has_no_unplanned_sync_action(self):
         summary, problems = self.sync.classify(
-            Path.home() / ".claude" / "skills",
+            self.sync.personal_skill_map(self.sync.DEFAULT_CLAUDE_ROOTS),
             Path.home() / ".agents" / "skills",
             ROOT,
         )
         self.assertEqual([], problems)
         self.assertEqual([], summary["missing"])
-        self.assertEqual(29, len(summary["expected_divergent"]))
+        self.assertEqual(30, len(summary["expected_divergent"]))
         self.assertEqual(0, len(summary["expected_claude_only"]))
 
     def test_missing_skill_is_actionable_and_apply_creates_link(self):
@@ -64,16 +64,36 @@ class AgentSkillSyncTests(unittest.TestCase):
             delta_root = write_delta_root(base / "repo")
             write_skill(claude, "new-skill")
 
-            summary, problems = self.sync.classify(claude, agents, delta_root)
+            summary, problems = self.sync.classify(self.sync.personal_skill_map([claude]), agents, delta_root)
             self.assertEqual([], problems)
             self.assertEqual(["new-skill"], summary["missing"])
 
-            self.sync.apply_missing(claude, agents, summary["missing"])
-            summary, problems = self.sync.classify(claude, agents, delta_root)
+            self.sync.apply_missing(self.sync.personal_skill_map([claude]), agents, summary["missing"])
+            summary, problems = self.sync.classify(self.sync.personal_skill_map([claude]), agents, delta_root)
             self.assertEqual([], problems)
             self.assertEqual([], summary["missing"])
             self.assertTrue((agents / "new-skill").is_symlink())
             self.assertEqual((claude / "new-skill").resolve(), (agents / "new-skill").resolve())
+
+    def test_second_claude_root_is_seen_and_linked_to_its_real_path(self):
+        """Plusieurs racines de skills personnels peuvent coexister (cas instruit par P5.4)."""
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            user = base / "user"
+            cycle = base / "cycle"
+            agents = base / "agents"
+            delta_root = write_delta_root(base / "repo")
+            write_skill(user, "perso")
+            write_skill(cycle, "pistes")
+
+            claude_map = self.sync.personal_skill_map([user, cycle])
+            summary, problems = self.sync.classify(claude_map, agents, delta_root)
+            self.assertEqual([], problems)
+            self.assertEqual(["perso", "pistes"], summary["missing"])
+
+            self.sync.apply_missing(claude_map, agents, summary["missing"])
+            self.assertEqual((cycle / "pistes").resolve(), (agents / "pistes").resolve())
+            self.assertEqual((user / "perso").resolve(), (agents / "perso").resolve())
 
     def test_unexpected_agents_only_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -85,7 +105,7 @@ class AgentSkillSyncTests(unittest.TestCase):
             write_skill(agents, "shared")
             write_skill(agents, "unexpected")
 
-            _summary, problems = self.sync.classify(claude, agents, delta_root)
+            _summary, problems = self.sync.classify(self.sync.personal_skill_map([claude]), agents, delta_root)
             self.assertTrue(any("Agents-only non whitelistes" in problem for problem in problems))
 
     def test_unexpected_common_divergence_is_rejected(self):
@@ -97,7 +117,7 @@ class AgentSkillSyncTests(unittest.TestCase):
             write_skill(claude, "shared", "claude")
             write_skill(agents, "shared", "agents")
 
-            _summary, problems = self.sync.classify(claude, agents, delta_root)
+            _summary, problems = self.sync.classify(self.sync.personal_skill_map([claude]), agents, delta_root)
             self.assertTrue(any("divergences communes non whitelistees" in problem for problem in problems))
 
 

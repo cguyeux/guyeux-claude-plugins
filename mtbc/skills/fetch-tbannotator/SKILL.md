@@ -12,6 +12,14 @@ allowed-tools: Bash, Read, Write, Glob, Grep, mcp__tbannotator__tool_query_postg
 Retrieve `report.json` and generate `spdi.txt` for MTBC strains from the TBannotator pipeline.
 
 > [!NOTE]
+> **Journalisation `bdd` (piste AA3).** `fetch_reports_http.py` et `spdi_from_tblearn.py`
+> écrivent sous `bdd_journal.ecriture()` (`~/.claude/skills/bdd`) quand leur `--dest`/`--root`
+> tombe sous la racine d'un store déclaré au registre (`bdd_journal.store_for_path`) — dégradé
+> silencieusement sinon (bac à sable, `/tmp`, machine sans le skill `bdd`). `sra_to_add.py`
+> n'est PAS journalisé : `--push --apply` écrit `samples.tsv` sur `mp` par SSH, hors du
+> périmètre du skill `bdd` (scan local uniquement).
+
+> [!NOTE]
 > **Timeouts adaptatifs selon la source (sinon faux echecs sur gros telechargements).**
 > ERR (ENA, souvent > 900 Mo) = **3 h** ; FASTQ deja locaux = 1 h ; mapping seul = 30 min.
 > Pour les paired-end ENA, utiliser **`prefetch` + `fasterq-dump --split-3`** (jamais
@@ -41,11 +49,11 @@ TBannotator data lives in two locations that are **NOT always in sync**. Try the
 ### Primary: SSH/scp on `mp` (canonical pipeline)
 
 > [!IMPORTANT]
-> **`mp` n'est joignable que VPN monté : `sudo vpn up`.** Le symptôme d'un VPN tombé est
+> **`mp` n'est joignable que VPN monté : `sudo -n /usr/local/bin/vpn up`.** Le symptôme d'un VPN tombé est
 > `Connection timed out during banner exchange`, qui ressemble à une panne serveur et n'en est pas une
 > (l'« outage transitoire » noté ici le 2026-07-31 était selon toute vraisemblance cela). Vérifier le VPN
 > **avant** de basculer sur la route HTTP, et ne jamais conclure d'un échec SSH qu'une souche est absente
-> de TBannotator. La commande est à lancer par l'utilisateur (`! sudo vpn up`), elle demande un mot de passe.
+> de TBannotator. L'agent la lance LUI-MÊME : `sudo -n` passe sans mot de passe (NOPASSWD, vérifié le 2026-09-06) ; ne jamais la renvoyer à l'utilisateur.
 
 The TBannotator Snakemake pipeline by Gaëtan Senelle (`gsenelle`) runs on **`mp`** (SSH alias for `mesoprivate1.univ-fcomte.fr`, defined in `~/.ssh/config`, reached via ProxyCommand bilbo). All annotated strains live as filesystem directories at:
 
@@ -108,22 +116,64 @@ read-only implementation of exactly this lives at `mtbc/Bovis_emergence/analyses
 > 6 were still on the server; 51 (mostly ERR/ENA) were purged → re-ingestion required, not scp. Always report the
 > MISS split (purged-needs-reingest vs never-ingested) rather than assuming a fetch will recover them.
 
-### Fallback: HTTP server (TBannotator v2 MCP)
+### Fallback HTTP : MORT (vérifié 2026-09-20), remplacé par un repli SQL
 
-- report.json: `https://tblearn.tbannotator.ideev.universite-paris-saclay.fr/mcp/download/report/{strain}`
-- spdi.txt: extracted from the downloaded report.json (snp[].spdi field)
+> [!CAUTION]
+> **La route HTTP ci-dessous est MORTE depuis la migration tblearn, pas seulement fragile.**
+> Vérifié le 2026-09-20 (projet `mtbc/L6`, piste P1.4ter) : `GET
+> https://tblearn.tbannotator.ideev.universite-paris-saclay.fr/mcp/download/report/{strain}`
+> renvoie un **404 systématique**, avec ou sans jeton `Authorization: Bearer`, y compris sur un
+> **contrôle positif** — un accession confirmé `FOUND` sur `mp` (`report.json` présent et lisible)
+> renvoie lui aussi 404. Plusieurs variantes de chemin testées (`/api/v1/mcp/download/report/`,
+> `/download/report/`, `/report/`, `/api/report/` — cette dernière redirige en 308 mais aboutit
+> quand même à un 404 JSON `{"detail":"Not Found"}`) : aucune ne sert le rapport. Le endpoint
+> `/mcp/download/report/{strain}` appartenait à l'ancien webapp TBannotator ; tblearn (le serveur
+> qui l'a remplacé, cf. `~/.agents/knowledge/tblearn-migration.md`) n'expose que trois outils MCP
+> SQL, pas de route de téléchargement de fichier. **Ne plus utiliser cette route** ; ne pas la
+> retenter avant qu'une session confirme qu'un endpoint de remplacement existe (l'inscrire alors
+> ici avec sa date de vérification).
 
-When the HTTP server returns 503 or times out, switch to SSH mp. **And symmetrically**: when `mp` is unreachable
-(seen 2026-07-31: `Connection timed out during banner exchange`), fall back to HTTP — that outage proved transient,
-so **re-test before declaring a route dead**. HTTP is also the route that actually held the data in that case:
-29 genomes were retrieved over HTTP while `mp` had none of them.
+### Repli SQL : reconstruire spdi.txt sans report.json
 
-A clean **404** here means the strain is in neither the annotated database nor reachable that way — that is the
-signal for re-ingestion, unlike a 503/timeout which is an outage.
+Quand une souche est confirmée `status='processed'` en base (`tb_report_strain`, cf. skill
+`tbannotator-mcp`/`tbannotator-tblearn`) mais absente à la fois de `mp` (purgée de la fenêtre
+glissante) et de la route HTTP (morte), les variants restent récupérables par SQL en lecture
+seule, sans passer par `report.json` :
+
+```sql
+-- decompte attendu, a verifier contre ce qui est effectivement recupere
+SELECT COUNT(*) FROM tb_report_strain s
+JOIN tb_report_strain_spdi ss ON ss.strain_id = s.strain_id
+WHERE s.run_accession = '{strain}';
+
+-- variants, PAGINES explicitement
+SELECT sp.spdi_variant_name FROM tb_report_strain s
+JOIN tb_report_strain_spdi ss ON ss.strain_id = s.strain_id
+JOIN tb_report_spdi sp ON sp.spdi_id = ss.spdi_id
+WHERE s.run_accession = '{strain}'
+ORDER BY sp.spdi_id LIMIT 500 OFFSET {n};
+```
+
+> [!CAUTION]
+> **Le serveur (et le client `tblearn_client.py`) TRONQUE la réponse à 500 lignes, sans erreur ni
+> avertissement** (cf. `~/.agents/knowledge/tblearn-migration.md`). Une souche L6/MTBC porte
+> couramment 1600 à 2400 variants : une requête sans pagination rend un `spdi.txt` silencieusement
+> incomplet, qui a toutes les apparences d'un résultat valide. Toujours paginer par
+> `ORDER BY spdi_id LIMIT 500 OFFSET n` en boucle jusqu'à une page de moins de 500 lignes, et
+> comparer le total récupéré au `COUNT(*)` de la première requête avant d'écrire le fichier — ne
+> rien écrire si les deux ne concordent pas. Script de référence :
+> `mtbc/en_cours/L6/résultats/` (voir cahier de labo L6, entrée 2026-09-20, P1.4ter) pour un
+> exemple d'implémentation paginée + vérifiée.
+
+Le `spdi.txt` obtenu par cette voie n'a ni `report.json` ni `snps.vcf` associé (ils restent
+indisponibles par construction). Marquer ce fait explicitement à côté du fichier — par exemple un
+`STATUS.txt` dans le même répertoire `NC_000962.3/` — pour qu'une session future ne s'étonne pas de
+l'absence des deux autres fichiers et ne les recherche pas en vain.
 
 ### When a strain is in neither location
 
-The strain has **never been ingested**. To ingest, append the SRA to `/data/current/run/config/samples.tsv` on mp and (re)launch the pipeline.
+The strain has **never been ingested** (or the DB itself has no row for it — check `tb_report_strain`
+before assuming this). To ingest, append the SRA to `/data/current/run/config/samples.tsv` on mp and (re)launch the pipeline.
 
 #### Route outillée : `sra_to_add.py` (à préférer)
 
@@ -232,10 +282,21 @@ BDD/{lineage}/{strain}/NC_000962.3/
      ```
 
 5. **For each MISS strain**:
-   - If only a few: try the HTTP fallback before declaring absence.
-   - If many: prepare a `new_sras.txt` and follow the ingestion procedure above.
+   - Check `tb_report_strain.status` for the accession first. If `processed`, the strain has a full
+     annotation somewhere upstream that `mp` no longer serves (purged rolling window) — use the
+     **SQL repli** above to reconstruct `spdi.txt` (paginated, count-verified) rather than
+     concluding absence. The HTTP fallback documented historically for this step is dead (see
+     above): do not try it.
+   - If the accession has **no row at all** in `tb_report_strain`: genuinely never ingested.
+     Prepare a `new_sras.txt` and follow the ingestion procedure above.
+   - Watch for **experiment accessions (ERX/SRX/DRX) mistakenly used as run accessions**: `mp` and
+     `tb_report_strain` both key on the RUN accession (ERR/SRR/DRR). An ERX/SRX/DRX will show as a
+     clean MISS everywhere even though the run it designates is fully processed. Resolve via
+     `tb_insdc_run.experiment_accession` before concluding absence (verified case, 2026-09-20:
+     `ERX512033` → run `ERR552964`, `ERX3198376` → run `ERR3170430`, both `FOUND` on `mp` once
+     queried under the right accession).
 
-6. **Verify** by listing each strain with report status and SPDI count. Compare counts against the per-lineage median (typical MTBC range: ~1200–2400 SPDI on H37Rv). Counts <500 signal a mapping failure, flag for `strain-qc`.
+6. **Verify** by listing each strain with report status and SPDI count. Compare counts against the per-lineage median (typical MTBC range: ~1200–2400 SPDI on H37Rv). Counts <500 signal a mapping failure, flag for `strain-qc`. For a strain materialised via the SQL repli, the check is already built in (recovered count vs `COUNT(*)`) — no report.json/snps.vcf will exist for it, by construction, and that absence is expected, not a fetch failure to retry.
 
 ### Validation
 After completion, optionally verify a sample strain against the DB:

@@ -129,7 +129,7 @@ Script Python single-file dans le repertoire de travail :
 # voir host_pathogen_pair.py (~150 lignes, dependances stdlib uniquement)
 ```
 
-Repo de reference : `/home/christophe/docs/codes/mtbc/musee_de_lhomme/experiments/2026-05-16_host-pathogen-pair/`
+Repo de reference : `/home/christophe/docs/codes/mtbc/clos_abandonne/musee_de_lhomme/experiments/2026-05-16_host-pathogen-pair/`
 
 ## Limites connues
 

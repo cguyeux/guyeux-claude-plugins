@@ -102,7 +102,7 @@ def build_report(home: Path = Path.home()) -> dict[str, Any]:
     features = codex_config.get("features", {})
     tui = codex_config.get("tui", {})
     claude_root = home / ".claude"
-    agents = agent_markdown_files(ROOT / "bio_redac")
+    agents = agent_markdown_files(ROOT / "redaction")
     commands = command_markdown_files(claude_root / "commands") + command_markdown_files(ROOT)
     decisions = [
         {"surface": "graphify", "decision": "import-adapte", "reason": "capacité absente, source amont épinglée"},

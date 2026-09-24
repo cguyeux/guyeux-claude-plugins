@@ -32,6 +32,38 @@ GENOME_LEN_H37RV = 4411532  # NC_000962.3
 
 REF = "NC_000962.3"
 
+def _bdd_journal():
+    """Import différé de `bdd_journal` (skill `bdd`, source primaire
+    ~/.claude/skills/bdd) : absent sur mp/mh, ne doit jamais faire échouer une
+    lecture qui ne fait que citer sa source."""
+    import importlib.util
+    chemin = os.path.expanduser("~/.claude/skills/bdd/bdd_journal.py")
+    if not os.path.isfile(chemin):
+        return None
+    spec = importlib.util.spec_from_file_location("bdd_journal", chemin)
+    if spec is None or spec.loader is None:
+        return None
+    module = importlib.util.module_from_spec(spec)
+    try:
+        spec.loader.exec_module(module)
+    except Exception:
+        return None
+    return module
+
+
+def donnees_stamp(store_id="mtbc-actuelle"):
+    """Citation `<store>@<version>` du store `bdd/actuelle` lu par ce pont (skill `bdd`).
+    Rend `<store>@non-versionnee` si le skill est absent ou le store non initialisé —
+    jamais une exception qui casserait une lecture."""
+    bj = _bdd_journal()
+    if bj is None:
+        return f"{store_id}@non-versionnee"
+    try:
+        return bj.stamp(store_id)
+    except Exception:
+        return f"{store_id}@non-versionnee"
+
+
 def find_bdd(cli_path):
     if cli_path:
         return os.path.abspath(cli_path)
@@ -865,9 +897,13 @@ def main():
           "matrix": cmd_matrix, "synapo": cmd_synapo, "align": cmd_align,
           "denominator": cmd_denominator, "polarize": cmd_polarize}[args.cmd]
     res = fn(bdd, args)
+    citation = donnees_stamp()
+    if isinstance(res, dict):
+        res.setdefault("donnees", citation)
     if isinstance(res, (dict, list)) or args.json:
         print(json.dumps(res, ensure_ascii=False, indent=2))
     else:
+        print(f"# données : {citation}")
         print(res)
 
 if __name__ == "__main__":

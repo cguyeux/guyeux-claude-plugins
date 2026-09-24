@@ -15,6 +15,8 @@ Points bloquants (l'auteur les a poses comme conditions) :
     - le manuscrit compile et le PDF est plus recent que la source
     - la declaration d'assistance IA est presente
     - le mesocentre est remercie si, et seulement si, un calcul est passe par lui
+    - TBannotator/tblearn est credite (Senelle et Lecarpentier) si, et seulement si,
+      l'outil a servi
     - la signature scientifique est celle qu'impose l'universite
 
 Usage : preflight.py [chemin_projet] [--journal CLE] [--target-words N]
@@ -191,14 +193,14 @@ def resoumission(root: Path, journal: str | None) -> dict | None:
     passer le manuscrit, deux relecteurs l'ont lu, l'editeur demande une version
     revisee. Bloquer un renvoi la-dessus fait manquer une echeance pour un rituel.
 
-    Constate le 2026-09-12 sur mtbc/fini/Rv2438A (MIMET-D-26-01013, revise and
+    Constate le 2026-09-12 sur mtbc/clos_soumis/Rv2438A (MIMET-D-26-01013, revise and
     resubmit du 2026-08-31, echeance 2026-09-28) : le pre-vol exigeait un verdict
     de diffusion et un cadrage editorial pour un manuscrit deja en evaluation.
 
     `returned-to-draft` compte autant que `revision`, et le cas est meme plus net :
     le portail a deja accepte le depot et attribue un numero, et le bureau demande
     des corrections de forme. Choisir la revue n'est plus une question, elle est
-    choisie. Constate le 2026-09-12 sur mtbc/fini/Rv1125 (9451231), ou le pre-vol
+    choisie. Constate le 2026-09-12 sur mtbc/clos_soumis/Rv1125 (9451231), ou le pre-vol
     exigeait un cadrage editorial et opposait la regle de variation a un dossier
     deja ouvert chez la revue.
 
@@ -884,8 +886,16 @@ def _hors_citation(ligne: str) -> str:
     return ligne
 
 
-def meso_traces(root: Path) -> list[tuple[str, bool]]:
-    """Ou la memoire du projet dit qu'un calcul est parti sur mp, mh ou Lumiere.
+def _traces_dans_memoire(root: Path, marqueurs: tuple[str, ...],
+                          preuves: tuple[re.Pattern, ...],
+                          meta: tuple[str, ...]) -> list[tuple[str, bool]]:
+    """Ou la memoire du projet dit qu'une ressource externe a servi.
+
+    Generalise sur `marqueurs` (vocabulaire qui trahit un usage) ce qui etait
+    ecrit uniquement pour le mesocentre : la meme logique s'applique telle
+    quelle au credit du a TBannotator/tblearn (Senelle et Lecarpentier), et
+    factoriser evite qu'un correctif de forme (guillemets, meta-mentions) ne
+    soit porte que par l'un des deux controles.
 
     Rend des couples (ou, preuve_forte). `preuve_forte` distingue une trace
     ACTIONNABLE -- numero de job, chemin distant, option de soumission -- d'une
@@ -916,12 +926,12 @@ def meso_traces(root: Path) -> list[tuple[str, bool]]:
                 continue
             ouverte = profondeur
             profondeur = max(0, profondeur + ligne.count("\u00ab") - ligne.count("\u00bb"))
-            if any(meta in texte for meta in MESO_META):
-                continue  # la ligne documente le controle, elle ne trace aucun calcul
-            for m in MESO_TRACES:
+            if any(m in texte for m in meta):
+                continue  # la ligne documente le controle, elle ne trace aucun usage
+            for m in marqueurs:
                 if m in texte and not _est_cite(texte, m, ouverte):
                     nu = _hors_citation(texte)
-                    forte = any(rx.search(nu) for rx in MESO_PREUVES)
+                    forte = any(rx.search(nu) for rx in preuves)
                     vues.append((f"{nom}:{num} : « {m} »", forte))
                     break
             # Une preuve forte tranche ; sinon continuer, une ligne plus bas peut
@@ -929,6 +939,44 @@ def meso_traces(root: Path) -> list[tuple[str, bool]]:
             if vues and vues[-1][1]:
                 break
     return vues
+
+
+def meso_traces(root: Path) -> list[tuple[str, bool]]:
+    """Ou la memoire du projet dit qu'un calcul est parti sur mp, mh ou Lumiere."""
+    return _traces_dans_memoire(root, MESO_TRACES, MESO_PREUVES, MESO_META)
+
+
+# ---------------------------------------------------------------------------
+# Credit du a TBannotator/tblearn. Meme logique que le mesocentre, meme raison
+# d'etre : ni prose ni memoire ne rattrapent un remerciement du a des personnes
+# precises si rien ne le controle mecaniquement. Regle posee par CG le
+# 2026-09-23 : Gaetan Senelle (auteur d'origine du pipeline TBannotator) ET
+# Clement Lecarpentier (developpement et maintenance actuels, sujet de these)
+# sont tous deux a remercier des que l'outil a servi -- l'un sans l'autre est
+# incomplet. Voir ~/.agents/knowledge/signature-et-remerciements.md et la
+# fiche de chacun dans collaborators.md.
+TBANNO_PHRASE = ("We thank Gaëtan Senelle (original author) and Clément Lecarpentier "
+                  "(current development) for TB-Annotator, used in this study for "
+                  "[usage : requete de metadonnees / classification en lignee / ...].")
+TBANNO_MARQUEURS_NOMS = ("senelle", "lecarpentier")
+# Vocabulaire qui trahit un usage de l'outil, pas seulement sa mention en passant.
+# Volontairement etroit sur le meme principe que MESO_TRACES : chaque variante de
+# nom de skill (fetch-tbannotator, tbannotator-mcp, tbannotator-es, tbannotator-
+# upstream) contient deja la sous-chaine "tbannotator".
+TBANNO_TRACES = ("tbannotator", "tblearn", "tb-annotator", "tb annotator")
+TBANNO_PREUVES = (
+    re.compile(r"mcp__tbannotator__\w+"),
+    re.compile(r"\btool_(?:query_postgres|get_schema|submit_accession"
+               r"|submission_state|make_a_request|read_requests)\b"),
+    re.compile(r"\btblearn[.\s]tbannotator\b"),
+    re.compile(r"\b(?:requete|requête|query)\b.{0,40}\b(?:tbannotator|tblearn)\b"),
+    re.compile(r"\b(?:tbannotator|tblearn)\b.{0,40}\b(?:requete|requête|query)\b"),
+)
+
+
+def tbanno_traces(root: Path) -> list[tuple[str, bool]]:
+    """Ou la memoire du projet dit que TBannotator/tblearn a ete interroge."""
+    return _traces_dans_memoire(root, TBANNO_TRACES, TBANNO_PREUVES, MESO_META)
 
 
 def check_acknowledgements(root: Path, art: Path, rep: Report) -> None:
@@ -969,6 +1017,57 @@ def check_acknowledgements(root: Path, art: Path, rep: Report) -> None:
     else:
         rep.add(OK, "Pas de remerciement mesocentre attendu",
                 "aucun calcul distant trace dans la memoire du projet")
+
+
+def check_tbannotator_credit(root: Path, art: Path, rep: Report) -> None:
+    """Senelle ET Lecarpentier sont-ils credites quand TBannotator/tblearn a servi ?
+
+    Symetrique de check_acknowledgements, avec une nuance : le credit est du a
+    DEUX personnes (Gaetan Senelle, auteur d'origine ; Clement Lecarpentier,
+    developpement et maintenance actuels), et l'une sans l'autre reste
+    incomplet -- pas de citation partielle qui vaille.
+    """
+    tex = _norm(resolve_inputs(art / "main.tex"))
+    presents = [nom for nom in TBANNO_MARQUEURS_NOMS if nom in tex]
+    cite = len(presents) == len(TBANNO_MARQUEURS_NOMS)
+    manquants = [nom for nom in TBANNO_MARQUEURS_NOMS if nom not in presents]
+    traces = tbanno_traces(root)
+
+    fortes = [ou for ou, forte in traces if forte]
+    faibles = [ou for ou, forte in traces if not forte]
+    traces_txt = [ou for ou, _ in traces]
+
+    if traces and cite:
+        rep.add(OK, "Senelle et Lecarpentier credites pour TBannotator/tblearn",
+                "usage trace dans " + ", ".join(traces_txt[:3]))
+    elif faibles and not fortes and not cite:
+        rep.add(WARN, "Vocabulaire TBannotator/tblearn, sans trace d'usage reel",
+                "Mentionne sans requete ni appel d'outil identifiable : "
+                + " ; ".join(faibles[:3]) + "\n"
+                "Probablement une phrase QUI PARLE de l'outil plutot qu'un usage "
+                "reel. Verifier la ligne : si l'outil a bien servi pour ce "
+                "manuscrit, crediter Senelle et Lecarpentier.")
+    elif fortes and not cite:
+        qui = " et ".join(m.capitalize() for m in manquants)
+        rep.add(FAIL, "TBannotator/tblearn utilise mais credit incomplet ou absent",
+                "Trace d'un usage reel : " + " ; ".join(fortes[:3]) + "\n"
+                f"Manque : {qui}. Les deux sont dus, l'un sans l'autre ne suffit pas "
+                "(auteur d'origine du pipeline, puis developpement et maintenance "
+                "actuels).\n"
+                "Ajouter aux remerciements :\n"
+                f"  {TBANNO_PHRASE}\n"
+                "Si l'usage cite n'a rien a voir avec ce manuscrit, ignorer ce point "
+                "et le dire dans le cahier plutot que de le laisser revenir a chaque "
+                "pre-vol.")
+    elif cite and not traces:
+        rep.add(WARN, "Senelle/Lecarpentier credites sans trace d'usage TBannotator",
+                "Le manuscrit les remercie, mais ni le cahier ni l'etat n'en gardent "
+                "trace d'un usage de TBannotator/tblearn. Verifier que l'outil a bien "
+                "servi pour CE manuscrit : un remerciement recopie d'un article "
+                "precedent est une affirmation fausse comme une autre.")
+    else:
+        rep.add(OK, "Pas de credit TBannotator/tblearn attendu",
+                "aucun usage trace dans la memoire du projet")
 
 
 def check_affiliation(art: Path, rep: Report) -> None:
@@ -1104,7 +1203,7 @@ def check_links(art: Path, rep: Report, timeout: float = 8.0) -> None:
     # Un DOI reserve mais non publie rend 404, et c'est une pratique DELIBEREE
     # (reserver a la soumission, publier au camera-ready). Le distinguer d'un lien
     # casse, sans quoi ce controle crie au loup sur tout manuscrit qui suit cette
-    # pratique : constate sur mtbc/fini/Rv1125 le 2026-09-12, dont le cahier dit
+    # pratique : constate sur mtbc/clos_soumis/Rv1125 le 2026-09-12, dont le cahier dit
     # explicitement « publication du depot Zenodo a l'acceptation ».
     reserves = [m for m in morts if "doi.org/" in m]
     morts = [m for m in morts if m not in reserves]
@@ -1149,7 +1248,7 @@ def check_figures(art: Path, rep: Report) -> None:
     if not refs:
         # Une figure dessinee en TikZ n'a pas de fichier a inclure, et un controle
         # qui ne cherche que \includegraphics declare alors sans figure un
-        # manuscrit qui en porte deux (constate sur mtbc/fini/Rv2438A le
+        # manuscrit qui en porte deux (constate sur mtbc/clos_soumis/Rv2438A le
         # 2026-09-12, ou la figure reclamee par les deux relecteurs etait en
         # TikZ natif). Compter les environnements avant de conclure.
         env = re.findall(r"\\begin\{figure\*?\}", tex)
@@ -1181,7 +1280,7 @@ def check_figures(art: Path, rep: Report) -> None:
 def check_supplementary(art: Path, rep: Report) -> None:
     # Ne compter que ce qu'on televerse : un .tex compile laisse .aux, .log, .out,
     # .bbl, .blg a cote de son .pdf, et un decompte naif annonce quatorze
-    # supplementary pour un seul document (constate sur mtbc/fini/Rv2438A).
+    # supplementary pour un seul document (constate sur mtbc/clos_soumis/Rv2438A).
     d = art / "supplementary_materials"
     tex = resolve_inputs(art / "main.tex")
     cited = set(re.findall(
@@ -1351,6 +1450,7 @@ def main() -> int:
     check_length(art, rep, target, abstract_max)
     check_ai_declaration(art, rep)
     check_acknowledgements(root, art, rep)
+    check_tbannotator_credit(root, art, rep)
     check_affiliation(art, rep)
     check_figures(art, rep)
     if not args.no_net:

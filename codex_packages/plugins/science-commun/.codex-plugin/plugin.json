@@ -1,0 +1,18 @@
+{
+  "name": "science-commun",
+  "version": "0.1.0",
+  "description": "Local direct Codex package for 1 migrated Claude skills.",
+  "author": {
+    "name": "Christophe Guyeux"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Science Commun Direct",
+    "shortDescription": "Direct science communication skills.",
+    "longDescription": "Direct Codex package for science communication skills that do not need runtime adaptation before packaging.",
+    "developerName": "Christophe Guyeux",
+    "category": "Developer tools",
+    "capabilities": [],
+    "defaultPrompt": "Use the installed skills with their documented prerequisites and evidence boundaries."
+  }
+}

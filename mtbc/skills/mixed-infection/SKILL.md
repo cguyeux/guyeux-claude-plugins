@@ -3,7 +3,7 @@ name: mixed-infection
 description: >-
   Academic research toolkit (Guyeux group, FEMTO-ST) for detecting mixed
   infections and within-host heterogeneity in published MTBC research isolates,
-  with QuantTB (Anglin/Abeel lab, BMC Genomics 2020) for identifying and
+  with QuantTB (Anyansi et al., Abeel/Earl labs, BMC Genomics 2020) for identifying and
   quantifying co-infecting strains, and binoSNP (Research Center Borstel,
   Scientific Reports 2020) for low-frequency antimicrobial-resistance alleles
   under a binomial model. Use when: a strain shows an impossible marker
@@ -49,7 +49,7 @@ identifie **et** quantifie. binoSNP teste chaque position candidate sous un **mo
 lui permet d'appeler un allèle minoritaire là où un appel majoritaire le rejette.
 
 Note de provenance utile : binoSNP vient de **Borstel**, avec qui le groupe a déjà un dossier
-(`~/docs/codes/mtbc/Borstel/`). L'outil et l'interlocuteur vont ensemble.
+(`~/docs/codes/mtbc/en_cours/Borstel/`). L'outil et l'interlocuteur vont ensemble.
 
 ## QuantTB — installation validée sur `mp`, et incompatibilité bloquante avec nos VCF
 

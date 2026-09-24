@@ -8,6 +8,10 @@ description: >-
   Use when: computing genetic distances between MTBC strains, preparing input
   for t-SNE+HDBSCAN or THD, identifying transmission clusters by SNP threshold,
   building distance matrices for NJ trees or population genetics.
+
+  Scope: developed on the MTBC, applies to any clonal bacterial pathogen
+  (Yersinia, Leptospira...) — the metrics operate on any strain x variant
+  presence/absence matrix, whatever the reference genome.
 argument-hint: "<input_csv or lineage> [-o distances.csv] [--metric hamming|jaccard|snp_count]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query_postgres
@@ -38,7 +42,7 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob, mcp__tbannotator__tool_query
 > `global_supplementary/barcoding_v2/SOURCES_OF_TRUTH.md`, via le skill `bdd-bridge` :
 >
 > ```bash
-> B=~/docs/codes/claude_plugins/bio_pathogens/skills/bdd-bridge/scripts
+> B=~/docs/environnement/plugins/mtbc/skills/bdd-bridge/scripts
 > export TBANNOTATOR_BDD=~/docs/codes/mtbc/bdd
 > python3 $B/bdd_query.py clades                # tous les clades et leurs effectifs
 > python3 $B/bdd_query.py denominator <clade>   # effectif réellement exploitable

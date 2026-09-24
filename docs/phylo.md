@@ -2,13 +2,13 @@
 
 > Academic research toolkit for phylogenetic and phylodynamic inference: tree building (RAxML-NG, IQ-TREE), molecular dating (BEAST2, LSD2), ancestral reconstruction, and iTOL annotation. Guyeux group (FEMTO-ST), peer-reviewed research, transverse to all taxa.
 
-Skills propres (canoniques) : **11** ; skills partagés utilisés (symlinks) : **0**.
+Skills propres (canoniques) : **12** ; skills partagés utilisés (symlinks) : **0**.
 
 [Retour à l'index de la documentation](README.md)
 
 ## Skills propres
 
-Sommaire : [ancestral-reconstruction](#ancestral-reconstruction) ; [bayesian-skyline](#bayesian-skyline) ; [beast2-dating](#beast2-dating) ; [beast2-phylogeography](#beast2-phylogeography) ; [iqtree-lsd2](#iqtree-lsd2) ; [itol](#itol) ; [molecular-clock](#molecular-clock) ; [nextstrain](#nextstrain) ; [pastml](#pastml) ; [phylo-forest](#phylo-forest) ; [raxml](#raxml)
+Sommaire : [ancestral-reconstruction](#ancestral-reconstruction) ; [bayesian-skyline](#bayesian-skyline) ; [beast2-dating](#beast2-dating) ; [beast2-phylogeography](#beast2-phylogeography) ; [iqtree-lsd2](#iqtree-lsd2) ; [itol](#itol) ; [molecular-clock](#molecular-clock) ; [nextstrain](#nextstrain) ; [pastml](#pastml) ; [phylo-forest](#phylo-forest) ; [phylo-placement](#phylo-placement) ; [raxml](#raxml)
 
 ### ancestral-reconstruction
 
@@ -69,6 +69,12 @@ Compétences : inferer l'origine geographique d'une sous-lignee MTBC dans une co
 Bibliothèque interrogeable des arbres phylogénétiques déjà calculés dans un dépôt de recherche : moissonne les Newick existants, en extrait une fiche (outil, modèle, alignement, taxons, composition par clade avec son système taxonomique), et répond à « ai-je déjà un arbre qui ferait l'affaire ? » AVANT de relancer un calcul. Rend aussi des FORÊTS pour les statistiques inter-arbres qu'un arbre isolé ne permet pas (fréquence d'un clade à travers des reconstructions indépendantes)
 
 Compétences : avant tout RAxML / IQ-TREE / FastTree, pour chercher un arbre existant ; après un calcul, pour le verser à la forêt ; pour retrouver l'arbre d'une figure ; pour mesurer la stabilité d'un clade entre études
+
+### phylo-placement
+
+Academic research toolkit (Guyeux group, FEMTO-ST): decides which phylogenetic PLACEMENT tool fits a given need, for any clonal bacterial pathogen (MTBC, Yersinia, Leptospira...), UShER (parsimony placement on a mutation-annotated tree, fast, incremental), EPA-ng (maximum-likelihood placement with uncertainty), Nextclade (community-facing placement on a frozen nomenclature), or none of them when a full re-inference is still the right call. Also documents the bridge between this group's internal binary SPDI presence/absence format and the VCF / FASTA-alignment inputs these tools actually expect
+
+Compétences : placing new or residual strains (`a_ranger`, `bin_*`, freshly fetched SRA/ENA runs) onto an existing reference tree without re-running a multi-hour RAxML-NG inference ; maintaining a classification as a database keeps growing ; asking "which tool for phylogenetic placement", "comment classer ces souches sans refaire l'arbre", "UShER ou EPA-ng", "diffuser un dataset Nextclade ; or before installing any of usher/matUtils/epa-ng/nextclade, to confirm the choice is the right one for the data at hand
 
 ### raxml
 

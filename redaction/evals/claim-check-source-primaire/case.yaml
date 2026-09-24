@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: claim-check-source-primaire
+context:
+  add_dirs: [fixtures]

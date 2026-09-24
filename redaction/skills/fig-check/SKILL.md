@@ -412,13 +412,50 @@ def normalize(s):
     # laisse un '\' residuel cote source, absent cote PDF ('figure_x.tsv' rendu sans
     # backslash), et la legende remonte a tort comme TRONQUEE. On les convertit donc
     # d'abord en leur caractere nu, AVANT la regex generale des commandes lettrees.
+    # PIEGE DISTINCT (verifie sur Rv2892c, 2026-09-16) : une commande de citation
+    # (\citep{key}, \citet{key}, \cite{key}...) ne "disparait" pas comme \textit{...}
+    # en laissant son argument comme texte rendu -- son argument est une cle BibTeX,
+    # jamais affichee telle quelle, remplacee a la compilation par un marqueur produit
+    # par le style bibliographique ("[6]" en style numerique, "(Jinich et al., 2025)"
+    # en style auteur-annee). La regex generale des commandes lettrees ci-dessous
+    # traite \citep{jinich2025mtbtndb} comme les autres et laisse "jinich2025mtbtndb"
+    # en texte normalise cote source, absent du PDF quel que soit le style -- une
+    # legende qui cite une reference juste avant sa fin remonte alors a tort comme
+    # TRONQUEE. On efface donc la commande ET son argument entier (jamais seulement
+    # la commande) pour les familles de citation, AVANT la regex generale.
+    s = re.sub(r'\\(?:cite|citep|citet|citeyear|citeauthor|parencite|textcite|autocite|fullcite)\*?(?:\[[^\]]*\])*\{[^{}]*\}', ' ', s)
+    # PIEGE DISTINCT (verifie sur Rv2892c, 2026-09-16) : \allowbreak{} (place dans les
+    # chemins/identifiants longs pour autoriser une cesure sans readabilite perdue,
+    # cf. \texttt{résultats/\allowbreak{}phase2\_\allowbreak{}esmfold\_\allowbreak{}...})
+    # ne rend AUCUN caractere, espace compris, qu'un saut de ligne y survienne ou non.
+    # La regex generale des commandes lettrees le traite comme les autres et le
+    # remplace par une ESPACE (correct pour \textit{...} qui separe deux mots, faux
+    # ici) : "phase2_ esmfold_ ppe45/ summary.json" cote source ne matche alors jamais
+    # "phase2_esmfold_ppe45/summary.json" cote PDF -- TRONQUEE a tort dans toute
+    # legende qui se termine par un chemin/identifiant marque de \allowbreak{}. On
+    # l'efface donc entierement (chaine vide, pas espace), AVANT la regex generale.
+    s = re.sub(r'\\allowbreak\{?\}?', '', s)
     s = re.sub(r'\\([_%&#])', r'\1', s)
     s = re.sub(r'\\[a-zA-Z]+\{?', ' ', s)
     s = s.replace('{', '').replace('}', '')
     s = s.replace('~', ' ').replace('\\', ' ')
     s = s.replace('\u2019', "'").replace('\u2018', "'")
+    s = s.replace('$', '')  # math inline ($q$-value -> q-value comme rendu dans le PDF)
     for ch in '§¶£†‡©°':
         s = s.replace(ch, ' ')
+    # PIEGE DISTINCT (verifie sur Rv2892c, 2026-09-16) : une legende de table/figure
+    # justifiee peut se couper par une cesure typographique en fin de ligne, cote PDF
+    # UNIQUEMENT ("clinical phe-\nnotype of L6." rendu par pdftotext) -- le mot existe
+    # en entier sur la MEME page, mais la comparaison de sous-chaine echoue car "phe-
+    # notype" (avec le tiret et le saut de ligne, une fois les espaces collapses en
+    # "phe- notype") ne matche jamais "phenotype". Sans ce correctif, la legende remonte
+    # a tort comme TRONQUEE (found_on vide) alors qu'elle est intacte. On fusionne donc
+    # tout tiret immediatement suivi d'un saut de ligne AVANT le collapse general des
+    # espaces (jamais un tiret suivi d'un espace normal, qui reste un vrai tiret de mot
+    # compose comme "short-read") : le texte source ne contient quasiment jamais ce
+    # motif exact (un saut de ligne brut juste apres un tiret), donc l'appliquer aux
+    # deux cotes (source et PDF) est sans risque et les garde comparables.
+    s = re.sub(r'-\n\s*', '', s)
     return re.sub(r'\s+', ' ', s).strip()
 
 src = open(TEX, encoding="utf-8").read()
@@ -447,7 +484,24 @@ chacun) : 0 faux positif ni faux negatif apres normalisation, y compris sur les
 deux legendes qui contenaient une apostrophe (piege le plus frequent, cf.
 commentaire dans `normalize`) et sur celle qui s'etale sur plusieurs lignes de
 source separees par de vrais retours a la ligne (`\n`, sinon jamais retrouve
-dans le texte reflow du PDF).
+dans le texte reflow du PDF). Trois pieges supplementaires trouves et corriges
+sur `Rv2892c` (2026-09-16, `article/main.tex` et `supplementary.tex`, 7
+legendes/captions) : cesure typographique en fin de ligne cote PDF uniquement
+(`phe-\nnotype`), `\allowbreak{}` (present dans les chemins longs, ne rend
+aucun caractere contrairement aux autres commandes), et une commande de
+citation dont l'argument (cle BibTeX) n'est jamais le texte rendu.
+
+**Limite residuelle non corrigee, a connaitre avant de conclure TRONQUEE** :
+si une commande de citation (`\citep{}`/`\cite{}`/...) tombe A L'INTERIEUR
+des 50 derniers caracteres compares, la comparaison peut rester en echec
+meme apres le correctif ci-dessus -- la commande est bien effacee cote
+source, mais le marqueur reellement rendu cote PDF (`[6]`, `(Auteur, 2025)`)
+introduit un decalage de longueur/ponctuation que la comparaison de
+sous-chaine ne peut pas absorber. Dans ce cas precis (caption dont la fin
+contient une citation), verifier manuellement avant de conclure a une
+troncature reelle : `pdftotext -layout <pdf> - | grep -n "<debut de la fin
+de legende>"` et lire le contexte autour. Ne pas l'affirmer TRONQUEE sur la
+seule sortie automatique quand ce motif est present.
 
 Interpreter le resultat :
 - **`found_on` vide** : la fin de la legende n'apparait sur AUCUNE page --

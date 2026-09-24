@@ -38,7 +38,7 @@ bloquée par le scanner fait échouer l'opération en mode fermé.
 ## Reconstruction depuis une machine vierge
 
 1. Installer Python, Git, `gio`, Claude Code et Codex CLI.
-2. Cloner ce dépôt sous `~/docs/codes/claude_plugins` à une révision vérifiée.
+2. Cloner ce dépôt sous `~/docs/environnement/plugins` à une révision vérifiée.
 3. Copier le snapshot CCX-16 sur la machine et restaurer les sources privées
    validées par le dispositif privé habituel.
 4. Prévisualiser la reconstruction.
@@ -62,7 +62,7 @@ Pour Claude, reconstruire le marketplace et les trois plugins personnels
 actifs avec les commandes suivantes :
 
 ```text
-claude plugin marketplace add ~/docs/codes/claude_plugins
+claude plugin marketplace add ~/docs/environnement/plugins
 claude plugin install bio_bacteria@guyeux-claude-plugins -s user -y
 claude plugin install bio_pathogens@guyeux-claude-plugins -s user -y
 claude plugin install redac@guyeux-claude-plugins -s user -y

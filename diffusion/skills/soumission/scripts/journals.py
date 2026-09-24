@@ -561,11 +561,11 @@ def cmd_lint(args) -> int:
         return 1
     problems = []
     with path.open(encoding="utf-8", newline="") as fh:
-        header = fh.readline().rstrip("\n").split("\t")
+        header = fh.readline().rstrip("\r\n").split("\t")
         if header != FIELDS:
             problems.append(f"en-tete non conforme : {set(FIELDS) ^ set(header)}")
         for n, line in enumerate(fh, start=2):
-            cells = line.rstrip("\n").split("\t")
+            cells = line.rstrip("\r\n").split("\t")
             if len(cells) != len(FIELDS):
                 problems.append(f"ligne {n} : {len(cells)} colonnes au lieu de {len(FIELDS)}")
     rows = load()

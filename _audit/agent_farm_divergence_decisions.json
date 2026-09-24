@@ -12,7 +12,8 @@
     "notes": [
       "Codex conserve le cahier_de_labo.md comme registre append-only strict.",
       "Import effectue : champ piste: obligatoire, recherche ciblee dans cahier_de_labo_archive.md si une archive legacy existe, clarification qu'aucun hook Stop Codex global n'est garanti actif.",
-      "Non importe volontairement : archive_old_entries.py et archivage automatique apres update."
+      "Non importe volontairement : archive_old_entries.py et archivage automatique apres update.",
+      "2026-09-15 : nouveaux fichiers claude_only observes (SKILL.md.bak_20260913, evals/results/..., evals/skill-fires/...) : artefacts de sauvegarde et d'evaluation skill-creator, non pertinents pour un miroir Codex, exclus au meme titre que archive_old_entries.py."
     ],
     "remaining": [
       "arbitrage humain separe si un jour l'utilisateur veut une commande explicite d'archivage recoverable"
@@ -122,9 +123,12 @@
     "decision": "codex-adapted-divergence-justified",
     "notes": [
       "Import CCX-05 depuis la skill Claude-only vers ~/.agents/skills/pistes avec les scripts de scission et d'archivage.",
-      "Adaptation appliquee : chemins ~/.agents/skills, vigilance manuelle Codex en remplacement du hook Stop global Claude, et renvois recadrage vers la ferme Agents."
+      "Adaptation appliquee : chemins ~/.agents/skills, vigilance manuelle Codex en remplacement du hook Stop global Claude, et renvois recadrage vers la ferme Agents.",
+      "2026-09-15 : import complementaire de trois outils apparus depuis (carrefour.py, status.py, audit_signals.py, 62/40/13 Ko), quasi sans reference Claude (3 chemins '~/.claude/skills/...' corriges en '~/.agents/skills/...'), teste avec `status.py . --open` depuis le miroir Agents."
     ],
-    "remaining": []
+    "remaining": [
+      "SKILL.md et split_pistes_files.py restent sur la version du 25/08 (delta +21/-472 sur le SKILL.md canonique, skill tres actif) : reecriture Codex complete non faite faute de budget le 2026-09-15, a reprendre en tache dediee plutot qu'en a-cote de P6.1."
+    ]
   },
   "plugin-settings": {
     "decision": "codex-adapted-divergence-justified",
@@ -235,6 +239,14 @@
     "notes": [
       "Divergence limitee aux chemins .Codex/hookify.*.local.md et au vocabulaire Codex.",
       "Import Claude refuse tel quel car il reintroduirait .claude comme emplacement de regles."
+    ],
+    "remaining": []
+  },
+  "screenshot": {
+    "decision": "codex-adapted-divergence-justified",
+    "notes": [
+      "Recupere le 2026-09-15 : un skill.md (casse minuscule) deja adapte Codex existait sous ~/.agents/skills/screenshot depuis le 07/06 (mentions Codex/Codex CLI au lieu de Claude Code) mais restait invisible au chargeur de skills et a l'outillage d'audit (glob */SKILL.md sensible a la casse) : renomme en SKILL.md.",
+      "Divergence avec le canon Claude limitee a l'adaptation deja en place (produit Codex/Codex CLI, pas de clipboard image paste) ; aucun import de contenu supplementaire necessaire."
     ],
     "remaining": []
   }

@@ -102,6 +102,12 @@ def lit_arbre(chemin):
     composite et rend `confidence = None`, ce qui ferait passer un nœud parfaitement soutenu
     pour un nœud sans support. On lit donc deux fois le même arbre, une fois avec chaque
     moitié du champ, et on porte les deux valeurs sur les clades du premier."""
+    # Les parcours de clades de Biopython sont RÉCURSIFS (générateurs imbriqués, plusieurs
+    # cadres par nœud) : sur un arbre de quelques centaines de feuilles un peu déséquilibré,
+    # `get_terminals()` dépasse la limite par défaut et lève un `RecursionError` au milieu de
+    # l'analyse. Mesuré le 2026-09-22 en rejouant le cas fondateur (246 feuilles) sous
+    # Python 3.14 / Biopython 1.87, où il passait auparavant.
+    sys.setrecursionlimit(max(sys.getrecursionlimit(), 50_000))
     brut = Path(chemin).read_text(encoding="utf-8")
     compose = re.compile(r"\)(\d+(?:\.\d+)?)/(\d+(?:\.\d+)?)")
     if not compose.search(brut):
@@ -115,6 +121,20 @@ def lit_arbre(chemin):
         clade.ufboot = clade.confidence
         clade.alrt = clade_alrt.confidence
     return arbre
+
+
+def racine_mediane(arbre, quoi="l'arbre"):
+    """Racine au point médian quand c'est possible. Un Newick SANS longueurs de branche (un
+    arbre de contrainte, une topologie copiée à la main, un treefile élagué par un outil tiers)
+    fait échouer `root_at_midpoint` de Biopython sur un `UnboundLocalError: tip1` parfaitement
+    illisible. On le détecte avant plutôt que de laisser tomber le script : « basal » perd alors
+    son sens, mais le nichage, qui est la mesure qui porte la conclusion, n'en dépend pas."""
+    if any(t.branch_length for t in arbre.get_terminals()):
+        arbre.root_at_midpoint()
+        return True
+    print(f"[note] {quoi} n'a pas de longueurs de branche : pas de racinage au point médian. "
+          f"Le nichage reste lisible, la notion de « basal » non.", file=sys.stderr)
+    return False
 
 
 def support(clade):
@@ -228,7 +248,7 @@ def main():
     controle_fait = bool(a.tree_control) and Path(a.tree_control).exists()
     if controle_fait:
         arbre_sans = lit_arbre(a.tree_control)
-        arbre_sans.root_at_midpoint()
+        racine_mediane(arbre_sans, "l'arbre de contrôle")
     else:
         # Substitut obtenu par élagage : il rend les MÊMES partitions que l'arbre complet, donc
         # le contrôle qu'il donnerait serait trivialement satisfait. Il ne sert qu'à faire
@@ -239,7 +259,7 @@ def main():
 
     # IQ-TREE rend un arbre non raciné et « basal » n'a pas de sens sans racine. Le point médian
     # est une convention explicite, pas une vérité biologique ; le nichage n'en dépend pas.
-    arbre.root_at_midpoint()
+    racine_mediane(arbre, "l'arbre complet")
 
     lignes, verdicts = analyse(arbre, arbre_sans, origine, hotes, groupes,
                                a.donor_prefix, controle_fait, non_classes)

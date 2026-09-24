@@ -1,20 +1,21 @@
 ---
 name: deai-latex
 description: >-
-  Applique les regles de style scientifique a un article LaTeX : supprime le gras abusif,
-  convertit les listes a puces en prose, fusionne les micro-sections, verifie les acronymes
-  (definis une seule fois), met les noms d'especes en italique, elimine les cliches
-  redactionnels et ameliore la coherence des temps verbaux. Fait aussi l'ECONOMIE DU TEXTE :
-  coupe le narratif des essais infructueux qui n'apprennent rien, elimine les redites entre
-  sections, mesure la longueur face a la limite de la revue cible et bascule le materiel de
-  moindre impact vers les supplementary materials. Detecte aussi les jetons \texttt{} longs
-  et non coupables (checkpoints, chemins, accessions a underscores) qui debordent
-  silencieusement la marge sans le signaler dans le log de compilation. A utiliser quand
-  l'utilisateur demande de nettoyer les marqueurs de texte genere par IA, de retirer les
-  tirets cadratin, de depuceliser un texte trop liste, de raccourcir un manuscrit trop long,
-  de supprimer les repetitions, d'alleger le recit des pistes qui n'ont mene nulle part,
-  d'harmoniser le style d'un manuscrit, de corriger un identifiant ou un nom de fichier qui
-  deborde de la marge, ou avant une soumission.
+  Applique les regles de style scientifique a un article LaTeX : supprime le
+  gras abusif, convertit les listes a puces en prose, fusionne les
+  micro-sections, verifie les acronymes (definis une seule fois), met les noms
+  d'especes en italique, elimine les cliches redactionnels et ameliore la
+  coherence des temps verbaux. Fait aussi l'ECONOMIE DU TEXTE : coupe le
+  narratif des essais infructueux, elimine les redites entre sections, mesure
+  la longueur face a la limite de la revue cible et bascule le materiel de
+  moindre impact vers les supplementary materials. Detecte aussi les jetons
+  \texttt{} longs (checkpoints, chemins, accessions a underscores) qui
+  debordent silencieusement la marge.
+  A utiliser pour nettoyer les marqueurs de texte genere par IA, retirer les
+  tirets cadratin, depuceliser un texte trop liste, raccourcir un manuscrit
+  trop long, supprimer les repetitions, alleger le recit des pistes sans
+  issue, harmoniser le style, corriger un identifiant qui deborde de la marge,
+  ou avant une soumission.
 argument-hint: "<chemin vers main.tex>"
 ---
 

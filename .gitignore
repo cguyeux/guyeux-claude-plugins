@@ -29,3 +29,7 @@ env/
 
 # Rapport genere par _audit/tools/audit_skills.py (regenerable, pas a suivre)
 _audit/tools/audit.json
+
+# Rapports horodates de `claude plugin eval` (regenerables a chaque run, pas a suivre ;
+# les cas eux-memes sous evals/<case>/ restent versionnes)
+**/evals/results/

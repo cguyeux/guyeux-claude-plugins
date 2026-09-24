@@ -21,8 +21,8 @@ class CodexRuntimeAdaptationMatrixTests(unittest.TestCase):
         cls.rows = cls.payload["rows"]
 
     def test_all_coarse_runtime_rows_are_classified(self):
-        self.assertEqual(len(self.rows), 58)
-        self.assertEqual(sum(self.payload["summary"]["runtime_bucket"].values()), 58)
+        self.assertEqual(len(self.rows), 61)
+        self.assertEqual(sum(self.payload["summary"]["runtime_bucket"].values()), 61)
 
     def test_expected_runtime_buckets_are_stable(self):
         self.assertEqual(
@@ -32,19 +32,20 @@ class CodexRuntimeAdaptationMatrixTests(unittest.TestCase):
                 "claude-branding-only": 1,
                 "codex-mcp-documentation-only": 24,
                 "codex-mcp-tool-prerequisite": 12,
-                "external-mcp-fallback-documented": 1,
-                "mcp-narrative-only": 9,
+                "mcp-narrative-only": 11,
                 "rewrite-cache-path": 1,
-                "rewrite-claude-skill-paths": 9,
+                "rewrite-claude-skill-paths": 10,
+                "unclassified-runtime-signal": 1,
             },
         )
 
     def test_high_risk_runtime_cases_are_named(self):
         by_name = {row["name"]: row["runtime_bucket"] for row in self.rows}
-        self.assertEqual(by_name["clinical-trial-protocol-skill"], "external-mcp-fallback-documented")
+        self.assertNotIn("clinical-trial-protocol-skill", by_name)
         self.assertEqual(by_name["sra-geolocate"], "rewrite-cache-path")
         self.assertEqual(by_name["boltz"], "await-canonical-knowledge-path")
         self.assertEqual(by_name["imdb"], "rewrite-claude-skill-paths")
+        self.assertEqual(by_name["hgt-direction-check"], "unclassified-runtime-signal")
 
     def test_generated_files_are_current(self):
         result = subprocess.run(

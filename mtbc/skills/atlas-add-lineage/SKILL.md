@@ -14,7 +14,7 @@ user-invocable: true
 
 # /atlas-add-lineage -- Scaffold and publish an Atlas lineage page
 
-This skill scaffolds a lineage page for the **MTBC Atlas** (`~/docs/codes/mtbc/atlas_mtbc/`)
+This skill scaffolds a lineage page for the **MTBC Atlas** (`~/docs/codes/mtbc/en_cours/atlas_mtbc/`)
 from an existing project of characterisation (`~/docs/codes/mtbc/<lineage>/`). The Atlas
 publishes a normalised page per (sub-)lineage so that the diversity uncovered by brute-
 force MTBC inventory can reach readers without waiting for journal peer-review.
@@ -40,11 +40,11 @@ diversification, see the user-level feedback memory `feedback_minimum_sublineage
      etc., specialised analyses, picked up where present.
    - `claim_check.md` (if present), verified facts.
 2. **Looks up canonical phylogeny data** via the `mtbc-lineages` skill, against
-   the authoritative registry `~/docs/codes/mtbc/global_supplementary/barcoding_v2/barcode_complete.tsv`
+   the authoritative registry `~/docs/codes/mtbc/en_cours/global_supplementary/barcoding_v2/barcode_complete.tsv`
    and the physical source `mtbc/bdd/actuelle/<id>/` (see `SOURCES_OF_TRUTH.md`).
    `lignees.py` is a marker bank only; do **not** read `snp_barcoding.csv` (obsolete v1).
 3. **Drafts** `content/lineages/<id>/meta.yaml` with the 10 canonical sections
-   (3 mandatory, 7 conditional; see `~/docs/codes/mtbc/atlas_mtbc/content/lineages/README.md`).
+   (3 mandatory, 7 conditional; see `~/docs/codes/mtbc/en_cours/atlas_mtbc/content/lineages/README.md`).
    The structured fields drafted are **phylogeny, dating, drug-resistance,
    selection, codivergence, epidemiology, host, methods and references**, alongside
    the prose synthesis of step 4.
@@ -57,7 +57,7 @@ diversification, see the user-level feedback memory `feedback_minimum_sublineage
    bilingual). Prose is a synthesis of the abstract + key findings of the manuscript,
    written in the Atlas voice (concise, neutral, no marketing).
 5. **Asks the user to review** the drafts before any commit. Never auto-commit.
-6. **Runs ingestion** : `cd ~/docs/codes/mtbc/atlas_mtbc && .venv/bin/python -m ingest.add_lineage <id>`,
+6. **Runs ingestion** : `cd ~/docs/codes/mtbc/en_cours/atlas_mtbc && .venv/bin/python -m ingest.add_lineage <id>`,
    then `.venv/bin/python -m ingest.ingest_geography --lineage <id>` if `data/strains.csv`
    was found.
 7. **Prints the URL** : `http://localhost:8000/lineage/<id>` and reminds how to
@@ -148,7 +148,7 @@ If the source project is ambiguous or partial, the skill asks :
 /atlas-add-lineage L4.17
 
 # Refresh L4.13 from a recently-updated manuscript
-/atlas-add-lineage L4.13 --from ~/docs/codes/mtbc/L4.13
+/atlas-add-lineage L4.13 --from ~/docs/codes/mtbc/en_cours/L4.13
 
 # Pre-flight check : list which conditional sections will be populated
 /atlas-add-lineage L4.17 --dry-run
@@ -157,7 +157,7 @@ If the source project is ambiguous or partial, the skill asks :
 ## Outputs
 
 ```
-~/docs/codes/mtbc/atlas_mtbc/content/lineages/<id>/
+~/docs/codes/mtbc/en_cours/atlas_mtbc/content/lineages/<id>/
   meta.yaml          # structured fields (10-section schema)
   en.md              # editorial prose, English
   fr.md              # editorial prose, French (if requested)
@@ -167,7 +167,7 @@ If the source project is ambiguous or partial, the skill asks :
     fr.md            # if requested
 ```
 
-Then in the Atlas database (`~/docs/codes/mtbc/atlas_mtbc/data/db.sqlite`) :
+Then in the Atlas database (`~/docs/codes/mtbc/en_cours/atlas_mtbc/data/db.sqlite`) :
 - `Lineage` rows for `<id>` and each descendant (idempotent upsert).
 - `Lineage.extra` populated from the `meta.yaml`.
 - `Strain` rows linked from `bdd/actuelle/<id>/<SRA>/`.

@@ -9,6 +9,10 @@ description: >-
   reste le seul point d'ingestion reel). Use when: veille periodique sur une espece ou lignee avant de
   lancer une caracterisation, recherche de cohortes recentes par pays ou phenotype de resistance,
   verification qu'aucun depot recent n'a ete manque avant de conclure un jeu de donnees complet.
+  Portee : developpe sur le MTBC, applicable a toute bacterie clonale (Yersinia, Leptospira...)
+  pour la RECHERCHE NCBI elle-meme, qui est paramétrée par organisme. Mais le recoupement
+  jamais-ingere / deja-couvert passe par TBannotator et n'existe PAS hors MTBC : hors MTBC le
+  skill rend des BioProjects candidats, sans savoir lesquels sont deja en base.
 argument-hint: "<organisme|mot-cle> [--country <pays>] [--resistance <mot-cle,...>] [--since YYYY-MM-DD] [--min-runs N]"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebFetch, mcp__tbannotator__tool_query_postgres
 ---

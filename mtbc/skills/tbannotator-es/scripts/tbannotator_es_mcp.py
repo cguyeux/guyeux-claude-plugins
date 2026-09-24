@@ -47,7 +47,7 @@ USAGE
 
 Le mode CLI n'a besoin que de la bibliotheque standard ; seul le mode serveur
 demande le paquet `mcp` (present dans le venv du site :
-`~/docs/codes/mtbc/annotation_mtbc/site/.venv/bin/python`).
+`~/docs/codes/mtbc/en_cours/annotation_mtbc/site/.venv/bin/python`).
 """
 
 from __future__ import annotations
@@ -255,7 +255,7 @@ def serve() -> int:
         from mcp.server.fastmcp import FastMCP
     except ImportError:
         print("Le paquet `mcp` est absent. Utiliser le venv du site :\n"
-              "  ~/docs/codes/mtbc/annotation_mtbc/site/.venv/bin/python "
+              "  ~/docs/codes/mtbc/en_cours/annotation_mtbc/site/.venv/bin/python "
               f"{Path(__file__).resolve()}", file=sys.stderr)
         return 2
 

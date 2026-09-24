@@ -12,6 +12,10 @@ description: >-
   was retained, reclassified or excluded; preparing supplementary material
   describing the phylogenetic position of outlier strains; responding to
   a reviewer asking for evidence about a specific strain's lineage.
+
+  Portée : développé sur le MTBC, applicable à toute bactérie clonale (Yersinia,
+  Leptospira...) — la narration décrit un placement dans un arbre, pas une biologie
+  particulière. Hors MTBC : fournir le répertoire d'arbres Newick archivés.
 argument-hint: "<SRA> [--k N]"
 user-invocable: true
 allowed-tools: Bash, Read, Glob

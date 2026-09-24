@@ -39,6 +39,19 @@ mkdir <plugin>/skills/<nom>          # ... écrire SKILL.md
 find <plugin>/skills -maxdepth 1 -type l   # contrôle : aucun lien ne doit apparaître
 ```
 
+**Un plugin de genre n'est pas un plugin de méthode.** Avant de poser un skill dans `mtbc`,
+trancher selon `~/.agents/knowledge/toolkit-transfer-clonal-bacteria.md` : un skill MOTEUR
+(la méthode est agnostique de l'espèce, seule la référence ou le backend change) appartient à
+`bacteria` ou à un transverse ; un skill INFRASTRUCTURE (soudé à TBannotator, `bdd/actuelle`,
+`barcoding_v2`, catalogue OMS, SITVIT) appartient bien à `mtbc`. Le dépôt de recherche couvre
+plusieurs genres (MTBC, *Yersinia*, *Leptospira*) : un moteur rangé dans un plugin de genre
+devient introuvable depuis les autres.
+
+Corollaire sur la **description**, qui est ce qui déclenche le skill : elle doit annoncer la
+portée réelle de la méthode, sans jamais perdre le vocabulaire qui la fait se déclencher sur le
+cœur du dépôt. On élargit (« developed on the MTBC, applies to any clonal bacterial pathogen »),
+on ne dé-spécialise pas.
+
 Après ajout/déplacement/retrait, régénérer dans l'ordre :
 
 ```bash
@@ -96,11 +109,15 @@ la frontière entre ce qui vient d'eux et ce qui vient de nous. Chaque fournisse
 La règle d'adoption est le cherry-pick : jamais d'installation en masse, sous peine de dégrader
 le routage de déclenchement de nos skills.
 
-**Dépendances hors dépôt.** Quelques skills renvoient à `~/.claude/skills/`
-(`cahier-de-labo`, `init-project`) : ces références fonctionnent dans l'environnement de
-Christophe mais **pas** pour un collaborateur qui clone le dépôt. Ne pas les convertir en
-`${CLAUDE_PLUGIN_ROOT}` (les skills concernés ne sont pas dans le dépôt) ; les mentionner
-comme optionnelles dans le corps du skill.
+**Dépendances hors dépôt.** Quelques skills renvoient aux skills du cycle, qui vivent dans
+`~/.claude/skills/` (`cahier-de-labo`, `pistes`, `etat`, `cycle-projet`, `recadrage`,
+`challenge`, `init-project`, `corpus-ingest`, et depuis le 2026-09-15 `narratif` et
+`verdict-diffusion`, que P5.2 avait laissés sans plugin) : ces références fonctionnent dans
+l'environnement de Christophe mais **pas** pour un collaborateur qui clone le dépôt. Ne pas
+les convertir en `${CLAUDE_PLUGIN_ROOT}` (les skills concernés ne sont pas dans le dépôt) ;
+les mentionner comme optionnelles dans le corps du skill. Ne pas non plus les déplacer vers
+un `.claude/skills` d'ancêtre : mesuré le 2026-09-15 (P5.4), un tel répertoire posé à
+`~/docs` n'est pas chargé sous `~/docs/codes/**`, où vivent 274 des 287 projets à cahier.
 
 ## Cadrage AUP (CRITIQUE)
 

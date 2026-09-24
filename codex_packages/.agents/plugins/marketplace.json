@@ -17,10 +17,10 @@
       "category": "Developer tools"
     },
     {
-      "name": "bio-bacteria",
+      "name": "bacteria",
       "source": {
         "source": "local",
-        "path": "./plugins/bio-bacteria"
+        "path": "./plugins/bacteria"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -29,10 +29,10 @@
       "category": "Developer tools"
     },
     {
-      "name": "bio-pathogens",
+      "name": "bioinfo",
       "source": {
         "source": "local",
-        "path": "./plugins/bio-pathogens"
+        "path": "./plugins/bioinfo"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -41,10 +41,10 @@
       "category": "Developer tools"
     },
     {
-      "name": "bio-population-genetics",
+      "name": "carriere",
       "source": {
         "source": "local",
-        "path": "./plugins/bio-population-genetics"
+        "path": "./plugins/carriere"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -53,10 +53,10 @@
       "category": "Developer tools"
     },
     {
-      "name": "bio-redac",
+      "name": "diffusion",
       "source": {
         "source": "local",
-        "path": "./plugins/bio-redac"
+        "path": "./plugins/diffusion"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -77,10 +77,34 @@
       "category": "Developer tools"
     },
     {
+      "name": "litterature",
+      "source": {
+        "source": "local",
+        "path": "./plugins/litterature"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
       "name": "maboss",
       "source": {
         "source": "local",
         "path": "./plugins/maboss"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
+      "name": "mtbc",
+      "source": {
+        "source": "local",
+        "path": "./plugins/mtbc"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -105,6 +129,66 @@
       "source": {
         "source": "local",
         "path": "./plugins/ops"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
+      "name": "phylo",
+      "source": {
+        "source": "local",
+        "path": "./plugins/phylo"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
+      "name": "popgen",
+      "source": {
+        "source": "local",
+        "path": "./plugins/popgen"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
+      "name": "redaction",
+      "source": {
+        "source": "local",
+        "path": "./plugins/redaction"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
+      "name": "science-commun",
+      "source": {
+        "source": "local",
+        "path": "./plugins/science-commun"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
+      "name": "structure",
+      "source": {
+        "source": "local",
+        "path": "./plugins/structure"
       },
       "policy": {
         "installation": "AVAILABLE",

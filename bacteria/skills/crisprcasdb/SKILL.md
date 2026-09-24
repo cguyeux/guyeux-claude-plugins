@@ -33,7 +33,7 @@ lists of repeats and spacers*, Nucleic Acids Research 2020, 48(D1):D535-D544.
 |---|---|
 | Serveur | conteneur Docker `crisprcasdb`, PostgreSQL 16, `127.0.0.1:5433` |
 | Base / utilisateur / mot de passe | `crisprcasdb` / `postgres` / `crispr` |
-| Infrastructure et rechargement | `~/docs/codes/mtbc/crisprcasdb_local/` |
+| Infrastructure et rechargement | `~/docs/codes/mtbc/en_cours/crisprcasdb_local/` |
 | Taille | 635 Mo |
 | Souches | 36 605 (36 052 bacteries, 553 archees) |
 | Loci CRISPR | 143 878 dont **32 624 en evidence level 4** |
@@ -46,7 +46,7 @@ Le script `scripts/ccdb.py` n'a **aucune dependance Python** (il pilote `psql`) 
 le conteneur tout seul s'il est arrete.
 
 ```bash
-CCDB=~/docs/codes/claude_plugins/bio_pathogens/skills/crisprcasdb/scripts/ccdb.py
+CCDB=~/docs/environnement/plugins/bacteria/skills/crisprcasdb/scripts/ccdb.py
 $CCDB stats
 $CCDB strain H37Rv                                  # nom, GCA/GCF ou accession de replicon
 $CCDB arrays GCA_000195955.2                        # loci CRISPR (evidence 4 par defaut)
@@ -228,7 +228,7 @@ independant du pipeline maison :
 ## Entretien
 
 ```bash
-~/docs/codes/mtbc/crisprcasdb_local/bin/ccdb_service.sh {start|stop|status|psql|backup}
+~/docs/codes/mtbc/en_cours/crisprcasdb_local/bin/ccdb_service.sh {start|stop|status|psql|backup}
 ```
 
 Le dump amont ne livre que les cles primaires : les index de jointure et les index trigramme

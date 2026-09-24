@@ -35,13 +35,28 @@ TEXT_SUFFIXES = {
 }
 
 PACKAGE_METADATA = {
-    "bio-pathogens": {
-        "display": "Bio Pathogens Direct",
-        "short": "Direct pathogen research skills.",
-        "long": "Direct Codex package for pathogen research skills already audited for direct or payload packaging.",
+    "bioinfo": {
+        "display": "Bioinfo Direct",
+        "short": "Direct cross-domain bioinformatics skills.",
+        "long": "Direct Codex package for cross-domain bioinformatics skills already audited for direct or payload packaging.",
     },
-    "bio-population-genetics": {
-        "display": "Bio Population Genetics Direct",
+    "litterature": {
+        "display": "Literature Direct",
+        "short": "Direct literature search and bibliography skills.",
+        "long": "Direct Codex package for literature search and bibliography skills already audited for direct or payload packaging.",
+    },
+    "mtbc": {
+        "display": "MTBC Direct",
+        "short": "Direct Mycobacterium tuberculosis complex phylogenomics skills.",
+        "long": "Direct Codex package for Mycobacterium tuberculosis complex phylogenomics skills already audited for direct or payload packaging.",
+    },
+    "phylo": {
+        "display": "Phylo Direct",
+        "short": "Direct cross-domain phylogenetics skills.",
+        "long": "Direct Codex package for cross-domain phylogenetics skills already audited for direct or payload packaging.",
+    },
+    "popgen": {
+        "display": "Population Genetics Direct",
         "short": "Direct population genetics skills.",
         "long": "Direct Codex package for population genetics skills already audited for direct or payload packaging.",
     },

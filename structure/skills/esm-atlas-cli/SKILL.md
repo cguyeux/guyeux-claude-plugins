@@ -158,7 +158,7 @@ PYTHONPATH="$SRC" python3 -m esm_atlas_cli.smoke_test
 PYTHONPATH="$SRC" ESM_ATLAS_OFFLINE=1 python3 -m esm_atlas_cli.smoke_test
 ```
 
-The smoke test fetches `katG` (Rv1908c) from `~/docs/codes/mtbc/investigate_phylo/resources/NC_000962.3_CDS.fasta`, hashes it, and exercises `lookup`, `feature_meta`, and `cluster`. Output prints the top 5 SAE features with their functional descriptions, the cluster size, and the Pfam annotation rate.
+The smoke test fetches `katG` (Rv1908c) from `~/docs/codes/mtbc/en_cours/investigate_phylo/resources/NC_000962.3_CDS.fasta`, hashes it, and exercises `lookup`, `feature_meta`, and `cluster`. Output prints the top 5 SAE features with their functional descriptions, the cluster size, and the Pfam annotation rate.
 
 **Resilience contract (for downstream skills).** Every GET is disk-cached under
 `~/.cache/esm-atlas-cli` (TTL via `ESM_ATLAS_CACHE_TTL_DAYS`). Unrecoverable

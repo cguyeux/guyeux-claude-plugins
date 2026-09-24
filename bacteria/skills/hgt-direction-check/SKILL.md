@@ -2,31 +2,20 @@
 name: hgt-direction-check
 description: >-
   Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed comparative
-  genomics: decide the DIRECTION of a horizontal transfer before it becomes a
-  claim, and kill the commonest way of getting it backwards. A high sequence
-  identity between a bacterial gene and a viral (or plasmid, or any other donor
-  candidate) gene says NOTHING about who captured whom: it measures a position
-  inside the structure of the gene family. The test that does settle direction
-  is topological, and it comes with its own null. (1) NESTING: build the family
-  tree from a reference panel of CELLULAR homologues plus the sequences carried
-  by the candidate donor, and ask whether each donor-borne sequence sits INSIDE
-  the cellular diversity (capture cell -> donor) or BASAL to it (the family
-  would then originate in the donor). (2) HOST CONCORDANCE: nesting alone is
-  not enough — each donor-borne sequence must land next to the homologues of
-  its OWN host taxon, which is what separates a real capture from an arbitrary
-  placement, and what turns one case into a repeated, independent result.
-  (3) LONG-BRANCH CONTROL: the host clade must still exist in a tree inferred
-  independently WITHOUT the donor sequences, otherwise the nesting was
-  manufactured by the analysis. Also carries the correlation pre-test that
-  disqualifies an identity-based argument in seconds, before any tree is built.
+  genomics: decides the DIRECTION of a horizontal transfer before it becomes a
+  claim. High sequence identity between a bacterial gene and a viral/plasmid
+  donor gene says NOTHING about who captured whom — it only reflects position
+  inside the gene family's structure. The topological test that settles
+  direction: NESTING (donor sequences INSIDE cellular diversity mean capture,
+  BASAL means donor origin), HOST CONCORDANCE (each donor sequence must land
+  next to its OWN host taxon), and LONG-BRANCH CONTROL (the host clade must
+  survive a tree built WITHOUT the donor sequences) — plus a correlation
+  pre-test that disqualifies an identity-only argument in seconds.
 
-  Use when: a manuscript is about to say "this bacterial gene derives from a
-  phage" (or from a plasmid, or an integron) on the strength of a BLAST
-  identity; an insertion sequence, transposase or any mobile-element gene is
-  found in a viral genome; a reviewer asks which way a transfer went; a
-  striking identity to a viral gene needs to be checked against the plain
-  alternative that it is simply the family's internal structure; or a negative
-  result (no transfer detectable) must be made publishable rather than silent.
+  Use when: a manuscript is about to claim a bacterial gene derives from a
+  phage, plasmid or integron on BLAST identity alone; a mobile-element gene
+  appears in a viral genome; a reviewer asks which way a transfer went; or a
+  negative transfer result needs to be made publishable.
 ---
 
 # hgt-direction-check — quel sens a pris le transfert, et la preuve qui le dit
@@ -173,7 +162,15 @@ dispositif existe pour empêcher.
   à tout `blastdbcmd -entry`, quelle que soit la forme de l'identifiant. Extraire depuis les
   FASTA sources.
 
-## Ce que le skill ne fait pas
+## Ce que le skill ne fait pas, et le skill frère qui le fait
+
+**Il ne traite pas les cas INTER-DOMAINE** (un gène bactérien contre des homologues
+eucaryotes). Son `hosts.tsv` suppose que chaque séquence donneuse a un hôte, ce qu'un eucaryote
+libre vivant n'a pas ; son contrôle d'artefact se limite à l'attraction des longues branches, et
+ne couvre ni l'hétérogénéité de composition ni la saturation entre domaines du vivant ; et il ne
+contrôle pas la contamination d'assemblage, premier suspect de tout « gène eucaryote chez une
+bactérie ». Pour ces cas : `hgt-interdomain-check`, dans le même plugin, qui réutilise le socle
+de lecture d'arbre d'ici plutôt que de le recopier.
 
 Il ne date pas le transfert, ne dit pas combien de fois il a eu lieu au-delà du nombre de
 nichages indépendants observés, et ne remplace pas une recherche d'antériorité : le sens d'un

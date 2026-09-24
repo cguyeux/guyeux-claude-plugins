@@ -1,12 +1,101 @@
 {
   "rows": [
     {
-      "name": "atlas-add-lineage",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/atlas-add-lineage",
-      "package_candidate": "bio-pathogens",
+      "name": "aap",
+      "source_plugin": "carriere",
+      "canonical_path": "carriere/skills/aap",
+      "package_candidate": "carriere",
       "packaged_in": [
-        "bio-pathogens"
+        "carriere"
+      ],
+      "classification": "packaged-workflow-guarded",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "script-payload",
+        "supporting-resources"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 9,
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
+      "audit": {
+        "copied_files_expected": 9,
+        "copied_bytes_expected": 68247,
+        "copied_files_actual": 9,
+        "copied_bytes_actual": 68764,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "cadrage-editorial",
+      "source_plugin": "diffusion",
+      "canonical_path": "diffusion/skills/cadrage-editorial",
+      "package_candidate": "diffusion",
+      "packaged_in": [
+        "diffusion"
+      ],
+      "classification": "packaged-workflow-guarded",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 4,
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
+      "audit": {
+        "copied_files_expected": 4,
+        "copied_bytes_expected": 47151,
+        "copied_files_actual": 4,
+        "copied_bytes_actual": 47472,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "soumission",
+      "source_plugin": "diffusion",
+      "canonical_path": "diffusion/skills/soumission",
+      "package_candidate": "diffusion",
+      "packaged_in": [
+        "diffusion"
+      ],
+      "classification": "packaged-workflow-guarded",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "script-payload",
+        "supporting-resources",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 11,
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
+      "audit": {
+        "copied_files_expected": 11,
+        "copied_bytes_expected": 246587,
+        "copied_files_actual": 11,
+        "copied_bytes_actual": 247747,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "atlas-add-lineage",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/atlas-add-lineage",
+      "package_candidate": "mtbc",
+      "packaged_in": [
+        "mtbc"
       ],
       "classification": "packaged-workflow-guarded",
       "signals": [
@@ -23,9 +112,9 @@
       "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
       "audit": {
         "copied_files_expected": 1,
-        "copied_bytes_expected": 10639,
+        "copied_bytes_expected": 10702,
         "copied_files_actual": 1,
-        "copied_bytes_actual": 11049,
+        "copied_bytes_actual": 11112,
         "excluded_files": 0,
         "excluded_bytes": 0,
         "excluded_roots": []
@@ -33,11 +122,11 @@
     },
     {
       "name": "bdd-bridge",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/bdd-bridge",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/bdd-bridge",
+      "package_candidate": "mtbc",
       "packaged_in": [
-        "bio-pathogens"
+        "mtbc"
       ],
       "classification": "packaged-workflow-guarded",
       "signals": [
@@ -55,21 +144,23 @@
       "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
       "audit": {
         "copied_files_expected": 4,
-        "copied_bytes_expected": 38128,
+        "copied_bytes_expected": 70372,
         "copied_files_actual": 4,
-        "copied_bytes_actual": 38621,
-        "excluded_files": 0,
-        "excluded_bytes": 0,
-        "excluded_roots": []
+        "copied_bytes_actual": 70807,
+        "excluded_files": 1,
+        "excluded_bytes": 61925,
+        "excluded_roots": [
+          "__pycache__"
+        ]
       }
     },
     {
       "name": "denovo-content-qc",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/denovo-content-qc",
-      "package_candidate": "bio-pathogens",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/denovo-content-qc",
+      "package_candidate": "mtbc",
       "packaged_in": [
-        "bio-pathogens"
+        "mtbc"
       ],
       "classification": "packaged-workflow-guarded",
       "signals": [
@@ -81,14 +172,173 @@
       "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
       "audit": {
         "copied_files_expected": 4,
-        "copied_bytes_expected": 20454,
+        "copied_bytes_expected": 20796,
         "copied_files_actual": 4,
-        "copied_bytes_actual": 20925,
-        "excluded_files": 1,
-        "excluded_bytes": 13496,
-        "excluded_roots": [
-          "__pycache__"
-        ]
+        "copied_bytes_actual": 21267,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "fetch-tbannotator",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/fetch-tbannotator",
+      "package_candidate": "mtbc",
+      "packaged_in": [
+        "mtbc"
+      ],
+      "classification": "packaged-workflow-guarded",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "project-memory-write",
+        "script-payload",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "disable-model-invocation",
+        "user-invocable"
+      ],
+      "file_count": 4,
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
+      "audit": {
+        "copied_files_expected": 4,
+        "copied_bytes_expected": 51408,
+        "copied_files_actual": 4,
+        "copied_bytes_actual": 51766,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "mtbc-bilan",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/mtbc-bilan",
+      "package_candidate": "mtbc",
+      "packaged_in": [
+        "mtbc"
+      ],
+      "classification": "packaged-workflow-guarded",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "project-memory-write",
+        "supporting-resources",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 17,
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
+      "audit": {
+        "copied_files_expected": 17,
+        "copied_bytes_expected": 182584,
+        "copied_files_actual": 17,
+        "copied_bytes_actual": 183268,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "mtbc-reboot",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/mtbc-reboot",
+      "package_candidate": "mtbc",
+      "packaged_in": [
+        "mtbc"
+      ],
+      "classification": "packaged-workflow-guarded",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "project-memory-write",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 33408,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 34097,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "pectinated-subclade-mining",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/pectinated-subclade-mining",
+      "package_candidate": "mtbc",
+      "packaged_in": [
+        "mtbc"
+      ],
+      "classification": "packaged-workflow-guarded",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "project-memory-write",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 2,
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
+      "audit": {
+        "copied_files_expected": 2,
+        "copied_bytes_expected": 18911,
+        "copied_files_actual": 2,
+        "copied_bytes_actual": 19383,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
+      }
+    },
+    {
+      "name": "strain-qc",
+      "source_plugin": "mtbc",
+      "canonical_path": "mtbc/skills/strain-qc",
+      "package_candidate": "mtbc",
+      "packaged_in": [
+        "mtbc"
+      ],
+      "classification": "packaged-workflow-guarded",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint",
+        "user-invocable"
+      ],
+      "file_count": 1,
+      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
+      "audit": {
+        "copied_files_expected": 1,
+        "copied_bytes_expected": 34153,
+        "copied_files_actual": 1,
+        "copied_bytes_actual": 34531,
+        "excluded_files": 0,
+        "excluded_bytes": 0,
+        "excluded_roots": []
       }
     },
     {
@@ -117,48 +367,12 @@
       }
     },
     {
-      "name": "fetch-tbannotator",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/fetch-tbannotator",
-      "package_candidate": "bio-pathogens",
-      "packaged_in": [
-        "bio-pathogens"
-      ],
-      "classification": "packaged-workflow-guarded",
-      "signals": [
-        "claude-runtime-reference",
-        "mcp-runtime",
-        "project-memory-write",
-        "script-payload",
-        "unsupported-frontmatter",
-        "web-runtime"
-      ],
-      "unsupported_frontmatter": [
-        "argument-hint",
-        "disable-model-invocation",
-        "user-invocable"
-      ],
-      "file_count": 3,
-      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
-      "audit": {
-        "copied_files_expected": 3,
-        "copied_bytes_expected": 43809,
-        "copied_files_actual": 3,
-        "copied_bytes_actual": 44167,
-        "excluded_files": 1,
-        "excluded_bytes": 29475,
-        "excluded_roots": [
-          "__pycache__"
-        ]
-      }
-    },
-    {
       "name": "fig-ideation",
-      "source_plugin": "redac",
-      "canonical_path": "redac/skills/fig-ideation",
-      "package_candidate": "bio-redac",
+      "source_plugin": "redaction",
+      "canonical_path": "redaction/skills/fig-ideation",
+      "package_candidate": "redaction",
       "packaged_in": [
-        "bio-redac"
+        "redaction"
       ],
       "classification": "packaged-workflow-guarded",
       "signals": [
@@ -175,168 +389,13 @@
         "argument-hint",
         "user-invocable"
       ],
-      "file_count": 15,
+      "file_count": 16,
       "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
       "audit": {
-        "copied_files_expected": 15,
-        "copied_bytes_expected": 127230,
-        "copied_files_actual": 15,
-        "copied_bytes_actual": 127613,
-        "excluded_files": 0,
-        "excluded_bytes": 0,
-        "excluded_roots": []
-      }
-    },
-    {
-      "name": "mtbc-bilan",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/mtbc-bilan",
-      "package_candidate": "bio-pathogens",
-      "packaged_in": [
-        "bio-pathogens"
-      ],
-      "classification": "packaged-workflow-guarded",
-      "signals": [
-        "claude-runtime-reference",
-        "project-memory-write",
-        "supporting-resources",
-        "unsupported-frontmatter",
-        "web-runtime"
-      ],
-      "unsupported_frontmatter": [
-        "argument-hint",
-        "user-invocable"
-      ],
-      "file_count": 17,
-      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
-      "audit": {
-        "copied_files_expected": 17,
-        "copied_bytes_expected": 179274,
-        "copied_files_actual": 17,
-        "copied_bytes_actual": 179797,
-        "excluded_files": 0,
-        "excluded_bytes": 0,
-        "excluded_roots": []
-      }
-    },
-    {
-      "name": "mtbc-reboot",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/mtbc-reboot",
-      "package_candidate": "bio-pathogens",
-      "packaged_in": [
-        "bio-pathogens"
-      ],
-      "classification": "packaged-workflow-guarded",
-      "signals": [
-        "claude-runtime-reference",
-        "mcp-runtime",
-        "project-memory-write",
-        "unsupported-frontmatter",
-        "web-runtime"
-      ],
-      "unsupported_frontmatter": [
-        "argument-hint",
-        "user-invocable"
-      ],
-      "file_count": 1,
-      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
-      "audit": {
-        "copied_files_expected": 1,
-        "copied_bytes_expected": 33161,
-        "copied_files_actual": 1,
-        "copied_bytes_actual": 33850,
-        "excluded_files": 0,
-        "excluded_bytes": 0,
-        "excluded_roots": []
-      }
-    },
-    {
-      "name": "pectinated-subclade-mining",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/pectinated-subclade-mining",
-      "package_candidate": "bio-pathogens",
-      "packaged_in": [
-        "bio-pathogens"
-      ],
-      "classification": "packaged-workflow-guarded",
-      "signals": [
-        "claude-runtime-reference",
-        "mcp-runtime",
-        "project-memory-write",
-        "script-payload",
-        "unsupported-frontmatter"
-      ],
-      "unsupported_frontmatter": [
-        "argument-hint",
-        "user-invocable"
-      ],
-      "file_count": 2,
-      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
-      "audit": {
-        "copied_files_expected": 2,
-        "copied_bytes_expected": 18071,
-        "copied_files_actual": 2,
-        "copied_bytes_actual": 18543,
-        "excluded_files": 0,
-        "excluded_bytes": 0,
-        "excluded_roots": []
-      }
-    },
-    {
-      "name": "soumission",
-      "source_plugin": "redac",
-      "canonical_path": "redac/skills/soumission",
-      "package_candidate": "bio-redac",
-      "packaged_in": [
-        "bio-redac"
-      ],
-      "classification": "packaged-workflow-guarded",
-      "signals": [
-        "claude-runtime-reference",
-        "project-memory-write",
-        "script-payload",
-        "supporting-resources",
-        "web-runtime"
-      ],
-      "unsupported_frontmatter": [],
-      "file_count": 11,
-      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
-      "audit": {
-        "copied_files_expected": 11,
-        "copied_bytes_expected": 152905,
-        "copied_files_actual": 11,
-        "copied_bytes_actual": 154065,
-        "excluded_files": 0,
-        "excluded_bytes": 0,
-        "excluded_roots": []
-      }
-    },
-    {
-      "name": "strain-qc",
-      "source_plugin": "bio_pathogens",
-      "canonical_path": "bio_pathogens/skills/strain-qc",
-      "package_candidate": "bio-pathogens",
-      "packaged_in": [
-        "bio-pathogens"
-      ],
-      "classification": "packaged-workflow-guarded",
-      "signals": [
-        "claude-runtime-reference",
-        "project-memory-write",
-        "unsupported-frontmatter"
-      ],
-      "unsupported_frontmatter": [
-        "argument-hint",
-        "user-invocable"
-      ],
-      "file_count": 1,
-      "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution.",
-      "audit": {
-        "copied_files_expected": 1,
-        "copied_bytes_expected": 33816,
-        "copied_files_actual": 1,
-        "copied_bytes_actual": 34194,
+        "copied_files_expected": 16,
+        "copied_bytes_expected": 174452,
+        "copied_files_actual": 16,
+        "copied_bytes_actual": 174843,
         "excluded_files": 0,
         "excluded_bytes": 0,
         "excluded_roots": []

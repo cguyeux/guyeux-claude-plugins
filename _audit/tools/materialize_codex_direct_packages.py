@@ -32,25 +32,35 @@ TEXT_SUFFIXES = {
 }
 
 PACKAGE_METADATA = {
-    "bio-bacteria": {
-        "display": "Bio Bacteria Direct",
-        "short": "Direct bacterial research skills.",
-        "long": "Direct Codex package for bacterial research skills that do not need runtime adaptation before packaging.",
+    "bacteria": {
+        "display": "Bacteria Direct",
+        "short": "Direct non-MTBC bacterial pathogen research skills.",
+        "long": "Direct Codex package for non-MTBC bacterial pathogen research skills that do not need runtime adaptation before packaging.",
     },
-    "bio-pathogens": {
-        "display": "Bio Pathogens Direct",
-        "short": "Direct pathogen research skills.",
-        "long": "Direct Codex package for pathogen research skills that do not need runtime adaptation before packaging.",
+    "bioinfo": {
+        "display": "Bioinfo Direct",
+        "short": "Direct cross-domain bioinformatics skills.",
+        "long": "Direct Codex package for cross-domain bioinformatics skills that do not need runtime adaptation before packaging.",
     },
-    "bio-population-genetics": {
-        "display": "Bio Population Genetics Direct",
-        "short": "Direct population genetics skills.",
-        "long": "Direct Codex package for population genetics skills that do not need runtime adaptation before packaging.",
+    "mtbc": {
+        "display": "MTBC Direct",
+        "short": "Direct Mycobacterium tuberculosis complex phylogenomics skills.",
+        "long": "Direct Codex package for Mycobacterium tuberculosis complex phylogenomics skills that do not need runtime adaptation before packaging.",
     },
-    "bio-redac": {
-        "display": "Bio Redac Direct",
-        "short": "Direct scientific writing bridge skill.",
-        "long": "Direct Codex package for scientific writing bridge skills that do not need runtime adaptation before packaging.",
+    "popgen": {
+        "display": "Population Genetics Direct",
+        "short": "Direct human population genetics and ancient DNA skills.",
+        "long": "Direct Codex package for human population genetics and ancient DNA skills that do not need runtime adaptation before packaging.",
+    },
+    "science-commun": {
+        "display": "Science Commun Direct",
+        "short": "Direct science communication skills.",
+        "long": "Direct Codex package for science communication skills that do not need runtime adaptation before packaging.",
+    },
+    "structure": {
+        "display": "Structure Direct",
+        "short": "Direct protein structure and structural biology skills.",
+        "long": "Direct Codex package for protein structure and structural biology skills that do not need runtime adaptation before packaging.",
     },
     "ia": {
         "display": "IA Direct",

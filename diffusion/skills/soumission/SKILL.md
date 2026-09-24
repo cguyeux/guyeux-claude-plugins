@@ -2,19 +2,19 @@
 name: soumission
 description: >-
   Gère tout le cycle de soumission d'un article scientifique, de la préparation
-  au suivi, avec exécution externe seulement sur demande explicite : choisir la revue cible (base de
-  revues avec scope, contraintes de longueur, frais réels, facteur d'impact et
-  délai de première décision), contrôler que le manuscrit est prêt (dont la
-  version française main_fr.tex), se connecter aux portails éditeurs par ORCID,
-  déposer le préprint sur bioRxiv/medRxiv/arXiv et le code sur le GitHub
-  centralisateur, remplir le formulaire de soumission, tenir le registre central
-  des soumissions (qui, où, quand, statut), faire après chaque soumission le point
-  d'état de tous les manuscrits (déposé, rejeté, en révision, préparé mais jamais
-  soumis) et reprendre ce qui cloche, et en tirer les enseignements des rejets. Utiliser quand l'utilisateur veut « soumettre un article », « choisir
-  une revue », « où soumettre ce papier », « préparer la soumission », « déposer
-  le préprint », « où en sont mes soumissions », « le journal a répondu », « on
-  m'a rejeté, où resoumettre », « fais le point sur mes soumissions », ou tape
-  /soumission.
+  au suivi, avec exécution externe seulement sur demande explicite : choisir
+  la revue cible (scope, contraintes de longueur, frais réels, facteur
+  d'impact, délai de première décision), contrôler que le manuscrit est prêt
+  (dont la version française main_fr.tex), se connecter aux portails éditeurs
+  par ORCID, déposer le préprint sur bioRxiv/medRxiv/arXiv et le code sur le
+  GitHub centralisateur, remplir le formulaire de soumission, tenir le
+  registre central des soumissions (qui, où, quand, statut), faire après
+  chaque soumission le point d'état de tous les manuscrits et reprendre ce qui
+  cloche, et en tirer les enseignements des rejets. Utiliser quand
+  l'utilisateur veut « soumettre un article », « choisir une revue », « où
+  soumettre ce papier », « déposer le préprint », « où en sont mes
+  soumissions », « le journal a répondu », « on m'a rejeté, où resoumettre »,
+  ou tape /soumission.
 allowed-tools:
   - Bash
   - Read
@@ -174,12 +174,13 @@ posées par l'auteur, pas des préférences :
   `--no-compile` saute cette étape pour une itération rapide, au prix d'une réserve
   explicite : le pré-vol perd alors sa garantie principale.
 - la déclaration d'assistance IA est présente ;
-- les deux formules imposées de l'extérieur sont justes : le mésocentre est remercié
-  si et seulement si un calcul est passé par lui, et la signature scientifique est
+- les trois formules imposées de l'extérieur sont justes : le mésocentre est remercié
+  si et seulement si un calcul est passé par lui, Senelle et Lecarpentier sont crédités
+  si et seulement si TBannotator/tblearn a servi, et la signature scientifique est
   celle qu'impose l'université (voir ci-dessous) ;
 - les figures référencées existent.
 
-Ces deux dernières ne relèvent pas du fond, et c'est pour cela qu'aucune relecture
+Ces trois dernières ne relèvent pas du fond, et c'est pour cela qu'aucune relecture
 scientifique ne les rattrape. Le mésocentre de calcul de Franche-Comté demande à être
 cité par tout article dont un calcul est passé chez lui, dans les termes qu'il fixe :
 « Computations have been performed on the supercomputer facilities of the Mésocentre de
@@ -187,6 +188,12 @@ calcul de Franche-Comté. » Le pré-vol cherche la trace d'un calcul distant da
 cahier de laboratoire du projet et compare avec les remerciements du manuscrit, dans
 les deux sens : un calcul non remercié est bloquant, un remerciement recopié d'un
 article précédent sans calcul correspondant est une affirmation fausse comme une autre.
+
+Même logique, même mécanisme, pour un usage de TBannotator/tblearn (`mcp__tbannotator__*`,
+skills `tbannotator-mcp`, `fetch-tbannotator`, `bdd-bridge`...) : **Gaëtan Senelle**
+(auteur d'origine du pipeline) et **Clément Lecarpentier** (développement et maintenance
+actuels, sujet de thèse) sont tous deux dus dès que l'outil a fourni une donnée du
+manuscrit — l'un sans l'autre est un crédit incomplet, pas une simplification acceptable.
 
 La signature scientifique, elle, est imposée depuis janvier 2025 et a été rappelée cinq
 fois par la direction de l'institut, statistiques de non-conformité à l'appui :
@@ -402,12 +409,29 @@ commande l'indexation, et la direction de l'institut demande explicitement de la
 jour, pas seulement de corriger le manuscrit suivant. Le bon moment n'est pas la
 soumission, où toucher aux bases auteurs d'un manuscrit en cours d'évaluation n'apporte
 rien (arbitrage de l'auteur, 2026-09-09), mais l'acceptation : les épreuves passent sous
-ses yeux et le dossier se solde. Trois gestes, dans cet ordre. Sur les **épreuves**,
-vérifier la signature scientifique et les remerciements, mésocentre et financeurs
-compris : c'est la dernière fenêtre où ils se corrigent. Dans la **base auteurs du
-portail**, mettre l'affiliation à jour. À la **parution**, passer le statut à `published`
-et déclarer la publication (ticket Publiweb). Le point d'état sort ce rappel dès qu'une
-ligne entre en `accepted`, sans attendre un délai.
+ses yeux et le dossier se solde. Quatre gestes, dans cet ordre.
+
+1. Sur les **épreuves**, vérifier la signature scientifique et les remerciements,
+   mésocentre et financeurs compris : c'est la dernière fenêtre où ils se corrigent.
+2. Dans la **base auteurs du portail**, mettre l'affiliation à jour.
+3. **Dès l'acceptation elle-même, sans attendre la parution effective** : ajouter la
+   publication au CV (skill `/cv`, § B), avec les seules métadonnées connues à ce
+   stade — le mail d'acceptation ne donne ni DOI, ni volume, ni pagination, qui
+   arrivent avec la production ; consigner ce manque en note plutôt que l'inventer.
+   Recompiler (`cv_build.sh`). Localiser la **version finale auteur**
+   (`find_manuscript.py`, le manuscrit accepté compilé maison, jamais la mise en
+   page de l'éditeur) et préparer le ticket Publiweb avec le canevas que produit
+   `all.py` ; la soumission effective du ticket suit le périmètre d'autorisation
+   ci-dessus (skill `femto-tickets`, hors du dépôt `mtbc` : lire son `SKILL.md`
+   directement si le skill n'apparaît pas dans la session courante) et reste un
+   acte confirmé par l'auteur, upload des pièces compris.
+4. **À la parution effective** (DOI définitif, pagination assignée) : compléter
+   l'entrée du CV avec les champs devenus connus, recompiler à nouveau, passer le
+   statut du registre à `published`, et vérifier via `cv_publiweb_sync.py` que la
+   déclaration a bien été ingérée par le service.
+
+Le point d'état sort ce rappel dès qu'une ligne entre en `accepted`, sans attendre un
+délai.
 
 Ces vérifications externes sont bornées par le périmètre d'autorisation : sans demande
 explicite dans le tour courant, elles se **proposent** et ne s'exécutent pas. La liste

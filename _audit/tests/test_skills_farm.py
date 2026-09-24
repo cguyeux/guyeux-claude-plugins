@@ -62,7 +62,7 @@ class SkillFarmTests(unittest.TestCase):
             target = base / "farm"
             target.mkdir()
             args = self.farm.build_parser().parse_args([
-                "sync", "--farm", str(target), "--plugin", "redac", "--skill", "fig-ideation", "--dry-run"
+                "sync", "--farm", str(target), "--plugin", "redaction", "--skill", "fig-ideation", "--dry-run"
             ])
             code = self.farm.sync(args)
             self.assertEqual(0, code)
@@ -75,7 +75,7 @@ class SkillFarmTests(unittest.TestCase):
             target.mkdir()
             (target / "local").mkdir()
             args = self.farm.build_parser().parse_args([
-                "sync", "--farm", str(target), "--plugin", "redac", "--all-missing", "--apply"
+                "sync", "--farm", str(target), "--plugin", "redaction", "--all-missing", "--apply"
             ])
             code = self.farm.sync(args)
             self.assertEqual(2, code)
@@ -87,7 +87,7 @@ class SkillFarmTests(unittest.TestCase):
             target.mkdir()
             (target / "fig-ideation").mkdir()
             args = self.farm.build_parser().parse_args([
-                "sync", "--farm", str(target), "--plugin", "redac", "--skill", "fig-ideation", "--apply"
+                "sync", "--farm", str(target), "--plugin", "redaction", "--skill", "fig-ideation", "--apply"
             ])
             self.assertEqual(2, self.farm.sync(args))
             self.assertTrue((target / "fig-ideation").is_dir())
@@ -96,7 +96,7 @@ class SkillFarmTests(unittest.TestCase):
             clean = Path(tmp) / "clean"
             clean.mkdir()
             args = self.farm.build_parser().parse_args([
-                "sync", "--farm", str(clean), "--plugin", "redac", "--skill", "fig-ideation", "--apply"
+                "sync", "--farm", str(clean), "--plugin", "redaction", "--skill", "fig-ideation", "--apply"
             ])
             self.assertEqual(0, self.farm.sync(args))
             self.assertTrue((clean / "fig-ideation").is_symlink())

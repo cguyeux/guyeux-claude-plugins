@@ -31,19 +31,25 @@ class PluginInventoryTests(unittest.TestCase):
         cls.sync = load_module("sync_project_skills")
         cls.codex_sync = load_module("sync_codex_skills")
 
-    def test_all_tools_read_the_eleven_marketplace_plugins(self):
+    def test_all_tools_read_the_seventeen_marketplace_plugins(self):
         expected = [
-            "bio_pathogens",
-            "bio_bacteria",
-            "bio_population_genetics",
-            "bio_redac",
-            "redac",
+            "mtbc",
+            "bacteria",
+            "popgen",
             "ia",
-            "multimedia",
-            "ops",
-            "web",
             "maboss",
+            "ops",
             "droit",
+            "multimedia",
+            "web",
+            "phylo",
+            "bioinfo",
+            "structure",
+            "litterature",
+            "science-commun",
+            "redaction",
+            "diffusion",
+            "carriere",
         ]
         for module in (self.generator, self.auditor, self.sync):
             self.assertEqual(expected, [name for name, _path in module.marketplace_plugins()])
@@ -55,17 +61,12 @@ class PluginInventoryTests(unittest.TestCase):
             skills_dir = plugin_root / "skills"
             if skills_dir.is_dir():
                 visible_names.update(entry.name for entry in skills_dir.iterdir() if entry.is_dir())
-        self.assertEqual(192, len(registry))
+        self.assertEqual(199, len(registry))
         self.assertEqual(visible_names, set(registry))
-        self.assertEqual(
-            [
-                "bio_pathogens/skills/phylo-history",
-                "bio_redac/skills/phylo-history",
-            ],
-            duplicates["phylo-history"],
-        )
-        self.assertEqual("bio_redac/skills/phylo-history", registry["phylo-history"])
-        self.assertEqual("bio_bacteria/skills/yersinia-resources", registry["yersinia-resources"])
+        self.assertNotIn("phylo-history", duplicates)
+        self.assertEqual("mtbc/skills/phylo-history", registry["phylo-history"])
+        self.assertEqual("mtbc/skills/phylo-narrative", registry["phylo-narrative"])
+        self.assertEqual("bacteria/skills/yersinia-resources", registry["yersinia-resources"])
         self.assertEqual("droit/skills/notes-et-citations", registry["notes-et-citations"])
         for relative in registry.values():
             self.assertFalse(Path(relative).is_absolute())
@@ -82,7 +83,7 @@ class PluginInventoryTests(unittest.TestCase):
 
     def test_mtbc_mirror_scope_includes_bacteria_but_not_separate_domains(self):
         skills, _notes = self.sync.canonical_skills(False, False)
-        self.assertEqual(ROOT / "bio_bacteria/skills/yersinia-resources", skills["yersinia-resources"])
+        self.assertEqual(ROOT / "bacteria/skills/yersinia-resources", skills["yersinia-resources"])
         self.assertNotIn("notes-et-citations", skills)
         self.assertNotIn("maboss-model", skills)
 
@@ -107,9 +108,9 @@ class PluginInventoryTests(unittest.TestCase):
         desired, omitted = self.codex_sync.inventory()
         omitted_names = {name for names in omitted.values() for name in names}
         registry = self.codex_sync.load_registry()
-        self.assertEqual(192, len(registry))
+        self.assertEqual(199, len(registry))
         self.assertEqual(53, len(desired))
-        self.assertEqual(139, len(omitted_names))
+        self.assertEqual(146, len(omitted_names))
         self.assertEqual(set(registry), set(desired) | omitted_names)
         self.assertTrue(set(desired).isdisjoint(omitted_names))
         self.assertIn("tbmonitor-papers", omitted_names)
@@ -118,7 +119,7 @@ class PluginInventoryTests(unittest.TestCase):
     def test_codex_sync_classifies_without_overwriting(self):
         import tempfile
 
-        desired = {"one": ROOT / "redac/skills/bib-check"}
+        desired = {"one": ROOT / "redaction/skills/bib-check"}
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory)
             self.assertEqual((["one"], [], []), self.codex_sync.classify(target, desired))
