@@ -69,6 +69,39 @@ VOIES_ALIAS = {"reponse": "réponse", "reoutillage": "réoutillage",
                "outillage": "réoutillage", "coord": "coordination"}
 
 
+def _config_auteur() -> dict[str, str]:
+    """Résout responsable/e-mail/affiliation pour les gabarits générés.
+
+    Jamais un défaut qui redivulgue une identité réelle dans un clone public du
+    plugin `cycle` : variables d'environnement `CYCLE_AUTHOR_NAME`,
+    `CYCLE_AUTHOR_EMAIL`, `CYCLE_AUTHOR_AFFILIATION`, sinon un placeholder
+    explicite. Régression corrigée le 2026-09-25 (AQ2ter avait remplacé ce
+    mécanisme, ajouté en AQ1bis, par le nom/affiliation/e-mail de Christophe
+    Guyeux codés en dur à quatre endroits du fichier).
+    """
+    return {
+        "responsable": os.environ.get("CYCLE_AUTHOR_NAME", ""),
+        "email": os.environ.get("CYCLE_AUTHOR_EMAIL", ""),
+        "affiliation": os.environ.get("CYCLE_AUTHOR_AFFILIATION", ""),
+    }
+
+
+_AUTEUR = _config_auteur()
+
+
+def auteur_biblio() -> str:
+    """Nom d'auteur pour la ligne bibliographique générée du CLAUDE.md."""
+    return _AUTEUR["responsable"] or "(auteur à renseigner)"
+
+
+def _responsable_affiliation() -> str:
+    """« Nom (affiliation) » pour l'en-tête du cahier de labo généré."""
+    responsable = _AUTEUR["responsable"] or "(à renseigner — CYCLE_AUTHOR_NAME)"
+    if _AUTEUR["affiliation"]:
+        responsable += f" ({_AUTEUR['affiliation']})"
+    return responsable
+
+
 def codes_root() -> Path:
     """Racine des familles de projets (`<root>/<famille>/...`).
 
@@ -177,7 +210,7 @@ def claude_md_template(name: str, title: str, domain: str,
     if article:
         contexte += (
             "## Contexte scientifique\n\n"
-            f"> **Guyeux C.** *{title}.* (en préparation)\n\n"
+            f"> **{auteur_biblio()}** *{title}.* (en préparation)\n\n"
             "[Décrire ici la question de recherche, l'échantillon ou les données, ce qui est "
             "attendu, et ce qui distingue ce projet de ses voisins.]\n\n"
         )
@@ -314,7 +347,7 @@ def cahier_de_labo_template(name: str, title: str, project_dir: Path) -> str:
         # Cahier de laboratoire — {name}
 
         **Projet :** {title}
-        **Responsable :** Christophe Guyeux (Femto-ST, UMLP)
+        **Responsable :** {_responsable_affiliation()}
         **Créé le :** {today}
         **Répertoire :** {project_dir}
 
@@ -630,6 +663,10 @@ def latex_escape(text: str) -> str:
 def main_tex_template(name: str, title: str, domain: str) -> str:
     name_tex = latex_escape(name)
     title_tex = latex_escape(title)
+    auteur_tex = latex_escape(_AUTEUR["responsable"]) if _AUTEUR["responsable"] else "Auteur (a renseigner)"
+    affiliation_tex = (latex_escape(_AUTEUR["affiliation"]) if _AUTEUR["affiliation"]
+                        else "Affiliation a renseigner")
+    email_tex = _AUTEUR["email"] or "you@example.com"
 
     if domain == "mtbc":
         domain_macros = (
@@ -686,12 +723,10 @@ def main_tex_template(name: str, title: str, domain: str) -> str:
         "\\newcommand{\\todo}[1]{\\textcolor{red}{\\textbf{[TODO: #1]}}}\n"
         + domain_macros + "\n"
         f"\\title{{{title_tex}}}\n\n"
-        "\\author{Christophe Guyeux$^{1,*}$\\\\[6pt]\n"
+        f"\\author{{{auteur_tex}$^{{1,*}}$\\\\[6pt]\n"
         "  \\parbox{\\textwidth}{\\centering\\small\n"
-        "    $^{1}$Femto-ST Institute, UMR 6174 CNRS,\\\\\n"
-        "    Universit\\'e Marie et Louis Pasteur, Besan\\c{c}on, France\\\\[3pt]\n"
-        "    $^{*}$Corresponding author: "
-        "\\texttt{christophe.guyeux@univ-fcomte.fr}\n"
+        f"    $^{{1}}${affiliation_tex}\\\\[3pt]\n"
+        f"    $^{{*}}$Corresponding author: \\texttt{{{email_tex}}}\n"
         "  }\n"
         "}\n\n"
         "\\date{}\n\n"
