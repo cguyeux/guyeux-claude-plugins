@@ -241,7 +241,8 @@ def _prefixes_status(root: Path) -> set[str] | None:
     """Préfixes rendus par `status.detecter_prefixes`, ou None si le skill `pistes`
     n'est pas installé à côté (les deux skills peuvent être déployés séparément)."""
     import importlib.util
-    spath = Path.home() / ".claude" / "skills" / "pistes" / "status.py"
+    _voisin = Path(__file__).resolve().parent.parent / "pistes" / "status.py"
+    spath = _voisin if _voisin.is_file() else Path.home() / ".claude" / "skills" / "pistes" / "status.py"
     if not spath.is_file():
         return None
     try:
