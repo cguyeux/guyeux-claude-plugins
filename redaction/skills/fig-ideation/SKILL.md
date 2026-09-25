@@ -14,7 +14,7 @@ description: >-
   article parait austere, quand un mecanisme est decrit en prose sans dessin, ou pour savoir
   quelles figures deja produites dorment sur le disque.
 argument-hint: "[main.tex | chemin-projet] [review | audit | build <Fn>] [--force]"
-allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebSearch, WebFetch
+allowed-tools: Bash, Read, Write, Edit, Grep, Glob, WebSearch, WebFetch, mcp__biorender__search-biorender, mcp__biorender__custom-figure-create-session, mcp__biorender__custom-figure-get-session, mcp__biorender__custom-figure-get-preview-job
 user-invocable: true
 ---
 
@@ -70,6 +70,7 @@ Il **ne produit aucune figure de données**. Il oriente et il spécifie, puis il
 | Carte | `geo-map` | `-t choropleth\|bubble\|pie\|points\|arcs\|layered` |
 | Arbre phylogénétique annoté | `itol` | `scripts/itol_pipeline.py pipeline` |
 | Schéma conceptuel vectoriel | patrons de `references/patrons_tikz.md` | TikZ standalone compilé ici |
+| Scène biologique composée (cellule, voie de signalisation, cycle infectieux, interaction hôte-pathogène) | `biorender` (MCP officiel) | `mcp__biorender__search-biorender`, `custom-figure-create-session` — esquisse assistée seulement, cf. `references/iconographie.md` |
 | Relecture visuelle de la figure produite | `fig-check` | `/fig-check main.tex --force` |
 | Slide à partir d'une figure | `slide-design`, `slide-polish` | registres visuels partagés |
 
@@ -90,7 +91,7 @@ de chercher à réparer le rendu PDF/SVG natif d'ete3. Détail complet et code :
 segfault ou déforme les polices ». Si un PDF réellement vectoriel est requis, préférer `itol`
 (nécessite une clé API) plutôt que de dépendre du rendu PDF/SVG natif d'ete3.
 
-### Donner un corps aux schémas : iconographie libre
+### Donner un corps aux schémas : iconographie libre, et BioRender pour les scènes composées
 
 Un schéma fait uniquement de boîtes reste abstrait. Deux sources libres, vectorielles et
 citables, outillées par `scripts/sci_icons.py` :
@@ -114,6 +115,19 @@ CC BY-SA ont été remplacées automatiquement par une CC BY 4.0 et une CC0. **U
 Détail complet et pièges dans `references/iconographie.md` ; chaîne montée de bout en bout
 dans le patron `saut_hote.tex`.
 
+**Troisième source, pour ce que PhyloPic et Bioicons ne couvrent pas : BioRender (MCP officiel,
+connecté depuis le 2026-09-25).** PhyloPic donne une silhouette isolée, Bioicons une icône plate ;
+ni l'un ni l'autre ne compose une **scène** — cellule en coupe, voie de signalisation, cycle
+infectieux, interaction hôte-pathogène. `mcp__biorender__search-biorender` cherche dans les
+fichiers du compte de CG et dans la bibliothèque publique de gabarits ;
+`mcp__biorender__custom-figure-create-session` (suivi par `-get-preview-job` puis
+`-get-session`) génère un brouillon depuis un prompt. **Réservé à l'esquisse assistée, jamais
+au livrable** : aucun export scriptable n'est exposé (la finition se fait dans l'éditeur
+BioRender, par CG), et les droits de republication en manuscrit dépendent d'un palier
+d'abonnement que l'agent ne peut pas vérifier — à confirmer avant toute figure destinée à un
+manuscrit soumis, attribution « Created with BioRender.com » comprise. Détail et garde-fous
+complets : `references/iconographie.md`.
+
 ### Outils écartés, et pourquoi (revue faite, pas supposée)
 
 La question « pourquoi pas Inkscape ou draw.io » mérite une réponse tracée, parce que les deux
@@ -124,7 +138,7 @@ existent bel et bien côté agent.
 | **draw.io** | oui, MCP **officiel** (jgraph) plus trois implémentations tierces | **utile en amont seulement.** Son atout réel est le va-et-vient avec l'humain : le `.drawio` est éditable par l'agent *et* à la souris, ce que TikZ n'offre pas. Mais sa typographie ne s'aligne pas sur le manuscrit et son esthétique lit « diagramme d'architecture logicielle ». À proposer comme esquisse quand l'auteur veut participer à l'arbitrage, jamais comme livrable de manuscrit. |
 | **Inkscape** | oui, plusieurs MCP communautaires, aucun d'auteur établi | **non requis.** `rsvg-convert` couvre SVG vers PDF et PNG, `pdftocairo` couvre PDF vers SVG. Restent hors de portée la vectorisation de texte en chemins et les filtres SVG complexes : si l'un devient nécessaire, installer le **binaire**, pas un MCP. |
 | Skills publics de schémas scientifiques | oui (`sciagent-skills@scientific-schematics`, `@nejm-figure-guide`) | **à lire, pas à installer** : moins de 100 installations, auteur non établi. Leur découpage en cinq familles de schémas recoupe le bestiaire sans rien y ajouter. |
-| MCP dédié aux figures | aucun qui apporte davantage | rien à ajouter. |
+| MCP dédié aux figures | oui, `biorender` (MCP officiel, connecté le 2026-09-25) | **adopté, sous réserve.** Verdict antérieur (« aucun n'apporte davantage ») obsolète pour ce cas précis : bibliothèque de scènes biologiques composées (cellule, voie de signalisation, cycle infectieux) plus riche que Bioicons, et brouillon assisté par prompt. Borné à l'esquisse : pas d'export scriptable, droits de republication à vérifier selon l'abonnement de CG. Détail : `references/iconographie.md`. |
 
 **Principe général :** un MCP se justifie quand il donne accès à un état distant qu'aucune
 commande locale ne rend. Pour dessiner, la commande locale existe déjà et elle est
@@ -551,8 +565,9 @@ pour deux causes opposées, et seul le tri les sépare.
   registre, flux CONSORT, mécanisme IS, avant/après de topologie, tanglegram, saut d'hôte),
   plus les pièges de compilation vécus, dont la liste de contrôle du préambule minimal.
 - `references/iconographie.md` — PhyloPic et Bioicons, résolution par taxid NCBI, chaîne
-  SVG vers PDF vectoriel sans Inkscape, piège de la teinte, et le garde-fou de licence
-  share-alike qui peut coûter une soumission.
+  SVG vers PDF vectoriel sans Inkscape, piège de la teinte, le garde-fou de licence
+  share-alike qui peut coûter une soumission, et BioRender (MCP officiel) pour les scènes
+  biologiques composées, avec ses réserves d'export et de licence.
 - `references/registre.md` — format de `fig_plan.md`, et la fiche de spécification d'une
   figure.
 - Hors de ce skill : `~/.claude/knowledge/tikz-beamer-patterns.md` (antipatterns TikZ

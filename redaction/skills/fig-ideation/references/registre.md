@@ -72,6 +72,12 @@ signifie que la figure n'est pas prête à être produite.
 85 images produites et jamais incluses dans un seul projet : c'est le passage de `produite`
 à `intégrée` qui casse le plus souvent.
 
+**Cas particulier, outil `BioRender`** (`references/iconographie.md`) : un brouillon obtenu via
+`custom-figure-create-session` reste `esquissée`, jamais `produite`, tant que CG n'a pas
+lui-même fini l'export dans l'éditeur BioRender et confirmé que le palier de licence couvre la
+republication en manuscrit — ce MCP n'expose aucun export scriptable, contrairement à
+`tikz_build.py`.
+
 ## Candidates rejetées
 
 Une ligne par candidate tuée, pour qu'elle ne revienne pas à chaque passage.

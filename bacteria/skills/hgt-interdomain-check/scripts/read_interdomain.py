@@ -262,12 +262,24 @@ def main():
                    "voisinage cohérent désigne un groupe, jamais une espèce."]
     elif v_topo == "VERTICAL_SOUTENU" or (not autre_domaine and v_topo != "TRANSFERT_SOUTENU"):
         verdict = "ORIGINE_PROPRE_AU_DOMAINE"
-        lecture = ["Les données ne soutiennent pas un transfert : la requête se range avec les",
-                   f"séquences de son propre domaine ({dom_requete}), ou le test AU rejette son",
-                   "placement dans l'autre domaine. C'est un résultat négatif publiable, du même",
-                   "type que celui d'Alvarez-Venegas et al. (2007) sur les gènes bactériens à",
-                   "domaine SET : la présence d'un domaine « eucaryote » chez une bactérie n'est",
-                   "pas en soi la trace d'une acquisition."]
+        if v_topo == "VERTICAL_SOUTENU":
+            # « le placement dans l'autre domaine » disait plus que le test : il ne rejette que
+            # les placements PROPOSÉS (en mode local, le clade focal frère de chaque clade
+            # donneur d'au moins --min-clade séquences, sur un squelette fixé). AG3, 2026-09-25.
+            appui = ["Les données ne soutiennent pas un transfert : le test AU rejette chacun des",
+                     "placements proposés de la requête (en mode local : son clade focal frère de",
+                     "chaque clade testé) dans l'autre domaine ; ses limites sont dans son rapport."]
+        else:
+            # Un « ou » ici laissait croire que le test AU avait tranché (AG3, 2026-09-25).
+            appui = ["Les données ne soutiennent pas un transfert : la requête se range avec les",
+                     f"séquences de son propre domaine ({dom_requete}). Ce verdict repose sur ce SEUL",
+                     f"placement : le test AU ({v_topo}) n'exclut pas tout placement dans l'autre",
+                     "domaine. C'est l'hypothèse nulle retenue faute de preuve d'un transfert, pas",
+                     "une origine démontrée : ne pas l'écrire plus fort que cela."]
+        lecture = appui + [
+                   "C'est un résultat négatif publiable, du même type que celui d'Alvarez-Venegas",
+                   "et al. (2007) sur les gènes bactériens à domaine SET : la présence d'un domaine",
+                   "« eucaryote » chez une bactérie n'est pas en soi la trace d'une acquisition."]
     else:
         verdict = "INDECIDABLE"
         lecture = ["Les mesures ne convergent pas. Un nichage sans cohérence taxonomique du",

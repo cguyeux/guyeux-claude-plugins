@@ -73,7 +73,7 @@ def resolve(ident: str) -> dict | None:
     """DOI, PMID, PMCID ou titre -> identifiants Europe PMC. Ne devine JAMAIS un PMCID."""
     ident = ident.strip()
     if ident.upper().startswith("PMC"):
-        q = f'PMCID:"{ident.upper()}"'
+        q = f'PMCID:{ident.upper()}'
     elif ident.isdigit():
         q = f"EXT_ID:{ident} AND SRC:MED"
     elif ident.startswith("10."):

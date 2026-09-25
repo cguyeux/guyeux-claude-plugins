@@ -180,48 +180,70 @@ python3 ${CLAUDE_PLUGIN_ROOT}/skills/hgt-interdomain-check/scripts/topology_test
     --local --alignment panel.aln --taxonomy taxonomy.tsv --query <REQUETE> \
     --reference-tree sans_requete.treefile --ml-tree ML_libre.treefile \
     --model LG+C60+F+G --iqtree-bin iqtree --out au_local/
-# une inférence contrainte par ligne de commandes.sh (indépendantes : un job chacune),
-# puis le test AU sur les arbres distincts ; lecture comme en mode global :
+# un seul job : évaluation des arbres fixés de trees_local.nwk et test AU (commandes.sh) ;
+# puis, en local, lecture avec contrôle « qui a bougé » :
 python3 ${CLAUDE_PLUGIN_ROOT}/skills/hgt-interdomain-check/scripts/topology_test.py read \
     --iqtree au_local/au_local.iqtree --order au_local/trees_order.txt --out topologie.txt
 ```
 
-La règle de choix des ensembles de référence est une décision de méthode, fixée ainsi :
+La règle est une décision de méthode, fixée par la mesure (piste AG3,
+`~/docs/environnement/pistes/AG.md`) :
 
-- **Lue sur l'arbre SANS la requête**, jamais sur celui qui la contient : choisir les ensembles
-  d'après le placement qu'on veut tester serait circulaire. Le script refuse un arbre de
-  référence qui contient la requête.
+- **Ensembles lus sur l'arbre SANS la requête**, jamais sur celui qui la contient : choisir les
+  ensembles d'après le placement qu'on veut tester serait circulaire. Le script refuse un arbre
+  de référence qui contient la requête.
 - **Côté vertical** : chaque clade maximal pur du groupe fin de la requête (3e colonne de la
   taxonomie), d'au moins `--min-clade` séquences. **Côté transfert** : chaque clade maximal pur
   du domaine donneur. **Tous sont testés, aucun n'est élu** : sur PF00856, le clade eucaryote
   « le plus proche » de la requête est celui de 2 séquences en distance topologique et celui
-  de 34 en distance patristique, et deux des quatre clades eucaryotes ne survivent pas à l'ajout
-  de la requête. Un seul donneur choisi à la main aurait été arbitraire. `--donor-clade` reste
-  possible pour une hypothèse pré-enregistrée, à condition d'être un clade réel de l'arbre de
-  référence (sinon son rejet ne dirait rien de la requête, et le script refuse).
-- **Contrainte partielle** : H_C impose le seul partage {requête} ∪ C | autres ensembles ; les
-  séquences hors ensembles restent libres. C étant un côté d'arête de l'arbre de référence, ce
-  partage y tient déjà sans la requête : seule la requête peut être pénalisée.
-- **Alias** : une hypothèse que l'arbre ML satisfait déjà reprend CET arbre, sans inférence.
-  Surtout pas de doublon dans le test AU : deux arbres identiques s'y partagent les victoires
-  RELL et leurs p-AU deviennent fausses.
-- **Arbre de départ compatible** pour chaque inférence (l'arbre de référence, la requête
-  greffée sur la branche de C) : une recherche contrainte restée dans un optimum local
-  sous-estime la vraisemblance de H_C et gonfle son rejet, c'est-à-dire fabrique un
-  `VERTICAL_SOUTENU`.
+  de 34 en distance patristique. `--donor-clade` reste possible pour une hypothèse
+  pré-enregistrée, à condition d'être un clade réel de l'arbre de référence.
+- **Unité déplacée = le clade focal F**, pas la requête seule : le clade vertical qui contient
+  le plus proche congénère de la requête dans l'arbre ML, plus la requête greffée là où l'arbre
+  ML la place parmi ses membres (sur son plus proche voisin patristique si ses sœurs ML ne
+  forment pas un clade de la référence ; `clade_focal.tsv` dit lequel). Une requête arrachée à
+  un congénère à 98,5 % serait rejetée partout, trivialement, sans rien dire d'un transfert
+  vers l'ancêtre du genre.
+- **Arbres FIXÉS sur un squelette commun** : squelette = arbre de référence privé du clade
+  focal ; HV1 = F à sa place, HVj/HTi = F sur la tige de chaque autre ensemble. Aucune
+  recherche, IQ-TREE réoptimise les seules longueurs de branches : **seul le point d'attache
+  de F diffère d'un arbre à l'autre**. Défaut du premier correctif, mesuré le 2026-09-25 : une
+  contrainte partielle {requête} ∪ C | reste se satisfait aussi en déplaçant C contre la
+  requête, et l'optimiseur prend le moins coûteux. Sur PF00856 la requête n'avait pas bougé
+  (0,019 de son congénère) : chaque clade eucaryote avait été logé dans *Leptospira*, et le
+  seul non rejeté (HT3, p-AU 0,135) portait la tige la plus longue du panel (1,37). Le test
+  mesurait l'ancrage de C. Un `trees_order.txt` sans ligne `#mode` vient de cet ancien mode ;
+  `read` le rend `NON_VALIDE`.
+- **L'arbre ML libre n'est PAS dans le jeu testé** : il diffère du squelette ailleurs que sur F,
+  et tous les arbres fixés seraient pénalisés pour cette raison étrangère au placement, ce qui
+  est exactement le défaut du mode global.
+- **Alias** : deux hypothèses de même topologie (un clade donneur déjà frère du clade focal dans
+  le squelette) ne produisent qu'un arbre ; `read` les dit indiscernables. Un doublon ferait
+  se partager aux deux arbres les victoires RELL et fausserait leurs p-AU.
+- **Contrôle « qui a bougé »**, à la génération puis dans `read` sur les arbres réellement
+  évalués (`trees_local.nwk`, ou `--trees`) : F est un clade de chaque arbre, frère de
+  l'ensemble visé, et une fois F ôté tous les arbres sont identiques. Échec ou fichier absent :
+  `NON_VALIDE`.
 
-Lecture : `VERTICAL_SOUTENU` si tous les clades donneurs sont rejetés et un clade de la lignée
-ne l'est pas ; `TRANSFERT_SOUTENU` dans le cas symétrique ; `INDECIDABLE` si au moins un de
-chaque famille survit (le signal de la requête manque, ce n'est plus un artefact). Si tout est
-rejeté, le verdict reste `INDECIDABLE` mais la lecture change de sens par rapport au mode
-global : ce n'est plus un artefact des contraintes, la requête se range ailleurs, et le
-transfert depuis chacun des clades donneurs testés est bien rejeté. Limite : une séquence
-isolée du domaine donneur (hors clade d'au moins `--min-clade`) n'est jamais proposée comme
-sœur de la requête.
+Lecture : `VERTICAL_SOUTENU` si F greffé sur chaque clade donneur est rejeté et qu'un placement
+dans sa lignée ne l'est pas ; `TRANSFERT_SOUTENU` dans le cas symétrique ; `INDECIDABLE` si au
+moins un de chaque famille survit. Le squelette étant fixé, ce non-rejet porte bien sur le point
+d'attache de F. Limites, que `read` rappelle : le test est conditionnel au squelette (l'arbre
+inféré sans la requête) ; une séquence isolée du domaine donneur (hors clade d'au moins
+`--min-clade`) n'est jamais proposée comme sœur ; un transfert vers l'ancêtre d'un groupe plus
+large que F n'est pas testé.
 
-Coût mesuré sur le cas SET (159 séquences, `LG+C60+F+G`, 16 cœurs) : une inférence
-contrainte partie d'un arbre quelconque a demandé 6 h 25 et ~101 h CPU en AG2 ; le mode local
-en lance une par clade donneur (quatre ici), en parallèle.
+**Validé sur le cas SET** (PF00856, requête `LIMLP_01555`, 159 séquences, `LG+C60+F+G`, le
+2026-09-25, `~/docs/environnement/audit/2026-09-25/ag3_fixe/`) : clade focal = requête + 7
+*Leptospira* ; HV1 (à sa place) non rejetée, p-AU 1,0 ; F frère de chacun des quatre clades
+eucaryotes (34, 23, 5, 2 séq.) REJETÉ, ΔlogL 66 à 71, p-AU ≤ 0,0002 → `VERTICAL_SOUTENU`,
+conforme à la réponse publiée (Alvarez-Venegas et al. 2007). HT3, que l'ancienne contrainte
+laissait ouvert (p-AU 0,135), est rejeté comme les autres. Même verdict, ΔlogL à 0,3 près, que
+les paramètres du modèle soient estimés sur l'arbre de parcimonie initial ou sur l'arbre ML
+fixé (`--tree-fix`, retenu dans `commandes.sh`).
+
+Coût : un seul job, **1 min de mur sur 16 cœurs** avec `--tree-fix` (8 min sans), contre
+trois à sept heures PAR hypothèse pour les inférences contraintes de l'ancien mode.
 
 Sur `mh`, l'environnement phylo est `/Work/Users/cguyeux/envs/phylo`, le binaire s'appelle
 **`iqtree`** et non `iqtree2`, et `LD_LIBRARY_PATH=$P/lib` est exigé. `commandes.sh` lit `IQ` et
@@ -304,7 +326,8 @@ Et il ne remplace pas la recherche d'antériorité de l'étape 1.
   2026-09-18. La protéine identique est portée par **852 assemblages indépendants** de
   *Leptospira* : la contamination d'assemblage est écartée, et la question du sens reste
   entière. Mesure du 2026-09-22, à refaire si elle est citée dans un manuscrit.
-- Tests : `_audit/tests/test_hgt_interdomain_check.py` (30 contrôles sur jeux fabriqués, dont
-  10 pour le mode local : ensembles, contraintes partielles, arbres de départ, alias, verdicts).
+- Tests : `_audit/tests/test_hgt_interdomain_check.py` (38 contrôles sur jeux fabriqués, dont
+  18 pour le mode local : squelette fixé, clade focal et sa greffe, alias des topologies
+  identiques, contrôle « qui a bougé », verdicts, lecture NON_VALIDE de l'ancien mode).
 - Pistes : `~/docs/environnement/pistes.md` AG2, AG3 ; contexte scientifique et antériorités :
   `~/.agents/knowledge/leptospira.md` ; volet scientifique : `mtbc/pistes.md` P78.5.

@@ -382,46 +382,134 @@ class TestModeLocal(unittest.TestCase):
                      "--reference-tree", d / "ref.nwk", "--ml-tree", d / "ml.nwk",
                      "--out", d / "out", *extra)
 
-    def test_ensembles_lus_sur_l_arbre_sans_requete_et_domaines_non_imposes(self):
+    def test_squelette_fixe_seul_le_clade_focal_change_de_place(self):
+        """AG3, 2026-09-25 : arbres FIXÉS, squelette = référence privée du clade focal V_k,
+        F = V_k + requête ; chaque hypothèse ne diffère que par le point d'attache de F."""
+        topo = charge("topology_test.py")
         with tempfile.TemporaryDirectory() as d:
             d = self.prepare(d)
             r = self.genere(d)
             self.assertEqual(r.returncode, 0, r.stderr)
-            ordre = (d / "out" / "trees_order.txt").read_text(encoding="utf-8").splitlines()
-            noms = [l.split("\t")[0] for l in ordre]
-            self.assertEqual(noms, ["ML_libre", "HV1_requete_avec_Leptospira_4",
-                                    "HT1_requete_dans_eukaryota_3",
-                                    "HT2_requete_dans_eukaryota_2"])
-            # la requête est nichée dans les congénères : HV1 reprend l'arbre ML par alias
-            self.assertTrue(ordre[1].endswith("\t=ML_libre"))
-            self.assertTrue(all(l.endswith("\tarbre") for l in ordre[2:]))
-            self.assertFalse((d / "out" / "HV1_requete_avec_Leptospira_4.start.nwk").exists())
-            ht1 = (d / "out" / "HT1_requete_dans_eukaryota_3.constraint.nwk").read_text()
-            self.assertTrue(ht1.startswith("((QUERY,EA1,EA2,EA3),("))
-            # Les séquences hors ensembles restent LIBRES : aucune monophylie de domaine imposée.
-            etiquettes = set(ht1.replace("(", ",").replace(")", ",").replace(";", ",").split(","))
-            for libre in ("B1", "LEP5", "E_SOLO", "A1"):
-                self.assertNotIn(libre, etiquettes)
-            self.assertIn("2 inférence(s) contrainte(s) à lancer, 1 reprise(s)", r.stdout)
+            out = d / "out"
+            ordre = (out / "trees_order.txt").read_text(encoding="utf-8").splitlines()
+            self.assertEqual(ordre[0], "#mode\tsquelette_fixe")
+            noms = [l.split("\t")[0] for l in ordre[1:]]
+            self.assertEqual(noms, ["HV1_focal_en_place_Leptospira_4",
+                                    "HT1_focal_sur_eukaryota_3", "HT2_focal_sur_eukaryota_2"])
+            # plus d'arbre ML dans le jeu : il diffère du squelette ailleurs et pénaliserait
+            # tous les arbres fixés pour une raison étrangère au placement
+            self.assertNotIn("ML_libre", "\n".join(ordre))
+            self.assertNotIn(" -g ", (out / "commandes.sh").read_text())
+            focal = frozenset({"QUERY", "LEP1", "LEP2", "LEP3", "LEP4"})
+            ref = topo.lit_arbre(d / "ref.nwk")
+            arbres = (out / "trees_local.nwk").read_text().strip().splitlines()
+            self.assertEqual(len(arbres), 3)
+            from Bio import Phylo
+            lus = list(Phylo.parse(str(out / "trees_local.nwk"), "newick"))
+            cotes = [topo.cotes_aretes(a)[1] for a in lus]
+            for c in cotes:
+                self.assertIn(focal, c)
+            self.assertIn(focal | {"EA1", "EA2", "EA3"}, cotes[1])
+            self.assertIn(focal | {"EB1", "EB2"}, cotes[2])
+            # la requête reste où l'arbre ML la met parmi ses congénères
+            for c in cotes:
+                self.assertIn(frozenset({"QUERY", "LEP1"}), c)
+            # V : la requête ôtée, on retrouve EXACTEMENT l'arbre de référence
+            lus[0].prune("QUERY")
+            self.assertEqual(topo.cotes_aretes(lus[0])[1], topo.cotes_aretes(ref)[1])
+            for a in lus:
+                self.assertEqual(len(a.root.clades), 3)      # non raciné pour IQ-TREE
+            self.assertIn("contrôle « qui a bougé » passé", r.stdout)
 
-    def test_arbres_de_depart_compatibles_et_fideles_a_la_reference(self):
+    def test_donneur_deja_frere_du_clade_focal_repris_par_alias(self):
+        # EA est le frère du clade Leptospira dans la référence : F sur la tige de EA et F à sa
+        # place sont le MÊME arbre ; un doublon fausserait les p-AU sous RELL.
+        ref = ("((((LEP1,LEP2),(LEP3,LEP4)),((EA1,EA2),EA3)),"
+               "((B1,(B2,LEP5)),(B3,(B4,E_SOLO))),((EB1,EB2),(A1,A2)));")
+        with tempfile.TemporaryDirectory() as d:
+            d = self.prepare(d, ref=ref)
+            (d / "ml.nwk").write_text(ref.replace("(LEP1,LEP2)", "((LEP1,QUERY),LEP2)"))
+            r = self.genere(d)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            ordre = (d / "out" / "trees_order.txt").read_text(encoding="utf-8").splitlines()
+            ht1 = next(l for l in ordre if l.startswith("HT1_"))
+            self.assertTrue(ht1.endswith("\t=HV1_focal_en_place_Leptospira_4"), ht1)
+            self.assertEqual(len((d / "out" / "trees_local.nwk").read_text().split(";")) - 1, 2)
+
+    def test_soeurs_ml_hors_clade_de_reference_greffe_sur_le_plus_proche_voisin(self):
+        ml = REF_LOCAL.replace(
+            "((LEP1,LEP2)90/99,(LEP3,LEP4)85/95)88/97",
+            "(((LEP1:0.1,LEP3:0.5):0.1,QUERY:0.1):0.1,(LEP2:0.1,LEP4:0.1):0.1)")
+        topo = charge("topology_test.py")
+        with tempfile.TemporaryDirectory() as d:
+            d = self.prepare(d)
+            (d / "ml.nwk").write_text(ml)
+            r = self.genere(d)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertIn("plus proche voisin patristique", r.stdout)
+            from Bio import Phylo
+            for a in Phylo.parse(str(d / "out" / "trees_local.nwk"), "newick"):
+                self.assertIn(frozenset({"QUERY", "LEP1"}), topo.cotes_aretes(a)[1])
+
+    def test_controle_qui_a_bouge_detecte_un_autre_deplacement(self):
         topo = charge("topology_test.py")
         with tempfile.TemporaryDirectory() as d:
             d = self.prepare(d)
             self.assertEqual(self.genere(d).returncode, 0)
-            _f, cotes_ref = topo.cotes_aretes(topo.lit_arbre(d / "ref.nwk"))
-            ens = {}
-            for l in (d / "out" / "ensembles_reference.tsv").read_text().splitlines()[1:]:
-                c = l.split("\t")
-                ens[c[0]] = frozenset(c[6].split(","))
-            k = frozenset().union(*ens.values()) | {"QUERY"}
-            for nom in ("HT1_requete_dans_eukaryota_3", "HT2_requete_dans_eukaryota_2"):
-                depart = topo.lit_arbre(d / "out" / f"{nom}.start.nwk")
-                _f, cotes = topo.cotes_aretes(depart)
-                self.assertTrue(topo.partage_induit_present(cotes, "QUERY", ens[nom], k), nom)
-                self.assertEqual(len(depart.root.clades), 3)      # non raciné pour IQ-TREE
-                depart.prune("QUERY")
-                self.assertEqual(topo.cotes_aretes(depart)[1], cotes_ref, nom)
+            out = d / "out"
+            lignes = (out / "trees_local.nwk").read_text().splitlines()
+            # HT1 falsifié : un eucaryote isolé change aussi de place (E_SOLO <-> B2)
+            lignes[1] = (lignes[1].replace("E_SOLO", "TMP").replace("B2", "E_SOLO")
+                         .replace("TMP", "B2"))
+            (out / "trees_local.nwk").write_text("\n".join(lignes) + "\n")
+            iq, v = out / "au.iqtree", out / "v.txt"
+            iq.write_text(table_au([(-100, 0, 0.98), (-160, 60, 0.001), (-150, 50, 0.004)]))
+            topo.commande_read(SimpleNamespace(iqtree=iq, order=out / "trees_order.txt",
+                                               seuil=0.05, out=v))
+            texte = v.read_text(encoding="utf-8")
+            self.assertIn("VERDICT_TOPOLOGIE: NON_VALIDE", texte)
+            self.assertIn("autre chose que F a bougé", texte)
+
+    def lit_fixe(self, lignes):
+        topo = charge("topology_test.py")
+        with tempfile.TemporaryDirectory() as d:
+            d = self.prepare(d)
+            self.assertEqual(self.genere(d).returncode, 0)
+            out = d / "out"
+            iq, v = out / "au.iqtree", out / "v.txt"
+            iq.write_text(table_au(lignes))
+            topo.commande_read(SimpleNamespace(iqtree=iq, order=out / "trees_order.txt",
+                                               seuil=0.05, out=v))
+            return v.read_text(encoding="utf-8")
+
+    def test_squelette_fixe_rend_un_verdict_consommable(self):
+        texte = self.lit_fixe([(-100, 0, 0.98), (-160, 60, 0.001), (-150, 50, 0.004)])
+        self.assertIn("VERDICT_TOPOLOGIE: VERTICAL_SOUTENU", texte)
+        self.assertIn("Contrôle « qui a bougé » passé", texte)
+        self.assertIn("conditionnel au squelette", texte)
+        self.assertNotIn("SANS valeur de preuve", texte)
+
+    def test_squelette_fixe_donneur_ouvert_rend_indecidable(self):
+        texte = self.lit_fixe([(-100, 0, 0.9), (-101, 1, 0.4), (-150, 50, 0.004)])
+        self.assertIn("VERDICT_TOPOLOGIE: INDECIDABLE", texte)
+        self.assertIn("point d'attache du clade", texte)
+
+    def test_squelette_fixe_lignee_rejetee_rend_le_transfert(self):
+        texte = self.lit_fixe([(-170, 70, 0.0005), (-100, 0, 0.99), (-150, 50, 0.004)])
+        self.assertIn("VERDICT_TOPOLOGIE: TRANSFERT_SOUTENU", texte)
+
+    def test_squelette_fixe_sans_arbres_evalues_ne_conclut_pas(self):
+        topo = charge("topology_test.py")
+        with tempfile.TemporaryDirectory() as d:
+            d = self.prepare(d)
+            self.assertEqual(self.genere(d).returncode, 0)
+            out = d / "out"
+            (out / "trees_local.nwk").rename(out / "ailleurs.nwk")
+            iq, v = out / "au.iqtree", out / "v.txt"
+            iq.write_text(table_au([(-100, 0, 0.98), (-160, 60, 0.001), (-150, 50, 0.004)]))
+            topo.commande_read(SimpleNamespace(iqtree=iq, order=out / "trees_order.txt",
+                                               seuil=0.05, out=v))
+            self.assertIn("VERDICT_TOPOLOGIE: NON_VALIDE", v.read_text(encoding="utf-8"))
 
     def test_arbres_manquants_refuses(self):
         with tempfile.TemporaryDirectory() as d:
@@ -456,6 +544,8 @@ class TestModeLocal(unittest.TestCase):
             topo.commande_read(SimpleNamespace(iqtree=iq, order=o, seuil=0.05, out=out))
             return res, out.read_text(encoding="utf-8")
 
+    # Ancien mode local (contrainte partielle, sans marqueur #mode) : lecture NON_VALIDE conservée
+    # pour relire les sorties du 2026-09-24.
     ORDRE_ALIAS = ("ML_libre\tML\tlibre\tarbre\n"
                    "HV1\tV\tlignée\t=ML_libre\n"
                    "HT1\tT\teucaryotes A\tarbre\n"
@@ -467,13 +557,14 @@ class TestModeLocal(unittest.TestCase):
         hv1 = next(r for r in res if r["nom"] == "HV1")
         self.assertAlmostEqual(hv1["p_AU"], 0.98)
         self.assertFalse(hv1["rejete"])
-        self.assertIn("VERDICT_TOPOLOGIE: VERTICAL_SOUTENU", texte)
+        self.assertIn("VERDICT_TOPOLOGIE: NON_VALIDE", texte)
+        self.assertIn("SANS valeur de preuve : VERTICAL_SOUTENU", texte)
         self.assertIn("mode LOCAL", texte)
 
     def test_un_placement_eucaryote_non_rejete_rend_indecidable(self):
         _res, texte = self.lit([(-100, 0, 0.9), (-101, 1, 0.4), (-150, 50, 0.004)],
                                self.ORDRE_ALIAS)
-        self.assertIn("VERDICT_TOPOLOGIE: INDECIDABLE", texte)
+        self.assertIn("SANS valeur de preuve : INDECIDABLE", texte)
         self.assertIn("Au moins un placement de chaque famille", texte)
 
     def test_lignee_rejetee_et_eucaryote_ouvert_rend_le_transfert(self):
@@ -481,14 +572,14 @@ class TestModeLocal(unittest.TestCase):
                  "HV1\tV\tlignée\tarbre\n"
                  "HT1\tT\teucaryotes A\t=ML_libre\n")
         _res, texte = self.lit([(-100, 0, 0.99), (-170, 70, 0.0005)], ordre)
-        self.assertIn("VERDICT_TOPOLOGIE: TRANSFERT_SOUTENU", texte)
+        self.assertIn("SANS valeur de preuve : TRANSFERT_SOUTENU", texte)
 
     def test_tout_rejete_n_est_pas_lu_comme_artefact_des_contraintes(self):
         ordre = ("ML_libre\tML\tlibre\tarbre\n"
                  "HV1\tV\tlignée\tarbre\n"
                  "HT1\tT\teucaryotes A\tarbre\n")
         _res, texte = self.lit([(-100, 0, 1.0), (-140, 40, 0.003), (-180, 80, 0.0001)], ordre)
-        self.assertIn("VERDICT_TOPOLOGIE: INDECIDABLE", texte)
+        self.assertIn("SANS valeur de preuve : INDECIDABLE", texte)
         self.assertIn("TOUS les placements testés sont rejetés", texte)
         self.assertIn("reste REJETÉ", texte)
 
@@ -498,6 +589,40 @@ class TestModeLocal(unittest.TestCase):
                            self.ORDRE_ALIAS)
         self.assertEqual([r["nom"] for r in res], ["ML_libre", "HV1", "HT1", "HT2"])
         self.assertAlmostEqual(res[3]["p_AU"], 0.004)
+
+    def test_ancien_mode_local_ne_rend_jamais_un_verdict_consommable(self):
+        """AG3, 2026-09-25 : la contrainte {requête} ∪ C se satisfait en déplaçant C, pas la
+        requête ; un VERTICAL_SOUTENU local ferait conclure read_interdomain.py à tort."""
+        _res, texte = self.lit([(-100, 0, 0.98), (-160, 60, 0.001), (-150, 50, 0.004)],
+                               self.ORDRE_ALIAS)
+        self.assertNotIn("VERDICT_TOPOLOGIE: VERTICAL_SOUTENU", texte)
+        self.assertIn("c'est C qui bouge", texte)
+
+
+class TestAppuiDuVerdictPropre(unittest.TestCase):
+    """AG3, 2026-09-25 : « la requête se range dans son domaine, OU le test AU rejette » laissait
+    croire que le test AU avait tranché alors qu'il était indécidable."""
+    ARBRE_PROPRE = ("((((QUERY,BACT1)98/100,BACT2)95/99,BACT3)90/97,"
+                    "((PLANT1,PLANT2)95/99,(PLANT3,PLANT4)90/97)88/95);")
+
+    def test_verdict_propre_sans_test_au_concluant_dit_sur_quoi_il_repose(self):
+        with tempfile.TemporaryDirectory() as d:
+            c = {}
+            for nom, contenu in (("arbre.nwk", self.ARBRE_PROPRE), ("tax.tsv", TAXONOMIE),
+                                 ("ctrl.nwk", self.ARBRE_PROPRE.replace("(QUERY,BACT1)98/100", "BACT1")),
+                                 ("cont.txt", "VERDICT_CONTAMINATION: PASSE\n"),
+                                 ("comp.txt", "VERDICT_COMPOSITION: HOMOGENE\n"),
+                                 ("topo.txt", "VERDICT_TOPOLOGIE: NON_VALIDE\n")):
+                c[nom] = Path(d) / nom
+                c[nom].write_text(contenu, encoding="utf-8")
+            r = lance("read_interdomain.py", "--tree", c["arbre.nwk"],
+                      "--tree-control", c["ctrl.nwk"], "--taxonomy", c["tax.tsv"],
+                      "--query", "QUERY", "--contamination-report", c["cont.txt"],
+                      "--composition-report", c["comp.txt"], "--topology-report", c["topo.txt"])
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual(verdict(r.stdout, "VERDICT_INTERDOMAINE"), "ORIGINE_PROPRE_AU_DOMAINE")
+        self.assertIn("repose sur ce SEUL", r.stdout)
+        self.assertNotIn("ou le test AU rejette", r.stdout)
 
 
 if __name__ == "__main__":
