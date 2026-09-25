@@ -3,21 +3,18 @@ name: phylo-placement
 description: >-
   Academic research toolkit (Guyeux group, FEMTO-ST): decides which
   phylogenetic PLACEMENT tool fits a given need, for any clonal bacterial
-  pathogen (MTBC, Yersinia, Leptospira...) — UShER (parsimony placement on a
-  mutation-annotated tree, fast, incremental), EPA-ng (maximum-likelihood
-  placement with uncertainty), Nextclade (community-facing placement on a
-  frozen nomenclature), or none of them when a full re-inference is still the
-  right call. Also documents the bridge between this group's internal binary
-  SPDI presence/absence format and the VCF / FASTA-alignment inputs these
-  tools actually expect.
+  pathogen (MTBC, Yersinia, Leptospira...) — UShER (parsimony, fast,
+  incremental), EPA-ng (maximum-likelihood with uncertainty), Nextclade
+  (community-facing, frozen nomenclature), or none of them when a full
+  re-inference is still right. Also bridges this group's internal binary SPDI
+  presence/absence format with the VCF/FASTA-alignment inputs these tools
+  expect.
 
-  Use when: placing new or residual strains (`a_ranger`, `bin_*`, freshly
-  fetched SRA/ENA runs) onto an existing reference tree without re-running a
-  multi-hour RAxML-NG inference; maintaining a classification as a database
-  keeps growing; asking "which tool for phylogenetic placement", "comment
-  classer ces souches sans refaire l'arbre", "UShER ou EPA-ng", "diffuser un
-  dataset Nextclade"; or before installing any of usher/matUtils/epa-ng/nextclade,
-  to confirm the choice is the right one for the data at hand.
+  Use when: placing new/residual strains (`a_ranger`, `bin_*`, fresh SRA/ENA
+  runs) onto an existing tree without re-running a multi-hour RAxML-NG
+  inference; maintaining a classification as a database grows; asking "which
+  tool for phylogenetic placement", "UShER ou EPA-ng"; or before installing
+  usher/matUtils/epa-ng/nextclade, to confirm the right choice.
 argument-hint: "<clade ou lignée de référence> [--need incremental|ml-uncertainty|community-dataset]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob

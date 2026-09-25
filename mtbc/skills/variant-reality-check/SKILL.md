@@ -2,25 +2,20 @@
 name: variant-reality-check
 description: >-
   Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed MTBC
-  phylogenomics: decide whether a called variant is REAL and which allele is
-  ANCESTRAL, before it becomes a claim. Two gestures: (1) sequence context of
-  a called indel — placement ambiguity after normalisation (settles polymerase
-  slippage, not homopolymer length), tandem repeats, local GC, k-mer
-  uniqueness against cross-mapping, each with a null model from sampled
-  positions measured the same way; (2) polarisation on CLOSED COMPLETE
-  ASSEMBLIES instead of variant calls, locating the site by unique flanks and
-  measuring the gap between them, answering coverage, mapping and calling
-  artefacts at once. Also translates a CDS to the REAL stop, not the annotated
-  boundary.
+  phylogenomics: decides whether a called variant is REAL and which allele is
+  ANCESTRAL. Two gestures: (1) sequence context of a called indel — placement
+  ambiguity after normalisation, tandem repeats, local GC, k-mer uniqueness,
+  each against a null model; (2) polarisation on CLOSED COMPLETE ASSEMBLIES
+  rather than variant calls, via unique flanks, answering coverage/mapping/
+  calling artefacts at once. Also translates a CDS to the REAL stop, not the
+  annotated boundary.
 
-  Use when: an indel/frameshift is suspected a calling artefact, a variant is
-  about to be called a synapomorphy, a `disrupt_frac` or snpEff HIGH label is
-  about to be written as pseudogenisation, an outgroup appears to LACK a
-  variant, or a reference annotation looks unrepresentative.
-
-  Scope: developed on the MTBC, applies to any clonal bacterial pathogen
-  (Yersinia, Leptospira...) — the reference genome is already an explicit
-  argument (`--genome`), so only the closed assemblies of the genus are needed.
+  Use when: an indel/frameshift is suspected an artefact, a variant is about
+  to be called a synapomorphy, a `disrupt_frac`/snpEff HIGH label is about to
+  mean pseudogenisation, an outgroup seems to LACK a variant, or an
+  annotation looks unrepresentative. Scope: developed on the MTBC, applies to
+  any clonal bacterial pathogen — the reference genome is an explicit
+  argument (`--genome`).
 argument-hint: "--spdi <pos:ref:alt> --genome <ref.fasta> [--cds debut-fin:brin]"
 user-invocable: true
 disable-model-invocation: false

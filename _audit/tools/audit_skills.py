@@ -12,7 +12,12 @@ la premiere passe, trois metriques sur quatre etaient du bruit :
 - la detection d'emojis attrapait les caracteres de dessin de boite, les fleches
   et les symboles mathematiques (regex corrigee ici, mais rester mefiant) ;
 - la detection de declencheur ne cherchait que « use when » et manquait
-  « use for », « a utiliser », « pour toute » (corrigee ici) ;
+  « use for », « a utiliser », « pour toute » (corrigee ici), puis, revu a
+  l'audit AQ5 du 2026-09-25 sur les 14 skills du plugin `cycle` et `mtbc-reboot`
+  faussement signales DESC_SANS_DECLENCHEUR : « use on » (forme la plus
+  frequente des skills personnels du cycle) et « declencheur(s) »/« declencheur »
+  a la forme NOM (« Declencheurs — ... »), que le radical verbal « declencher »
+  seul ne matchait pas (corrigees ici) ;
 - les references de fichiers absentes etaient a 85 % des chemins inter-skills
   relatifs, des URL ou du contenu d'exemple (le script les signale toujours,
   c'est a l'humain de trancher).
@@ -76,10 +81,10 @@ AUP_CADRE = re.compile(
     r"research toolkit|FEMTO|Guyeux|phylogenom|evolutionary)", re.I)
 
 DECLENCHEUR = re.compile(
-    r"(use when|use this|use for|use to|use here|use proactively when|"
+    r"(use when|use this|use for|use to|use here|use on|use proactively when|"
     r"used when|when the user|trigger|"
     r"utiliser quand|a utiliser|pour toute|pour tout |toute demande|"
-    r"déclencher|declencher|load when|invoke)", re.I)
+    r"d[ée]clencher|d[ée]clencheurs?|load when|invoke)", re.I)
 
 # Emojis reels uniquement. Les caracteres de dessin de boite (U+2500-257F), les
 # fleches (U+2190-21FF) et les operateurs mathematiques (U+2200-22FF) N'EN SONT

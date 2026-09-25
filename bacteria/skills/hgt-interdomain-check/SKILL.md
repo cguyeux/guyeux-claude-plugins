@@ -3,22 +3,17 @@ name: hgt-interdomain-check
 description: >-
   Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed comparative
   genomics: tests whether a gene bearing a "eukaryotic" domain in a bacterial
-  published research genome really crossed the domains of life, or whether the
-  signal is an artefact. Four gates, in order: ASSEMBLY CONTAMINATION first (a
-  foreign contig produces exactly the signature one is about to publish),
-  AMINO-ACID COMPOSITION and SATURATION between domains (which the long-branch
-  control of a mobile-element analysis does not cover), an explicit TOPOLOGY
-  TEST (AU) against the no-transfer hypothesis instead of merely reading a
-  nesting, and TAXONOMIC concordance of the neighbourhood in place of host
-  concordance, which is meaningless for a free-living eukaryotic donor.
+  published-research genome really crossed the domains of life, or is an
+  artefact. Four gates: ASSEMBLY CONTAMINATION (a foreign contig producing the
+  signature), AMINO-ACID COMPOSITION/SATURATION between domains, an explicit
+  TOPOLOGY TEST (AU) against no-transfer, and TAXONOMIC concordance of the
+  neighbourhood rather than host concordance.
 
-  Use when: a bacterial protein carries a domain described as eukaryotic (SET,
-  ankyrin, F-box, histone-modifying); a manuscript is about to claim an
-  acquisition from a host or from an environmental eukaryote; a reviewer asks
-  whether a bacteria-to-eukaryote transfer is established; or a spectacular
-  cross-domain transfer needs to be ruled out before it is written up.
-  For a cellular-family-versus-mobile-element case (phage, plasmid, integron),
-  use the sibling skill hgt-direction-check instead.
+  Use when: a bacterial protein carries a eukaryotic-looking domain (SET,
+  ankyrin, F-box, histone-modifying); a manuscript claims a host/environmental-
+  eukaryote acquisition; a reviewer questions a bacteria-to-eukaryote transfer;
+  or a cross-domain claim needs ruling out before write-up. For a mobile-element
+  case (phage, plasmid, integron) use hgt-direction-check instead.
 ---
 
 # hgt-interdomain-check — un gène a-t-il vraiment traversé les domaines du vivant

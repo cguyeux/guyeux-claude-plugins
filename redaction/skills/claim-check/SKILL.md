@@ -648,8 +648,8 @@ et ce cas echappe par construction a la regle de la source primaire, puisque le 
 reellement, mais dans un AUTRE fichier de sortie que celui cite par le manuscrit
 (`active_site_gh57.json` vs `active_site_aaapu.json`).
 
-**Cause structurelle** : quand une analyse est repetee sur plusieurs gabarits/references/jeux de
-donnees de la meme famille (plusieurs templates PDB pour un meme fold, plusieurs assemblages pour
+**Cause structurelle** : quand une analyse est repetee sur plusieurs gabarits, references ou jeux
+de donnees de la meme famille (plusieurs templates PDB pour un meme fold, plusieurs assemblages pour
 une meme espece, plusieurs runs pour un meme pipeline), elle produit typiquement un fichier de
 sortie PAR variante (`<analyse>_<variante>.json`). Retrouver la VALEUR dans l'un quelconque de ces
 fichiers ne prouve pas qu'elle provient de la variante citee dans le texte -- deux fichiers voisins

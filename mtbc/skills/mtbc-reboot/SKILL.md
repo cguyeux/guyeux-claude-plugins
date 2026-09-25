@@ -1,11 +1,11 @@
 ---
 name: mtbc-reboot
 description: >-
-  [DEPRECIE -> /reboot] Ne plus utiliser. Academic research toolkit, conduite de
-  projet : ce skill a ete remplace le 2026-09-22 par le skill utilisateur
-  `/reboot`, generique et scripte. Ne rien lancer ici ; toute reprise de projet
-  passe par `/reboot diagnostic`. Conserve uniquement comme pierre tombale pour
-  les registres qui le citent encore.
+  [DEPRECIE -> /reboot] Aucun declencheur : ne jamais l'invoquer directement.
+  Academic research toolkit, conduite de projet : ce skill a ete remplace le
+  2026-09-22 par le skill utilisateur `/reboot`, generique et scripte. Ne rien
+  lancer ici ; toute reprise de projet passe par `/reboot diagnostic`. Conserve
+  uniquement comme pierre tombale pour les registres qui le citent encore.
 argument-hint: "(deprecie — utiliser /reboot)"
 allowed-tools: Read
 user-invocable: false

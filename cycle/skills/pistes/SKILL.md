@@ -1,6 +1,6 @@
 ---
 name: pistes
-description: Research-leads tree (`pistes.md`) of a project — directions and sub-leads with states à faire / en cours / réalisé / abandonné. Read or mutate via `/pistes`, `/pistes add "…"`, `/pistes start P1.2`, `/pistes done P1.2`, `/pistes drop P3 "raison"`, or "ajouter une piste", "quelles pistes restent", "cocher cette piste", "abandonner cette piste". Project root = first parent with `cahier_de_labo.md`.
+description: Research-leads tree (`pistes.md`) of a project — directions and sub-leads with states à faire / en cours / réalisé / abandonné. Use on `/pistes`, `/pistes add "…"`, `/pistes start P1.2`, `/pistes done P1.2`, `/pistes drop P3 "raison"`, or "ajouter une piste", "quelles pistes restent", "cocher cette piste", "abandonner cette piste". Project root = first parent with `cahier_de_labo.md`.
 argument-hint: "[read | add \"…\" | start Px | done Px | drop Px \"raison\" | match \"<découverte>\" | locks | hollow]"
 ---
 

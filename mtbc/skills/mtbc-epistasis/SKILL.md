@@ -2,24 +2,20 @@
 name: mtbc-epistasis
 description: >-
   Academic research toolkit (Guyeux group, FEMTO-ST), peer-reviewed MTBC
-  phylogenomics: detecte l'evolution COMPENSATOIRE et l'epistasie de la resistance
-  dans le complexe Mycobacterium tuberculosis, en POLARISANT le signal par lignee
-  pour ecarter le piege de l'homoplasie. Teste si une mutation de resistance
-  couteuse (rpoB dans la RRDR) co-occurre avec une mutation compensatoire candidate
-  (rpoC, rpoA ; ahpC pour katG) PLUS que le hasard, non pas globalement (ce qui
-  confond avec les marqueurs de lignee) mais chez les isolats resistants vs
-  non-resistants de la MEME lignee, agrege par Mantel-Haenszel.
+  phylogenomics: detecte l'evolution COMPENSATOIRE et l'epistasie de resistance
+  dans le MTBC, en POLARISANT le signal par lignee pour ecarter l'homoplasie.
+  Teste si une mutation de resistance couteuse (rpoB/RRDR) co-occurre avec une
+  mutation compensatoire candidate (rpoC, rpoA ; ahpC pour katG) plus que le
+  hasard, non globalement (confondu avec les marqueurs de lignee) mais entre
+  isolats resistants/non-resistants de la MEME lignee, agrege par
+  Mantel-Haenszel.
 
-  Use when: se demander si les clones resistants (surtout importes) sont deja
-  compenses donc fit et transmissibles ; tester le claim "resistance transmise
-  clonalement" ; distinguer une vraie compensation d'un simple marqueur de
-  sous-lignee ; alimenter un volet phylodynamique (quels clones R vont se propager).
-
-  Portee : developpe sur le MTBC, applicable a toute bacterie clonale (Yersinia,
-  Leptospira...) — la polarisation par lignee puis l'agregation de Mantel-Haenszel sont la
-  parade generique a l'homoplasie, et rpoB/rpoC/katG-ahpC sont des PARAMETRES, pas la
-  methode. Hors MTBC : fournir les paires de genes a tester et la base de souches
-  (`--bdd` ou `--manifest`, deja des arguments explicites).
+  Use when: clones resistants deja compenses/transmissibles ? tester
+  "resistance transmise clonalement" ; distinguer compensation vraie et
+  marqueur de sous-lignee. Portee : developpe sur le MTBC, applicable a toute
+  bacterie clonale (Yersinia, Leptospira...) — lignee + Mantel-Haenszel =
+  methode generique, rpoB/rpoC/katG-ahpC = PARAMETRES. Hors MTBC : fournir
+  paires de genes et base de souches (--bdd/--manifest).
 argument-hint: "[--bdd DIR | --manifest TSV] [--lineage-major] [--out FICHIER]"
 allowed-tools: Bash, Read, Write, Grep, Glob
 user-invocable: true
