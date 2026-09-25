@@ -1,0 +1,8 @@
+{
+  "name": "cycle",
+  "description": "Research-project lifecycle toolkit: five-phase cycle with closure gates, decision gates on whether findings are worth writing up and disseminating, research-leads registry, lab notebook, consolidated state of knowledge, pre-flight and post-result adversarial checks, reframing and scope triage, model/effort routing under usage quotas, dataset versioning and drift detection, project scaffolding. Domain-agnostic: usable for phylogenomics, other sciences, or any long-running research project. Guyeux group (FEMTO-ST), academic research workflow.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Christophe Guyeux"
+  }
+}

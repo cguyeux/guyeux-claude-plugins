@@ -8,7 +8,7 @@ Documentation complète, skill par skill (raison d'être et compétences) : **[d
 
 ## Plugins
 
-Dix-sept plugins organisés en trois couches depuis la refonte du 2026-09-15. Chaque skill vit dans exactement un plugin.
+Dix-huit plugins organisés en trois couches depuis la refonte du 2026-09-15 (`cycle` ajouté le 2026-09-25, piste AQ2). Chaque skill vit dans exactement un plugin.
 
 ### Domaines scientifiques
 
@@ -39,6 +39,7 @@ Dix-sept plugins organisés en trois couches depuis la refonte du 2026-09-15. Ch
 | [redaction](docs/redaction.md) | Phases 2 et 3 du cycle : plan narratif, squelette et rédaction LaTeX, vérification des affirmations, des références et des figures, review interne. |
 | [diffusion](docs/diffusion.md) | Phase 4 : choix de la revue, dépôt du préprint et du code, portail éditorial, réponse aux relecteurs. |
 | [carriere](docs/carriere.md) | Hors cycle de projet : CV, dossiers de financement, suivi de carrière. |
+| [cycle](docs/cycle.md) | Cycle de vie du projet lui-même, transverse aux cinq phases : cinq artefacts (cahier de labo, pistes, état des découvertes), portes de clôture et de décision de diffusion, recadrage de périmètre, vérification adverse avant/après résultat, routage modèle/effort, versionnage de base, amorçage de projet. Publié le 2026-09-25 (piste AQ2) : 13 des skills personnels du cycle, jusque-là seulement sous `~/.claude/skills/`, ont un chemin canonique dans ce plugin. |
 
 ### Domaines séparés
 
@@ -68,7 +69,7 @@ La collection se lit comme la chaîne de production d'un article de phylogénomi
 | 11. Vérification et réponse aux relecteurs | `redaction`, `diffusion` |
 | 12. Diffusion et dépôt | `diffusion` |
 
-Le catalogue complet est dans le [dossier `docs/`](docs/README.md) : une page par plugin, plus un index alphabétique des 199 skills. Les plugins `maboss` et `droit` relèvent de domaines séparés et y sont documentés à part.
+Le catalogue complet est dans le [dossier `docs/`](docs/README.md) : une page par plugin, plus un index alphabétique des 218 skills (205 hors domaines séparés, régénéré par `docs/build_docs.py`). Les plugins `maboss` et `droit` relèvent de domaines séparés et y sont documentés à part.
 
 Le partage entre `mtbc` et `bacteria` suit une règle simple, documentée dans `CLAUDE.md` : ce qui est soudé à la pile de données de la tuberculose (TBannotator, `bdd/actuelle`, `barcoding_v2`, catalogue de l'OMS, SITVIT) reste dans `mtbc` ; ce qui est méthode agnostique de l'espèce doit rester trouvable depuis un projet de n'importe quel genre, et sa description l'annonce explicitement.
 
@@ -77,12 +78,38 @@ Le partage entre `mtbc` et `bacteria` suit une règle simple, documentée dans `
 Ajouter ce dépôt comme marketplace, puis installer les plugins voulus :
 
 ```
-/plugin marketplace add cguyeux/claude_plugins
+/plugin marketplace add cguyeux/guyeux-claude-plugins
 /plugin install mtbc@guyeux-claude-plugins
 /plugin install bacteria@guyeux-claude-plugins
 /plugin install phylo@guyeux-claude-plugins
 /plugin install redaction@guyeux-claude-plugins
+/plugin install cycle@guyeux-claude-plugins
 ```
+
+Un plugin fraîchement ajouté au marketplace ne devient visible et actif qu'après une séquence
+en trois commandes (`marketplace update` puis `install` puis, sauf exception documentée,
+`disable --scope user` — convention du dépôt : tout plugin désactivé par défaut au niveau
+utilisateur, activé projet par projet) ; détail et piège vécu dans `CLAUDE.md` § « Ajouter un
+nouveau PLUGIN ».
+
+## Un skill, un plugin
+
+La mutualisation par liens symboliques entre plugins a été dissoute lors de la refonte du 2026-09-15. Chaque skill possède désormais un unique chemin réel, dans exactement un plugin, et s'y modifie directement. Un skill transverse à plusieurs domaines va dans le plugin transverse concerné (`phylo`, `bioinfo`, `structure`, `litterature`, `science-commun`) plutôt que dans un domaine puis lié ailleurs : un projet qui a besoin des deux active les deux plugins.
+
+Le contrôle est immédiat, et `docs/build_docs.py` signale désormais comme anomalie tout lien ou tout nom de skill dupliqué entre plugins :
+
+```
+find */skills -maxdepth 1 -type l   # aucun lien ne doit apparaître
+```
+
+Pour retrouver le plugin d'un skill : `canon_skills.json` (régénéré par `_audit/tools/generate_canon_skills.py`) ou `claude plugin details <nom>`. La table d'affectation et les règles de placement sont documentées dans `CLAUDE.md`.
+
+## Maintenance interne (hors périmètre d'un collaborateur externe)
+
+Ce qui suit outille exclusivement l'environnement Claude Code / Codex de Christophe Guyeux sur
+sa propre machine (synchronisation des skills Codex, audits internes, snapshots récupérables). Un
+collaborateur qui clone ce dépôt pour installer un plugin (section « Installation » ci-dessus) n'a
+besoin de rien de ce qui suit.
 
 Pour Codex, le dépôt reste également la source canonique. Le fichier
 `codex_skills.json` sélectionne les skills exposés dans les sessions et le
@@ -174,18 +201,6 @@ une projection temporaire mise à la corbeille en fin d'exécution.
 Le rapport CCX-06 `_audit/agent_farm_divergence_report.md` détaille les
 divergences de contenu entre skills communs Claude et Agents. Il est régénéré
 par `report_agent_skill_divergences.py` et contrôlé par `check_all.py`.
-
-## Un skill, un plugin
-
-La mutualisation par liens symboliques entre plugins a été dissoute lors de la refonte du 2026-09-15. Chaque skill possède désormais un unique chemin réel, dans exactement un plugin, et s'y modifie directement. Un skill transverse à plusieurs domaines va dans le plugin transverse concerné (`phylo`, `bioinfo`, `structure`, `litterature`, `science-commun`) plutôt que dans un domaine puis lié ailleurs : un projet qui a besoin des deux active les deux plugins.
-
-Le contrôle est immédiat, et `docs/build_docs.py` signale désormais comme anomalie tout lien ou tout nom de skill dupliqué entre plugins :
-
-```
-find */skills -maxdepth 1 -type l   # aucun lien ne doit apparaître
-```
-
-Pour retrouver le plugin d'un skill : `canon_skills.json` (régénéré par `_audit/tools/generate_canon_skills.py`) ou `claude plugin details <nom>`. La table d'affectation et les règles de placement sont documentées dans `CLAUDE.md`.
 
 ## Cadrage
 

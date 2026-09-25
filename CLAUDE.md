@@ -15,6 +15,14 @@ Comptes vérifiés le 2026-09-15 par `claude plugin details <nom>` après réins
 (scope user). `science-commun` est le seul bloc chargé dans tous les profils, tenu
 court volontairement.
 
+Dix-huit plugins depuis le 2026-09-25 (piste AQ2) : un quatrième « bloc de phase » rejoint
+la troisième couche, `cycle` (13, cycle de vie du projet lui-même, transverse aux cinq
+phases — treize skills auparavant seulement sous `~/.claude/skills/`, cf. § « Dépendances
+hors dépôt »). Les effectifs ci-dessus ont aussi dérivé depuis le 2026-09-15 par ajouts
+ordinaires de skills (`mtbc` 42, `bacteria` 22, `phylo` 12, `redaction` 20 au 2026-09-25,
+source `canon_skills.json`) ; source de vérité courante pour tout effectif : `canon_skills.json`
+ou `docs/README.md` régénéré par `docs/build_docs.py`, pas ce tableau daté.
+
 Précède cette architecture : `bio_pathogens`, `bio_bacteria`, `bio_population_genetics`,
 `bio_redac` et `redac` (onze plugins au total avec `ia`/`maboss`/`multimedia`/`ops`/`web`/
 `droit`), reliés par 220 liens symboliques croisés (209 sous `skills/`, 11 sous
@@ -58,6 +66,31 @@ Après ajout/déplacement/retrait, régénérer dans l'ordre :
 python3 _audit/tools/generate_canon_skills.py
 python3 docs/build_docs.py
 ```
+
+## Ajouter un nouveau PLUGIN (pas juste un skill)
+
+Découvert en créant `cycle` (piste AQ2, 2026-09-25) : poser le dossier du plugin et l'entrée
+dans `.claude-plugin/marketplace.json` ne suffit pas à le rendre actif nulle part, y compris
+pour les projets dont `profils.json` l'active déjà. Trois étapes CLI, dans l'ordre, en plus de
+la régénération ci-dessus :
+
+```bash
+claude plugin marketplace update guyeux-claude-plugins   # rafraîchit le cache local du catalogue
+claude plugin install <nom>@guyeux-claude-plugins         # sans ça, `claude plugin list` ignore le plugin
+claude plugin disable <nom>@guyeux-claude-plugins --scope user   # convention du dépôt : tout désactivé
+                                                                    # par défaut au niveau utilisateur,
+                                                                    # activation uniquement par projet
+```
+
+`install` active le plugin au niveau **utilisateur** par défaut — toujours suivre d'un
+`disable --scope user` explicite, sauf pour un plugin qu'on veut réellement actif partout sans
+passer par un profil de projet (aucun cas de ce genre à ce jour). Piège vécu : lancer `disable`
+sans `--scope user` depuis un répertoire de projet l'auto-détecte comme `--scope project` et
+écrase l'entrée du projet courant au lieu de celle de l'utilisateur — toujours préciser
+`--scope` explicitement pour cette manœuvre. Ensuite seulement, `outils/profil_plugins.py
+--migrer --write` a un effet réel : sans les trois commandes ci-dessus, `tests/test_profils_plugins.py`
+volet B échoue silencieusement (« plugins actifs = profil » en écart) alors que le volet A
+(cohérence des fichiers JSON) reste vert — les deux vérifient des couches différentes.
 
 ## Coquilles de compatibilité (à retirer à P7.3)
 
@@ -109,15 +142,23 @@ la frontière entre ce qui vient d'eux et ce qui vient de nous. Chaque fournisse
 La règle d'adoption est le cherry-pick : jamais d'installation en masse, sous peine de dégrader
 le routage de déclenchement de nos skills.
 
-**Dépendances hors dépôt.** Quelques skills renvoient aux skills du cycle, qui vivent dans
-`~/.claude/skills/` (`cahier-de-labo`, `pistes`, `etat`, `cycle-projet`, `recadrage`,
-`challenge`, `init-project`, `corpus-ingest`, et depuis le 2026-09-15 `narratif` et
-`verdict-diffusion`, que P5.2 avait laissés sans plugin) : ces références fonctionnent dans
-l'environnement de Christophe mais **pas** pour un collaborateur qui clone le dépôt. Ne pas
-les convertir en `${CLAUDE_PLUGIN_ROOT}` (les skills concernés ne sont pas dans le dépôt) ;
-les mentionner comme optionnelles dans le corps du skill. Ne pas non plus les déplacer vers
-un `.claude/skills` d'ancêtre : mesuré le 2026-09-15 (P5.4), un tel répertoire posé à
-`~/docs` n'est pas chargé sous `~/docs/codes/**`, où vivent 274 des 287 projets à cahier.
+**Dépendances hors dépôt, mise à jour 2026-09-25 (piste AQ2).** Treize skills du cycle sont
+désormais publiés dans ce dépôt, plugin `cycle` (`bdd`, `cahier-de-labo`, `challenge`,
+`cycle-projet`, `etat`, `init-project`, `narratif`, `pistes`, `reboot`, `recadrage`, `routage`,
+`suite`, `verdict-diffusion`) : une référence vers l'un d'eux **peut** désormais passer par
+`${CLAUDE_PLUGIN_ROOT}` si le skill appelant vit lui-même dans `cycle`, ou par le nom du
+plugin (`cycle`) sinon, à condition que le collaborateur ait installé `cycle@guyeux-claude-plugins`.
+La source primaire de ces treize skills reste `~/.claude/skills/` (cf. adaptateur Claude Code,
+`~/.claude/CLAUDE.md`) : la copie publiée dans `cycle/skills/` n'est pas éditée directement, elle
+est reportée depuis la source primaire à chaque évolution notable.
+
+`corpus-ingest` reste hors dépôt, seul sous `~/.claude/skills/` : non retenu à la publication
+(AQ1bis). Une référence vers ce skill précis ne doit pas passer par `${CLAUDE_PLUGIN_ROOT}` ; ces
+références fonctionnent dans l'environnement de Christophe mais **pas** pour un collaborateur qui
+clone le dépôt, et se mentionnent comme optionnelles dans le corps du skill appelant. Ne pas non
+plus le déplacer vers un `.claude/skills` d'ancêtre : mesuré le 2026-09-15 (P5.4), un tel
+répertoire posé à `~/docs` n'est pas chargé sous `~/docs/codes/**`, où vivent 274 des 287 projets
+à cahier.
 
 ## Cadrage AUP (CRITIQUE)
 
