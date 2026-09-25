@@ -25,6 +25,28 @@ Zenodo est **réutilisable à vie** ; ce skill le stocke une fois et le réutili
 
 Script : `scripts/zenodo_deposit.py` (urllib, zéro dépendance).
 
+## Alternative : intégration native GitHub-Zenodo (dépôt logiciel versionné, pas un one-shot)
+
+Pour un dépôt **logiciel** dont on veut que chaque future release archive et DOI
+automatiquement (ex. un marketplace de plugins, pas un supplementary d'article ponctuel), le
+patron standard est l'intégration GitHub-Zenodo (`zenodo.org/account/settings/github/`,
+toggle par dépôt, puis chaque « GitHub Release » s'archive et se versionne d'elle-même) plutôt
+que ce script, qui reste la bonne solution quand la ressource n'a pas de suite de versions
+prévue ou n'est pas un dépôt GitHub à part entière.
+
+**Piège vécu (2026-09-25, `guyeux-claude-plugins` v1.0.0).** Le toggle activé côté Zenodo,
+confirmé deux fois, n'a produit aucun enregistrement — cause : le dépôt GitHub était encore
+**privé** au moment de l'activation. L'intégration GitHub-Zenodo n'archive (et souvent
+n'affiche même pas comme activable dans la liste des dépôts) que les dépôts **publics** ;
+aucune erreur explicite n'est renvoyée côté Zenodo, le webhook ne se déclenche simplement
+jamais. Vérifier `gh repo view <owner>/<repo> --json visibility` avant de chercher plus loin
+en cas d'échec silencieux, et si le dépôt vient d'être basculé en public, savoir que la
+release déjà créée AVANT ce basculement ne se rattrape pas : il faut en créer une nouvelle
+(`gh release delete <tag> --cleanup-tag` puis recréer) pour qu'un nouvel événement webhook
+parte. En dernier recours si l'intégration reste muette malgré un dépôt public et le toggle
+actif, repli sur ce script (`create --zip <archive git archive du tag> --metadata ...`) : il
+fonctionne indépendamment de l'intégration GitHub.
+
 ## Préalable : mémoire projet
 
 Lire `cahier_de_labo.md` / `JOURNAL.md` / `CLAUDE.md` du projet, et
