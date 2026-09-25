@@ -1,6 +1,13 @@
 # Claude Plugins : groupe Guyeux (FEMTO-ST)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22959784.svg)](https://doi.org/10.5281/zenodo.22959784)
+
 Collection de plugins [Claude Code](https://docs.claude.com/en/docs/claude-code) développés par Christophe Guyeux (Institut FEMTO-ST, CNRS UMR 6174, Université Marie et Louis Pasteur, Besançon) pour la recherche scientifique académique : phylogénomique évolutive des pathogènes bactériens clonaux, génétique des populations humaines, rédaction scientifique, et outillage transverse (bioinformatique, structure des protéines, statistiques, visualisation, revue de littérature).
+
+Dépôt de reproductibilité archivé sur Zenodo à chaque version publique : DOI concept
+[10.5281/zenodo.22959784](https://doi.org/10.5281/zenodo.22959784) (résout toujours vers la
+dernière version) ; v1.0.0 porte le DOI de version
+[10.5281/zenodo.22959785](https://doi.org/10.5281/zenodo.22959785).
 
 Le périmètre est multi-genres. La collection a été bâtie sur le complexe *Mycobacterium tuberculosis*, qui en reste l'exemple le plus outillé, mais les projets de recherche du groupe couvrent aussi *Yersinia* et *Leptospira*. Ce qui change d'un genre à l'autre n'est pas la méthode, c'est le génome de référence, la nomenclature de branches et la base de souches.
 
