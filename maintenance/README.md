@@ -59,13 +59,15 @@ politique d'exécution, les 53 liens directs et les dix plugins Codex. Elle ne
 réactive jamais `mbovis` ou `triangulate-route`.
 
 Pour Claude, reconstruire le marketplace et les trois plugins personnels
-actifs avec les commandes suivantes :
+actifs avec les commandes suivantes (noms post-refonte P5, 2026-09-15 ;
+`bio_bacteria` -> `bacteria`, `bio_pathogens` -> `mtbc`, `redac` ->
+`redaction`) :
 
 ```text
 claude plugin marketplace add ~/docs/environnement/plugins
-claude plugin install bio_bacteria@guyeux-claude-plugins -s user -y
-claude plugin install bio_pathogens@guyeux-claude-plugins -s user -y
-claude plugin install redac@guyeux-claude-plugins -s user -y
+claude plugin install bacteria@guyeux-claude-plugins -s user -y
+claude plugin install mtbc@guyeux-claude-plugins -s user -y
+claude plugin install redaction@guyeux-claude-plugins -s user -y
 ```
 
 Pyright et les autres plugins tiers restent des dépendances externes à

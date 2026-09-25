@@ -4,6 +4,7 @@
       "bacteria": 17,
       "bioinfo": 9,
       "carriere": 1,
+      "cycle": 13,
       "diffusion": 2,
       "ia": 15,
       "litterature": 6,
@@ -22,6 +23,7 @@
       "bacteria": 17,
       "bioinfo": 9,
       "carriere": 1,
+      "cycle": 13,
       "diffusion": 2,
       "guyeux-phylo-pilot": 5,
       "ia": 16,
@@ -38,8 +40,8 @@
       "web": 2
     },
     "classification": {
-      "blocked-by-personal-workflow": 2,
-      "needs-codex-runtime-adaptation": 2,
+      "blocked-by-personal-workflow": 13,
+      "needs-codex-runtime-adaptation": 4,
       "needs-payload-package-audit": 2,
       "packaged-direct": 48,
       "packaged-payload": 19,
@@ -293,6 +295,24 @@
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
+      "name": "bdd",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/bdd",
+      "package_candidate": "cycle",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 4,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
       "name": "bdd-bridge",
       "source_plugin": "mtbc",
       "canonical_path": "mtbc/skills/bdd-bridge",
@@ -507,6 +527,22 @@
       "action": "Deja materialise avec garde-fou workflow Codex, verifier les mutations explicites avant execution."
     },
     {
+      "name": "cahier-de-labo",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/cahier-de-labo",
+      "package_candidate": "cycle",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "script-payload"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 6,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
       "name": "card",
       "source_plugin": "popgen",
       "canonical_path": "popgen/skills/card",
@@ -541,6 +577,24 @@
       ],
       "file_count": 1,
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
+    },
+    {
+      "name": "challenge",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/challenge",
+      "package_candidate": "cycle",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "project-memory-write",
+        "unsupported-frontmatter",
+        "web-runtime"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 1,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
     },
     {
       "name": "coevolution",
@@ -600,6 +654,26 @@
       ],
       "file_count": 2,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
+    },
+    {
+      "name": "cycle-projet",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/cycle-projet",
+      "package_candidate": "cycle",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 6,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
     },
     {
       "name": "d-place",
@@ -728,6 +802,24 @@
       ],
       "file_count": 6,
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
+    },
+    {
+      "name": "etat",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/etat",
+      "package_candidate": "cycle",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 1,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
     },
     {
       "name": "europe-pmc",
@@ -995,6 +1087,22 @@
       ],
       "file_count": 2,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
+    },
+    {
+      "name": "init-project",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/init-project",
+      "package_candidate": "cycle",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "script-payload"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 2,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
     },
     {
       "name": "iqtree-lsd2",
@@ -1463,6 +1571,26 @@
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
+      "name": "narratif",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/narratif",
+      "package_candidate": "cycle",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 5,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
       "name": "ncbi-pathogen-detection",
       "source_plugin": "bacteria",
       "canonical_path": "bacteria/skills/ncbi-pathogen-detection",
@@ -1929,6 +2057,25 @@
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
     },
     {
+      "name": "pistes",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/pistes",
+      "package_candidate": "cycle",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 8,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
       "name": "pleiades",
       "source_plugin": "popgen",
       "canonical_path": "popgen/skills/pleiades",
@@ -2100,6 +2247,46 @@
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
+      "name": "reboot",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/reboot",
+      "package_candidate": "cycle",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "mcp-runtime",
+        "project-memory-write",
+        "script-payload",
+        "supporting-resources",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 6,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
+      "name": "recadrage",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/recadrage",
+      "package_candidate": "cycle",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 2,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
+    },
+    {
       "name": "registres-sans-referent",
       "source_plugin": "mtbc",
       "canonical_path": "mtbc/skills/registres-sans-referent",
@@ -2156,6 +2343,25 @@
       ],
       "file_count": 2,
       "action": "Deja materialise avec adaptation runtime Codex, verifier les prerequis MCP et les reecritures de copie."
+    },
+    {
+      "name": "routage",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/routage",
+      "package_candidate": "cycle",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "claude-runtime-reference",
+        "project-memory-write",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 4,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
     },
     {
       "name": "scanpy",
@@ -2637,6 +2843,21 @@
       "action": "Deja materialise dans un paquet direct, verifier lors de l'installation isolee."
     },
     {
+      "name": "suite",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/suite",
+      "package_candidate": "cycle",
+      "packaged_in": [],
+      "classification": "needs-codex-runtime-adaptation",
+      "signals": [
+        "claude-runtime-reference",
+        "script-payload"
+      ],
+      "unsupported_frontmatter": [],
+      "file_count": 2,
+      "action": "Remplacer les references Claude et declarer les prerequis MCP Codex."
+    },
+    {
       "name": "supp-tables",
       "source_plugin": "litterature",
       "canonical_path": "litterature/skills/supp-tables",
@@ -2829,6 +3050,23 @@
       ],
       "file_count": 3,
       "action": "Deja materialise dans un paquet payload audite, verifier scripts et exclusions lors de l'installation isolee."
+    },
+    {
+      "name": "verdict-diffusion",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/verdict-diffusion",
+      "package_candidate": "cycle",
+      "packaged_in": [],
+      "classification": "blocked-by-personal-workflow",
+      "signals": [
+        "project-memory-write",
+        "unsupported-frontmatter"
+      ],
+      "unsupported_frontmatter": [
+        "argument-hint"
+      ],
+      "file_count": 1,
+      "action": "Porter ou neutraliser les ecritures de memoire projet avant empaquetage."
     },
     {
       "name": "wals",

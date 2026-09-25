@@ -7,12 +7,13 @@
       "codex-mcp-tool-prerequisite": 12,
       "mcp-narrative-only": 11,
       "rewrite-cache-path": 1,
-      "rewrite-claude-skill-paths": 11,
+      "rewrite-claude-skill-paths": 13,
       "unclassified-runtime-signal": 3
     },
     "source_plugin": {
       "bacteria": 11,
       "bioinfo": 1,
+      "cycle": 2,
       "litterature": 5,
       "maboss": 7,
       "mtbc": 19,
@@ -25,6 +26,7 @@
     "package_candidate": {
       "bacteria": 11,
       "bioinfo": 1,
+      "cycle": 2,
       "litterature": 5,
       "maboss": 7,
       "mtbc": 19,
@@ -153,6 +155,22 @@
       ],
       "runtime_bucket": "codex-mcp-documentation-only",
       "action": "Emballage possible ; conserver la mention comme prerequis ou comparaison documentee."
+    },
+    {
+      "name": "bdd",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/bdd",
+      "package_candidate": "cycle",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "script-payload",
+        "unsupported-frontmatter"
+      ],
+      "runtime_issues": [
+        "claude-plugin-root"
+      ],
+      "runtime_bucket": "rewrite-claude-skill-paths",
+      "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload."
     },
     {
       "name": "beast2-phylogeography",
@@ -1065,6 +1083,21 @@
       ],
       "runtime_bucket": "rewrite-cache-path",
       "action": "Remplacer le cache Claude par un cache neutre sous ~/.cache ou par une sortie projet explicite."
+    },
+    {
+      "name": "suite",
+      "source_plugin": "cycle",
+      "canonical_path": "cycle/skills/suite",
+      "package_candidate": "cycle",
+      "coarse_signals": [
+        "claude-runtime-reference",
+        "script-payload"
+      ],
+      "runtime_issues": [
+        "claude-plugin-root"
+      ],
+      "runtime_bucket": "rewrite-claude-skill-paths",
+      "action": "Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload."
     },
     {
       "name": "tb-cli",

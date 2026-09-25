@@ -3,7 +3,7 @@
 Ce fichier est genere par `_audit/tools/generate_codex_runtime_adaptation_matrix.py`.
 Il decompose les skills classes `needs-codex-runtime-adaptation` par la matrice principale.
 
-- Total a adapter : 64
+- Total a adapter : 66
 
 ## Comptes par famille d'adaptation
 
@@ -15,7 +15,7 @@ Il decompose les skills classes `needs-codex-runtime-adaptation` par la matrice 
 | codex-mcp-tool-prerequisite | 12 |
 | mcp-narrative-only | 11 |
 | rewrite-cache-path | 1 |
-| rewrite-claude-skill-paths | 11 |
+| rewrite-claude-skill-paths | 13 |
 | unclassified-runtime-signal | 3 |
 
 ## Matrice complete
@@ -29,6 +29,7 @@ Il decompose les skills classes `needs-codex-runtime-adaptation` par la matrice 
 | ani-panel-classify | bacteria | bacteria | unclassified-runtime-signal | none | Relire manuellement avant empaquetage. |
 | bacdive | bacteria | bacteria | codex-mcp-documentation-only | tbannotator-mcp, generic-mcp-mention, http-literal | Emballage possible ; conserver la mention comme prerequis ou comparaison documentee. |
 | bayesian-skyline | phylo | phylo | codex-mcp-documentation-only | tbannotator-mcp, generic-mcp-mention, http-literal | Emballage possible ; conserver la mention comme prerequis ou comparaison documentee. |
+| bdd | cycle | cycle | rewrite-claude-skill-paths | claude-plugin-root | Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload. |
 | beast2-phylogeography | phylo | phylo | codex-mcp-documentation-only | tbannotator-mcp, generic-mcp-mention, http-literal | Emballage possible ; conserver la mention comme prerequis ou comparaison documentee. |
 | bioc-pmc | litterature | litterature | codex-mcp-documentation-only | tbannotator-mcp, generic-mcp-mention, web-tool-name, http-literal | Emballage possible ; conserver la mention comme prerequis ou comparaison documentee. |
 | biolqm-convert | maboss | maboss | mcp-narrative-only | generic-mcp-mention | Emballage possible ; la mention MCP n'est pas un appel runtime direct. |
@@ -82,6 +83,7 @@ Il decompose les skills classes `needs-codex-runtime-adaptation` par la matrice 
 | spdi-annotation | mtbc | mtbc | codex-mcp-tool-prerequisite | tbannotator-mcp, mcp-tool-name, generic-mcp-mention | Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire. |
 | species-id | bacteria | bacteria | mcp-narrative-only | generic-mcp-mention, web-tool-name, http-literal | Emballage possible ; la mention MCP n'est pas un appel runtime direct. |
 | sra-geolocate | mtbc | mtbc | rewrite-cache-path | claude-cache-path, generic-mcp-mention, web-tool-name, http-literal | Remplacer le cache Claude par un cache neutre sous ~/.cache ou par une sortie projet explicite. |
+| suite | cycle | cycle | rewrite-claude-skill-paths | claude-plugin-root | Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload. |
 | tb-cli | mtbc | mtbc | mcp-narrative-only | generic-mcp-mention | Emballage possible ; la mention MCP n'est pas un appel runtime direct. |
 | tbannotator-mcp | mtbc | mtbc | codex-mcp-tool-prerequisite | claude-config-or-branding, tbannotator-mcp, mcp-tool-name, generic-mcp-mention, http-literal | Emballer apres declaration explicite du prerequis MCP Codex et validation dans un profil temporaire. |
 | thd | bacteria | bacteria | rewrite-claude-skill-paths | claude-plugin-root, tbannotator-mcp, mcp-tool-name, generic-mcp-mention | Reecrire les chemins de scripts vers le chemin relatif du skill empaquete, puis materialiser le payload. |

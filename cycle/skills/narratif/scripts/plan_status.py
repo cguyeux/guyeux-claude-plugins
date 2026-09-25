@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -74,8 +75,20 @@ def resoudre(arg: str | None) -> Path | None:
     if arg:
         p = Path(arg).expanduser()
         if not p.is_absolute():
-            for base in (Path.cwd(), Path.home() / "docs" / "codes" / "mtbc",
-                         Path.home() / "docs" / "codes"):
+            # Racines de repli pour un nom de projet relatif nu : défaut =
+            # l'environnement pour lequel ce skill a été conçu (le plugin
+            # `cycle` est domain-agnostic, ce raccourci ne l'est pas) ;
+            # surchargeable par les mêmes variables que
+            # `cycle-projet/cycle_status.py` et `recadrage/recadrage_signals.py`
+            # (CYCLE_PROJECT_SHORTCUT_ROOT) et `init-project/init_project.py`
+            # (INIT_PROJECT_CODES_ROOT).
+            racine_mtbc = Path(os.environ.get(
+                "CYCLE_PROJECT_SHORTCUT_ROOT",
+                str(Path.home() / "docs" / "codes" / "mtbc"))).expanduser()
+            racine_codes = Path(os.environ.get(
+                "INIT_PROJECT_CODES_ROOT",
+                str(Path.home() / "docs" / "codes"))).expanduser()
+            for base in (Path.cwd(), racine_mtbc, racine_codes):
                 if (base / p).exists():
                     p = base / p
                     break

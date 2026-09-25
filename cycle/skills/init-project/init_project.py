@@ -18,10 +18,13 @@ Creates the canonical tree :
         reponse/         (voie RÉPONSE seulement : brouillons du mail et notes de soutien)
 
 Le CLAUDE.md du projet ne porte QUE le contexte scientifique, la structure et des
-pointeurs (refonte P2.3, 2026-09-13) : mémoire à cinq artefacts, cycle de vie,
-vérification avant calcul, pipeline manuscrit et calcul distant sont hérités de
-`~/docs/codes/CLAUDE.md` (et `codes/mtbc/CLAUDE.md` pour la famille mtbc) et ne se
-répètent pas dans chaque projet.
+pointeurs (refonte P2.3, 2026-09-13) quand le projet vit sous la racine de rangement
+(`$INIT_PROJECT_CODES_ROOT`, défaut `~/docs/codes`) : mémoire à cinq artefacts, cycle
+de vie, vérification avant calcul, pipeline manuscrit et calcul distant sont alors
+hérités de `<codes_root>/CLAUDE.md` (et `<codes_root>/mtbc/CLAUDE.md` pour la famille
+mtbc) et ne se répètent pas dans chaque projet. Un projet créé hors de cette racine
+(clone externe du plugin `cycle`) reçoit un CLAUDE.md qui le dit explicitement plutôt
+que d'affirmer un héritage inexistant.
 
 La VOIE (article, réponse, réoutillage, coordination ; cumulables) est déclarée
 dans l'en-tête de `etat_des_decouvertes.md`, seule copie ; `article/` n'existe que
@@ -47,44 +50,6 @@ from pathlib import Path
 from textwrap import dedent
 
 
-# ── identité de l'auteur, configurable (jamais un défaut qui redivulgue une identité réelle) ──
-
-def _config_auteur() -> dict[str, str]:
-    """Résout responsable/e-mail/affiliation/marketplace pour les gabarits générés.
-
-    Ordre : variables d'environnement `CYCLE_AUTHOR_NAME`/`CYCLE_AUTHOR_EMAIL`/
-    `CYCLE_AUTHOR_AFFILIATION`/`CYCLE_MARKETPLACE_NAME`, puis `~/.claude/cycle.local.md`
-    (bloc `clé: valeur` simple entre deux lignes `---`, pas un frontmatter YAML complet :
-    ce script reste stdlib-only), puis repli générique. Un projet créé sans configuration
-    porte un placeholder qui dit comment se configurer, jamais le nom de quelqu'un d'autre.
-    """
-    valeurs = {
-        "responsable": os.environ.get("CYCLE_AUTHOR_NAME", ""),
-        "email": os.environ.get("CYCLE_AUTHOR_EMAIL", ""),
-        "affiliation": os.environ.get("CYCLE_AUTHOR_AFFILIATION", ""),
-        "marketplace": os.environ.get("CYCLE_MARKETPLACE_NAME", ""),
-    }
-    local = Path.home() / ".claude" / "cycle.local.md"
-    if local.is_file() and not all(valeurs.values()):
-        try:
-            texte = local.read_text(encoding="utf-8")
-        except OSError:
-            texte = ""
-        if texte.startswith("---"):
-            fin = texte.find("\n---", 3)
-            bloc = texte[3:fin] if fin != -1 else texte[3:]
-            for ligne in bloc.splitlines():
-                cle, sep, val = ligne.partition(":")
-                cle, val = cle.strip(), val.strip()
-                if sep and cle in valeurs and not valeurs[cle]:
-                    valeurs[cle] = val
-    valeurs.setdefault("marketplace", valeurs["marketplace"] or "")
-    return valeurs
-
-
-_AUTEUR = _config_auteur()
-
-
 # ── CLAUDE.md ───────────────────────────────────────────────────────────────
 
 # Les familles sont les répertoires RÉELS de `~/docs/codes/` : la famille des
@@ -104,6 +69,22 @@ VOIES_ALIAS = {"reponse": "réponse", "reoutillage": "réoutillage",
                "outillage": "réoutillage", "coord": "coordination"}
 
 
+def codes_root() -> Path:
+    """Racine des familles de projets (`<root>/<famille>/...`).
+
+    `~/docs/codes` par défaut (l'environnement pour lequel ce skill a été conçu) ;
+    surchargeable par `INIT_PROJECT_CODES_ROOT` pour un clone du dépôt public
+    (plugin `cycle`) dont l'arborescence de recherche vit ailleurs. Un projet créé
+    hors de cette racine reste pleinement fonctionnel : seule la mention
+    d'héritage dans le CLAUDE.md généré s'adapte (cf. `claude_md_template`),
+    aucune fonctionnalité n'est perdue.
+    """
+    racine = os.environ.get("INIT_PROJECT_CODES_ROOT")
+    if racine:
+        return Path(racine).expanduser()
+    return Path.home() / "docs" / "codes"
+
+
 def parse_voies(valeur: str | None) -> tuple[str, ...]:
     """`--voie article,réoutillage` -> ('article', 'réoutillage'). Défaut : article."""
     if not valeur:
@@ -119,8 +100,8 @@ def parse_voies(valeur: str | None) -> tuple[str, ...]:
 
 
 def deviner_famille(parent_dir: Path) -> str | None:
-    """Famille déduite du chemin : `~/docs/codes/<famille>/...` -> famille, sinon None."""
-    codes = Path.home() / "docs" / "codes"
+    """Famille déduite du chemin : `<codes_root>/<famille>/...` -> famille, sinon None."""
+    codes = codes_root()
     try:
         rel = parent_dir.resolve().relative_to(codes.resolve())
     except ValueError:
@@ -129,17 +110,32 @@ def deviner_famille(parent_dir: Path) -> str | None:
     return tete if tete in FAMILLES else None
 
 
+def sous_codes_root(chemin: Path) -> bool:
+    """True si `chemin` est sous `codes_root()` (pour conditionner l'héritage de CLAUDE.md)."""
+    try:
+        chemin.resolve().relative_to(codes_root().resolve())
+        return True
+    except ValueError:
+        return False
+
+
 def claude_md_template(name: str, title: str, domain: str,
                        voies: tuple[str, ...] = ("article",),
-                       famille: str | None = None) -> str:
-    """CLAUDE.md de projet : contexte, structure, pointeurs. Rien d'hérité.
+                       famille: str | None = None,
+                       parent_dir: Path | None = None) -> str:
+    """CLAUDE.md de projet : contexte, structure, pointeurs. Rien d'hérité SI un
+    CLAUDE.md parent porte déjà ces règles.
 
-    Ce qui n'est PAS ici, et ne doit pas y revenir : cahier, état et pistes, cycle
-    de vie et portes, vérification avant calcul, pipeline qualité, calcul distant.
-    Tout cela vit dans `~/docs/codes/CLAUDE.md`, chargé automatiquement par toute
-    session ouverte sous `codes/` (mesuré : P2.1, 2026-09-13). Le répéter ici
-    ferait lire la même règle deux fois à chaque session et figerait dans 300
-    projets une version qui divergerait de la source à la première retouche.
+    Ce qui n'est PAS ici quand le projet vit sous `codes_root()` (mémoire à cinq
+    artefacts, cycle de vie et portes, vérification avant calcul, pipeline
+    qualité, calcul distant) : c'est hérité de `<codes_root>/CLAUDE.md`, chargé
+    automatiquement par toute session ouverte dessous (mesuré : P2.1,
+    2026-09-13). Le répéter ici ferait lire la même règle deux fois à chaque
+    session et figerait dans les projets une version qui divergerait de la
+    source à la première retouche. Pour un projet créé HORS de `codes_root()`
+    (clone externe du plugin `cycle`, ou `--at` pointant ailleurs), rien de
+    tout cela n'est garanti hérité : `entete` le dit explicitement plutôt que
+    d'affirmer un héritage qui n'existe pas.
     """
     article = "article" in voies
     reponse = "réponse" in voies
@@ -149,25 +145,39 @@ def claude_md_template(name: str, title: str, domain: str,
 
     # ── en-tête : famille, voie, héritage ──
     fam = famille or "non déclarée"
-    heritage = "`~/docs/codes/CLAUDE.md`"
-    if domain == "mtbc" or famille == "mtbc":
-        heritage += " et `~/docs/codes/mtbc/CLAUDE.md`"
+    herite = parent_dir is not None and sous_codes_root(parent_dir)
+    if herite:
+        racine = codes_root()
+        heritage = f"`{racine}/CLAUDE.md`"
+        if domain == "mtbc" or famille == "mtbc":
+            heritage += f" et `{racine}/mtbc/CLAUDE.md`"
+        heritage_txt = (
+            f"Les règles de projet de recherche (mémoire à cinq artefacts, cycle et portes, "
+            f"vérification avant calcul, pipeline manuscrit, calcul distant) sont héritées de "
+            f"{heritage} ; ce fichier ne les répète pas et ne porte que ce qui est propre au "
+            f"projet.\n\n"
+        )
+    else:
+        heritage_txt = (
+            "Ce projet est hors de l'arborescence de rangement habituelle : aucun CLAUDE.md "
+            "parent n'est présumé porter la mémoire à cinq artefacts, le cycle de vie et ses "
+            "portes, la vérification avant calcul ou le pipeline manuscrit. Les définir ici si "
+            "ce projet en a besoin, ou vérifier qu'un CLAUDE.md d'un répertoire ancêtre les "
+            "porte déjà avant de les dupliquer.\n\n"
+        )
     entete = (
         f"# CLAUDE.md — {name}\n\n"
         f"**Famille :** {fam}    **Voie :** {voies_txt} (déclarée dans l'en-tête de "
         "`etat_des_decouvertes.md`, seule copie, avec la phase quand la voie est article)\n\n"
-        f"Les règles de projet de recherche (mémoire à cinq artefacts, cycle et portes, "
-        f"vérification avant calcul, pipeline manuscrit, calcul distant) sont héritées de "
-        f"{heritage} ; ce fichier ne les répète pas et ne porte que ce qui est propre au projet.\n\n"
+        f"{heritage_txt}"
     )
 
     # ── contexte : une section par voie, ce qu'on doit savoir pour travailler ──
     contexte = ""
     if article:
-        auteur_biblio = _AUTEUR["responsable"] or "(auteur à renseigner)"
         contexte += (
             "## Contexte scientifique\n\n"
-            f"> **{auteur_biblio}** *{title}.* (en préparation)\n\n"
+            f"> **Guyeux C.** *{title}.* (en préparation)\n\n"
             "[Décrire ici la question de recherche, l'échantillon ou les données, ce qui est "
             "attendu, et ce qui distingue ce projet de ses voisins.]\n\n"
         )
@@ -238,13 +248,13 @@ def claude_md_template(name: str, title: str, domain: str,
     if reponse:
         pointeurs.append(
             "- Réponse : brouillons dans `reponse/`, version envoyée recopiée dans le cahier avec "
-            "sa date ; si vous tenez un annuaire de contacts, y consulter le registre du "
-            "destinataire (tutoiement, ton, historique) avant d'écrire.")
+            "sa date ; la fiche du destinataire est dans `~/.agents/knowledge/collaborators.md`.")
     if reoutillage:
         pointeurs.append(
-            "- Outillage : un skill se crée ou se corrige à sa source, jamais dans une copie "
-            "miroir ; une leçon inter-projets va dans votre base de connaissances partagée, "
-            "si vous en tenez une, par `/reflect`.")
+            "- Outillage : un skill se crée ou se corrige dans `~/.claude/skills/` (ou dans le "
+            "marketplace `~/docs/environnement/plugins/` s'il est de domaine), jamais dans "
+            "`~/.agents/skills` (miroir) ; une leçon inter-projets va dans "
+            "`~/.agents/knowledge/` par `/reflect`.")
     if coordination:
         pointeurs.append(
             "- Coordination : les artefacts vivants (site, listes de diffusion, annuaire, "
@@ -256,21 +266,30 @@ def claude_md_template(name: str, title: str, domain: str,
         "(`/recadrage`), jamais dans une piste locale oubliée.")
     pointeurs_txt = "\n".join(pointeurs) + "\n"
 
-    # ── conventions propres au domaine ; le reste est hérité ──
+    # ── conventions propres au domaine ; le reste est hérité si le projet est
+    # sous codes_root() (sinon rien ne garantit qu'un CLAUDE.md parent les porte) ──
     if domain == "mtbc":
-        domain_block = (
-            "\n## Conventions\n\n"
-            "Conventions de phylogénomique bactérienne (SPDI, H37Rv, RAxML-NG, figures) : "
-            "héritées de `~/docs/codes/mtbc/CLAUDE.md`. N'ajouter ici que ce que ce projet "
-            "fait autrement, avec son motif.\n"
-        )
+        if herite:
+            domain_block = (
+                "\n## Conventions\n\n"
+                "Conventions de phylogénomique bactérienne (SPDI, H37Rv, RAxML-NG, figures) : "
+                f"héritées de `{codes_root()}/mtbc/CLAUDE.md`. N'ajouter ici que ce que ce "
+                "projet fait autrement, avec son motif.\n"
+            )
+        else:
+            domain_block = (
+                "\n## Conventions\n\n"
+                "Conventions de phylogénomique bactérienne (SPDI, référence de la lignée "
+                "étudiée, RAxML-NG, figures) : ce projet est hors de l'arborescence dont un "
+                "CLAUDE.md parent porterait ces conventions communes. Les définir ici, ou "
+                "vérifier qu'un ancêtre du répertoire les porte déjà.\n"
+            )
     elif domain == "droit":
-        marketplace_nom = _AUTEUR["marketplace"] or "guyeux-claude-plugins"
         domain_block = (
             "\n## Conventions (projet de DROIT)\n\n"
             "**Plugin de domaine : `droit`.** Il est activé pour ce projet dans "
             "`.claude/settings.json`. Si les skills juridiques ne se chargent pas, "
-            f"l'activer à la main : `/plugin` puis `droit@{marketplace_nom}`.\n\n"
+            "l'activer à la main : `/plugin` puis `droit@guyeux-claude-plugins`.\n\n"
             "- **Les références vont en NOTES DE BAS DE PAGE, détaillées**, jamais en "
             "appel abrégé dans le corps. Norme : celle de la thèse de Camille Aynès "
             "(référente du domaine). Le skill `/notes-et-citations` s'exécute **avant "
@@ -291,14 +310,11 @@ def claude_md_template(name: str, title: str, domain: str,
 
 def cahier_de_labo_template(name: str, title: str, project_dir: Path) -> str:
     today = date.today().isoformat()
-    responsable = _AUTEUR["responsable"] or "(à renseigner — CYCLE_AUTHOR_NAME ou ~/.claude/cycle.local.md)"
-    if _AUTEUR["affiliation"]:
-        responsable += f" ({_AUTEUR['affiliation']})"
     return dedent(f"""\
         # Cahier de laboratoire — {name}
 
         **Projet :** {title}
-        **Responsable :** {responsable}
+        **Responsable :** Christophe Guyeux (Femto-ST, UMLP)
         **Créé le :** {today}
         **Répertoire :** {project_dir}
 
@@ -543,8 +559,7 @@ def pistes_template(name: str, n_entrees: int = 0,
           origine : /init-project --voie réponse    maj : {today}
           Le livrable est un mail argumenté et ses notes ; fini quand la réponse est partie.
           - P{{n}}.1 Reformuler la question posée, le destinataire, ce qu'il attend et pour
-                quand ; si vous tenez un annuaire de contacts, y relire sa fiche pour le
-                registre [à faire]
+                quand ; relire sa fiche `collaborators.md` pour le registre [à faire]
           - P{{n}}.2 Vérifier ce qui est déjà su : KB inter-projets, cahiers voisins, littérature
                 (/lit-review court si la question est scientifique) [à faire]
           - P{{n}}.3 Faire ce qui manque pour répondre, chaque calcul passé au crible /challenge
@@ -562,10 +577,10 @@ def pistes_template(name: str, n_entrees: int = 0,
           l'outil est reforgé et son test passe.
           - P{{n}}.1 Reproduire le défaut ou cerner le besoin par un cas minimal rejouable,
                 consigné au cahier [à faire]
-          - P{{n}}.2 Vérifier ce qui existe déjà : skill homonyme ou voisin, fiche KB,
-                bug déjà documenté [à faire]
-          - P{{n}}.3 Corriger ou créer à sa source, jamais dans une copie miroir, avec un
-                test de non-régression rejouable [à faire]
+          - P{{n}}.2 Vérifier ce qui existe déjà : skill homonyme ou voisin dans
+                `~/.claude/skills/` et le marketplace, fiche KB, bug déjà documenté [à faire]
+          - P{{n}}.3 Corriger ou créer au bon emplacement (source Claude Code, jamais le miroir
+                `~/.agents/skills`) avec un test de non-régression rejouable [à faire]
           - P{{n}}.4 Consigner la leçon (/reflect vers la KB, ticket chez qui détient le code
                 si l'amont est externe) et passer l'État de l'en-tête à « outil reforgé » ;
                 si le travail a révélé un résultat neuf et généralisable, ajouter `article` à la
@@ -615,10 +630,6 @@ def latex_escape(text: str) -> str:
 def main_tex_template(name: str, title: str, domain: str) -> str:
     name_tex = latex_escape(name)
     title_tex = latex_escape(title)
-    auteur_tex = latex_escape(_AUTEUR["responsable"]) if _AUTEUR["responsable"] else "Auteur (a renseigner)"
-    affiliation_tex = (latex_escape(_AUTEUR["affiliation"]) if _AUTEUR["affiliation"]
-                        else "Affiliation a renseigner")
-    email_tex = _AUTEUR["email"] or "you@example.com"
 
     if domain == "mtbc":
         domain_macros = (
@@ -675,10 +686,12 @@ def main_tex_template(name: str, title: str, domain: str) -> str:
         "\\newcommand{\\todo}[1]{\\textcolor{red}{\\textbf{[TODO: #1]}}}\n"
         + domain_macros + "\n"
         f"\\title{{{title_tex}}}\n\n"
-        f"\\author{{{auteur_tex}$^{{1,*}}$\\\\[6pt]\n"
+        "\\author{Christophe Guyeux$^{1,*}$\\\\[6pt]\n"
         "  \\parbox{\\textwidth}{\\centering\\small\n"
-        f"    $^{{1}}${affiliation_tex}\\\\[3pt]\n"
-        f"    $^{{*}}$Corresponding author: \\texttt{{{email_tex}}}\n"
+        "    $^{1}$Femto-ST Institute, UMR 6174 CNRS,\\\\\n"
+        "    Universit\\'e Marie et Louis Pasteur, Besan\\c{c}on, France\\\\[3pt]\n"
+        "    $^{*}$Corresponding author: "
+        "\\texttt{christophe.guyeux@univ-fcomte.fr}\n"
         "  }\n"
         "}\n\n"
         "\\date{}\n\n"
@@ -1368,7 +1381,7 @@ def ecrire_profil_plugins(project_dir: Path, famille: str | None = None) -> bool
 
 
 def ecrire_activation_plugin(project_dir: Path, plugin: str,
-                             marketplace: str = _AUTEUR["marketplace"] or "guyeux-claude-plugins") -> str:
+                             marketplace: str = "guyeux-claude-plugins") -> str:
     """Installe un plugin POUR CE PROJET, sans toucher aux réglages globaux.
 
     La portée est le point important : le plugin de droit n'a rien à faire dans
@@ -1462,7 +1475,7 @@ def create_project(name: str, title: str, parent_dir: Path,
 
     files = {
         project_dir / "CLAUDE.md":
-            claude_md_template(name, title, domain, voies, famille),
+            claude_md_template(name, title, domain, voies, famille, parent_dir),
         project_dir / "cahier_de_labo.md":
             cahier_de_labo_template(name, title, project_dir),
         project_dir / "etat_des_decouvertes.md":
@@ -1669,8 +1682,9 @@ def main():
     parser.add_argument("--title", help="Titre complet du projet.")
     parser.add_argument(
         "--at", default=None,
-        help="Répertoire parent où créer <name>/ (défaut : ~/docs/codes/<famille>/ si "
-             "--famille est donné et que le CWD n'y est pas déjà, sinon CWD).",
+        help="Répertoire parent où créer <name>/ (défaut : <codes_root>/<famille>/, "
+             "codes_root = $INIT_PROJECT_CODES_ROOT ou ~/docs/codes, si --famille est "
+             "donné et que le CWD n'y est pas déjà, sinon CWD).",
     )
     parser.add_argument(
         "--famille", choices=FAMILLES, default=None,
@@ -1771,7 +1785,7 @@ def main():
     if args.at:
         parent = Path(args.at).expanduser().resolve()
     elif args.famille and deviner_famille(cwd) != args.famille:
-        parent = Path.home() / "docs" / "codes" / args.famille
+        parent = codes_root() / args.famille
         if not parent.is_dir():
             print(f"Erreur : la famille {args.famille} n'a pas de répertoire {parent} ; "
                   "le créer d'abord ou donner --at.", file=sys.stderr)

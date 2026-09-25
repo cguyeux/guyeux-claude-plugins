@@ -28,7 +28,16 @@ import sys
 from datetime import date, datetime
 from pathlib import Path
 
-MTBC_ROOT = Path.home() / "docs" / "codes" / "mtbc"
+import os
+
+# Raccourci de nommage : un nom de projet relatif nu (pas "." ni "/") se résout
+# d'abord ici avant d'être cherché depuis le cwd. Défaut = l'environnement pour
+# lequel ce skill a été conçu (le plugin `cycle` est domain-agnostic, ce
+# raccourci ne l'est pas) ; surchargeable pour un autre genre ou un autre
+# clone du dépôt public. À garder aligné avec la même constante dans
+# `recadrage/recadrage_signals.py` (même mécanique de résolution).
+MTBC_ROOT = Path(os.environ.get("CYCLE_PROJECT_SHORTCUT_ROOT",
+                                 str(Path.home() / "docs" / "codes" / "mtbc"))).expanduser()
 
 PHASES = {
     1: "analyse primaire",

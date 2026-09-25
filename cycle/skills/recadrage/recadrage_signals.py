@@ -14,13 +14,15 @@ Usage :
     python3 recadrage_signals.py [projet] --quiet    # une ligne SI recadrage dû, sinon rien
                                                      # (destiné au hook SessionStart)
 
-`projet` : chemin absolu, ou nom relatif à ~/docs/codes/mtbc/, ou défaut = cwd
-(en remontant jusqu'au premier ancêtre STRICT portant cahier_de_labo.md).
+`projet` : chemin absolu, ou nom relatif à $CYCLE_PROJECT_SHORTCUT_ROOT (défaut
+~/docs/codes/mtbc), ou défaut = cwd (en remontant jusqu'au premier ancêtre
+STRICT portant cahier_de_labo.md).
 """
 
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 from datetime import date, datetime
@@ -37,7 +39,13 @@ FIGURES_MANUSCRIT_ALERTE = 8         # \includegraphics distincts
 LIGNES_MANUSCRIT_ALERTE = 1400       # lignes de main.tex (corps + préambule)
 PISTES_OUVERTES_ALERTE = 12          # pistes MAJEURES encore ouvertes
 
-MTBC_ROOT = Path.home() / "docs" / "codes" / "mtbc"
+# Raccourci de nommage : défaut = l'environnement pour lequel ce skill a été
+# conçu (le plugin `cycle` est domain-agnostic, ce raccourci ne l'est pas) ;
+# surchargeable pour un autre genre ou un autre clone du dépôt public. À garder
+# aligné avec la même constante dans `cycle-projet/cycle_status.py` (même
+# mécanique de résolution).
+MTBC_ROOT = Path(os.environ.get("CYCLE_PROJECT_SHORTCUT_ROOT",
+                                 str(Path.home() / "docs" / "codes" / "mtbc"))).expanduser()
 
 # C1 (projet vivant destinataire) et C2 (registre du parent) éclatent l'ancienne
 # C depuis l'arbitrage du 2026-08-26 ; E est la réponse à la question ouverte d'un
@@ -233,8 +241,7 @@ def _prefixes_status(root: Path) -> set[str] | None:
     """Préfixes rendus par `status.detecter_prefixes`, ou None si le skill `pistes`
     n'est pas installé à côté (les deux skills peuvent être déployés séparément)."""
     import importlib.util
-    _voisin = Path(__file__).resolve().parent.parent / "pistes" / "status.py"
-    spath = _voisin if _voisin.is_file() else Path.home() / ".claude" / "skills" / "pistes" / "status.py"
+    spath = Path.home() / ".claude" / "skills" / "pistes" / "status.py"
     if not spath.is_file():
         return None
     try:
